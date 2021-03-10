@@ -1,20 +1,8 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React from "react";
+import useStyles from "./Header.style";
 import { AppBar, Toolbar, Button, Typography } from "@material-ui/core";
-import logoSVG from './logo.svg';
 
-const useStyles = makeStyles((theme) => ({
-  header: {
-    backgroundColor: '#000000b3',
-    color: 'white',
-  },
-  logo: {
-    height: '3em',
-  },
-  buttons: {
-    marginLeft: 'auto',
-  },
-}));
+const logoPath = process.env.PUBLIC_URL + "/logo.svg";
 
 function Header() {
   const classes = useStyles();
@@ -22,7 +10,7 @@ function Header() {
   return (
     <AppBar position="static" className={classes.header}>
       <Toolbar>
-        <img src={logoSVG} className={classes.logo} alt="logo" />
+        <img src={logoPath} className={classes.logo} alt="logo" />
         <Typography variant="h6" component="h1">
           SPɅCES
         </Typography>

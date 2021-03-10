@@ -1,6 +1,6 @@
 import React from "react";
-import Layout from "./Layout";
-import Signup from "./Signup";
+import Layout from "./components/Layout/Layout";
+import Signup from "./pages/Signup/Signup";
 
 function App() {
   return (
