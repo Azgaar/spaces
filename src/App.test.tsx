@@ -1,9 +1,10 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
+test('renders app with Sign Up button', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  const main = screen.getByRole('main');
+  const signUp = within(main).getByRole('button', {name: /sign up/i});
+  expect(signUp).toBeInTheDocument();
 });
