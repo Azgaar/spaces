@@ -1,13 +1,11 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { AppBar, Toolbar, Button } from "@material-ui/core";
-import Typography from '@material-ui/core/Typography';
+import { AppBar, Toolbar, Button, Typography } from "@material-ui/core";
 import logoSVG from './logo.svg';
 
 const useStyles = makeStyles((theme) => ({
   header: {
-    backgroundColor:
-      theme.palette.type === 'light' ? theme.palette.grey[900] : 'blacky',
+    backgroundColor: '#000000b3',
     color: 'white',
   },
   logo: {
