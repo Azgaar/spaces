@@ -8,9 +8,9 @@ const render = (ui: JSX.Element, { route = "/" } = {}) => {
   return rtlRender(ui, { wrapper: Router });
 };
 
-test("renders app default page with sign in button", () => {
-  render(<App />, { route: "/" });
+test("renders app sign up page with sign up button", () => {
+  render(<App />, { route: "/signup" });
   const main = screen.getByRole("main");
-  const signIn = within(main).getByRole("button", { name: /sign in/i });
-  expect(signIn).toBeInTheDocument();
+  const signUp = within(main).getByRole("button", { name: /sign up/i });
+  expect(signUp).toBeInTheDocument();
 });
