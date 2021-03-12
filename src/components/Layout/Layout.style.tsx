@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundRepeat: "no-repeat",
     width: "100vw",
     height: "100vh",
-    opacity: 0.8,
+    opacity: .8,
   },
 }));
 
