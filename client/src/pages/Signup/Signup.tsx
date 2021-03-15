@@ -1,6 +1,6 @@
 import React, {useRef} from "react";
 import useStyles from "./Signup.style";
-import {Avatar, TextField, Button, Checkbox, Typography, Grid, Link} from "@material-ui/core";
+import {Avatar, TextField, Button, Checkbox, Typography, Grid, Link, FormHelperText} from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import {Link as RouterLink} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
@@ -76,7 +76,7 @@ function Signup() {
               })}
             />
           </Grid>
-          {(errors.password || errors.passwordRepeat) && <Typography color="error">{errors.password?.message || errors.passwordRepeat?.message}</Typography>}
+          {(errors.password || errors.passwordRepeat) && <FormHelperText error>{errors.password?.message || errors.passwordRepeat?.message}</FormHelperText>}
 
           <Grid item xs={12} className={classes.terms}>
             <Checkbox required name="acceptTerms" color="primary" inputRef={register({required: "Please read and accept terms"})} />
@@ -88,7 +88,7 @@ function Signup() {
             <Link component={RouterLink} to={"/privacy"}>
               privacy policy
             </Link>
-            {errors.acceptTerms && <Typography color="error">{errors.acceptTerms.message}</Typography>}
+            {errors.acceptTerms && <FormHelperText error>{errors.acceptTerms.message}</FormHelperText>}
           </Grid>
         </Grid>
         <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
