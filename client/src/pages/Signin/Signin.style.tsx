@@ -20,6 +20,10 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  links: {
+    backgroundColor: "#ffffff40",
+    boxShadow: "0 0 10px 10px #ffffff40",
+  }
 }));
 
 export default useStyles;

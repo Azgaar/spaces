@@ -45,7 +45,7 @@ function Signin() {
           id="password"
           autoComplete="current-password"
         />
-        <Grid container>
+        <Grid container className={classes.links}>
           <Grid item xs>
             <Link href="#" variant="body2" component={RouterLink} to="/forgotPassword">
               Forgot password?
