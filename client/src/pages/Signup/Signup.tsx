@@ -1,15 +1,8 @@
 import React from "react";
 import useStyles from "./Signup.style";
-import {
-  Avatar,
-  TextField,
-  Button,
-  Checkbox,
-  FormControlLabel,
-  Typography,
-  Grid,
-} from "@material-ui/core";
+import {Avatar, TextField, Button, Checkbox, Typography, Grid, Link} from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import {Link as RouterLink} from "react-router-dom";
 
 function Signup() {
   const classes = useStyles();
@@ -70,11 +63,17 @@ function Signup() {
               autoComplete="current-password"
             />
           </Grid>
-          <Grid item xs={12}>
-            <FormControlLabel
-              control={<Checkbox value="allowExtraEmails" color="primary" />}
-              label="I want to receive inspiration, marketing promotions and updates via email."
-            />
+
+          <Grid item xs={12} className={classes.terms}>
+            <Checkbox required name="acceptTerms" color="primary" />
+            {"I accept the "}
+            <Link component={RouterLink} to={"/terms"}>
+              terms of use
+            </Link>
+            {" and "}
+            <Link component={RouterLink} to={"/privacy"}>
+              privacy policy
+            </Link>
           </Grid>
         </Grid>
         <Button
