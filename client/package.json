@@ -1,6 +1,7 @@
 {
   "name": "spaces",
   "version": "0.1.0",
+  "description": "workspace reservation system",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.11.3",
@@ -58,5 +59,15 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Azgaar/spaces.git"
+  },
+  "author": "Azgaar (Max Ganiev)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Azgaar/spaces/issues"
+  },
+  "homepage": "https://github.com/Azgaar/spaces#readme"
 }
