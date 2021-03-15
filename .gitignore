@@ -8,6 +8,7 @@
 .pnp.js
 
 /client/coverage
+/client/build
 /server/build
 
 # misc
