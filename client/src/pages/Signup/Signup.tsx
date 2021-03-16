@@ -1,4 +1,4 @@
-import React, {useRef} from "react";
+import React from "react";
 import useStyles from "./Signup.style";
 import {Avatar, TextField, Button, Checkbox, Typography, Grid, Link, FormHelperText} from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
@@ -18,8 +18,7 @@ function Signup() {
   const classes = useStyles();
 
   const {register, errors, handleSubmit, watch} = useForm<FormValues>();
-  const password = useRef({});
-  password.current = watch("password", "");
+  const password = watch("password", "");
 
   const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
     alert(JSON.stringify(data));
@@ -72,7 +71,7 @@ function Signup() {
               type="password"
               id="passwordRepeat"
               inputRef={register({
-                validate: value => value === password.current || "The passwords do not match"
+                validate: value => value === password || "The passwords do not match"
               })}
             />
           </Grid>
