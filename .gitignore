@@ -9,7 +9,7 @@
 
 /client/coverage
 /client/build
-/server/build
+/server/dist
 
 # misc
 .DS_Store
