@@ -23,7 +23,7 @@ export default class App {
   async run(): Promise<void> {
     await this.connect();
     this.app.listen(config.port, () => {
-      logger.info(`[App] Server is available on port http://localhost:${config.port}`);
+      logger.info(`[App] Server is running on port http://localhost:${config.port}`);
     });
   }
 

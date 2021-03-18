@@ -1,30 +1,10 @@
 import {Router} from "express";
+import validate from "../middleware/validate";
 import registerSchema from "../validation/auth";
-import {User} from "../models/user";
+import register from "../controllers/registration.controller";
 
-const PROD = process.env.NODE_ENV === "production";
 const router = Router();
 
-router.post("/", async (req, res) => {
-  await registerSchema.validateAsync(req.body, {abortEarly: true}).catch(err => {
-    res.status(400).json({message: "Invalid request"});
-  });
-
-  const {email, firstName, lastName, password} = req.body;
-  const userExists = await User.exists({email}).catch(err => {
-    res.status(400).json({message: "Database issue", err});
-  });
-
-  if (userExists) {
-    res.status(400).json(PROD ? {message: "Invalid request"} : {message: "User already exists", email});
-    return;
-  }
-
-  const newUser = await User.create({email, firstName, lastName, password}).catch(err => {
-    res.status(400).json({message: "Database issue", err});
-  });
-
-  res.json(PROD ? {message: "OK"} : {message: "OK", newUser});
-});
+router.post('/', validate(registerSchema), register);
 
 export {router as registerRouter};
