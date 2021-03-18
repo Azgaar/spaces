@@ -1,6 +1,6 @@
 import {ConnectionOptions} from "mongoose";
 
-export const getURL = () => {
+export const getMongoURL = () => {
   const MONGO_ID: string | undefined = process.env.MONGO_ID;
   const MONGO_PASS: string | undefined = process.env.MONGO_PASS;
   const MONGO_DATABASE: string | undefined = process.env.MONGO_DATABASE;
@@ -9,4 +9,4 @@ export const getURL = () => {
   return MONGO_URL;
 };
 
-export const OPTIONS: ConnectionOptions = {useNewUrlParser: true, useUnifiedTopology: true};
+export const MONGO_OPTIONS: ConnectionOptions = {useNewUrlParser: true, useUnifiedTopology: true};

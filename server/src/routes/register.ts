@@ -27,4 +27,4 @@ router.post("/", async (req, res) => {
   res.json(PROD ? {message: "OK"} : {message: "OK", newUser});
 });
 
-export default router;
+export {router as registerRouter};
