@@ -8,7 +8,8 @@ const validate = (schema: ObjectSchema) => (req: Request, res: Response, next: N
 
   if (error) {
     const errorMessage = error.details.map(details => details.message).join(", ");
-    return next(new ApiError(httpStatus.BAD_REQUEST, errorMessage));
+    const isOperational = true;
+    return next(new ApiError(httpStatus.BAD_REQUEST, errorMessage, isOperational));
   }
 
   return next();
