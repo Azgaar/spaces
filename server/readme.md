@@ -6,6 +6,6 @@ If using PowerShell, install `curl` and type `remove-item alias:\curl` to use ac
 
 ```sh
 
-curl -X POST http://localhost:3001/register -H "Content-Type: application/json" -d '{\"email\":\"test@yandex.com\",\"firstName\":\"Max\",\"lastName\":\"Surny\",\"password\":\"Secret123\",\"passwordRepeat\":\"Secret123\"}'
+curl -X POST http://localhost:3001/register -H "Content-Type: application/json" -d '{\"email\":\"test@yandex.com\",\"firstName\":\"Max\",\"lastName\":\"Surny\",\"password\":\"Secret123\",\"passwordRepeat\":\"Secret123\"}' | ConvertFrom-Json | ConvertTo-Json
 
 ```

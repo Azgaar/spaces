@@ -7,7 +7,17 @@ if (env !== "production") dotenv.config();
 
 const port = process.env.PORT || 3001;
 const mongo = {url: getMongoURL(), options: MONGO_OPTIONS};
+const joi = {
+  options: {
+    abortEarly: true,
+    errors: {
+      wrap: {
+        label: "`"
+      }
+    }
+  }
+};
 
-const config = {env, port, mongo};
+const config = {env, port, mongo, joi};
 
 export default config;
