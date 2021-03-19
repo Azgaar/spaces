@@ -9,7 +9,10 @@
 
 /client/coverage
 /client/build
-/server/build
+
+/server/dist
+server/combined.log
+server/error.log
 
 # misc
 .DS_Store
