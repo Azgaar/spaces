@@ -33,6 +33,11 @@ export default class App {
   }
 
   private initRoutes(): void {
+    this.app.use("/", (req, res, next) => {
+      logger.info("[Session] " + JSON.stringify(req.session));
+      next();
+    });
+
     this.app.use("/register", registerRouter);
 
     this.app.use("/*", (req, res, next) => {

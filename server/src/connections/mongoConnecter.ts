@@ -13,7 +13,7 @@ class MongoConnecter {
   }
 
   connect(): Promise<Mongoose | void> {
-    logger.info("[MongoConnecter] Start up MongoDB connection");
+    logger.info("[MongoConnecter] Initialize MongoDB connection");
 
     mongoose.connection.on("connected", () => {
       logger.info("[MongoConnecter] MongoDB connected");
