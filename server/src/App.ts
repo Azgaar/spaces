@@ -1,4 +1,5 @@
 import express from "express";
+import session from "express-session"
 import config from "./config";
 import {registerRouter} from "./routes";
 import {mongoConnecter} from "./connections";
@@ -44,5 +45,6 @@ export default class App {
 
   private configApp(): void {
     this.app.use(express.json());
+    this.app.use(session(config.session));
   }
 }
