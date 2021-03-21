@@ -10,6 +10,10 @@ const register = catchAsync(async (req, res, next) => {
   if (userExists) return next(new ApiError(httpStatus.BAD_REQUEST, `User ${email} already exists`));
 
   const user = await User.create({email, firstName, lastName, password});
+
+  // save session and log in user
+  req.session.userId = user._id;
+
   res.status(httpStatus.CREATED).send({user});
 });
 

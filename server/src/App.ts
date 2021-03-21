@@ -4,7 +4,7 @@ import httpStatus from "http-status";
 import config from "./config";
 import {registerRouter} from "./routes";
 import {mongoConnecter, mongoStore} from "./connections";
-import {errorConverter, errorHandler} from './middleware/errors';
+import {errorConverter, errorHandler} from "./middleware/errors";
 import logger from "./utils/logger";
 import ApiError from "./utils/apiError";
 
