@@ -12,12 +12,16 @@ const options = {
   connectionOptions: config.mongo.options
 }
 
-const store = new MongoDBStore(options, err => {
+const mongoStore = new MongoDBStore(options, err => {
   if (err) logger.error(`[MongoStore] ${String(err)}`);
 });
 
-store.on("error", err => {
+mongoStore.on("connected", () => {
+  logger.info("[MongoStore] MongoDB connected");
+});
+
+mongoStore.on("error", err => {
   logger.error(`[MongoStore] ${String(err)}`);
 });
 
-export default store;
+export default mongoStore;
