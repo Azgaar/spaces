@@ -1,10 +1,10 @@
 import express from "express";
-import session from "express-session"
+import session from "express-session";
+import httpStatus from "http-status";
 import config from "./config";
 import {registerRouter} from "./routes";
-import {mongoConnecter} from "./connections";
+import {mongoConnecter, mongoStore} from "./connections";
 import {errorConverter, errorHandler} from './middleware/errors';
-import httpStatus from "http-status";
 import logger from "./utils/logger";
 import ApiError from "./utils/apiError";
 
@@ -33,8 +33,10 @@ export default class App {
   }
 
   private initRoutes(): void {
+    // TEMP to log Session data
     this.app.use("/", (req, res, next) => {
-      logger.info("[Session] " + JSON.stringify(req.session));
+      logger.info("[Cookie] " + JSON.stringify(req.session.cookie));
+      logger.info("[Session] " + req.sessionID);
       next();
     });
 
@@ -50,6 +52,6 @@ export default class App {
 
   private configApp(): void {
     this.app.use(express.json());
-    this.app.use(session(config.session));
+    this.app.use(session({...config.session, store: mongoStore}));
   }
 }

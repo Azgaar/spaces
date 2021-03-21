@@ -24,7 +24,7 @@ const errorHandler = (err: ApiError, req: Request, res: Response, next: NextFunc
     message = String(httpStatus[httpStatus.INTERNAL_SERVER_ERROR]);
   }
 
-  if (!PROD) logger.error("[Error] " + err.statusCode + ": " + err.message);
+  if (!PROD) logger.error(`[Error] ${err.statusCode}: ${err.message}`);
   res.locals.errorMessage = err.message;
 
   const response = {code: statusCode, message, stack: !PROD && err.stack};

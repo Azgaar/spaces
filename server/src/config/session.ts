@@ -1,3 +1,4 @@
+
 export const getSessionConfig = () => {
   const name: string = process.env.SESSION_NAME || "sid";
   const resave: boolean = false;
