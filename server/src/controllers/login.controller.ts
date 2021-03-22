@@ -4,8 +4,7 @@ import {isLoggedIn, logIn, logOut} from "../services/auth";
 import catchAsync from "../utils/catchAsync";
 import ApiError from "../utils/apiError";
 
-const register = catchAsync(async (req, res, next) => {
-  
+export const loginController = catchAsync(async (req, res, next) => {
   if (isLoggedIn(req)) await logOut(req, res);
 
   const {email, password} = req.body;
@@ -20,5 +19,3 @@ const register = catchAsync(async (req, res, next) => {
   const {firstName, lastName} = user;
   res.status(httpStatus.OK).send({email, firstName, lastName});
 });
-
-export default register;

@@ -4,7 +4,7 @@ import {logIn} from "../services/auth";
 import catchAsync from "../utils/catchAsync";
 import ApiError from "../utils/apiError";
 
-const register = catchAsync(async (req, res, next) => {
+export const registerController = catchAsync(async (req, res, next) => {
   const {email, firstName, lastName, password} = req.body;
   const userExists = await User.exists({email});
 
@@ -15,4 +15,3 @@ const register = catchAsync(async (req, res, next) => {
   res.status(httpStatus.CREATED).send({email, firstName, lastName});
 });
 
-export default register;
