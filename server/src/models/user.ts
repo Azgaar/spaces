@@ -1,4 +1,5 @@
 import {Schema, model, Document} from "mongoose";
+import {hash} from "bcryptjs";
 
 export interface UserDocument extends Document {
   email: string;
@@ -23,5 +24,11 @@ const userSchema = new Schema(
     versionKey: false
   }
 );
+
+userSchema.pre<UserDocument>("save", async function () {
+  if (this.isModified("password")) {
+    this.password = await hash(this.password, 12);
+  }
+});
 
 export const User = model<UserDocument>("User", userSchema);
