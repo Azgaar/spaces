@@ -1,7 +1,7 @@
 import request from "supertest";
 import httpStatus from "http-status";
-import App from "../src/App";
-import {mongoMemoryConnecter} from "../src/connections";
+import App from "../../src/App";
+import {MongoMemory} from "../utils";
 
 const app = new App().getApp();
 
@@ -14,7 +14,7 @@ const users = {
 
 describe("Registration service", () => {
   beforeAll(() => {
-    mongoMemoryConnecter.connect();
+    MongoMemory.connect();
   });
 
   it("creates user when data is valid", async () => {
@@ -57,6 +57,6 @@ describe("Registration service", () => {
   });
 
   afterAll(() => {
-    mongoMemoryConnecter.closeDatabase();
+    MongoMemory.closeDatabase();
   });
 });
