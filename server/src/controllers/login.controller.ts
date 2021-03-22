@@ -5,9 +5,8 @@ import catchAsync from "../utils/catchAsync";
 import ApiError from "../utils/apiError";
 
 export const loginController = catchAsync(async (req, res, next) => {
-  if (isLoggedIn(req)) await logOut(req, res);
-
   const {email, password} = req.body;
+  if (isLoggedIn(req)) return next(new ApiError(httpStatus.BAD_REQUEST, `User ${email} already logged in`));
 
   const user = await User.findOne({email});
   if (!user) return next(new ApiError(httpStatus.UNAUTHORIZED, `User ${email} is not registered`));
