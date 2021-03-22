@@ -1,6 +1,6 @@
 import request from "supertest";
 import httpStatus from "http-status";
-import App from "../App";
+import App from "../src/App";
 
 const app = new App().getApp();
 

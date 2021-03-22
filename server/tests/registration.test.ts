@@ -1,7 +1,7 @@
 import request from "supertest";
 import httpStatus from "http-status";
-import App from "../App";
-import {mongoMemoryConnecter} from "../connections";
+import App from "../src/App";
+import {mongoMemoryConnecter} from "../src/connections";
 
 const app = new App().getApp();
 
