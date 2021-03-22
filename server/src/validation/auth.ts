@@ -8,4 +8,9 @@ const registerSchema = Joi.object({
   passwordRepeat: Joi.valid(Joi.ref("password")).required()
 });
 
-export default registerSchema;
+const loginSchema = Joi.object({
+  email: Joi.string().email().min(6).max(128).lowercase().trim().required(),
+  password: Joi.string().min(8).max(128).required()
+});
+
+export {registerSchema, loginSchema};

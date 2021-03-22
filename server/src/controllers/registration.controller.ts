@@ -1,5 +1,6 @@
-import {User} from "../models/user";
 import httpStatus from "http-status";
+import {User} from "../models/user";
+import {logIn} from "../services/auth";
 import catchAsync from "../utils/catchAsync";
 import ApiError from "../utils/apiError";
 
@@ -9,12 +10,9 @@ const register = catchAsync(async (req, res, next) => {
 
   if (userExists) return next(new ApiError(httpStatus.BAD_REQUEST, `User ${email} already exists`));
 
-  const user = await User.create({email, firstName, lastName, password});
-
-  // save session and log in user
-  req.session.userId = user._id;
-
-  res.status(httpStatus.CREATED).send({user});
+  const user = await User.create({email, firstName, lastName, password, admin: false});
+  logIn(req, user.id);
+  res.status(httpStatus.CREATED).send({email, firstName, lastName});
 });
 
 export default register;
