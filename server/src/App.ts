@@ -2,7 +2,7 @@ import express from "express";
 import session from "express-session";
 import httpStatus from "http-status";
 import config from "./config";
-import {registerRouter, loginRouter} from "./routes";
+import {registerRouter, loginRouter, logoutRouter} from "./routes";
 import {mongoConnecter, mongoStore} from "./connections";
 import {errorConverter, errorHandler} from "./middleware/errors";
 import logger from "./utils/logger";
@@ -42,6 +42,7 @@ export default class App {
 
     this.app.use("/register", registerRouter);
     this.app.use("/login", loginRouter);
+    this.app.use("/logout", logoutRouter);
 
     this.app.use("/*", (req, res, next) => {
       next(new ApiError(httpStatus.NOT_FOUND, "Not found"));

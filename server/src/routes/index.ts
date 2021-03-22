@@ -1,2 +1,3 @@
-export * from "./register";
-export * from "./login";
+export * from "./register.router";
+export * from "./login.router";
+export * from "./logout.router";

@@ -24,4 +24,12 @@ const notLogged = (req: Request, res: Response, next: NextFunction) => {
   return next();
 };
 
-export {notLogged, validate};
+const isLogged = (req: Request, res: Response, next: NextFunction) => {
+  if (!isLoggedIn(req)) {
+    return next(new ApiError(httpStatus.BAD_REQUEST, `User is not logged in`));
+  }
+
+  return next();
+};
+
+export {validate, notLogged, isLogged};
