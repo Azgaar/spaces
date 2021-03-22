@@ -9,7 +9,7 @@
     "build": "tsc",
     "dev": "ts-node-dev --transpile-only src",
     "start": "node dist/index.ts",
-    "test": "jest"
+    "test": "jest --verbose"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
