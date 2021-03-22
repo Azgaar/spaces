@@ -5,8 +5,6 @@ import logger from "../utils/logger";
 import ApiError from "../utils/apiError";
 import type {Request, Response, NextFunction} from "express";
 
-const PROD = config.env === "production";
-
 const errorConverter = (err: any, req: Request, res: Response, next: NextFunction) => {
   let error = err;
   if (!(error instanceof ApiError)) {
@@ -19,16 +17,18 @@ const errorConverter = (err: any, req: Request, res: Response, next: NextFunctio
 
 const errorHandler = (err: ApiError, req: Request, res: Response, next: NextFunction) => {
   let {statusCode, message} = err;
-  if (PROD && !err.isOperational) {
+  const DEV = config.env === "development";
+
+  if (!DEV && !err.isOperational) {
     statusCode = httpStatus.INTERNAL_SERVER_ERROR;
     message = String(httpStatus[httpStatus.INTERNAL_SERVER_ERROR]);
   }
 
-  if (!PROD) logger.error(err);
+  if (DEV) logger.error(err.message);
   res.locals.errorMessage = err.message;
 
-  const response = {code: statusCode, message, stack: !PROD && err.stack};
-  res.status(statusCode).send(response);
+  const response = {code: statusCode, message, stack: DEV && err.stack};
+  res.status(statusCode).json(response);
 };
 
 export {errorConverter, errorHandler};
