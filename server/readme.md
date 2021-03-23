@@ -28,7 +28,6 @@ curl -v -X POST http://localhost:3001/register -H "Content-Type: application/jso
 
 ```sh
 curl -v -X POST http://localhost:3001/login -H "Content-Type: application/json" -d '{\"email\":\"test@gmail.com\",\"password\":\"Secret123\"}' | ConvertFrom-Json | ConvertTo-Json
-
 ```
 
 ### Logout:

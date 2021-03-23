@@ -44,9 +44,7 @@ export default class App {
     this.app.use("/login", loginRouter);
     this.app.use("/logout", logoutRouter);
 
-    this.app.use("/*", (req, res, next) => {
-      next(new ApiError(httpStatus.NOT_FOUND, "Not found"));
-    });
+    this.app.use("/*", (req, res, next) => next(new ApiError(httpStatus.NOT_FOUND, "Not found")));
 
     this.app.use(errorConverter);
     this.app.use(errorHandler);
