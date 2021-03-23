@@ -5,12 +5,13 @@ import ApiError from "../utils/apiError";
 import config from "../config";
 import type {Request, Response, NextFunction} from "express";
 
+const isOperational = true; // validation errors messages to be disclosed to end-user in production
+
 const validate = (schema: ObjectSchema) => (req: Request, res: Response, next: NextFunction) => {
   const {value, error} = schema.validate(req.body, config.joi.options);
 
   if (error) {
     const errorMessage = error.details.map(details => details.message).join(", ");
-    const isOperational = true;
     return next(new ApiError(httpStatus.BAD_REQUEST, errorMessage, isOperational));
   }
 
@@ -19,7 +20,7 @@ const validate = (schema: ObjectSchema) => (req: Request, res: Response, next: N
 
 const notLogged = (req: Request, res: Response, next: NextFunction) => {
   if (isLoggedIn(req)) {
-    return next(new ApiError(httpStatus.BAD_REQUEST, `User is already logged in`));
+    return next(new ApiError(httpStatus.BAD_REQUEST, "User is already logged in", isOperational));
   }
 
   return next();
@@ -27,7 +28,7 @@ const notLogged = (req: Request, res: Response, next: NextFunction) => {
 
 const isLogged = (req: Request, res: Response, next: NextFunction) => {
   if (!isLoggedIn(req)) {
-    return next(new ApiError(httpStatus.BAD_REQUEST, `User is not logged in`));
+    return next(new ApiError(httpStatus.BAD_REQUEST, "User is not logged in", isOperational));
   }
 
   return next();

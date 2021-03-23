@@ -1,3 +1,4 @@
 import MongoMemory from "./mongoMemoryConnecter";
+import {extractCookies} from "./cookieParser";
 
-export {MongoMemory};
+export {MongoMemory, extractCookies};
