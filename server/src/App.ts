@@ -52,6 +52,7 @@ export default class App {
 
   private configApp(): void {
     this.app.use(express.json());
-    this.app.use(session({...config.session, store: mongoStore}));
+    const store = config.env === "production" ? mongoStore : undefined;
+    this.app.use(session({...config.session, store}));
   }
 }

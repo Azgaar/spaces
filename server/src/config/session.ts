@@ -1,3 +1,4 @@
+import {MongoDBStore} from "connect-mongodb-session";
 
 export const getSessionConfig = () => {
   const name: string = process.env.SESSION_NAME || "sid";
@@ -9,7 +10,6 @@ export const getSessionConfig = () => {
   const sameSite: boolean = true;
   const httpOnly: boolean = true;
   const secure: boolean = process.env.NODE_ENV === "production";
-  const cookie = {maxAge, sameSite, httpOnly, secure};
 
-  return {name, resave, saveUninitialized, secret, cookie};
+  return {name, resave, saveUninitialized, secret, cookie: {maxAge, sameSite, httpOnly, secure}};
 }
