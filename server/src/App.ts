@@ -1,5 +1,6 @@
 import express from "express";
 import session from "express-session";
+import cors from "cors";
 import httpStatus from "http-status";
 import config from "./config";
 import {registerRouter, loginRouter, logoutRouter} from "./routes";
@@ -51,6 +52,7 @@ export default class App {
   }
 
   private configApp(): void {
+    this.app.use(cors(config.cors));
     this.app.use(express.json());
     const store = config.env === "production" ? mongoStore : undefined;
     this.app.use(session({...config.session, store}));

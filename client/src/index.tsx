@@ -4,7 +4,7 @@ import {BrowserRouter as Router} from "react-router-dom";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import {ThemeProvider} from "@material-ui/core/styles";
 import theme from "./theme";
-import reportWebVitals from "./reportWebVitals";
+// import reportWebVitals from "./reportWebVitals";
 import App from "./components/App";
 
 ReactDOM.render(
@@ -19,4 +19,4 @@ ReactDOM.render(
   document.querySelector("#root")
 );
 
-reportWebVitals(console.log);
+// reportWebVitals(console.log);

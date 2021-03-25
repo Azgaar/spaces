@@ -13,8 +13,8 @@ function Signin() {
   const {register, handleSubmit} = useForm<SigninForm>();
 
   const onSubmit: SubmitHandler<SigninForm> = async (formData: SigninForm) => {
-    console.log(formData);
-    login(formData);
+    const response = await login(formData);
+    console.log(response);
   };
 
   return (
