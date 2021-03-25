@@ -5,15 +5,24 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import {Link as RouterLink} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
 import {SignupForm} from "../../types";
+import {signup} from "../../services";
 
 function Signup() {
   const classes = useStyles();
 
-  const {register, errors, handleSubmit, watch} = useForm<SignupForm>();
+  const {register, errors, setError, handleSubmit, watch} = useForm<SignupForm>();
   const password = watch("password", "");
 
   const onSubmit: SubmitHandler<SignupForm> = async (formData: SignupForm) => {
     console.log(formData);
+    const res = await signup(formData);
+
+    if (res.code === 200) {
+      console.log("SUCCESS", res);
+      return;
+    }
+
+    setError("password", {type: "server", message: res.message});
   };
 
   return (

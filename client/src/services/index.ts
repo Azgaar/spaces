@@ -1,1 +1,1 @@
-export {register, login} from "./auth";
+export {signup, signin} from "./auth";
