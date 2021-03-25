@@ -4,24 +4,16 @@ import {Avatar, TextField, Button, Checkbox, Typography, Grid, Link, FormHelperT
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import {Link as RouterLink} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
-
-type FormValues = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  passwordRepeat: string;
-  acceptTerms: boolean;
-};
+import {SignupForm} from "../../types";
 
 function Signup() {
   const classes = useStyles();
 
-  const {register, errors, handleSubmit, watch} = useForm<FormValues>();
+  const {register, errors, handleSubmit, watch} = useForm<SignupForm>();
   const password = watch("password", "");
 
-  const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
-    alert(JSON.stringify(data));
+  const onSubmit: SubmitHandler<SignupForm> = async (formData: SignupForm) => {
+    console.log(formData);
   };
 
   return (
@@ -71,7 +63,7 @@ function Signup() {
               type="password"
               id="passwordRepeat"
               inputRef={register({
-                validate: value => value === password || "The passwords do not match"
+                validate: (value: string) => value === password || "The passwords do not match"
               })}
             />
           </Grid>
