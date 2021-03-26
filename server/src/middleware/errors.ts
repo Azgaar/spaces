@@ -20,11 +20,11 @@ const errorHandler = (err: ApiError, req: Request, res: Response, next: NextFunc
   const DEV = config.env === "development";
 
   if (!DEV && !err.isOperational) {
-    statusCode = httpStatus.INTERNAL_SERVER_ERROR;
+    if (statusCode !== httpStatus.UNAUTHORIZED) statusCode = httpStatus.INTERNAL_SERVER_ERROR;
     message = String(httpStatus[httpStatus.INTERNAL_SERVER_ERROR]);
   }
 
-  if (DEV) logger.error(err.message);
+  if (DEV) logger.error(`[Error] ${err.statusCode}: ${err.message}`);
   res.locals.errorMessage = err.message;
 
   const response = {code: statusCode, message, stack: DEV && err.stack};

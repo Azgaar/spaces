@@ -1,9 +1,10 @@
 import express from "express";
-import config from "./config";
-import {registerRouter} from "./routes";
-import {mongoConnecter} from "./connections";
-import {errorConverter, errorHandler} from "./middleware/errors";
+import session from "express-session";
 import httpStatus from "http-status";
+import config from "./config";
+import {registerRouter, loginRouter, logoutRouter} from "./routes";
+import {mongoConnecter, mongoStore} from "./connections";
+import {errorConverter, errorHandler} from "./middleware/errors";
 import logger from "./utils/logger";
 import ApiError from "./utils/apiError";
 
@@ -32,14 +33,26 @@ export default class App {
   }
 
   private initRoutes(): void {
+    // TEMP to log Session data
+    this.app.use("/", (req, res, next) => {
+      logger.info("[Cookie] " + JSON.stringify(req.session.cookie));
+      logger.info("[Session] " + req.sessionID);
+      next();
+    });
+
     this.app.use("/register", registerRouter);
+    this.app.use("/login", loginRouter);
+    this.app.use("/logout", logoutRouter);
+
     this.app.use("/*", (req, res, next) => next(new ApiError(httpStatus.NOT_FOUND, "Not found")));
+
     this.app.use(errorConverter);
     this.app.use(errorHandler);
   }
 
   private configApp(): void {
     this.app.use(express.json());
-    // this.app.use(attachErrorHandler); // what is this middleware?
+    const store = config.env === "production" ? mongoStore : undefined;
+    this.app.use(session({...config.session, store}));
   }
 }

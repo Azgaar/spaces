@@ -1,7 +1,8 @@
 import request from "supertest";
 import httpStatus from "http-status";
 import App from "../../src/App";
-import {MongoMemory} from "../utils";
+import config from "../../src/config";
+import {MongoMemory, extractCookies} from "../utils";
 
 const app = new App().getApp();
 
@@ -17,14 +18,21 @@ describe("Registration service", () => {
     MongoMemory.connect();
   });
 
-  it("creates user when data is valid", async () => {
-    await request(app).post("/register")
+  it("creates user and sets cookie when data is valid", async () => {
+    const response = await request(app).post("/register")
       .send(users.valid)
       .expect("Content-Type", /json/)
       .expect(httpStatus.CREATED);
+    expect(response.body.email).toBe(users.valid.email);
+    expect(response.body.firstName).toBe(users.valid.firstName);
+    expect(response.body.lastName).toBe(users.valid.lastName);
+
+    const cookies = extractCookies(response.headers);
+    const sessionCookie = cookies[config.session.name];
+    expect(sessionCookie).toBeTruthy();
   });
 
-  it("fails creation of user with missing field", async () => {
+  it("fails creation of user with missing data", async () => {
     const response = await request(app).post("/register")
       .send(users.missingFields)
       .expect("Content-Type", /json/)
@@ -53,7 +61,6 @@ describe("Registration service", () => {
       .send(users.valid)
       .expect("Content-Type", /json/)
       .expect(httpStatus.INTERNAL_SERVER_ERROR);
-      // expect BAD_REQUEST in development
   });
 
   afterAll(() => {
