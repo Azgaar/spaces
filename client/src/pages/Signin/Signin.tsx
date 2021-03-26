@@ -2,10 +2,10 @@ import React from "react";
 import useStyles from "./Signin.style";
 import {Avatar, TextField, Button, Typography, Grid, Link, FormHelperText} from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import {Link as RouterLink} from "react-router-dom";
+import {Link as RouterLink, Redirect} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
-import {useDispatch} from "react-redux";
-import {SigninForm} from "../../types";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState, SignInForm} from "../../types";
 import {signin} from "../../services";
 import {actions} from "../../store/actions";
 
@@ -13,9 +13,10 @@ function Signin() {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const {register, errors, setError, handleSubmit} = useForm<SigninForm>();
+  const {register, errors, setError, handleSubmit} = useForm<SignInForm>();
+  const isLogged = useSelector((state: RootState) => state.user.logged);
 
-  const onSubmit: SubmitHandler<SigninForm> = async (formData: SigninForm) => {
+  const onSubmit: SubmitHandler<SignInForm> = async (formData: SignInForm) => {
     const res = await signin(formData);
     console.log(res);
 
@@ -28,6 +29,7 @@ function Signin() {
     dispatch(actions.login({email, firstName, lastName, role}));
   };
 
+  if (isLogged) return <Redirect to="/dashboard" />;
   return (
     <div className={classes.paper}>
       <Avatar className={classes.avatar}>

@@ -1,6 +1,13 @@
 import {AUTH_USER, UNAUTH_USER} from "../actions/types";
 
-const initialState = {
+type userData = {
+  email: string;
+  firstName: string
+  lastName: string;
+  role: "user" | "admin";
+}
+
+const initState = {
   logged: false,
   role: null,
   email: null,
@@ -8,7 +15,7 @@ const initialState = {
   lastName: null
 }
 
-export const reducer = (state = initialState, action: {type: string, payload: any}) => {
+const userReducer = (state = initState, action: {type: string, payload: userData}) => {
   switch (action.type) {
     case AUTH_USER:
       return {
@@ -17,10 +24,12 @@ export const reducer = (state = initialState, action: {type: string, payload: an
         email: action.payload.email,
         firstName: action.payload.firstName,
         lastName: action.payload.lastName
-    };
+      };
     case UNAUTH_USER:
-      return initialState;
+      return initState;
     default:
       return state;
   }
 };
+
+export default userReducer;

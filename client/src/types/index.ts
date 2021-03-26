@@ -1,4 +1,14 @@
-export type SignupForm = {
+export interface RootState {
+  user: {
+    logged: boolean;
+    role: "user" | "admin";
+    email: string;
+    firstName: string;
+    lastName: string;
+  }
+}
+
+export type SignUpForm = {
   firstName: string;
   lastName: string;
   email: string;
@@ -7,7 +17,7 @@ export type SignupForm = {
   acceptTerms: boolean;
 };
 
-export type SigninForm = {
+export type SignInForm = {
   email: string;
   password: string;
 };

@@ -4,16 +4,16 @@ import {Avatar, TextField, Button, Checkbox, Typography, Grid, Link, FormHelperT
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import {Link as RouterLink} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
-import {SignupForm} from "../../types";
+import {SignUpForm} from "../../types";
 import {signup} from "../../services";
 
 function Signup() {
   const classes = useStyles();
 
-  const {register, errors, setError, handleSubmit, watch} = useForm<SignupForm>();
+  const {register, errors, setError, handleSubmit, watch} = useForm<SignUpForm>();
   const password = watch("password", "");
 
-  const onSubmit: SubmitHandler<SignupForm> = async (formData: SignupForm) => {
+  const onSubmit: SubmitHandler<SignUpForm> = async (formData: SignUpForm) => {
     console.log(formData);
     const res = await signup(formData);
 

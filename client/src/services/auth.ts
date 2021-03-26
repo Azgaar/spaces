@@ -1,5 +1,5 @@
 import {post} from "../utils";
-import {SignupForm, SigninForm} from "../types";
+import {SignUpForm, SignInForm} from "../types";
 
-export const signup = (credentials: SignupForm) => post("/register", JSON.stringify(credentials));
-export const signin = (credentials: SigninForm) => post("/login", JSON.stringify(credentials));
+export const signup = (credentials: SignUpForm) => post("/register", JSON.stringify(credentials));
+export const signin = (credentials: SignInForm) => post("/login", JSON.stringify(credentials));
