@@ -5,7 +5,8 @@ export const post = async (endpoint: string, body: string) => {
   try {
     const res = await fetch(BASE_URL + endpoint, options);
     const json = await res.json();
-    return json;
+    if (!res.ok) throw new Error(json.message || res.statusText);
+    return {...json, ok: true};
   } catch (error) {
     return error;
   }

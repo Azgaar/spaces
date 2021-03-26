@@ -4,24 +4,28 @@ import {Avatar, TextField, Button, Typography, Grid, Link, FormHelperText} from 
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import {Link as RouterLink} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
+import {useDispatch} from "react-redux";
 import {SigninForm} from "../../types";
 import {signin} from "../../services";
+import {actions} from "../../store/actions";
 
 function Signin() {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   const {register, errors, setError, handleSubmit} = useForm<SigninForm>();
 
   const onSubmit: SubmitHandler<SigninForm> = async (formData: SigninForm) => {
-    console.log(formData);
     const res = await signin(formData);
+    console.log(res);
 
-    if (res.code === 200) {
-      console.log("SUCCESS", res);
+    if (!res.ok) {
+      setError("password", {type: "server", message: res.message});
       return;
     }
 
-    setError("password", {type: "server", message: res.message});
+    const {email, firstName, lastName, role = "user"} = res;
+    dispatch(actions.login({email, firstName, lastName, role}));
   };
 
   return (
@@ -33,12 +37,8 @@ function Signin() {
         Sign in
       </Typography>
       <form className={classes.form} noValidate onSubmit={handleSubmit(onSubmit)}>
-        <TextField variant="outlined" margin="normal" required fullWidth id="email" label="Email Address" name="email" autoComplete="email" autoFocus
-          inputRef={register({required: true, pattern: {value: /^\S+@\S+$/i, message: "Enter valid email"}})}
-        />
-        <TextField variant="outlined" margin="normal" required fullWidth name="password" label="Password" type="password" id="password" autoComplete="current-password"
-          inputRef={register({required: true, minLength: {value: 8, message: "Password must have at least 8 characters"}})}
-        />
+        <TextField variant="outlined" margin="normal" required fullWidth id="email" label="Email Address" name="email" autoComplete="email" autoFocus inputRef={register({required: true, pattern: {value: /^\S+@\S+$/i, message: "Enter valid email"}})} />
+        <TextField variant="outlined" margin="normal" required fullWidth name="password" label="Password" type="password" id="password" autoComplete="current-password" inputRef={register({required: true, minLength: {value: 8, message: "Password must have at least 8 characters"}})} />
         <Grid container>
           <Grid item xs>
             <Link href="#" variant="body2" component={RouterLink} to="/forgotPassword">
