@@ -2,29 +2,35 @@ import React from "react";
 import useStyles from "./Signup.style";
 import {Avatar, TextField, Button, Checkbox, Typography, Grid, Link, FormHelperText} from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import {Link as RouterLink} from "react-router-dom";
+import {Link as RouterLink, Redirect} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 import {useForm, SubmitHandler} from "react-hook-form";
-import {SignUpForm} from "../../types";
+import {RootState, SignUpForm} from "../../types";
 import {signup} from "../../services";
+import {actions} from "../../store/actions";
 
 function Signup() {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   const {register, errors, setError, handleSubmit, watch} = useForm<SignUpForm>();
+  const isLogged = useSelector((state: RootState) => state.user.logged);
   const password = watch("password", "");
 
   const onSubmit: SubmitHandler<SignUpForm> = async (formData: SignUpForm) => {
-    console.log(formData);
     const res = await signup(formData);
+    console.log(res);
 
-    if (res.code === 200) {
-      console.log("SUCCESS", res);
+    if (!res.ok) {
+      setError("password", {type: "server", message: res.message});
       return;
     }
 
-    setError("password", {type: "server", message: res.message});
+    const {email, firstName, lastName, role = "user"} = res;
+    dispatch(actions.login({email, firstName, lastName, role}));
   };
 
+  if (isLogged) return <Redirect to="/dashboard" />;
   return (
     <div className={classes.paper}>
       <Avatar className={classes.avatar}>

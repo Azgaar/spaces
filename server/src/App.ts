@@ -36,7 +36,7 @@ export default class App {
   private initRoutes(): void {
     // TEMP to log Session data
     this.app.use("/", (req, res, next) => {
-      logger.info("[Cookie] " + JSON.stringify(req.session.cookie));
+      logger.info("[Cookie] " + (req.headers.cookie || "not set"));
       logger.info("[Session] " + req.sessionID);
       next();
     });
