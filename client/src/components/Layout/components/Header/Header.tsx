@@ -2,8 +2,7 @@ import React from "react";
 import useStyles from "./Header.style";
 import {AppBar, Toolbar, Button, Typography} from "@material-ui/core";
 import {Link as RouterLink} from "react-router-dom";
-import {useSelector} from "react-redux";
-import {RootState} from "../../../../types";
+import {useAuth} from "../../../../hooks";
 
 const logoPath = process.env.PUBLIC_URL + "/logo.svg";
 
@@ -25,7 +24,7 @@ const Unauthorized = () => {
 
 function Header() {
   const classes = useStyles();
-  const isAuthenticated = useSelector((state: RootState) => state.user.isAuthenticated);
+  const {isAuthenticated} = useAuth();
 
   return (
     <AppBar position="static" className={classes.header}>

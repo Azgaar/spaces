@@ -4,17 +4,17 @@ import {Avatar, TextField, Button, Typography, Grid, Link, FormHelperText} from 
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import {Link as RouterLink, Redirect} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
-import {useDispatch, useSelector} from "react-redux";
-import {RootState, SignInForm} from "../../types";
+import {useDispatch} from "react-redux";
+import {SignInForm} from "../../types";
 import {signin} from "../../services";
 import {actions} from "../../store/actions";
+import {useAuth} from "../../hooks";
 
 function Signin() {
   const classes = useStyles();
   const dispatch = useDispatch();
 
   const {register, errors, setError, handleSubmit} = useForm<SignInForm>();
-  const isAuthenticated = useSelector((state: RootState) => state.user.isAuthenticated);
 
   const onSubmit: SubmitHandler<SignInForm> = async (formData: SignInForm) => {
     const res = await signin(formData);
@@ -28,6 +28,7 @@ function Signin() {
     dispatch(actions.login({email, firstName, lastName, role}));
   };
 
+  const {isAuthenticated} = useAuth();
   if (isAuthenticated) return <Redirect to="/dashboard" />;
   return (
     <div className={classes.paper}>
