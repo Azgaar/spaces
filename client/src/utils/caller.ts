@@ -1,10 +1,10 @@
 const BASE_URL: string = process.env.REACT_APP_SERVER_URI || "http://localhost:3001";
 
-export const post = async (endpoint: string, body: string) => {
+export const post = async (endpoint: string, body: string, withCredentials: boolean) => {
   try {
     const res = await fetch(BASE_URL + endpoint, {
       method: "POST",
-      credentials: "include",
+      credentials: withCredentials ? "include" : "omit",
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Credentials": BASE_URL

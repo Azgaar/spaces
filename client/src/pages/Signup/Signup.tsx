@@ -14,12 +14,11 @@ function Signup() {
   const dispatch = useDispatch();
 
   const {register, errors, setError, handleSubmit, watch} = useForm<SignUpForm>();
-  const isLogged = useSelector((state: RootState) => state.user.logged);
+  const isAuthenticated = useSelector((state: RootState) => state.user.isAuthenticated);
   const password = watch("password", "");
 
   const onSubmit: SubmitHandler<SignUpForm> = async (formData: SignUpForm) => {
     const res = await signup(formData);
-    console.log(res);
 
     if (!res.ok) {
       setError("password", {type: "server", message: res.message});
@@ -30,7 +29,7 @@ function Signup() {
     dispatch(actions.login({email, firstName, lastName, role}));
   };
 
-  if (isLogged) return <Redirect to="/dashboard" />;
+  if (isAuthenticated) return <Redirect to="/dashboard" />;
   return (
     <div className={classes.paper}>
       <Avatar className={classes.avatar}>

@@ -1,25 +1,19 @@
 import {AUTH_USER, UNAUTH_USER} from "../actions/types";
-
-type userData = {
-  email: string;
-  firstName: string
-  lastName: string;
-  role: "user" | "admin";
-}
+import {UserData} from "../../types";
 
 const initState = {
-  logged: false,
+  isAuthenticated: false,
   role: null,
   email: null,
   firstName: null,
   lastName: null
 }
 
-const userReducer = (state = initState, action: {type: string, payload: userData}) => {
+const userReducer = (state = initState, action: {type: string, payload: UserData}) => {
   switch (action.type) {
     case AUTH_USER:
       return {
-        logged: true,
+        isAuthenticated: true,
         role: action.payload.role,
         email: action.payload.email,
         firstName: action.payload.firstName,

@@ -1,13 +1,7 @@
 import {AUTH_USER, UNAUTH_USER} from "./types";
+import {UserData} from "../../types";
 
-type User = {
-  role: "user" | "admin",
-  email: string,
-  firstName: string,
-  lastName: string,
-}
-
-const login = (userData: User) => {
+const login = (userData: UserData) => {
   return {type: AUTH_USER, payload: userData}
 };
 

@@ -1,11 +1,23 @@
+export enum UserRole {
+  USER = "user",
+  ADMIN = "admin"
+};
+
+export type UserData = {
+  email: string;
+  firstName: string
+  lastName: string;
+  role: UserRole;
+}
+
 export interface RootState {
   user: {
-    logged: boolean;
-    role: "user" | "admin";
+    isAuthenticated: boolean;
+    role: UserRole;
     email: string;
     firstName: string;
     lastName: string;
-  }
+  };
 }
 
 export type SignUpForm = {
