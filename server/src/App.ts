@@ -1,5 +1,6 @@
 import express from "express";
 import session from "express-session";
+import cors from "cors";
 import httpStatus from "http-status";
 import config from "./config";
 import {registerRouter, loginRouter, logoutRouter} from "./routes";
@@ -35,7 +36,7 @@ export default class App {
   private initRoutes(): void {
     // TEMP to log Session data
     this.app.use("/", (req, res, next) => {
-      logger.info("[Cookie] " + JSON.stringify(req.session.cookie));
+      logger.info("[Cookie] " + (req.headers.cookie || "not set"));
       logger.info("[Session] " + req.sessionID);
       next();
     });
@@ -51,6 +52,7 @@ export default class App {
   }
 
   private configApp(): void {
+    this.app.use(cors(config.cors));
     this.app.use(express.json());
     const store = config.env === "production" ? mongoStore : undefined;
     this.app.use(session({...config.session, store}));

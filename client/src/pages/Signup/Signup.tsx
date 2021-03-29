@@ -2,28 +2,35 @@ import React from "react";
 import useStyles from "./Signup.style";
 import {Avatar, TextField, Button, Checkbox, Typography, Grid, Link, FormHelperText} from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import {Link as RouterLink} from "react-router-dom";
+import {Link as RouterLink, Redirect} from "react-router-dom";
+import {useDispatch} from "react-redux";
 import {useForm, SubmitHandler} from "react-hook-form";
-
-type FormValues = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  passwordRepeat: string;
-  acceptTerms: boolean;
-};
+import {SignUpForm} from "../../types";
+import {signup} from "../../services";
+import {actions} from "../../store/actions";
+import {useAuth} from "../../hooks";
 
 function Signup() {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
-  const {register, errors, handleSubmit, watch} = useForm<FormValues>();
+  const {register, errors, setError, handleSubmit, watch} = useForm<SignUpForm>();
   const password = watch("password", "");
 
-  const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
-    alert(JSON.stringify(data));
+  const onSubmit: SubmitHandler<SignUpForm> = async (formData: SignUpForm) => {
+    const res = await signup(formData);
+
+    if (!res.ok) {
+      setError("password", {type: "server", message: res.message});
+      return;
+    }
+
+    const {email, firstName, lastName, role = "user"} = res;
+    dispatch(actions.login({email, firstName, lastName, role}));
   };
 
+  const {isAuthenticated} = useAuth();
+  if (isAuthenticated) return <Redirect to="/dashboard" />;
   return (
     <div className={classes.paper}>
       <Avatar className={classes.avatar}>
@@ -71,7 +78,7 @@ function Signup() {
               type="password"
               id="passwordRepeat"
               inputRef={register({
-                validate: value => value === password || "The passwords do not match"
+                validate: (value: string) => value === password || "The passwords do not match"
               })}
             />
           </Grid>
