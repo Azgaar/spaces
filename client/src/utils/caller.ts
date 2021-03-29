@@ -1,6 +1,6 @@
 const BASE_URL: string = process.env.REACT_APP_SERVER_URI || "http://localhost:3001";
 
-export const post = async (endpoint: string, body: string, withCredentials: boolean) => {
+export const post = async (endpoint: string, withCredentials: boolean, body?: string) => {
   try {
     const res = await fetch(BASE_URL + endpoint, {
       method: "POST",
