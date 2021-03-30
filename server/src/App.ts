@@ -55,7 +55,7 @@ export default class App {
   private configApp(): void {
     this.app.use(cors(config.cors));
     this.app.use(express.json());
-    const store = config.env === "production" ? mongoStore : undefined;
+    const store = config.env === "test" ? undefined : mongoStore;
     this.app.use(session({...config.session, store}));
   }
 }
