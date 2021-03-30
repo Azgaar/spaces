@@ -8,7 +8,7 @@ export const checkinController = catchAsync(async (req, res, next) => {
   const userId = getUserId(req);
 
   if (!userId) {
-    return res.status(httpStatus.NO_CONTENT).send();
+    return res.status(httpStatus.NO_CONTENT).end();
   }
 
   const user = await User.findById(userId);
