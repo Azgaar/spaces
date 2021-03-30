@@ -1,6 +1,7 @@
 import axios from "axios";
 import {SignUpForm, SignInForm} from "../types";
 
+export const fetchData = () => post("/checkin", true);
 export const signup = (credentials: SignUpForm) => post("/register", true, credentials);
 export const signin = (credentials: SignInForm) => post("/login", true, credentials);
 export const logout = () => post("/logout", true);

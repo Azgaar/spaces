@@ -1,1 +1,1 @@
-export {signup, signin, logout} from "./auth";
+export {fetchData, signup, signin, logout} from "./auth";

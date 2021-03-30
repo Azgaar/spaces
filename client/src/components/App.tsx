@@ -3,6 +3,7 @@ import {Switch, Route, Redirect} from "react-router-dom";
 import Layout from "./Layout/Layout";
 import Spinner from "./Spinner/Spinner";
 import PrivateRoute from "../pages/PrivateRoute";
+
 const Signin = React.lazy(() => import("../pages/Signin/Signin"));
 const Signup = React.lazy(() => import("../pages/Signup/Signup"));
 const Logout = React.lazy(() => import("../pages/Logout/Logout"));
