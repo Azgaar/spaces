@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from "react";
 import Spinner from "../Spinner/Spinner";
-import {fetchData} from "../../services";
+import {fetchUserData} from "../../services";
 import {useDispatch} from "react-redux";
 import {actions} from "../../store/actions";
 
@@ -9,7 +9,7 @@ const AuthProvider: FC = ({children}) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchData().then(res => {
+    fetchUserData().then(res => {
         if (!res.email) return; // user is not logged in
         const {email, firstName, lastName, role} = res;
         dispatch(actions.login({email, firstName, lastName, role}));
