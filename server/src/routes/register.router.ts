@@ -5,6 +5,6 @@ import {registerController} from "../controllers";
 
 const router = Router();
 
-router.post('/', notLogged, validate(registerSchema), registerController);
+router.post("/", notLogged, validate(registerSchema), registerController);
 
 export {router as registerRouter};

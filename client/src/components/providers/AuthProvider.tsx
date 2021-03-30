@@ -11,7 +11,7 @@ const AuthProvider: FC = ({children}) => {
   useEffect(() => {
     fetchData().then(res => {
         console.log(res);
-        if (!res.ok) return;
+        if (!res.email) return;
         const {email, firstName, lastName, role = "user"} = res;
         dispatch(actions.login({email, firstName, lastName, role}));
       })
