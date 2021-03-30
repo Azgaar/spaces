@@ -1,14 +1,6 @@
-import {Schema, model, Document} from "mongoose";
+import {Schema, model} from "mongoose";
 import {hash} from "bcryptjs";
-
-export interface UserDocument extends Document {
-  email: string;
-  firstName: string;
-  lastName: string;
-  password: string;
-  admin: boolean;
-  verifiedAt: Date;
-}
+import {UserDocument} from "../types";
 
 const userSchema = new Schema(
   {
@@ -16,7 +8,7 @@ const userSchema = new Schema(
     firstName: String,
     lastName: String,
     password: String,
-    admin: Boolean,
+    role: String,
     verifiedAt: Date
   },
   {

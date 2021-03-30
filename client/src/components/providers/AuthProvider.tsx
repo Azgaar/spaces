@@ -10,9 +10,8 @@ const AuthProvider: FC = ({children}) => {
 
   useEffect(() => {
     fetchData().then(res => {
-        console.log(res);
-        if (!res.email) return;
-        const {email, firstName, lastName, role = "user"} = res;
+        if (!res.email) return; // user is not logged in
+        const {email, firstName, lastName, role} = res;
         dispatch(actions.login({email, firstName, lastName, role}));
       })
       .finally(() => setLoading(false));

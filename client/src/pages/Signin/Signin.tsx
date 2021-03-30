@@ -24,7 +24,7 @@ function Signin() {
       return;
     }
 
-    const {email, firstName, lastName, role = "user"} = res;
+    const {email, firstName, lastName, role} = res;
     dispatch(actions.login({email, firstName, lastName, role}));
   };
 
