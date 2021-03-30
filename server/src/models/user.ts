@@ -4,11 +4,27 @@ import {UserDocument, UserData} from "../types";
 
 const userSchema = new Schema(
   {
-    email: String,
-    firstName: String,
-    lastName: String,
-    password: String,
-    role: String
+    email: {
+      type: String,
+      required: true
+    },
+    firstName: {
+      type: String,
+      required: true
+    },
+    lastName: {
+      type: String,
+      required: true
+    },
+    password: {
+      type: String,
+      required: true
+    },
+    role: {
+      type: String,
+      enum: ["user", "admin"],
+      required: true
+    }
   },
   {
     timestamps: true,
