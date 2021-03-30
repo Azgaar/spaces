@@ -8,7 +8,7 @@ declare module "express-session" {
   }
 }
 
-enum UserRole {
+export enum UserRole {
   USER = "user",
   ADMIN = "admin"
 }
