@@ -15,7 +15,7 @@ const AuthProvider: FC = ({children}) => {
         dispatch(actions.login({email, firstName, lastName, role}));
       })
       .finally(() => setLoading(false));
-  }, [dispatch]);
+  }, []);
 
   return isLoading ? <Spinner /> : <>{children}</>;
 };
