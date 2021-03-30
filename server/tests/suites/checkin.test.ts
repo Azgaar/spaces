@@ -32,7 +32,7 @@ describe("Check-in service", () => {
     expect(response.body.role).toBe(UserRole.USER);
   });
 
-  it("does not returns data if user is not logged in", async () => {
+  it("does not return data if no session", async () => {
     const response = await request(app).post("/checkin")
       .expect(httpStatus.NO_CONTENT);
     expect(response.body).toEqual({});
