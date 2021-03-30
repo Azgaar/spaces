@@ -17,6 +17,5 @@ export const checkinController = catchAsync(async (req, res, next) => {
     return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "User is not found. Removing the session"));
   }
 
-  const {email, firstName, lastName} = user;
-  res.status(httpStatus.OK).send({email, firstName, lastName});
+  res.status(httpStatus.OK).send(user.toJSON());
 });

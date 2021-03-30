@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
 import config from "../config";
-import {UserDocument} from "../models/user";
+import {UserDocument} from "../types";
 import logger from "../utils/logger";
 
 export const isLoggedIn = (req: Request) => !!req.session!.userId;

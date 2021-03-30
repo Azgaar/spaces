@@ -11,7 +11,14 @@ declare module "express-session" {
 enum UserRole {
   USER = "user",
   ADMIN = "admin"
-};
+}
+
+export type UserData = {
+  email: string;
+  firstName: string;
+  lastName: string;
+  role: UserRole;
+}
 
 export interface UserDocument extends Document {
   email: string;
@@ -19,5 +26,4 @@ export interface UserDocument extends Document {
   lastName: string;
   password: string;
   role: UserRole;
-  verifiedAt: Date;
 }
