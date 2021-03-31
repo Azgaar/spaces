@@ -2,7 +2,7 @@ import React from "react";
 import useStyles from "./Signup.style";
 import useFormStyles from "../../styles/form";
 import {Avatar, TextField, Button, Checkbox, Typography, Grid, Link, FormHelperText} from "@material-ui/core";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import ListAltOutlinedIcon from "@material-ui/icons/ListAltOutlined";
 import {Link as RouterLink, Redirect} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {useForm, SubmitHandler} from "react-hook-form";
@@ -36,39 +36,26 @@ function Signup() {
   return (
     <div className={formStyles.paper}>
       <Avatar className={formStyles.avatar}>
-        <LockOutlinedIcon />
+        <ListAltOutlinedIcon />
       </Avatar>
-      <Typography component="h1" variant="h5">
-        Sign up
-      </Typography>
+      <Typography component="h1" variant="h5">Sign up</Typography>
       <form className={formStyles.form} noValidate onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
-            <TextField autoComplete="fname" name="firstName" variant="outlined" required fullWidth id="firstName" label="First Name" autoFocus inputRef={register({required: true, maxLength: 80})} />
+            <TextField autoComplete="fname" name="firstName" variant="outlined" required fullWidth id="firstName" label="First Name" autoFocus
+              inputRef={register({required: true, maxLength: 80})} />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField variant="outlined" required fullWidth id="lastName" label="Last Name" name="lastName" autoComplete="lname" inputRef={register({required: true, maxLength: 100})} />
+            <TextField variant="outlined" required fullWidth id="lastName" label="Last Name" name="lastName" autoComplete="lname"
+              inputRef={register({required: true, maxLength: 100})} />
           </Grid>
           <Grid item xs={12}>
-            <TextField variant="outlined" required fullWidth id="email" label="Email Address" name="email" autoComplete="email" inputRef={register({required: true, pattern: /^\S+@\S+$/i})} />
+            <TextField variant="outlined" required fullWidth id="email" label="Email Address" name="email" autoComplete="email"
+              inputRef={register({required: true, pattern: /^\S+@\S+$/i})} />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField
-              variant="outlined"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              inputRef={register({
-                required: true,
-                minLength: {
-                  value: 8,
-                  message: "Password must have at least 8 characters"
-                }
-              })}
-            />
+            <TextField variant="outlined" required fullWidth name="password" label="Password" type="password" id="password"
+              inputRef={register({required: true, minLength: {value: 8, message: "Password must have at least 8 characters"}})}/>
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
@@ -89,19 +76,13 @@ function Signup() {
           <Grid item xs={12} className={styles.terms}>
             <Checkbox required name="acceptTerms" color="primary" inputRef={register({required: "Please read and accept terms"})} />
             {"I accept the "}
-            <Link component={RouterLink} to={"/terms"}>
-              terms of use
-            </Link>
+            <Link component={RouterLink} to={"/terms"}>terms of use</Link>
             {" and "}
-            <Link component={RouterLink} to={"/privacy"}>
-              privacy policy
-            </Link>
+            <Link component={RouterLink} to={"/privacy"}>privacy policy</Link>
             {errors.acceptTerms && <FormHelperText error>{errors.acceptTerms.message}</FormHelperText>}
           </Grid>
         </Grid>
-        <Button type="submit" fullWidth variant="contained" color="primary" className={formStyles.submit}>
-          Sign Up
-        </Button>
+        <Button type="submit" fullWidth variant="contained" color="primary" className={formStyles.buttons}>Sign Up</Button>
       </form>
     </div>
   );

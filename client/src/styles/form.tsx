@@ -6,19 +6,19 @@ const useFormStyles = makeStyles(theme => ({
     marginTop: theme.spacing(3)
   },
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(9),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    backgroundColor: "#ffffff30",
-    boxShadow: "0 0 10px 10px #ffffff30"
+    backgroundColor: "#d9d9d9ab",
+    boxShadow: "0 0 40px 50px #d9d9d9ab"
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.primary.main
   },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
+  buttons: {
+    margin: theme.spacing(2, 0, 2),
   }
 }));
 

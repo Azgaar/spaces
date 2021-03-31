@@ -1,23 +1,23 @@
 import React from "react";
-import useStyles from "./Profile.style";
 import useFormStyles from "../../styles/form";
 import {Avatar, TextField, Button, Typography, Grid, FormHelperText} from "@material-ui/core";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
-import {Redirect} from "react-router-dom";
+import {Link as RouterLink, Redirect} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {useForm, SubmitHandler} from "react-hook-form";
 import {ProfileForm} from "../../types";
 import {updateUserData} from "../../services";
 import {actions} from "../../store/actions";
-import {useAuth} from "../../hooks";
+import {useUserData} from "../../hooks";
 
 function Profile() {
-  const styles = useStyles();
   const formStyles = useFormStyles();
   const dispatch = useDispatch();
 
   const {register, errors, setError, handleSubmit, watch} = useForm<ProfileForm>();
   const passwordNew = watch("passwordNew", "");
+
+  const {email, firstName, lastName, isAuthenticated} = useUserData();
 
   const onSubmit: SubmitHandler<ProfileForm> = async (formData: ProfileForm) => {
     const res = await updateUserData(formData);
@@ -31,7 +31,6 @@ function Profile() {
     dispatch(actions.updateUserData({email, firstName, lastName}));
   };
 
-  const {isAuthenticated} = useAuth();
   if (!isAuthenticated) return <Redirect to="/signin" />;
   return (
     <div className={formStyles.paper}>
@@ -45,15 +44,15 @@ function Profile() {
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <TextField name="firstName" variant="outlined" required fullWidth id="firstName" label="First Name" autoFocus
-              defaultValue="test" inputRef={register({required: true, maxLength: 80})} />
+              defaultValue={firstName} inputRef={register({required: true, maxLength: 80})} />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField variant="outlined" required fullWidth id="lastName" label="Last Name" name="lastName"
-              defaultValue="test2" inputRef={register({required: true, maxLength: 100})} />
+              defaultValue={lastName} inputRef={register({required: true, maxLength: 100})} />
           </Grid>
           <Grid item xs={12}>
             <TextField variant="outlined" required fullWidth id="email" label="Email Address" name="email"
-              defaultValue="test@email.com" inputRef={register({required: true, pattern: /^\S+@\S+$/i})} />
+              defaultValue={email} inputRef={register({required: true, pattern: /^\S+@\S+$/i})} />
           </Grid>
           <Grid item xs={12}>
             <TextField variant="outlined" required fullWidth name="password" label="Current Password" type="password" id="password"
@@ -70,11 +69,11 @@ function Profile() {
           {(errors.password || errors.passwordRepeat) && <FormHelperText error>{errors.password?.message || errors.passwordRepeat?.message}</FormHelperText>}
         </Grid>
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
-            <Button type="submit" fullWidth variant="contained" color="primary" className={styles.button}>Save</Button>
+          <Grid item xs={12} sm={6} className={formStyles.buttons}>
+            <Button type="submit" fullWidth variant="contained" color="primary">Save</Button>
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <Button fullWidth variant="contained" color="primary" className={styles.button}>Cancel</Button>
+          <Grid item xs={12} sm={6} className={formStyles.buttons}>
+            <Button fullWidth variant="contained" color="primary" component={RouterLink} to="/dashboard">Cancel</Button>
           </Grid>
         </Grid>
       </form>
