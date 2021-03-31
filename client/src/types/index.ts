@@ -44,5 +44,5 @@ export type ProfileEditForm = {
 export type PassportChangeForm = {
   password: string;
   passwordNew: string;
-  passwordRepeat: string;
+  passwordNewRepeat: string;
 }

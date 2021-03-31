@@ -6,7 +6,7 @@ import {User} from "../models/user";
 import catchAsync from "../utils/catchAsync";
 import ApiError from "../utils/apiError";
 
-export const updateUserController = catchAsync(async (req, res, next) => {
+export const changePasswordController = catchAsync(async (req, res, next) => {
   const userId = getUserId(req);
   const user = await User.findById(userId);
   if (!user) {
@@ -14,12 +14,12 @@ export const updateUserController = catchAsync(async (req, res, next) => {
     return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "User is not found. Removing the session"));
   }
 
-  const {email, firstName, lastName, password} = req.body;
+  const {password, passwordNew} = req.body;
 
   const correctPassword = await compare(password, user.password);
   if (!correctPassword) return next(new ApiError(httpStatus.UNAUTHORIZED, `Password ${password} is not correct for user ${user.email}`));
 
-  const userData = {email, firstName, lastName, password, role: user.role};
+  const userData = {email: user.email, firstName: user.firstName, lastName: user.lastName, password: passwordNew, role: user.role};
   await updateUser(user, userData);
   res.status(httpStatus.NO_CONTENT).end();
 });

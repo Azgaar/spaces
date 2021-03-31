@@ -53,9 +53,9 @@ function PasswordChange() {
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <TextField variant="outlined" required fullWidth name="passwordRepeat" label="Repeat Password" type="password" id="passwordRepeat"
+            <TextField variant="outlined" required fullWidth name="passwordNewRepeat" label="Repeat Password" type="password" id="passwordNewRepeat"
               inputRef={register({validate: (value: string) => value === passwordNew || "The passwords do not match"})}
-              error={Boolean(errors.passwordRepeat)} helperText={errors.passwordRepeat?.message} />
+              error={Boolean(errors.passwordNewRepeat)} helperText={errors.passwordNewRepeat?.message} />
           </Grid>
         </Grid>
 
