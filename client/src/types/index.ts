@@ -34,10 +34,14 @@ export type SignInForm = {
   password: string;
 };
 
-export type ProfileForm = {
+export type ProfileEditForm = {
   firstName: string;
   lastName: string;
   email: string;
+  password: string;
+}
+
+export type PassportChangeForm = {
   password: string;
   passwordNew: string;
   passwordRepeat: string;

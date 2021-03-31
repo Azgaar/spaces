@@ -37,8 +37,11 @@ function Signin() {
       </Avatar>
       <Typography component="h1" variant="h5">Sign in</Typography>
       <form className={formStyles.form} noValidate onSubmit={handleSubmit(onSubmit)}>
-        <TextField variant="outlined" margin="normal" required fullWidth id="email" label="Email Address" name="email" autoComplete="email" autoFocus inputRef={register({required: true, pattern: {value: /^\S+@\S+$/i, message: "Enter valid email"}})} />
-        <TextField variant="outlined" margin="normal" required fullWidth name="password" label="Password" type="password" id="password" autoComplete="current-password" inputRef={register({required: true, minLength: {value: 8, message: "Password must have at least 8 characters"}})} />
+        <TextField variant="outlined" margin="normal" required fullWidth id="email" label="Email Address" name="email" autoComplete="email" autoFocus
+          inputRef={register({required: true, pattern: {value: /^\S+@\S+$/i, message: "Enter valid email"}})} />
+        <TextField variant="outlined" margin="normal" required fullWidth name="password" label="Password" type="password" id="password" autoComplete="current-password"
+          inputRef={register({required: true, minLength: {value: 8, message: "Password must have at least 8 characters"}})} />
+
         <Grid container>
           <Grid item xs>
             <Link href="#" variant="body2" component={RouterLink} to="/forgotPassword">Forgot password?</Link>

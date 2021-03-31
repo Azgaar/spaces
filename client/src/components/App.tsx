@@ -8,6 +8,8 @@ const Signin = React.lazy(() => import("../pages/Signin/Signin"));
 const Signup = React.lazy(() => import("../pages/Signup/Signup"));
 const Logout = React.lazy(() => import("../pages/Logout/Logout"));
 const Profile = React.lazy(() => import("../pages/Profile/Profile"));
+const ProfileEdit = React.lazy(() => import("../pages/Profile/ProfileEdit/ProfileEdit"));
+const PasswordChange = React.lazy(() => import("../pages/Profile/PasswordChange/PasswordChange"));
 const Dashboard = React.lazy(() => import("../pages/Dashboard/Dashboard"));
 
 function App() {
@@ -22,6 +24,8 @@ function App() {
           <Route path="/signup" render={() => <Signup />} />
           <Route path="/logout" render={() => <Logout />} />
           <Route path="/profile" render={() => <Profile />} />
+          <Route path="/editProfile" render={() => <ProfileEdit />} />
+          <Route path="/changePassword" render={() => <PasswordChange />} />
           <PrivateRoute path="/dashboard" component={Dashboard} />
         </Switch>
       </Suspense>

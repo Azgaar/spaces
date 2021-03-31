@@ -1,13 +1,15 @@
 import axios from "axios";
-import {SignUpForm, SignInForm, ProfileForm} from "../types";
+import {SignUpForm, SignInForm, ProfileEditForm, PassportChangeForm} from "../types";
 
-export const signup = (credentials: SignUpForm) => post("/register", credentials);
-export const signin = (credentials: SignInForm) => post("/login", credentials);
+export const signup = (data: SignUpForm) => post("/register", data);
+export const signin = (data: SignInForm) => post("/login", data);
 export const logout = () => post("/logout");
 export const fetchUserData = () => post("/checkin");
-export const updateUserData = (credentials: ProfileForm) => post("/updateUser", credentials);
+export const updateUserData = (data: ProfileEditForm) => post("/updateUser", data);
+export const changePassword = (data: PassportChangeForm) => post("/changePassword", data);
 
-async function post(endpoint: string, data?: SignUpForm | SignInForm | ProfileForm) {
+type Data = SignUpForm | SignInForm | ProfileEditForm | PassportChangeForm;
+async function post(endpoint: string, data?: Data) {
   try {
     const res = await axios.post(endpoint, data, {withCredentials: true});
     return {...res.data, ok: true};
