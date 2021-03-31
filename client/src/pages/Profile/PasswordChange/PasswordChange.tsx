@@ -3,16 +3,13 @@ import useFormStyles from "../../../styles/form";
 import {Avatar, TextField, Button, Typography, Grid} from "@material-ui/core";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import {Link as RouterLink, Redirect} from "react-router-dom";
-import {useDispatch} from "react-redux";
 import {useForm, SubmitHandler} from "react-hook-form";
 import {PassportChangeForm} from "../../../types";
 import {changePassword} from "../../../services";
-import {actions} from "../../../store/actions";
 import {useUserData} from "../../../hooks";
 
 function PasswordChange() {
   const formStyles = useFormStyles();
-  const dispatch = useDispatch();
   const user = useUserData();
 
   const {register, errors, setError, handleSubmit, watch} = useForm<PassportChangeForm>();
@@ -26,8 +23,6 @@ function PasswordChange() {
       return;
     }
 
-    const {email, firstName, lastName} = res;
-    dispatch(actions.updateUserData({email, firstName, lastName}));
     // TODO: tost to show success
   };
 
