@@ -7,7 +7,7 @@ export type UserData = {
   email: string;
   firstName: string
   lastName: string;
-  role: UserRole;
+  role?: UserRole;
 }
 
 export interface RootState {
@@ -33,3 +33,12 @@ export type SignInForm = {
   email: string;
   password: string;
 };
+
+export type ProfileForm = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  passwordNew: string;
+  passwordRepeat: string;
+}

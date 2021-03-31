@@ -7,7 +7,7 @@ import {store} from "./store";
 import AuthProvider from "./components/providers/AuthProvider";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import {ThemeProvider} from "@material-ui/core/styles";
-import theme from "./theme";
+import theme from "./styles/theme";
 import App from "./components/App";
 import {BASE_URL, REQUEST_TIMEOUT} from "./config";
 // import reportWebVitals from "./reportWebVitals";
