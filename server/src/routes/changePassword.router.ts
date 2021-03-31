@@ -7,4 +7,4 @@ const router = Router();
 
 router.post("/", isLogged, validate(passwordChangeSchema), changePasswordController);
 
-export {router as updateUserRouter};
+export {router as changePasswordRouter};
