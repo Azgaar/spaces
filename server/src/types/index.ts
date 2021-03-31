@@ -17,6 +17,7 @@ export type UserData = {
   email: string;
   firstName: string;
   lastName: string;
+  password: string;
   role: UserRole;
 }
 
