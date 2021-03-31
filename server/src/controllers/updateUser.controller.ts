@@ -21,5 +21,5 @@ export const updateUserController = catchAsync(async (req, res, next) => {
 
   const userData = {email, firstName, lastName, password, role: user.role};
   await updateUser(user, userData);
-  res.status(httpStatus.NO_CONTENT).send({email, firstName, lastName});
+  res.status(httpStatus.OK).send({email, firstName, lastName});
 });

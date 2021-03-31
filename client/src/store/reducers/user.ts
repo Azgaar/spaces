@@ -23,6 +23,7 @@ const userReducer = (state = initState, action: {type: string, payload: UserData
       return initState;
     case UPDATE_USER:
       return {
+        ...state,
         email: action.payload.email,
         firstName: action.payload.firstName,
         lastName: action.payload.lastName

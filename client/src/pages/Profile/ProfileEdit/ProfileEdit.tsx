@@ -26,6 +26,7 @@ function ProfileEdit() {
     }
 
     const {email, firstName, lastName} = res;
+    console.log(res);
     dispatch(actions.updateUserData({email, firstName, lastName}));
     // TODO: tost to show success
   };
