@@ -1,9 +1,11 @@
 import {Request, Response} from "express";
 import config from "../config";
-import {UserDocument} from "../models/user";
+import {UserDocument} from "../types";
 import logger from "../utils/logger";
 
 export const isLoggedIn = (req: Request) => !!req.session!.userId;
+
+export const getUserId = (req: Request) => req.session?.userId;
 
 export const logIn = (req: Request, userId: string) => {
   req.session!.userId = userId;
@@ -20,11 +22,6 @@ export const logOut = (req: Request, res: Response) =>
       resolve(true);
     });
   });
-
-export const markAsVerified = async (user: UserDocument) => {
-  user.verifiedAt = new Date();
-  await user.save();
-};
 
 export const resetPassword = async (user: UserDocument, password: string) => {
   user.password = password;

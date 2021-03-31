@@ -4,6 +4,6 @@ import {logoutController} from "../controllers";
 
 const router = Router();
 
-router.post('/', isLogged, logoutController);
+router.post("/", isLogged, logoutController);
 
 export {router as logoutRouter};

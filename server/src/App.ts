@@ -3,7 +3,7 @@ import session from "express-session";
 import cors from "cors";
 import httpStatus from "http-status";
 import config from "./config";
-import {registerRouter, loginRouter, logoutRouter} from "./routes";
+import {registerRouter, checkinRouter, loginRouter, logoutRouter} from "./routes";
 import {mongoConnecter, mongoStore} from "./connections";
 import {errorConverter, errorHandler} from "./middleware/errors";
 import logger from "./utils/logger";
@@ -42,6 +42,7 @@ export default class App {
     });
 
     this.app.use("/register", registerRouter);
+    this.app.use("/checkin", checkinRouter);
     this.app.use("/login", loginRouter);
     this.app.use("/logout", logoutRouter);
 
@@ -54,7 +55,7 @@ export default class App {
   private configApp(): void {
     this.app.use(cors(config.cors));
     this.app.use(express.json());
-    const store = config.env === "production" ? mongoStore : undefined;
+    const store = config.env === "test" ? undefined : mongoStore;
     this.app.use(session({...config.session, store}));
   }
 }

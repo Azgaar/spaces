@@ -1,23 +1,30 @@
-import {Schema, model, Document} from "mongoose";
+import {Schema, model} from "mongoose";
 import {hash} from "bcryptjs";
-
-export interface UserDocument extends Document {
-  email: string;
-  firstName: string;
-  lastName: string;
-  password: string;
-  admin: boolean;
-  verifiedAt: Date;
-}
+import {UserDocument, UserData} from "../types";
 
 const userSchema = new Schema(
   {
-    email: String,
-    firstName: String,
-    lastName: String,
-    password: String,
-    admin: Boolean,
-    verifiedAt: Date
+    email: {
+      type: String,
+      required: true
+    },
+    firstName: {
+      type: String,
+      required: true
+    },
+    lastName: {
+      type: String,
+      required: true
+    },
+    password: {
+      type: String,
+      required: true
+    },
+    role: {
+      type: String,
+      enum: ["user", "admin"],
+      required: true
+    }
   },
   {
     timestamps: true,
@@ -28,6 +35,13 @@ const userSchema = new Schema(
 userSchema.pre<UserDocument>("save", async function () {
   if (this.isModified("password")) {
     this.password = await hash(this.password, 12);
+  }
+});
+
+userSchema.set("toJSON", {
+  transform: (doc: UserDocument, ret: UserData) => {
+    const {email, firstName, lastName, role} = ret;
+    return {email, firstName, lastName, role};
   }
 });
 

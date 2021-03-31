@@ -4,6 +4,7 @@ import {BrowserRouter as Router} from "react-router-dom";
 import {Provider} from "react-redux";
 import axios from "axios";
 import {store} from "./store";
+import AuthProvider from "./components/providers/AuthProvider";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import {ThemeProvider} from "@material-ui/core/styles";
 import theme from "./theme";
@@ -14,12 +15,14 @@ import {BASE_URL, REQUEST_TIMEOUT} from "./config";
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Router>
-          <App />
-        </Router>
-      </ThemeProvider>
+      <AuthProvider>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Router>
+            <App />
+          </Router>
+        </ThemeProvider>
+      </AuthProvider>
     </Provider>
   </React.StrictMode>,
   document.querySelector("#root")
