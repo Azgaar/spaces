@@ -16,6 +16,9 @@ const useFormStyles = makeStyles(theme => ({
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.primary.main
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
   }
 }));
 

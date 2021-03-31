@@ -1,5 +1,6 @@
 import React from "react";
 import useStyles from "./Signup.style";
+import useFormStyles from "../../styles/form";
 import {Avatar, TextField, Button, Checkbox, Typography, Grid, Link, FormHelperText} from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import {Link as RouterLink, Redirect} from "react-router-dom";
@@ -11,7 +12,8 @@ import {actions} from "../../store/actions";
 import {useAuth} from "../../hooks";
 
 function Signup() {
-  const classes = useStyles();
+  const styles = useStyles();
+  const formStyles = useFormStyles();
   const dispatch = useDispatch();
 
   const {register, errors, setError, handleSubmit, watch} = useForm<SignUpForm>();
@@ -32,14 +34,14 @@ function Signup() {
   const {isAuthenticated} = useAuth();
   if (isAuthenticated) return <Redirect to="/dashboard" />;
   return (
-    <div className={classes.paper}>
-      <Avatar className={classes.avatar}>
+    <div className={formStyles.paper}>
+      <Avatar className={formStyles.avatar}>
         <LockOutlinedIcon />
       </Avatar>
       <Typography component="h1" variant="h5">
         Sign up
       </Typography>
-      <form className={classes.form} noValidate onSubmit={handleSubmit(onSubmit)}>
+      <form className={formStyles.form} noValidate onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <TextField autoComplete="fname" name="firstName" variant="outlined" required fullWidth id="firstName" label="First Name" autoFocus inputRef={register({required: true, maxLength: 80})} />
@@ -84,7 +86,7 @@ function Signup() {
           </Grid>
           {(errors.password || errors.passwordRepeat) && <FormHelperText error>{errors.password?.message || errors.passwordRepeat?.message}</FormHelperText>}
 
-          <Grid item xs={12} className={classes.terms}>
+          <Grid item xs={12} className={styles.terms}>
             <Checkbox required name="acceptTerms" color="primary" inputRef={register({required: "Please read and accept terms"})} />
             {"I accept the "}
             <Link component={RouterLink} to={"/terms"}>
@@ -97,7 +99,7 @@ function Signup() {
             {errors.acceptTerms && <FormHelperText error>{errors.acceptTerms.message}</FormHelperText>}
           </Grid>
         </Grid>
-        <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
+        <Button type="submit" fullWidth variant="contained" color="primary" className={formStyles.submit}>
           Sign Up
         </Button>
       </form>

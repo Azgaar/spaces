@@ -12,8 +12,8 @@ import {actions} from "../../store/actions";
 import {useAuth} from "../../hooks";
 
 function Profile() {
-  const classes = useStyles();
-  const formClasses = useFormStyles();
+  const styles = useStyles();
+  const formStyles = useFormStyles();
   const dispatch = useDispatch();
 
   const {register, errors, setError, handleSubmit, watch} = useForm<ProfileForm>();
@@ -34,14 +34,14 @@ function Profile() {
   const {isAuthenticated} = useAuth();
   if (!isAuthenticated) return <Redirect to="/signin" />;
   return (
-    <div className={formClasses.paper}>
-      <Avatar className={formClasses.avatar}>
+    <div className={formStyles.paper}>
+      <Avatar className={formStyles.avatar}>
         <AccountCircleOutlinedIcon />
       </Avatar>
       <Typography component="h1" variant="h5">
         Edit Profile
       </Typography>
-      <form className={formClasses.form} noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+      <form className={formStyles.form} noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <TextField name="firstName" variant="outlined" required fullWidth id="firstName" label="First Name" autoFocus
@@ -71,10 +71,10 @@ function Profile() {
         </Grid>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
-            <Button type="submit" fullWidth variant="contained" color="primary" className={classes.button}>Save</Button>
+            <Button type="submit" fullWidth variant="contained" color="primary" className={styles.button}>Save</Button>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Button fullWidth variant="contained" color="primary" className={classes.button}>Cancel</Button>
+            <Button fullWidth variant="contained" color="primary" className={styles.button}>Cancel</Button>
           </Grid>
         </Grid>
       </form>

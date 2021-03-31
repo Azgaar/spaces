@@ -1,5 +1,5 @@
 import React from "react";
-import useStyles from "./Signin.style";
+import useFormStyles from "../../styles/form";
 import {Avatar, TextField, Button, Typography, Grid, Link, FormHelperText} from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import {Link as RouterLink, Redirect} from "react-router-dom";
@@ -11,7 +11,7 @@ import {actions} from "../../store/actions";
 import {useAuth} from "../../hooks";
 
 function Signin() {
-  const classes = useStyles();
+  const formStyles = useFormStyles();
   const dispatch = useDispatch();
 
   const {register, errors, setError, handleSubmit} = useForm<SignInForm>();
@@ -31,14 +31,14 @@ function Signin() {
   const {isAuthenticated} = useAuth();
   if (isAuthenticated) return <Redirect to="/dashboard" />;
   return (
-    <div className={classes.paper}>
-      <Avatar className={classes.avatar}>
+    <div className={formStyles.paper}>
+      <Avatar className={formStyles.avatar}>
         <LockOutlinedIcon />
       </Avatar>
       <Typography component="h1" variant="h5">
         Sign in
       </Typography>
-      <form className={classes.form} noValidate onSubmit={handleSubmit(onSubmit)}>
+      <form className={formStyles.form} noValidate onSubmit={handleSubmit(onSubmit)}>
         <TextField variant="outlined" margin="normal" required fullWidth id="email" label="Email Address" name="email" autoComplete="email" autoFocus inputRef={register({required: true, pattern: {value: /^\S+@\S+$/i, message: "Enter valid email"}})} />
         <TextField variant="outlined" margin="normal" required fullWidth name="password" label="Password" type="password" id="password" autoComplete="current-password" inputRef={register({required: true, minLength: {value: 8, message: "Password must have at least 8 characters"}})} />
         <Grid container>
@@ -55,7 +55,7 @@ function Signin() {
         </Grid>
 
         {errors && <FormHelperText error>{errors.email?.message || errors.password?.message}</FormHelperText>}
-        <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
+        <Button type="submit" fullWidth variant="contained" color="primary" className={formStyles.submit}>
           Sign In
         </Button>
       </form>
