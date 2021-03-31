@@ -12,7 +12,6 @@ type Data = SignUpForm | SignInForm | ProfileEditForm | PassportChangeForm;
 async function post(endpoint: string, data?: Data) {
   try {
     const res = await axios.post(endpoint, data, {withCredentials: true});
-    console.log(res.data);
     return {...res.data, ok: true};
   } catch (error) {
     return error.response?.data || error;

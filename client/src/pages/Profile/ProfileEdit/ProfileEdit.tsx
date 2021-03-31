@@ -2,7 +2,7 @@ import React from "react";
 import useFormStyles from "../../../styles/form";
 import {Avatar, TextField, Button, Typography, Grid} from "@material-ui/core";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
-import {Link as RouterLink, Redirect} from "react-router-dom";
+import {Link as RouterLink, Redirect, useHistory} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {useForm, SubmitHandler} from "react-hook-form";
 import {ProfileEditForm} from "../../../types";
@@ -14,6 +14,7 @@ function ProfileEdit() {
   const formStyles = useFormStyles();
   const dispatch = useDispatch();
   const user = useUserData();
+  const history = useHistory();
 
   const {register, errors, setError, handleSubmit} = useForm<ProfileEditForm>();
 
@@ -26,8 +27,8 @@ function ProfileEdit() {
     }
 
     const {email, firstName, lastName} = res;
-    console.log(res);
     dispatch(actions.updateUserData({email, firstName, lastName}));
+    history.push("/profile");
     // TODO: tost to show success
   };
 

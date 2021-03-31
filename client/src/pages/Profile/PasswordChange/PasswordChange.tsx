@@ -2,7 +2,7 @@ import React from "react";
 import useFormStyles from "../../../styles/form";
 import {Avatar, TextField, Button, Typography, Grid} from "@material-ui/core";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
-import {Link as RouterLink, Redirect} from "react-router-dom";
+import {Link as RouterLink, Redirect, useHistory} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
 import {PassportChangeForm} from "../../../types";
 import {changePassword} from "../../../services";
@@ -11,6 +11,7 @@ import {useUserData} from "../../../hooks";
 function PasswordChange() {
   const formStyles = useFormStyles();
   const user = useUserData();
+  const history = useHistory();
 
   const {register, errors, setError, handleSubmit, watch} = useForm<PassportChangeForm>();
   const passwordNew = watch("password", "");
@@ -23,6 +24,7 @@ function PasswordChange() {
       return;
     }
 
+    history.push("/profile");
     // TODO: tost to show success
   };
 
