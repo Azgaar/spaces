@@ -14,7 +14,7 @@ function PasswordChange() {
   const history = useHistory();
 
   const {register, errors, setError, handleSubmit, watch} = useForm<PassportChangeForm>();
-  const passwordNew = watch("password", "");
+  const passwordNew = watch("passwordNew", "");
 
   const onSubmit: SubmitHandler<PassportChangeForm> = async (formData: PassportChangeForm) => {
     const res = await changePassword(formData);
@@ -40,7 +40,8 @@ function PasswordChange() {
         <Grid container spacing={2}>
           <Grid item xs={12} sm={12}>
             <TextField variant="outlined" required fullWidth name="password" label="Current Password" type="password" id="password"
-              inputRef={register({required: true, minLength: {value: 8, message: "Password must have at least 8 characters"}})} />
+              inputRef={register({required: true, minLength: {value: 8, message: "Password must have at least 8 characters"}})} 
+              error={Boolean(errors.password)} helperText={errors.password?.message} />
           </Grid>
 
           <Grid item xs={12} sm={6}>
