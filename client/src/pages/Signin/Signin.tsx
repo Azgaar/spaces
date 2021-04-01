@@ -2,18 +2,18 @@ import React from "react";
 import useFormStyles from "../../styles/form";
 import {Avatar, TextField, Button, Typography, Grid, Link, FormHelperText} from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import {Link as RouterLink, Redirect} from "react-router-dom";
+import {Link as RouterLink, useHistory} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
 import {useDispatch} from "react-redux";
 import {SignInForm} from "../../types";
 import {signin} from "../../services";
 import {actions} from "../../store/actions";
-import {useAuth} from "../../hooks";
 import {rules} from "../../validation";
 
 function Signin() {
   const formStyles = useFormStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const {register, errors, setError, handleSubmit} = useForm<SignInForm>();
 
@@ -27,10 +27,9 @@ function Signin() {
 
     const {email, firstName, lastName, role} = res;
     dispatch(actions.login({email, firstName, lastName, role}));
+    history.push("/dashboard");
   };
 
-  const {isAuthenticated} = useAuth();
-  if (isAuthenticated) return <Redirect to="/dashboard" />;
   return (
     <div className={formStyles.paper}>
       <Avatar className={formStyles.avatar}>

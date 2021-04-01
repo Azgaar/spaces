@@ -30,7 +30,7 @@ function ProfileEdit() {
     const {email, firstName, lastName} = res;
     dispatch(actions.updateUserData({email, firstName, lastName}));
     history.push("/profile");
-    // TODO: tost to show success
+    // TODO: toast to show success
   };
 
   return (

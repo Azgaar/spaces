@@ -3,19 +3,19 @@ import useStyles from "./Signup.style";
 import useFormStyles from "../../styles/form";
 import {Avatar, TextField, Button, Checkbox, Typography, Grid, Link, FormHelperText} from "@material-ui/core";
 import ListAltOutlinedIcon from "@material-ui/icons/ListAltOutlined";
-import {Link as RouterLink, Redirect} from "react-router-dom";
+import {Link as RouterLink, useHistory} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {useForm, SubmitHandler} from "react-hook-form";
 import {SignUpForm} from "../../types";
 import {signup} from "../../services";
 import {actions} from "../../store/actions";
-import {useAuth} from "../../hooks";
 import {rules} from "../../validation";
 
 function Signup() {
   const styles = useStyles();
   const formStyles = useFormStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const {register, errors, setError, handleSubmit, watch} = useForm<SignUpForm>();
   const password = watch("password", "");
@@ -30,10 +30,9 @@ function Signup() {
 
     const {email, firstName, lastName, role} = res;
     dispatch(actions.login({email, firstName, lastName, role}));
+    history.push("/dashboard");
   };
 
-  const {isAuthenticated} = useAuth();
-  if (isAuthenticated) return <Redirect to="/dashboard" />;
   return (
     <div className={formStyles.paper}>
       <Avatar className={formStyles.avatar}>
