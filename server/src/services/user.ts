@@ -9,20 +9,9 @@ export const createUser = async (userData: UserData) => {
   return user;
 };
 
-export const updateUser = async (user: UserDocument, userData: UserData) => {
-  console.log(user);
-  user.email = userData.email;
-  user.firstName = userData.firstName;
-  user.lastName = userData.lastName;
-  user.password = userData.password;
-  user.role = userData.role;
-  console.log(user);
+export const updateUser = async (user: UserDocument, userData: Partial<UserData>) => {
+  Object.assign(user, userData);
   const updatedUser: UserDocument = await user.save();
   logger.info(`[User] User ${updatedUser.id} is updated`);
   return updatedUser;
-};
-
-export const resetPassword = async (user: UserDocument, password: string) => {
-  user.password = password;
-  await user.save();
 };

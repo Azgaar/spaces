@@ -19,7 +19,6 @@ export const changePasswordController = catchAsync(async (req, res, next) => {
   const correctPassword = await compare(password, user.password);
   if (!correctPassword) return next(new ApiError(httpStatus.UNAUTHORIZED, `Password ${password} is not correct for user ${user.email}`));
 
-  const userData = {email: user.email, firstName: user.firstName, lastName: user.lastName, password: passwordNew, role: user.role};
-  await updateUser(user, userData);
+  await updateUser(user, {password: passwordNew});
   res.status(httpStatus.NO_CONTENT).end();
 });

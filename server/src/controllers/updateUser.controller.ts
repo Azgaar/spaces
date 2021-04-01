@@ -19,7 +19,6 @@ export const updateUserController = catchAsync(async (req, res, next) => {
   const correctPassword = await compare(password, user.password);
   if (!correctPassword) return next(new ApiError(httpStatus.UNAUTHORIZED, `Password ${password} is not correct for user ${email}`));
 
-  const userData = {email, firstName, lastName, password, role: user.role};
-  await updateUser(user, userData);
+  await updateUser(user, {email, firstName, lastName});
   res.status(httpStatus.OK).send({email, firstName, lastName});
 });
