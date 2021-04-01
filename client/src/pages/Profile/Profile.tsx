@@ -2,7 +2,7 @@ import React from "react";
 import useFormStyles from "../../styles/form";
 import {Avatar, TextField, Button, Typography, Grid} from "@material-ui/core";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
-import {Link as RouterLink, Redirect} from "react-router-dom";
+import {Link as RouterLink} from "react-router-dom";
 import {useUserData} from "../../hooks";
 
 function Profile() {
@@ -10,7 +10,6 @@ function Profile() {
   const user = useUserData();
   const readOnly = {readOnly: true};
 
-  if (!user.isAuthenticated) return <Redirect to="/signin" />;
   return (
     <div className={formStyles.paper}>
       <Avatar className={formStyles.avatar}>

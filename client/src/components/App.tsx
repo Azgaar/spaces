@@ -17,16 +17,15 @@ function App() {
     <Layout>
       <Suspense fallback={<Spinner />}>
         <Switch>
-          <Route exact path="/">
-            <Redirect to="/dashboard" />
-          </Route>
+          <Route exact path="/"><Redirect to="/dashboard" /></Route>
           <Route path="/signin" render={() => <Signin />} />
           <Route path="/signup" render={() => <Signup />} />
-          <Route path="/logout" render={() => <Logout />} />
-          <Route path="/profile" render={() => <Profile />} />
-          <Route path="/editProfile" render={() => <ProfileEdit />} />
-          <Route path="/changePassword" render={() => <PasswordChange />} />
+          <PrivateRoute path="/logout" component={Logout} />
+          <PrivateRoute path="/profile" component={Profile} />
+          <PrivateRoute path="/editProfile" component={ProfileEdit} />
+          <PrivateRoute path="/changePassword" component={PasswordChange} />
           <PrivateRoute path="/dashboard" component={Dashboard} />
+          <Route path="/*"><Redirect to="/dashboard" /></Route>
         </Switch>
       </Suspense>
     </Layout>
