@@ -9,4 +9,4 @@ export const SMTP_OPTIONS = {
 export const MAIL_FROM: string = "support.spaces@netlify.com";
 export const FORGOT_PASSWORD_BYTES: number = 16;
 export const FORGOT_PASSWORD_SUBJECT: string = "SPACES: temporary password";
-export const FORGOT_PASSWORD_BODY: string = `Your temporate password is below. If you did not request password change, please contact ${MAIL_FROM}. \r\nPassword: `;
+export const FORGOT_PASSWORD_BODY: string = `Your temporary password is below. If you did not request password change, please contact ${MAIL_FROM}. \r\nPassword: `;
