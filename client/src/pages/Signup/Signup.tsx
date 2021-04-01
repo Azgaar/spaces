@@ -10,21 +10,23 @@ import {SignUpForm} from "../../types";
 import {signup} from "../../services";
 import {actions} from "../../store/actions";
 import {rules} from "../../validation";
+import {MessageType, useMessage} from "../../components/providers/MessageProvider";
 
 function Signup() {
   const styles = useStyles();
   const formStyles = useFormStyles();
   const dispatch = useDispatch();
+  const {pushMessage} = useMessage();
   const history = useHistory();
 
-  const {register, errors, setError, handleSubmit, watch} = useForm<SignUpForm>();
+  const {register, errors, handleSubmit, watch} = useForm<SignUpForm>();
   const password = watch("password", "");
 
   const onSubmit: SubmitHandler<SignUpForm> = async (formData: SignUpForm) => {
     const res = await signup(formData);
 
     if (!res.ok) {
-      setError("password", {type: "server", message: res.message});
+      pushMessage({title: res.message, type: MessageType.ERROR});
       return;
     }
 

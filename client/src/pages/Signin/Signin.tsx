@@ -9,19 +9,21 @@ import {SignInForm} from "../../types";
 import {signin} from "../../services";
 import {actions} from "../../store/actions";
 import {rules} from "../../validation";
+import {MessageType, useMessage} from "../../components/providers/MessageProvider";
 
 function Signin() {
   const formStyles = useFormStyles();
   const dispatch = useDispatch();
+  const {pushMessage} = useMessage();
   const history = useHistory();
 
-  const {register, errors, setError, handleSubmit} = useForm<SignInForm>();
+  const {register, errors, handleSubmit} = useForm<SignInForm>();
 
   const onSubmit: SubmitHandler<SignInForm> = async (formData: SignInForm) => {
     const res = await signin(formData);
 
     if (!res.ok) {
-      setError("password", {type: "server", message: res.message});
+      pushMessage({title: res.message, type: MessageType.ERROR});
       return;
     }
 
