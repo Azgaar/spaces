@@ -35,7 +35,10 @@ function ForgotPassword() {
       <Typography component="h1" variant="h5">Forgot Password</Typography>
       <form className={formStyles.form} noValidate onSubmit={handleSubmit(onSubmit)}>
         <Typography component="h2" variant="subtitle2" align="justify">
-          {"Lost your password? Please enter your email address. A temporary password will be sent to your mailbox."}
+          {`Lost your password?
+          Please enter your email address.
+          A temporary password will be sent to your mailbox.
+          Please use it to log in and then change the password to a secure one`}
         </Typography>
 
         <TextField variant="outlined" margin="normal" required fullWidth id="email" label="Email Address" name="email"
