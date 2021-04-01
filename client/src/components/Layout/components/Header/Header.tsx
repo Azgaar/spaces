@@ -2,7 +2,7 @@ import React from "react";
 import useStyles from "./Header.style";
 import {AppBar, Toolbar, Button, Typography} from "@material-ui/core";
 import {Link as RouterLink} from "react-router-dom";
-import {useAuth} from "../../../../hooks";
+import {useUserData} from "../../../../hooks";
 
 const logoPath = process.env.PUBLIC_URL + "/logo.svg";
 
@@ -24,7 +24,7 @@ const Unauthorized = () => {
 
 function Header() {
   const classes = useStyles();
-  const {isAuthenticated} = useAuth();
+  const user = useUserData();
 
   return (
     <AppBar position="static" className={classes.header}>
@@ -34,7 +34,7 @@ function Header() {
           SPɅCES
         </Typography>
         <div className={classes.buttons}>
-          {isAuthenticated ? <Authorized /> : <Unauthorized />}
+          {user.isAuthenticated ? <Authorized /> : <Unauthorized />}
         </div>
       </Toolbar>
     </AppBar>
