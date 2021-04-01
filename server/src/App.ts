@@ -3,7 +3,7 @@ import session from "express-session";
 import cors from "cors";
 import httpStatus from "http-status";
 import config from "./config";
-import {registerRouter, loginRouter, logoutRouter, checkinRouter, updateUserRouter, changePasswordRouter} from "./routes";
+import * as Routes from "./routes";
 import {mongoConnecter, mongoStore} from "./connections";
 import {errorConverter, errorHandler} from "./middleware/errors";
 import logger from "./utils/logger";
@@ -41,12 +41,13 @@ export default class App {
       next();
     });
 
-    this.app.use("/register", registerRouter);
-    this.app.use("/login", loginRouter);
-    this.app.use("/logout", logoutRouter);
-    this.app.use("/checkin", checkinRouter);
-    this.app.use("/updateUser", updateUserRouter);
-    this.app.use("/changePassword", changePasswordRouter);
+    this.app.use("/register", Routes.register);
+    this.app.use("/login", Routes.login);
+    this.app.use("/logout", Routes.logout);
+    this.app.use("/checkin", Routes.checkin);
+    this.app.use("/updateUser", Routes.updateUser);
+    this.app.use("/changePassword", Routes.changePassword);
+    this.app.use("/forgotPassword", Routes.forgotPassword);
 
     this.app.use("/*", (req, res, next) => next(new ApiError(httpStatus.NOT_FOUND, "Not found")));
 
