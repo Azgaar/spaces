@@ -7,24 +7,26 @@ import {useForm, SubmitHandler} from "react-hook-form";
 import {PassportChangeForm} from "../../../types";
 import {changePassword} from "../../../services";
 import {rules} from "../../../validation";
+import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
 
 function PasswordChange() {
   const formStyles = useFormStyles();
+  const {pushMessage} = useMessage();
   const history = useHistory();
 
-  const {register, errors, setError, handleSubmit, watch} = useForm<PassportChangeForm>();
+  const {register, errors, handleSubmit, watch} = useForm<PassportChangeForm>();
   const passwordNew = watch("passwordNew", "");
 
   const onSubmit: SubmitHandler<PassportChangeForm> = async (formData: PassportChangeForm) => {
     const res = await changePassword(formData);
 
     if (!res.ok) {
-      setError("password", {type: "server", message: res.message});
+      pushMessage({title: res.message, type: MessageType.ERROR});
       return;
     }
 
+    pushMessage({title: "Password is changed", type: MessageType.SUCCESS});
     history.push("/profile");
-    // TODO: toast to show success
   };
 
   return (
