@@ -9,6 +9,7 @@ import {ProfileEditForm} from "../../../types";
 import {updateUserData} from "../../../services";
 import {actions} from "../../../store/actions";
 import {useUserData} from "../../../hooks";
+import {rules} from "../../../validation";
 
 function ProfileEdit() {
   const formStyles = useFormStyles();
@@ -44,24 +45,22 @@ function ProfileEdit() {
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <TextField name="firstName" variant="outlined" required fullWidth id="firstName" label="First Name" autoFocus
-              defaultValue={user.firstName} inputRef={register({required: true, maxLength: 80})}
+              defaultValue={user.firstName} inputRef={register(rules.firstName)}
               error={Boolean(errors.firstName)} />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField variant="outlined" required fullWidth id="lastName" label="Last Name" name="lastName"
-              defaultValue={user.lastName} inputRef={register({required: true, maxLength: 100})}
+              defaultValue={user.lastName} inputRef={register(rules.lastName)}
               error={Boolean(errors.lastName)} />
           </Grid>
           <Grid item xs={12}>
             <TextField variant="outlined" required fullWidth id="email" label="Email Address" name="email"
-              defaultValue={user.email} inputRef={register({required: true, pattern: /^\S+@\S+$/i})}
-              error={Boolean(errors.email)} />
+              defaultValue={user.email} inputRef={register(rules.email)} error={Boolean(errors.email)} />
           </Grid>
 
           <Grid item xs={12}>
             <TextField variant="outlined" required fullWidth name="password" label="Password" type="password" id="password"
-              inputRef={register({required: true, minLength: {value: 8, message: "Password must have at least 8 characters"}})}
-              error={Boolean(errors.password)} helperText={errors.password?.message} />
+              inputRef={register(rules.password)} error={Boolean(errors.password)} helperText={errors.password?.message} />
           </Grid>
         </Grid>
 

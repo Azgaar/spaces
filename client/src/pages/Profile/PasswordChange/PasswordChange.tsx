@@ -7,6 +7,7 @@ import {useForm, SubmitHandler} from "react-hook-form";
 import {PassportChangeForm} from "../../../types";
 import {changePassword} from "../../../services";
 import {useUserData} from "../../../hooks";
+import {rules} from "../../../validation";
 
 function PasswordChange() {
   const formStyles = useFormStyles();
@@ -40,19 +41,17 @@ function PasswordChange() {
         <Grid container spacing={2}>
           <Grid item xs={12} sm={12}>
             <TextField variant="outlined" required fullWidth name="password" label="Current Password" type="password" id="password"
-              inputRef={register({required: true, minLength: {value: 8, message: "Password must have at least 8 characters"}})} 
-              error={Boolean(errors.password)} helperText={errors.password?.message} />
+              inputRef={register(rules.password)} error={Boolean(errors.password)} helperText={errors.password?.message} />
           </Grid>
 
           <Grid item xs={12} sm={6}>
             <TextField variant="outlined" required fullWidth name="passwordNew" label="Password" type="password" id="passwordNew"
-              inputRef={register({required: true, minLength: {value: 8, message: "Password must have at least 8 characters"}})} 
-              error={Boolean(errors.passwordNew)} helperText={errors.passwordNew?.message} />
+              inputRef={register(rules.password)} error={Boolean(errors.passwordNew)} helperText={errors.passwordNew?.message} />
           </Grid>
 
           <Grid item xs={12} sm={6}>
             <TextField variant="outlined" required fullWidth name="passwordNewRepeat" label="Repeat Password" type="password" id="passwordNewRepeat"
-              inputRef={register({validate: (value: string) => value === passwordNew || "The passwords do not match"})}
+              inputRef={register({validate: (value: string) => value === passwordNew || rules.repeat})}
               error={Boolean(errors.passwordNewRepeat)} helperText={errors.passwordNewRepeat?.message} />
           </Grid>
         </Grid>

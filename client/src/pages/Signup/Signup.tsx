@@ -10,6 +10,7 @@ import {SignUpForm} from "../../types";
 import {signup} from "../../services";
 import {actions} from "../../store/actions";
 import {useAuth} from "../../hooks";
+import {rules} from "../../validation";
 
 function Signup() {
   const styles = useStyles();
@@ -43,38 +44,29 @@ function Signup() {
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <TextField autoComplete="fname" name="firstName" variant="outlined" required fullWidth id="firstName" label="First Name" autoFocus
-              inputRef={register({required: true, maxLength: 80})} />
+              inputRef={register(rules.firstName)} />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField variant="outlined" required fullWidth id="lastName" label="Last Name" name="lastName" autoComplete="lname"
-              inputRef={register({required: true, maxLength: 100})} />
+              inputRef={register(rules.lastName)} />
           </Grid>
           <Grid item xs={12}>
             <TextField variant="outlined" required fullWidth id="email" label="Email Address" name="email" autoComplete="email"
-              inputRef={register({required: true, pattern: /^\S+@\S+$/i})} />
+              inputRef={register(rules.email)} />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField variant="outlined" required fullWidth name="password" label="Password" type="password" id="password"
-              inputRef={register({required: true, minLength: {value: 8, message: "Password must have at least 8 characters"}})}/>
+              inputRef={register(rules.password)}/>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField
-              variant="outlined"
-              required
-              fullWidth
-              name="passwordRepeat"
-              label="Repeat Password"
-              type="password"
-              id="passwordRepeat"
-              inputRef={register({
-                validate: (value: string) => value === password || "The passwords do not match"
-              })}
+            <TextField variant="outlined" required fullWidth name="passwordRepeat" label="Repeat Password" type="password" id="passwordRepeat"
+              inputRef={register({validate: (value: string) => value === password || rules.repeat})}
             />
           </Grid>
           {(errors.password || errors.passwordRepeat) && <FormHelperText error>{errors.password?.message || errors.passwordRepeat?.message}</FormHelperText>}
 
           <Grid item xs={12} className={styles.terms}>
-            <Checkbox required name="acceptTerms" color="primary" inputRef={register({required: "Please read and accept terms"})} />
+            <Checkbox required name="acceptTerms" color="primary" inputRef={register(rules.terms)} />
             {"I accept the "}
             <Link component={RouterLink} to={"/terms"}>terms of use</Link>
             {" and "}
