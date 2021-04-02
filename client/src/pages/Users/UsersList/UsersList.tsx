@@ -29,8 +29,8 @@ const UsersList = () => {
 
   return (
     <Container className={classes.container}>
-      <DataGrid rows={users} columns={columns} pageSize={20}
-        getRowId={(row) => row.email} autoHeight autoPageSize checkboxSelection loading={isLoading} />
+      <DataGrid rows={users} columns={columns} pageSize={6} rowsPerPageOptions={[6, 12, 24, 48]}
+        getRowId={(row) => row.email} autoHeight checkboxSelection loading={isLoading} />
     </Container>
   );
 };

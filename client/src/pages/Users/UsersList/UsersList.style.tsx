@@ -4,10 +4,11 @@ const useStyles = makeStyles(theme => ({
   container: {
     width: "100%",
     marginTop: theme.spacing(3),
-    backgroundColor: "#d9d9d940",
-    boxShadow: "0 0 40px 50px #d9d9d940",
+    backgroundColor: "#d9d9d980",
+    boxShadow: "0 0 40px 50px #d9d9d980",
     "& div.MuiDataGrid-root": {
-      border: "1px solid #aaaaaa"
+      border: "1px solid #aaaaaa",
+      color: "#000000fa"
     },
     "& div.MuiDataGrid-cell": {
       borderBottom: "1px solid #aaaaaa"
