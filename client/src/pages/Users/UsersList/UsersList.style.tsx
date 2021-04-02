@@ -23,10 +23,6 @@ const useStyles = makeStyles(theme => ({
     "& div.MuiDataGrid-colCellTitle": {
       fontWeight: 700
     }
-  },
-  nameCell: {
-    alignItems: "center",
-    display: "flex"
   }
 }));
 
