@@ -14,6 +14,6 @@ export const loginController = catchAsync(async (req, res, next) => {
   const correctPassword = await compare(password, user.password);
   if (!correctPassword) return next(new ApiError(httpStatus.UNAUTHORIZED, `Password ${password} is not correct for user ${email}`));
 
-  logIn(req, user.id);
+  logIn(req, user.id, user.role);
   res.status(httpStatus.OK).send(user.toJSON());
 });

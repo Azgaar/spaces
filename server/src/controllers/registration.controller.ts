@@ -14,7 +14,7 @@ export const registerController = catchAsync(async (req, res, next) => {
 
   const userData = {email, firstName, lastName, password, role: UserRole.USER};
   const user = await createUser(userData);
-  logIn(req, user.id);
+  logIn(req, user.id, user.role);
 
   res.status(httpStatus.CREATED).send({email, firstName, lastName});
 });

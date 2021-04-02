@@ -2,7 +2,8 @@ import React, {useEffect, useState} from "react";
 import useStyles from "./UsersList.style";
 import {Container} from "@material-ui/core";
 import {DataGrid, GridColDef} from "@material-ui/data-grid";
-//import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
+import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
+import axios from "axios";
 
 const columns: GridColDef[] = [
   {field: "role", headerName: "Role", width: 90},
@@ -11,53 +12,18 @@ const columns: GridColDef[] = [
   {field: "email", headerName: "Email", width: 200},
 ];
 
-type UserData = {
-  email: string,
-  firstName: string,
-  lastName: string,
-  role: string
-}
-
 const UsersList = () => {
   const classes = useStyles();
+  const {pushMessage} = useMessage();
   const [isLoading, setLoading] = useState(true);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    setLoading(false);
-  });
-
-  const users: Array<UserData> = [
-    {
-      email: "test@user1.com",
-      firstName: "Test1",
-      lastName: "User1",
-      role: "user"
-    },
-    {
-      email: "test@user2.com",
-      firstName: "Test2",
-      lastName: "User2",
-      role: "user"
-    },
-    {
-      email: "test@user3.com",
-      firstName: "Test3",
-      lastName: "User3",
-      role: "user"
-    },
-    {
-      email: "test@user4.com",
-      firstName: "Test4",
-      lastName: "User4",
-      role: "user"
-    },
-    {
-      email: "test@user5.com",
-      firstName: "Test5",
-      lastName: "User5",
-      role: "user"
-    }
-  ];
+    axios.post("/getUsers", {}, {withCredentials: true})
+      .then(res => setUsers(() => res.data))
+      .catch(err => pushMessage({title: err.message, type: MessageType.ERROR}))
+      .then(() => setLoading(false));
+  }, []);
 
   return (
     <Container className={classes.container}>
