@@ -41,7 +41,7 @@ function Header() {
           SPɅCES
         </Typography>
         <div className={classes.buttons}>
-          <Button color="inherit" component={RouterLink} to="/dashboard">Dashboard</Button>
+          {isAuthenticated && <Button color="inherit" component={RouterLink} to="/dashboard">Dashboard</Button>}
           {isAdmin && <Admin />}
           {isAuthenticated ? <Authorized /> : <Unauthorized />}
         </div>

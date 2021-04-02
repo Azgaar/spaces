@@ -1,6 +1,6 @@
 import React from "react";
 import useFormStyles from "../../styles/form";
-import {Avatar, TextField, Button, Typography, Grid} from "@material-ui/core";
+import {Avatar, TextField, Button, Typography, Grid, Container} from "@material-ui/core";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import {Link as RouterLink} from "react-router-dom";
 import {useUser} from "../../hooks";
@@ -11,11 +11,11 @@ function Profile() {
   const readOnly = {readOnly: true};
 
   return (
-    <div className={formStyles.paper}>
+    <Container maxWidth="xs" className={formStyles.paper}>
       <Avatar className={formStyles.avatar}>
         <AccountCircleOutlinedIcon />
       </Avatar>
-      <Typography component="h1" variant="h5">Profile</Typography>
+      <Typography component="h1" variant="h5" className={formStyles.header}>Profile</Typography>
       <form className={formStyles.form}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
@@ -38,7 +38,7 @@ function Profile() {
           </Grid>
         </Grid>
       </form>
-    </div>
+    </Container>
   );
 }
 

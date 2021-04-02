@@ -1,44 +1,52 @@
 import React from "react";
-import useFormStyles from "../../styles/form";
-import {Avatar, TextField, Button, Typography, Grid} from "@material-ui/core";
-import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
-import {Link as RouterLink} from "react-router-dom";
-import {useUser} from "../../hooks";
+import {Container} from "@material-ui/core";
+import UsersToolbar from "./UsersToolbar/UsersToolbar";
+import UsersList from "./UsersList/UsersList";
 
 function User() {
-  const formStyles = useFormStyles();
-  const {user} = useUser();
-  const readOnly = {readOnly: true};
+  const users = [
+    {
+      id: "0",
+      email: "test@user1.com",
+      firstName: "Test1",
+      lastName: "User1",
+      role: "user"
+    },
+    {
+      id: "1",
+      email: "test@user2.com",
+      firstName: "Test2",
+      lastName: "User2",
+      role: "user"
+    },
+    {
+      id: "2",
+      email: "test@user3.com",
+      firstName: "Test3",
+      lastName: "User3",
+      role: "user"
+    },
+    {
+      id: "3",
+      email: "test@user4.com",
+      firstName: "Test4",
+      lastName: "User4",
+      role: "user"
+    },
+    {
+      id: "4",
+      email: "test@user5.com",
+      firstName: "Test5",
+      lastName: "User5",
+      role: "user"
+    }
+  ];
 
   return (
-    <div className={formStyles.paper}>
-      <Avatar className={formStyles.avatar}>
-        <AccountCircleOutlinedIcon />
-      </Avatar>
-      <Typography component="h1" variant="h5">Profile</Typography>
-      <form className={formStyles.form}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
-            <TextField variant="outlined" fullWidth label="First Name" defaultValue={user.firstName} InputProps={readOnly} />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField variant="outlined" fullWidth label="Last Name" defaultValue={user.lastName} InputProps={readOnly} />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField variant="outlined" fullWidth label="Email Address" defaultValue={user.email} InputProps={readOnly} />
-          </Grid>
-        </Grid>
-
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6} className={formStyles.buttons}>
-            <Button fullWidth variant="contained" color="primary" component={RouterLink} to="/editProfile">Edit Profile</Button>
-          </Grid>
-          <Grid item xs={12} sm={6} className={formStyles.buttons}>
-            <Button fullWidth variant="contained" color="primary" component={RouterLink} to="/changePassword">Change Password</Button>
-          </Grid>
-        </Grid>
-      </form>
-    </div>
+    <Container maxWidth="lg">
+      <UsersToolbar />
+      <UsersList users={users} />
+    </Container>
   );
 }
 

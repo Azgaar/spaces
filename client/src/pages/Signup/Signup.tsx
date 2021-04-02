@@ -1,6 +1,6 @@
 import React from "react";
 import useFormStyles from "../../styles/form";
-import {Avatar, TextField, Button, Checkbox, Typography, Grid, Link, FormHelperText, FormControlLabel} from "@material-ui/core";
+import {Avatar, TextField, Button, Checkbox, Typography, Grid, Link, FormHelperText, FormControlLabel, Container} from "@material-ui/core";
 import ListAltOutlinedIcon from "@material-ui/icons/ListAltOutlined";
 import {Link as RouterLink, useHistory} from "react-router-dom";
 import {useDispatch} from "react-redux";
@@ -44,11 +44,11 @@ function Signup() {
   };
 
   return (
-    <div className={formStyles.paper}>
+    <Container maxWidth="xs" className={formStyles.paper}>
       <Avatar className={formStyles.avatar}>
         <ListAltOutlinedIcon />
       </Avatar>
-      <Typography component="h1" variant="h5">Sign up</Typography>
+      <Typography component="h1" variant="h5" className={formStyles.header}>Sign up</Typography>
       <form className={formStyles.form} noValidate onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
@@ -82,7 +82,7 @@ function Signup() {
         </Grid>
         <Button type="submit" fullWidth variant="contained" color="primary" className={formStyles.buttons}>Sign Up</Button>
       </form>
-    </div>
+    </Container>
   );
 }
 
