@@ -12,6 +12,7 @@ const ProfileEdit = React.lazy(() => import("../pages/Profile/ProfileEdit/Profil
 const PasswordChange = React.lazy(() => import("../pages/Profile/PasswordChange/PasswordChange"));
 const Dashboard = React.lazy(() => import("../pages/Dashboard/Dashboard"));
 const ForgotPassword = React.lazy(() => import("../pages/ForgotPassword/ForgotPassword"));
+const Users = React.lazy(() => import("../pages/Users/Users"));
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <PrivateRoute path="/editProfile" component={ProfileEdit} />
           <PrivateRoute path="/changePassword" component={PasswordChange} />
           <PrivateRoute path="/dashboard" component={Dashboard} />
+          <PrivateRoute path="/users" adminOnly component={Users} />
           <Route path="/*"><Redirect to="/dashboard" /></Route>
         </Switch>
       </Suspense>

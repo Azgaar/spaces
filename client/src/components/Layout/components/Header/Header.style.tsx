@@ -10,6 +10,9 @@ const useStyles = makeStyles((theme) => ({
   },
   buttons: {
     marginLeft: "auto",
+    "& a": {
+      padding: theme.spacing(0, .8),
+    }
   },
 }));
 

@@ -8,7 +8,7 @@ const logoPath = process.env.PUBLIC_URL + "/logo.svg";
 
 const Admin = () => {
   return (<>
-    <Button color="inherit" component={RouterLink} to="/user">Users</Button>
+    <Button color="inherit" component={RouterLink} to="/users">Users</Button>
   </>
   );
 }
@@ -41,6 +41,7 @@ function Header() {
           SPɅCES
         </Typography>
         <div className={classes.buttons}>
+          <Button color="inherit" component={RouterLink} to="/dashboard">Dashboard</Button>
           {isAdmin && <Admin />}
           {isAuthenticated ? <Authorized /> : <Unauthorized />}
         </div>
