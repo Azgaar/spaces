@@ -2,9 +2,16 @@ import React from "react";
 import useStyles from "./Header.style";
 import {AppBar, Toolbar, Button, Typography} from "@material-ui/core";
 import {Link as RouterLink} from "react-router-dom";
-import {useUserData} from "../../../../hooks";
+import {useUserData, useAdmin} from "../../../../hooks";
 
 const logoPath = process.env.PUBLIC_URL + "/logo.svg";
+
+const Admin = () => {
+  return (<>
+    <Button color="inherit" component={RouterLink} to="/user">Users</Button>
+  </>
+  );
+}
 
 const Authorized = () => {
   return (<>
@@ -25,6 +32,7 @@ const Unauthorized = () => {
 function Header() {
   const classes = useStyles();
   const user = useUserData();
+  const isAdmin = useAdmin();
 
   return (
     <AppBar position="static" className={classes.header}>
@@ -34,6 +42,7 @@ function Header() {
           SPɅCES
         </Typography>
         <div className={classes.buttons}>
+          {isAdmin && <Admin />}
           {user.isAuthenticated ? <Authorized /> : <Unauthorized />}
         </div>
       </Toolbar>
