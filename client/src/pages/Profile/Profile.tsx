@@ -3,11 +3,11 @@ import useFormStyles from "../../styles/form";
 import {Avatar, TextField, Button, Typography, Grid} from "@material-ui/core";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import {Link as RouterLink} from "react-router-dom";
-import {useUserData} from "../../hooks";
+import {useUser} from "../../hooks";
 
 function Profile() {
   const formStyles = useFormStyles();
-  const user = useUserData();
+  const {user} = useUser();
   const readOnly = {readOnly: true};
 
   return (

@@ -8,14 +8,14 @@ import {useForm, SubmitHandler} from "react-hook-form";
 import {ProfileEditForm} from "../../../types";
 import {updateUserData} from "../../../services";
 import {actions} from "../../../store/actions";
-import {useUserData} from "../../../hooks";
+import {useUser} from "../../../hooks";
 import {rules} from "../../../validation";
 import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
 
 function ProfileEdit() {
   const formStyles = useFormStyles();
   const dispatch = useDispatch();
-  const user = useUserData();
+  const {user} = useUser();
   const {pushMessage} = useMessage();
   const history = useHistory();
 

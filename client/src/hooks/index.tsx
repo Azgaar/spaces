@@ -1,11 +1,15 @@
 import {useSelector} from "react-redux";
 import {RootState, UserRole} from "../types";
 
-export const useUserData = (): RootState["user"] => {
-  return useSelector((state: RootState) => state.user);
-};
+type UserDataHook = {
+  user: RootState["user"];
+  isAuthenticated: boolean;
+  isAdmin: boolean;
+}
 
-export const useAdmin = (): boolean => {
-  const isAdmin = useSelector((state: RootState) => state.user.role === UserRole.ADMIN);
-  return isAdmin;
+export const useUser = (): UserDataHook => {
+  const user = useSelector((state: RootState) => state.user);
+  const isAuthenticated = user.isAuthenticated;
+  const isAdmin = user.role === UserRole.ADMIN;
+  return {user, isAuthenticated, isAdmin};
 };
