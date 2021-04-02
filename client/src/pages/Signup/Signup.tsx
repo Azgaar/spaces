@@ -1,7 +1,6 @@
 import React from "react";
-import useStyles from "./Signup.style";
 import useFormStyles from "../../styles/form";
-import {Avatar, TextField, Button, Checkbox, Typography, Grid, Link, FormHelperText} from "@material-ui/core";
+import {Avatar, TextField, Button, Checkbox, Typography, Grid, Link, FormHelperText, FormControlLabel} from "@material-ui/core";
 import ListAltOutlinedIcon from "@material-ui/icons/ListAltOutlined";
 import {Link as RouterLink, useHistory} from "react-router-dom";
 import {useDispatch} from "react-redux";
@@ -12,8 +11,16 @@ import {actions} from "../../store/actions";
 import {rules} from "../../validation";
 import {MessageType, useMessage} from "../../components/providers/MessageProvider";
 
+const TermslLabel = () => {
+  return (
+    <>
+      {"I accept the "}
+      <Link component={RouterLink} to={"/terms"}>terms of use and privacy policy</Link>
+    </>
+  )
+}
+
 function Signup() {
-  const styles = useStyles();
   const formStyles = useFormStyles();
   const dispatch = useDispatch();
   const {pushMessage} = useMessage();
@@ -23,6 +30,7 @@ function Signup() {
   const password = watch("password", "");
 
   const onSubmit: SubmitHandler<SignUpForm> = async (formData: SignUpForm) => {
+    console.log(formData);
     const res = await signup(formData);
 
     if (!res.ok) {
@@ -45,33 +53,30 @@ function Signup() {
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <TextField autoComplete="fname" name="firstName" variant="outlined" required fullWidth id="firstName" label="First Name" autoFocus
-              inputRef={register(rules.firstName)} />
+              inputRef={register(rules.firstName)} error={Boolean(errors.firstName)} helperText={errors.firstName?.message} />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField variant="outlined" required fullWidth id="lastName" label="Last Name" name="lastName" autoComplete="lname"
-              inputRef={register(rules.lastName)} />
+              inputRef={register(rules.lastName)} error={Boolean(errors.lastName)} helperText={errors.lastName?.message} />
           </Grid>
           <Grid item xs={12}>
             <TextField variant="outlined" required fullWidth id="email" label="Email Address" name="email" autoComplete="email"
-              inputRef={register(rules.email)} />
+              inputRef={register(rules.email)} error={Boolean(errors.email)} helperText={errors.email?.message} />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField variant="outlined" required fullWidth name="password" label="Password" type="password" id="password"
-              inputRef={register(rules.password)}/>
+              inputRef={register(rules.password)} error={Boolean(errors.password)} helperText={errors.password?.message} />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField variant="outlined" required fullWidth name="passwordRepeat" label="Repeat Password" type="password" id="passwordRepeat"
               inputRef={register({validate: (value: string) => value === password || rules.repeat})}
-            />
+              error={Boolean(errors.passwordRepeat)} helperText={errors.passwordRepeat?.message} />
           </Grid>
-          {(errors.password || errors.passwordRepeat) && <FormHelperText error>{errors.password?.message || errors.passwordRepeat?.message}</FormHelperText>}
-
-          <Grid item xs={12} className={styles.terms}>
-            <Checkbox required name="acceptTerms" color="primary" inputRef={register(rules.terms)} />
-            {"I accept the "}
-            <Link component={RouterLink} to={"/terms"}>terms of use</Link>
-            {" and "}
-            <Link component={RouterLink} to={"/privacy"}>privacy policy</Link>
+          <Grid item xs={12}>
+            <FormControlLabel
+              control={<Checkbox name="acceptTerms" color="primary" inputRef={register(rules.terms)} />}
+              label={<TermslLabel />}
+            />
             {errors.acceptTerms && <FormHelperText error>{errors.acceptTerms.message}</FormHelperText>}
           </Grid>
         </Grid>
