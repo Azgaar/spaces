@@ -1,51 +1,19 @@
 import React from "react";
-import {Container} from "@material-ui/core";
-import UsersToolbar from "./UsersToolbar/UsersToolbar";
+import useStyles from "./Users.style";
+import {Avatar, Container, Typography} from "@material-ui/core";
+import PeopleAltOutlinedIcon from "@material-ui/icons/PeopleAltOutlined";
 import UsersList from "./UsersList/UsersList";
 
 function User() {
-  const users = [
-    {
-      id: "0",
-      email: "test@user1.com",
-      firstName: "Test1",
-      lastName: "User1",
-      role: "user"
-    },
-    {
-      id: "1",
-      email: "test@user2.com",
-      firstName: "Test2",
-      lastName: "User2",
-      role: "user"
-    },
-    {
-      id: "2",
-      email: "test@user3.com",
-      firstName: "Test3",
-      lastName: "User3",
-      role: "user"
-    },
-    {
-      id: "3",
-      email: "test@user4.com",
-      firstName: "Test4",
-      lastName: "User4",
-      role: "user"
-    },
-    {
-      id: "4",
-      email: "test@user5.com",
-      firstName: "Test5",
-      lastName: "User5",
-      role: "user"
-    }
-  ];
+  const classes = useStyles();
 
   return (
-    <Container maxWidth="lg">
-      <UsersToolbar />
-      <UsersList users={users} />
+    <Container maxWidth="lg" className={classes.container}>
+      <Avatar className={classes.avatar}>
+        <PeopleAltOutlinedIcon />
+      </Avatar>
+      <Typography component="h1" variant="h5" className={classes.header}>Manage Users</Typography>
+      <UsersList />
     </Container>
   );
 }
