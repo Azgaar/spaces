@@ -20,6 +20,8 @@ export type UserData = {
   lastName: string;
   password: string;
   role: UserRole;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface UserDocument extends Document {

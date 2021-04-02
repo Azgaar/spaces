@@ -9,7 +9,9 @@ const columns: GridColDef[] = [
   {field: "role", headerName: "Role", width: 90},
   {field: "firstName", headerName: "First name", width: 130},
   {field: "lastName", headerName: "Last name", width: 130},
-  {field: "email", headerName: "Email", width: 200},
+  {field: "email", headerName: "Email", width: 240},
+  {field: "created", headerName: "Created at", type: "dateTime", width: 240},
+  {field: "updated", headerName: "Updadated at", type: "dateTime", width: 240},
 ];
 
 const UsersList = () => {
