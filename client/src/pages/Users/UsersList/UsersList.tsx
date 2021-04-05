@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import useStyles from "./UsersList.style";
-import {Container} from "@material-ui/core";
-import {DataGrid, GridColDef} from "@material-ui/data-grid";
+import {Button, Container} from "@material-ui/core";
+import {DataGrid, GridColDef, GridRowId, GridSelectionModelChangeParams} from "@material-ui/data-grid";
 import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
 import axios from "axios";
 
@@ -11,7 +11,7 @@ const columns: GridColDef[] = [
   {field: "lastName", headerName: "Last name", width: 130},
   {field: "email", headerName: "Email", width: 240},
   {field: "created", headerName: "Created at", type: "dateTime", width: 240},
-  {field: "updated", headerName: "Updadated at", type: "dateTime", width: 240},
+  {field: "updated", headerName: "Updated at", type: "dateTime", width: 240},
 ];
 
 const UsersList = () => {
@@ -19,6 +19,7 @@ const UsersList = () => {
   const {pushMessage} = useMessage();
   const [isLoading, setLoading] = useState(true);
   const [users, setUsers] = useState([]);
+  const [selection, setSelection] = useState([] as GridRowId[]);
 
   useEffect(() => {
     axios.post("/getUsers", {}, {withCredentials: true})
@@ -27,10 +28,20 @@ const UsersList = () => {
       .then(() => setLoading(false));
   }, []);
 
+  const handleSelection = ((selectionModel: GridSelectionModelChangeParams) => {
+    const selection = selectionModel.selectionModel;
+    setSelection(() => selection);
+  });
+
+  const handleUsersDeletion = () => {
+    console.log(selection);
+  }
+
   return (
     <Container className={classes.container}>
       <DataGrid rows={users} columns={columns} pageSize={6} rowsPerPageOptions={[6, 12, 24, 48]}
-        getRowId={(row) => row.email} autoHeight checkboxSelection loading={isLoading} />
+        getRowId={(row) => row.email} autoHeight checkboxSelection loading={isLoading} onSelectionModelChange={handleSelection} />
+      {selection.length > 0 && <Button variant="contained" color="primary" className={classes.action} onClick={handleUsersDeletion}>Delete user{selection.length > 1 && "s"}</Button>}
     </Container>
   );
 };
