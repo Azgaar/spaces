@@ -3,7 +3,7 @@ import {Snackbar} from "@material-ui/core";
 import {Alert} from "@material-ui/lab";
 import {MESSAGE_HIDE_DURATION} from "../../config";
 
-export const MessageContext = React.createContext<MessageContextI>({} as MessageContextI);
+export const MessageContext = React.createContext<IMessageContext>({} as IMessageContext);
 
 const MessageProvider: FC = ({children}) => {
   const [{open, message}, setState] = useState<MessageState>({open: false, message: null});
@@ -25,9 +25,9 @@ const MessageProvider: FC = ({children}) => {
   );
 };
 
-const useMessage = (): MessageContextI => useContext(MessageContext);
+const useMessage = (): IMessageContext => useContext(MessageContext);
 
-interface MessageContextI {
+interface IMessageContext {
   pushMessage: (message: Message) => void;
 }
 
