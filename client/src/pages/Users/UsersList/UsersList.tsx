@@ -34,7 +34,11 @@ const UsersList = () => {
   });
 
   const handleUsersDeletion = () => {
-    console.log(selection);
+    setLoading(true);
+    axios.delete("/deleteUsers", {data: selection, withCredentials: true})
+      .then(res => setUsers(() => res.data))
+      .catch(err => pushMessage({title: err.message, type: MessageType.ERROR}))
+      .then(() => setLoading(false));
   }
 
   return (
