@@ -1,12 +1,17 @@
 import httpStatus from "http-status";
+import {User} from "../models/user";
+import {deleteUsers} from "../services/user";
+import ApiError from "../utils/apiError";
 import catchAsync from "../utils/catchAsync";
 
 export const deleteUsersController = catchAsync(async (req, res, next) => {
-  const selelection: Array<string> = req.body;
+  const emailsToDelete: Array<string> = req.body;
+  await deleteUsers(emailsToDelete);
 
-  // const user = await User.findOne({email});
-  // if (!user) return next(new ApiError(httpStatus.UNAUTHORIZED, `User ${email} is not registered`));
+  const remainingUsers = await User.find();
+  if (!remainingUsers) {
+    return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Users cannot be fetched"));
+  }
 
-  //res.status(httpStatus.OK).send(user.toJSON());
-  res.status(httpStatus.OK).send({message: "OK"});
+  res.status(httpStatus.OK).send(remainingUsers);
 });

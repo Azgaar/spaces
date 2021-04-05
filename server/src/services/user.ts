@@ -14,3 +14,9 @@ export const updateUser = async (user: UserDocument, userData: Partial<UserData>
   logger.info(`[User] User ${updatedUser.id} is updated`);
   return updatedUser;
 };
+
+export const deleteUsers = async (emails: Array<string>) => {
+  const deletedUsers = await User.deleteMany({email: {$in: emails}});
+  logger.info(`[User] User deletion request: ${emails.join(", ")}`);
+  return deletedUsers;
+};
