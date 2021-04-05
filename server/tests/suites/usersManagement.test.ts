@@ -52,7 +52,7 @@ describe("Users management service", () => {
     expect(response.body[0].lastName).toBe(admin.lastName);
   });
 
-  it("allows to delete signle user", async () => {
+  it("allows to delete single user", async () => {
     const response = await request(app).delete("/deleteUsers").set("Cookie", cookie.admin).send([user3.email]).expect(httpStatus.OK);
     expect(Array.isArray(response.body)).toBe(true);
     expect(response.body.length).toBe(3);
