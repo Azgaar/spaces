@@ -22,7 +22,7 @@ const validate = (schema: ObjectSchema) => (req: Request, res: Response, next: N
 
 const checkSession = (sessionExpected: boolean) => (req: Request, res: Response, next: NextFunction) => {
   if (sessionExpected !== isLoggedIn(req)) {
-    return next(new ApiError(httpStatus.BAD_REQUEST, "User is not logged in", DISCLOSE_MESSAGE));
+    return next(new ApiError(httpStatus.BAD_REQUEST, `User is ${sessionExpected && "not "}logged in`, DISCLOSE_MESSAGE));
   }
 
   return next();
