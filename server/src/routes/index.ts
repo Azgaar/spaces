@@ -6,3 +6,4 @@ export {router as updateUser} from "./updateUser.router";
 export {router as changePassword} from "./changePassword.router";
 export {router as forgotPassword} from "./forgotPassword.router";
 export {router as getUsers} from "./getUsers.router";
+export {router as deleteUsers} from "./deleteUsers.router";

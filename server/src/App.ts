@@ -48,6 +48,7 @@ export default class App {
     this.app.use("/changePassword", Routes.changePassword);
     this.app.use("/forgotPassword", Routes.forgotPassword);
     this.app.use("/getUsers", Routes.getUsers);
+    this.app.use("/deleteUsers", Routes.deleteUsers);
 
     this.app.use("/*", (req, res, next) => next(new ApiError(httpStatus.NOT_FOUND, "Not found")));
 

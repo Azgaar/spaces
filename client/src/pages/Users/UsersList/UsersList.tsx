@@ -36,7 +36,10 @@ const UsersList = () => {
   const handleUsersDeletion = () => {
     setLoading(true);
     axios.delete("/deleteUsers", {data: selection, withCredentials: true})
-      .then(res => setUsers(() => res.data))
+      .then(res => {
+        if (!res.data.users) throw Error("Cannot fetch users");
+        setUsers(() => res.data.users);
+      })
       .catch(err => pushMessage({title: err.message, type: MessageType.ERROR}))
       .then(() => setLoading(false));
   }

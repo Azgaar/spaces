@@ -6,3 +6,4 @@ export {updateUserController} from "./updateUser.controller";
 export {changePasswordController} from "./changePassword.controller";
 export {forgotPasswordController} from "./forgotPassword.controller";
 export {getUsersController} from "./getUsers.controller";
+export {deleteUsersController} from "./deleteUsers.controller";
