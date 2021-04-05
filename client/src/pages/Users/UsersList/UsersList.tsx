@@ -3,7 +3,7 @@ import useStyles from "./UsersList.style";
 import {Button, Container} from "@material-ui/core";
 import {DataGrid, GridColDef, GridRowId, GridSelectionModelChangeParams} from "@material-ui/data-grid";
 import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
-import axios, {AxiosResponse} from "axios";
+import axios, {AxiosPromise} from "axios";
 
 const columns: GridColDef[] = [
   {field: "role", headerName: "Role", width: 90},
@@ -21,16 +21,17 @@ const UsersList = () => {
   const [users, setUsers] = useState([]);
   const [selection, setSelection] = useState([] as GridRowId[]);
 
-  const updateUsers = (res: AxiosResponse) => {
-    if (!res.data) throw Error("Cannot fetch users");
-    setUsers(() => res.data);
+  const handleUsersRequest = (req: AxiosPromise) => {
+    req.then(res => {
+      if (!res.data) throw Error("Cannot fetch users");
+      setUsers(() => res.data)
+    })
+    .catch(err => pushMessage({title: err.message, type: MessageType.ERROR}))
+    .then(() => setLoading(false));
   };
 
   useEffect(() => {
-    axios.post("/getUsers", {}, {withCredentials: true})
-      .then(res => updateUsers(res))
-      .catch(err => pushMessage({title: err.message, type: MessageType.ERROR}))
-      .then(() => setLoading(false));
+    handleUsersRequest(axios.post("/getUsers", {}, {withCredentials: true}));
   }, []);
 
   const handleSelection = ((selectionModel: GridSelectionModelChangeParams) => {
@@ -40,10 +41,7 @@ const UsersList = () => {
 
   const handleUsersDeletion = () => {
     setLoading(true);
-    axios.delete("/deleteUsers", {data: selection, withCredentials: true})
-      .then(res => updateUsers(res))
-      .catch(err => pushMessage({title: err.message, type: MessageType.ERROR}))
-      .then(() => setLoading(false));
+    handleUsersRequest(axios.delete("/deleteUsers", {data: selection, withCredentials: true}));
   }
 
   return (
