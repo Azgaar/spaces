@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import useStyles from "./UsersList.style";
-import {Button, Container} from "@material-ui/core";
+import {Button, Container, Typography} from "@material-ui/core";
 import {DataGrid, GridColDef, GridRowId, GridSelectionModelChangeParams} from "@material-ui/data-grid";
 import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
 import axios, {AxiosPromise} from "axios";
@@ -42,13 +42,32 @@ const UsersList = () => {
   const handleUsersDeletion = () => {
     setLoading(true);
     handleUsersRequest(axios.delete("/deleteUsers", {data: selection, withCredentials: true}));
+    setSelection(() => [] as GridRowId[]);
+  }
+
+  const DeletionButton = () => {
+    const [confirmDelection, setConfirmDelection] = useState(false);
+
+    if (selection.length < 1) return null;
+    if (confirmDelection) return (
+      <Container className={classes.deletion}>
+        <Typography component="span" variant="body2" color="textPrimary">Are you sure you want to delete {selection.length > 1 ? "users" : "the user"}? The deletion cannot be rolled back</Typography>
+        <Button variant="contained" color="primary" onClick={() => setConfirmDelection(() => false)}>Cancel</Button>
+        <Button variant="contained" color="primary" onClick={handleUsersDeletion}>Delete</Button>
+      </Container>
+    );
+    return (
+      <Container className={classes.deletion}>
+        <Button variant="contained" color="primary" onClick={() => setConfirmDelection(() => true)}>Delete user{selection.length > 1 && "s"}</Button>
+      </Container>
+    );
   }
 
   return (
     <Container className={classes.container}>
       <DataGrid rows={users} columns={columns} pageSize={6} rowsPerPageOptions={[6, 12, 24, 48]}
         getRowId={(row) => row.email} autoHeight checkboxSelection loading={isLoading} onSelectionModelChange={handleSelection} />
-      {selection.length > 0 && <Button variant="contained" color="primary" className={classes.action} onClick={handleUsersDeletion}>Delete user{selection.length > 1 && "s"}</Button>}
+      <DeletionButton />
     </Container>
   );
 };
