@@ -1,6 +1,7 @@
 import {Router} from "express";
-import {isLogged, isAdmin} from "../middleware/validate";
+import {checkSession, checkRole} from "../middleware/validate";
 import {deleteUsersController} from "../controllers";
+import {UserRole} from "../types";
 
 export const router = Router();
-router.delete("/", isLogged, isAdmin, deleteUsersController);
+router.delete("/", checkSession(true), checkRole(UserRole.ADMIN), deleteUsersController);

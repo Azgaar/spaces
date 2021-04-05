@@ -4,8 +4,8 @@ import {UserRole} from "../types";
 import logger from "../utils/logger";
 
 export const getUserId = (req: Request) => req.session?.userId;
+export const getUserRole = (req: Request) => req.session?.userRole;
 export const isLoggedIn = (req: Request) => !!req.session!.userId;
-export const isLoggedAsAdmin = (req: Request) => req.session!.userRole === UserRole.ADMIN;
 
 export const logIn = (req: Request, userId: string, userRole: UserRole) => {
   req.session!.userId = userId;

@@ -1,6 +1,7 @@
 import {Router} from "express";
-import {isLogged, isAdmin} from "../middleware/validate";
+import {checkSession, checkRole} from "../middleware/validate";
 import {getUsersController} from "../controllers";
+import {UserRole} from "../types";
 
 export const router = Router();
-router.post("/", isLogged, isAdmin, getUsersController);
+router.post("/", checkSession(true), checkRole(UserRole.ADMIN), getUsersController);
