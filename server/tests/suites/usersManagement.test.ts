@@ -11,8 +11,10 @@ let cookie = {admin: "", user: ""};
 
 const admin: UserData = {email: "admin@reg.com", firstName: "John", lastName: "Doe", password: "Secret12", role: UserRole.ADMIN};
 const user: UserData = {email: "user@reg.com", firstName: "Jane", lastName: "Dowson", password: "Secret1234", role: UserRole.USER};
+const user2: UserData = {email: "user2@reg.com", firstName: "Frank", lastName: "Dawn", password: "Secret12345", role: UserRole.USER};
+const user3: UserData = {email: "user3@reg.com", firstName: "Peter", lastName: "Low", password: "Secret123456", role: UserRole.USER};
 
-describe("User management service", () => {
+describe("Users management service", () => {
   beforeAll(async () => {
     MongoMemory.connect();
 
@@ -27,33 +29,46 @@ describe("User management service", () => {
     }
 
     {
-      // create user and log in
+      // create non-admin user and log in
       await createUser(user);
       const response = await request(app).post("/login").send({email: user.email, password: user.password}).expect("Content-Type", /json/).expect(httpStatus.OK);
       const cookies = extractCookies(response.headers);
       const sessionCookie = cookies[config.session.name];
       expect(sessionCookie).toBeTruthy();
       cookie.user = `${config.session.name}=${sessionCookie?.value}`;
+
+      // create additional non-admin users
+      await createUser(user2);
+      await createUser(user3);
     }
   });
 
   it("returns all users for admin", async () => {
     const response = await request(app).post("/getUsers").set("Cookie", cookie.admin).expect(httpStatus.OK);
     expect(Array.isArray(response.body)).toBe(true);
-    expect(response.body.length).toBe(2);
+    expect(response.body.length).toBe(4);
     expect(response.body[0].email).toBe(admin.email);
     expect(response.body[0].firstName).toBe(admin.firstName);
     expect(response.body[0].lastName).toBe(admin.lastName);
-    expect(response.body[1].email).toBe(user.email);
-    expect(response.body[1].firstName).toBe(user.firstName);
-    expect(response.body[1].lastName).toBe(user.lastName);
   });
 
-  it("not allowed for unauthorized user", async () => {
+  it("allows to delete signle user", async () => {
+    const response = await request(app).delete("/deleteUsers").set("Cookie", cookie.admin).send([user3.email]).expect(httpStatus.OK);
+    expect(Array.isArray(response.body)).toBe(true);
+    expect(response.body.length).toBe(3);
+  });
+
+  it("allows to delete multiple users", async () => {
+    const response = await request(app).delete("/deleteUsers").set("Cookie", cookie.admin).send([admin.email, user2.email]).expect(httpStatus.OK);
+    expect(Array.isArray(response.body)).toBe(true);
+    expect(response.body.length).toBe(1);
+  });
+
+  it("is not allowed for unauthorized user", async () => {
     await request(app).post("/getUsers").expect(httpStatus.BAD_REQUEST);
   });
 
-  it("not allowed for non-admin", async () => {
+  it("is not allowed for non-admin", async () => {
     await request(app).post("/getUsers").set("Cookie", cookie.user).expect(httpStatus.INTERNAL_SERVER_ERROR);
   });
 
