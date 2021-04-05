@@ -30,7 +30,6 @@ function Signup() {
   const password = watch("password", "");
 
   const onSubmit: SubmitHandler<SignUpForm> = async (formData: SignUpForm) => {
-    console.log(formData);
     const res = await signup(formData);
 
     if (!res.ok) {

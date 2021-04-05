@@ -28,7 +28,6 @@ const notLogged = (req: Request, res: Response, next: NextFunction) => {
 };
 
 const isLogged = (req: Request, res: Response, next: NextFunction) => {
-  console.log(req.session.userId);
   if (!isLoggedIn(req)) {
     return next(new ApiError(httpStatus.BAD_REQUEST, "User is not logged in", DISCLOSE_MESSAGE));
   }
