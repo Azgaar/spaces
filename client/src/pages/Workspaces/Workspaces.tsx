@@ -37,12 +37,12 @@ function Workspaces() {
 
   const addLocation = () => {
     setLoading(true);
-    handleAdressesRequest(axios.post("/addLocation", {locationInput}, {withCredentials: true}));
+    handleAdressesRequest(axios.post("/addLocation", locationInput, {withCredentials: true}));
   }
 
   const renameLocation = () => {
     setLoading(true);
-    handleAdressesRequest(axios.post("/renameLocation", {locationId}, {withCredentials: true}));
+    handleAdressesRequest(axios.post("/renameLocation", locationId, {withCredentials: true}));
   }
 
   const deleteLocation = () => {

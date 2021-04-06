@@ -1,4 +1,4 @@
-import {ObjectSchema} from "@hapi/joi";
+import {ObjectSchema, StringSchema} from "@hapi/joi";
 import {isLoggedIn, getUserRole} from "../services/auth";
 import httpStatus from "http-status";
 import ApiError from "../utils/apiError";
@@ -9,7 +9,7 @@ import {UserRole} from "../types";
 const DISCLOSE_MESSAGE = true;
 const OBFUSCATE_MESSAGE = false;
 
-const validate = (schema: ObjectSchema) => (req: Request, res: Response, next: NextFunction) => {
+const validate = (schema: ObjectSchema | StringSchema) => (req: Request, res: Response, next: NextFunction) => {
   const {value, error} = schema.validate(req.body, config.joi.options);
 
   if (error) {
