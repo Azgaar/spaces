@@ -32,8 +32,8 @@ function Workspaces() {
 
   useEffect(() => {
     async function fetchLocations() {
-      const res = await handleRequest(axios.post("/getLocations", {}, {withCredentials: true}));
-      if (res && Array.isArray(res)) setLocationList(() => res);
+      const res: LocationOption[] = await handleRequest(axios.post("/getLocations", {}, {withCredentials: true}));
+      if (res) setLocationList(() => res);
     };
     fetchLocations();
   }, []);
@@ -53,16 +53,16 @@ function Workspaces() {
   }
 
   const renameLocation = async () => {
-    const res = await handleRequest(axios.post("/renameLocation", {id: location.id, description: locationInput}, {withCredentials: true}));
-    if (!res || !Array.isArray(res)) return;
+    const res: LocationOption[] = await handleRequest(axios.post("/renameLocation", {id: location.id, description: locationInput}, {withCredentials: true}));
+    if (!res) return;
     pushMessage({title: `Location "${locationInput}" is renamed`, type: MessageType.SUCCESS});
     setLocationList(() => res);
     setLocation(() => ({id: location.id, description: locationInput}));
   }
 
   const deleteLocation = async () => {
-    const res = await handleRequest(axios.delete("/deleteLocation", {data: {id: location.id}, withCredentials: true}));
-    if (!res || !Array.isArray(res)) return;
+    const res: LocationOption[] = await handleRequest(axios.delete("/deleteLocation", {data: {id: location.id}, withCredentials: true}));
+    if (!res) return;
     pushMessage({title: `Location "${location.description}" is deleted`, type: MessageType.SUCCESS});
     setLocationList(() => res);
     setLocation(() => locationDefault);
