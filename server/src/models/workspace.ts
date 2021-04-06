@@ -1,39 +1,17 @@
 import {Schema, model} from "mongoose";
 import {WorkspaceDocument} from "../types";
 
+const required = true;
 const workspaceSchema = new Schema(
   {
-    description: {
-      type: String,
-      required: true
-    },
-    location: {
-      type: Schema.Types.ObjectId,
-      ref: "Location",
-      required: true
-    },
-    status: {
-      type: String,
-      enum: ["available", "unavailable"],
-      required: true
-    },
-    type: {
-      type: String,
-      required: true
-    },
-    size: {
-      type: Number,
-      required: true
-    },
-    equipment: {
-      type: String,
-      required: true
-    }
+    description: {type: String, required},
+    location: {type: Schema.Types.ObjectId, ref: "Location", required},
+    status: {type: String, enum: ["available", "unavailable"], required},
+    type: {type: String, required},
+    size: {type: Number, required},
+    equipment: {type: String}
   },
-  {
-    timestamps: true,
-    versionKey: false
-  }
+  {timestamps: true, versionKey: false}
 );
 
 workspaceSchema.set("toJSON", {

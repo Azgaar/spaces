@@ -2,16 +2,8 @@ import {Schema, model} from "mongoose";
 import {LocationDocument} from "../types";
 
 const locationSchema = new Schema(
-  {
-    description: {
-      type: String,
-      required: true
-    }
-  },
-  {
-    timestamps: true,
-    versionKey: false
-  }
+  {description: {type: String, required: true}},
+  {timestamps: true, versionKey: false}
 );
 
 locationSchema.set("toJSON", {
