@@ -12,42 +12,45 @@ function Workspaces() {
   const classes = useStyles();
   const {pushMessage} = useMessage();
   const [isLoading, setLoading] = useState(true);
-  const [locations, setLocations] = useState<LocationOption[]>([]);
+  const locationDefault: LocationOption = {id: null, description: ""};
+  const [location, setLocation] = useState<LocationOption>(locationDefault);
+  const [locationList, setLocationList] = useState<LocationOption[]>([]);
   const [locationInput, setLocationInput] = useState<string>("");
-  const [locationId, setLocationId] = useState<string | null>(null);
 
-  const handleAdressesRequest = (req: AxiosPromise) => {
+  const handleLocationRequest = (req: AxiosPromise) => {
     req.then(res => {
       if (!res.data) throw Error("Cannot fetch locations");
-      setLocations(() => res.data);
+      setLocationList(() => res.data);
     })
     .catch(err => pushMessage({title: err.message, type: MessageType.ERROR}))
     .then(() => setLoading(false));
   }
 
   useEffect(() => {
-    handleAdressesRequest(axios.post("/getLocations", {}, {withCredentials: true}));
+    handleLocationRequest(axios.post("/getLocations", {}, {withCredentials: true}));
   }, []);
 
   const handleLocationChange = (value: LocationOption | string | null) => {
-    if (!value) setLocationId(() => null);
+    if (!value) setLocation(() => locationDefault);
     else if (typeof value === "string") return;
-    else setLocationId(() => value.id);
+    else setLocation(() => value);
   }
 
   const addLocation = () => {
     setLoading(true);
-    handleAdressesRequest(axios.post("/addLocation", {description: locationInput}, {withCredentials: true}));
+    handleLocationRequest(axios.post("/addLocation", {description: locationInput}, {withCredentials: true}));
+    if (locationList.length) setLocation(() => locationList[locationList.length - 1]);
   }
 
   const renameLocation = () => {
     setLoading(true);
-    handleAdressesRequest(axios.post("/renameLocation", {id: locationId, description: locationInput}, {withCredentials: true}));
+    handleLocationRequest(axios.post("/renameLocation", {id: location.id, description: locationInput}, {withCredentials: true}));
   }
 
   const deleteLocation = () => {
     setLoading(true);
-    handleAdressesRequest(axios.delete("/deleteLocation", {data: locationId, withCredentials: true}));
+    handleLocationRequest(axios.delete("/deleteLocation", {data: {id: location.id}, withCredentials: true}));
+    setLocation(() => locationDefault);
   }
 
   return (
@@ -60,7 +63,7 @@ function Workspaces() {
       <Container>
         <Grid container alignItems="center">
           <Grid item xs={3}>
-            <Autocomplete id="locations" options={locations} getOptionLabel={option => option.description}
+            <Autocomplete id="locations" value={location} options={locationList} getOptionLabel={option => option.description}
               handleHomeEndKeys freeSolo
               onChange={(e, value) => handleLocationChange(value)} onInputChange={(e, value) => setLocationInput(() => value)}
               renderInput={(params) => (
@@ -74,9 +77,9 @@ function Workspaces() {
               )} />
           </Grid>
           <Grid item xs={9}>
-            {locationInput && !locationId && <Button variant="contained" color="primary" className={classes.control} onClick={addLocation}>Add</Button>}
-            {locationId && <Button variant="contained" color="primary" className={classes.control} onClick={renameLocation}>Rename</Button>}
-            {locationId && <Button variant="contained" color="primary" className={classes.control} onClick={deleteLocation}>Delete</Button>}
+            {locationInput && !location.id && <Button variant="contained" color="primary" className={classes.control} onClick={addLocation}>Add</Button>}
+            {location.id && locationInput !== location.description && <Button variant="contained" color="primary" className={classes.control} onClick={renameLocation}>Rename</Button>}
+            {location.id && <Button variant="contained" color="primary" className={classes.control} onClick={deleteLocation}>Delete</Button>}
           </Grid>
         </Grid>
       </Container>
@@ -86,7 +89,7 @@ function Workspaces() {
 }
 
 type LocationOption = {
-  id: string,
+  id: string | null,
   description: string
 }
 
