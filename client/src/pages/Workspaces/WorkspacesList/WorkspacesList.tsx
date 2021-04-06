@@ -65,7 +65,7 @@ const WorkspacesList = () => {
 
   return (
     <Container className={classes.container}>
-      <DataGrid rows={users} columns={columns} pageSize={6} rowsPerPageOptions={[6, 12, 24, 48]}
+      <DataGrid rows={users} columns={columns} pageSize={5} rowsPerPageOptions={[5, 10, 20, 40]}
         getRowId={(row) => row.email} autoHeight checkboxSelection loading={isLoading} onSelectionModelChange={handleSelection} />
       <DeletionButton />
     </Container>

@@ -13,6 +13,9 @@ const useStyles = makeStyles(theme => ({
   },
   header: {
     zIndex: 1
+  },
+  control: {
+    margin: theme.spacing(0, .5, 0, .5)
   }
 }));
 
