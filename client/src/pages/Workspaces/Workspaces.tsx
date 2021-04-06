@@ -6,7 +6,8 @@ import DesktopWindowsIcon from "@material-ui/icons/DesktopWindows";
 import WorkspacesList from "./WorkspacesList/WorkspacesList";
 import {Autocomplete} from "@material-ui/lab";
 import {MessageType, useMessage} from "../../components/providers/MessageProvider";
-import axios, { AxiosPromise } from "axios";
+import axios, {AxiosPromise} from "axios";
+import {LocationOption} from "../../types";
 
 function Workspaces() {
   const classes = useStyles();
@@ -98,14 +99,9 @@ function Workspaces() {
           </Grid>
         </Grid>
       </Container>
-      <WorkspacesList />
+      <WorkspacesList location={location} />
     </Container>
   );
-}
-
-type LocationOption = {
-  id: string | null,
-  description: string
 }
 
 export default Workspaces;

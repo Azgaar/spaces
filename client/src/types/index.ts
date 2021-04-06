@@ -50,3 +50,8 @@ export type PassportChangeForm = {
   passwordNew: string;
   passwordNewRepeat: string;
 }
+
+export type LocationOption = {
+  id: string | null,
+  description: string
+}
