@@ -37,7 +37,7 @@ function Workspaces() {
 
   const addLocation = () => {
     setLoading(true);
-    handleAdressesRequest(axios.post("/addLocation", locationInput, {withCredentials: true}));
+    handleAdressesRequest(axios.post("/addLocation", {description: locationInput}, {withCredentials: true}));
   }
 
   const renameLocation = () => {

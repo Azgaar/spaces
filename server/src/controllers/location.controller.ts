@@ -4,14 +4,15 @@ import ApiError from "../utils/apiError";
 import locationService from "../services/location";
 
 const list = catchAsync(async (req, res, next) => {
-  const locations = locationService.list();
+  const locations = await locationService.list();
   if (!locations) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Locations cannot be fetched"));
 
   res.status(httpStatus.OK).send(locations);
 });
 
 const add = catchAsync(async (req, res, next) => {
-  await locationService.add({description: req.body});
+  const {description} = req.body;
+  await locationService.add({description});
   list(req, res, next);
 });
 
@@ -22,7 +23,8 @@ const rename = catchAsync(async (req, res, next) => {
 });
 
 const remove = catchAsync(async (req, res, next) => {
-  await locationService.remove({id: req.body});
+  const {id} = req.body;
+  await locationService.remove({id});
   list(req, res, next);
 });
 

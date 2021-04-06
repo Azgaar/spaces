@@ -25,5 +25,4 @@ const remove = async (inputData: Partial<LocationData>) => {
   return deletedlocation;
 };
 
-const locationService = {list, add, rename, remove};
-export default locationService;
+export default {list, add, rename, remove};
