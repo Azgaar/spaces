@@ -1,6 +1,5 @@
 import {Schema, model} from "mongoose";
 import {WorkspaceDocument} from "../types";
-import {Location} from "./location";
 
 const workspaceSchema = new Schema(
   {
@@ -9,7 +8,8 @@ const workspaceSchema = new Schema(
       required: true
     },
     location: {
-      type: Location,
+      type: Schema.Types.ObjectId,
+      ref: "Location",
       required: true
     },
     status: {
