@@ -19,6 +19,7 @@ const WorkspacesList = (props: {location: LocationOption}) => {
   const {pushMessage} = useMessage();
   const [isLoading, setLoading] = useState(true);
   const [workspaces, setWorkspaces] = useState([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selection, setSelection] = useState([] as GridRowId[]);
 
   const handleRequest = async (request: AxiosPromise) => {
