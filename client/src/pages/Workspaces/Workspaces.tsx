@@ -45,11 +45,11 @@ function Workspaces() {
   }
 
   const addLocation = async () => {
-    const res = await handleRequest(axios.post("/addLocation", {description: locationInput}, {withCredentials: true}));
-    if (!res || !Array.isArray(res)) return;
+    const res: LocationOption = await handleRequest(axios.post("/addLocation", {description: locationInput}, {withCredentials: true}));
+    if (!res) return;
     pushMessage({title: `Location "${locationInput}" is added`, type: MessageType.SUCCESS});
-    setLocationList(() => res);
-    setLocation(() => locationList[locationList.length - 1]);
+    setLocationList(locations => [...locations, res]);
+    setLocation(() => res);
   }
 
   const renameLocation = async () => {
