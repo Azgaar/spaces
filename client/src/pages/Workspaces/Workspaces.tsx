@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import useStyles from "./Workspaces.style";
 import {Avatar, Button, Container, Grid, TextField, Typography} from "@material-ui/core";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import DesktopWindowsIcon from "@material-ui/icons/DesktopWindows";
 import WorkspacesList from "./WorkspacesList/WorkspacesList";
 import {Autocomplete} from "@material-ui/lab";
@@ -29,7 +30,7 @@ function Workspaces() {
         ]);
       })
       .then(() => setLoading(false));
-  }, [address]);
+  }, []);
 
   const handleAddressChange = (value: AddressOption | string | null) => {
     if (!value) setAddress(() => ({id: null, description: "", add: false, rename: false, delete: false}));
@@ -49,8 +50,16 @@ function Workspaces() {
         <Grid container alignItems="center">
           <Grid item xs={3}>
             <Autocomplete id="addresses" options={addresses} getOptionLabel={option => option.description}
-              handleHomeEndKeys freeSolo onChange={(e, value) => handleAddressChange(value)}
-              renderInput={(params) => <TextField {...params} label="Select Address" variant="outlined" />} />
+              handleHomeEndKeys freeSolo loading={isLoading} onChange={(e, value) => handleAddressChange(value)}
+              renderInput={(params) => (
+                <TextField {...params} label="Select Address" variant="outlined" InputProps={{...params.InputProps, endAdornment: (
+                    <>
+                      {isLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                      {params.InputProps.endAdornment}
+                    </>
+                  ),
+                }}/>
+              )} />
           </Grid>
           <Grid item xs={9}>
             {address.add && <Button variant="contained" color="primary" className={classes.control}>Add</Button>}
