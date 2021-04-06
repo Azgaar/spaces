@@ -17,17 +17,26 @@ function Workspaces() {
   const [locationList, setLocationList] = useState<LocationOption[]>([]);
   const [locationInput, setLocationInput] = useState<string>("");
 
-  const handleLocationRequest = (req: AxiosPromise) => {
-    req.then(res => {
-      if (!res.data) throw Error("Cannot fetch locations");
-      setLocationList(() => res.data);
-    })
-    .catch(err => pushMessage({title: err.message, type: MessageType.ERROR}))
-    .then(() => setLoading(false));
+  const handleRequest = async (request: AxiosPromise) => {
+    setLoading(true);
+    try {
+      const res = await request;
+      return res.data;
+    } catch (error) {
+      const message = error.response?.data?.message || error.message;
+      pushMessage({title: message, type: MessageType.ERROR});
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
-    handleLocationRequest(axios.post("/getLocations", {}, {withCredentials: true}));
+    async function fetchLocations() {
+      const res = await handleRequest(axios.post("/getLocations", {}, {withCredentials: true}));
+      console.log(res);
+      if (res && Array.isArray(res)) setLocationList(() => res);
+    };
+    fetchLocations();
   }, []);
 
   const handleLocationChange = (value: LocationOption | string | null) => {
@@ -36,20 +45,24 @@ function Workspaces() {
     else setLocation(() => value);
   }
 
-  const addLocation = () => {
-    setLoading(true);
-    handleLocationRequest(axios.post("/addLocation", {description: locationInput}, {withCredentials: true}));
-    if (locationList.length) setLocation(() => locationList[locationList.length - 1]);
+  const addLocation = async () => {
+    const res = await handleRequest(axios.post("/addLocation", {description: locationInput}, {withCredentials: true}));
+    if (!res) return;
+    pushMessage({title: `Location "${locationInput}" is added`, type: MessageType.SUCCESS});
+    setLocation(() => locationList[locationList.length - 1]);
   }
 
-  const renameLocation = () => {
-    setLoading(true);
-    handleLocationRequest(axios.post("/renameLocation", {id: location.id, description: locationInput}, {withCredentials: true}));
+  const renameLocation = async () => {
+    const res = await handleRequest(axios.post("/renameLocation", {id: location.id, description: locationInput}, {withCredentials: true}));
+    if (!res) return;
+    pushMessage({title: `Location "${locationInput}" is renamed`, type: MessageType.SUCCESS});
+    setLocation(() => ({id: location.id, description: locationInput}));
   }
 
-  const deleteLocation = () => {
-    setLoading(true);
-    handleLocationRequest(axios.delete("/deleteLocation", {data: {id: location.id}, withCredentials: true}));
+  const deleteLocation = async () => {
+    const res = await handleRequest(axios.delete("/deleteLocation", {data: {id: location.id}, withCredentials: true}));
+    if (!res) return;
+    pushMessage({title: `Location "${location.description}" is deleted`, type: MessageType.SUCCESS});
     setLocation(() => locationDefault);
   }
 
