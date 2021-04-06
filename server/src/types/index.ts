@@ -38,4 +38,5 @@ export interface LocationDocument extends Document {
 
 export type LocationData = {
   description: string;
+  id?: string;
 }

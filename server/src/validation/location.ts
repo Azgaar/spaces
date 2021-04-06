@@ -1,5 +1,7 @@
 import Joi from "@hapi/joi";
 
-const locationSchema = Joi.string().min(2).max(256).trim().required();
+const locationDescriptionSchema = Joi.string().min(2).max(256).trim().required();
+const locationIdSchema = Joi.string().min(2).max(128).required();
+const locationRenamingSchema = Joi.object({id: locationIdSchema, description: locationDescriptionSchema});
 
-export {locationSchema};
+export {locationDescriptionSchema, locationIdSchema, locationRenamingSchema};

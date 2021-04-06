@@ -42,7 +42,7 @@ function Workspaces() {
 
   const renameLocation = () => {
     setLoading(true);
-    handleAdressesRequest(axios.post("/renameLocation", locationId, {withCredentials: true}));
+    handleAdressesRequest(axios.post("/renameLocation", {id: locationId, description: locationInput}, {withCredentials: true}));
   }
 
   const deleteLocation = () => {

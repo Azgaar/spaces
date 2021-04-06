@@ -1,10 +1,28 @@
 import {Schema, model} from "mongoose";
-import {LocationDocument} from "../types";
+import {hash} from "bcryptjs";
+import {UserDocument, UserData} from "../types";
 
-const locationSchema = new Schema(
+const userSchema = new Schema(
   {
-    description: {
+    email: {
       type: String,
+      required: true
+    },
+    firstName: {
+      type: String,
+      required: true
+    },
+    lastName: {
+      type: String,
+      required: true
+    },
+    password: {
+      type: String,
+      required: true
+    },
+    role: {
+      type: String,
+      enum: ["user", "admin"],
       required: true
     }
   },
@@ -14,11 +32,19 @@ const locationSchema = new Schema(
   }
 );
 
-locationSchema.set("toJSON", {
-  transform: (doc: LocationDocument, ret: LocationDocument) => {
-    const {_id, description} = ret;
-    return {id: _id, description};
+userSchema.pre<UserDocument>("save", async function () {
+  if (this.isModified("password")) {
+    this.password = await hash(this.password, 12);
   }
 });
 
-export const Location = model<LocationDocument>("Location", locationSchema);
+userSchema.set("toJSON", {
+  transform: (doc: UserDocument, ret: UserData) => {
+    const {email, firstName, lastName, role, createdAt, updatedAt} = ret;
+    const created = new Date(String(createdAt)).toUTCString();
+    const updated = new Date(String(updatedAt)).toUTCString();
+    return {email, firstName, lastName, role, created, updated};
+  }
+});
+
+export const User = model<UserDocument>("User", userSchema);
