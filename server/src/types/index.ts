@@ -31,3 +31,11 @@ export interface UserDocument extends Document {
   password: string;
   role: UserRole;
 }
+
+export interface LocationDocument extends Document {
+  description: string;
+}
+
+export type LocationData = {
+  description: string;
+}
