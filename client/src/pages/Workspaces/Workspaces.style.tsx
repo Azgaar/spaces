@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
     zIndex: 1
   },
   control: {
-    margin: theme.spacing(0, .5, 0, .5)
+    margin: theme.spacing(0, 0, 0, 1)
   }
 }));
 
