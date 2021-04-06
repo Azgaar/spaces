@@ -13,13 +13,14 @@ function Workspaces() {
   const {pushMessage} = useMessage();
   const [isLoading, setLoading] = useState(true);
   const [addresses, setAddresses] = useState<AddressOption[]>([]);
-  const [address, setAddress] = useState<AddressState>({id: null, description: "", add: false, rename: false, delete: false});
+  const [addressInput, setAddressInput] = useState<string>("");
+  const [addressId, setAddressId] = useState<string | null>(null);
 
   useEffect(() => {
     axios.post("/getAddresses", {}, {withCredentials: true})
       .then(res => {
         if (!res.data) throw Error("Cannot fetch users");
-        setAddress(() => res.data)
+        setAddresses(() => res.data)
       })
       .catch(err => {
         pushMessage({title: err.message, type: MessageType.ERROR});
@@ -33,10 +34,9 @@ function Workspaces() {
   }, []);
 
   const handleAddressChange = (value: AddressOption | string | null) => {
-    if (!value) setAddress(() => ({id: null, description: "", add: false, rename: false, delete: false}));
-    else if (typeof value === "string") setAddress(() => ({id: null, description: value, add: true, rename: false, delete: false}));
-    else setAddress(() => ({id: value.id, description: value.description, add: false, rename: true, delete: true}));
-    console.log(value, address);
+    if (!value) setAddressId(() => null);
+    else if (typeof value === "string") return;
+    else setAddressId(() => value.id);
   }
 
   return (
@@ -50,7 +50,8 @@ function Workspaces() {
         <Grid container alignItems="center">
           <Grid item xs={3}>
             <Autocomplete id="addresses" options={addresses} getOptionLabel={option => option.description}
-              handleHomeEndKeys freeSolo loading={isLoading} onChange={(e, value) => handleAddressChange(value)}
+              handleHomeEndKeys freeSolo
+              onChange={(e, value) => handleAddressChange(value)} onInputChange={(e, value) => setAddressInput(() => value)}
               renderInput={(params) => (
                 <TextField {...params} label="Select Address" variant="outlined" InputProps={{...params.InputProps, endAdornment: (
                     <>
@@ -62,9 +63,9 @@ function Workspaces() {
               )} />
           </Grid>
           <Grid item xs={9}>
-            {address.add && <Button variant="contained" color="primary" className={classes.control}>Add</Button>}
-            {address.rename && <Button variant="contained" color="primary" className={classes.control}>Rename</Button>}
-            {address.delete && <Button variant="contained" color="primary" className={classes.control}>Delete</Button>}
+            {addressInput && !addressId && <Button variant="contained" color="primary" className={classes.control}>Add</Button>}
+            {addressId && <Button variant="contained" color="primary" className={classes.control}>Rename</Button>}
+            {addressId && <Button variant="contained" color="primary" className={classes.control}>Delete</Button>}
           </Grid>
         </Grid>
       </Container>
@@ -76,14 +77,6 @@ function Workspaces() {
 type AddressOption = {
   id: string,
   description: string
-}
-
-type AddressState = {
-  id: string | null,
-  description: string,
-  add: boolean,
-  rename: boolean,
-  delete: boolean
 }
 
 export default Workspaces;
