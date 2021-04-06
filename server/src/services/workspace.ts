@@ -1,4 +1,4 @@
-import {Workspace} from "../models/location";
+import {Workspace} from "../models/workspace";
 import {WorkspaceDocument} from "../types";
 import logger from "../utils/logger";
 

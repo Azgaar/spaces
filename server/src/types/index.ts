@@ -36,7 +36,26 @@ export interface LocationDocument extends Document {
   description: string;
 }
 
+export interface WorkspaceDocument extends Document {
+  description: string;
+}
+
 export type LocationData = {
   description: string;
   id?: string;
+}
+
+export enum WorkspaceStatus {
+  AVAILABLE = "available",
+  UNAVAILABLE = "unavailable"
+}
+
+export type WorkspaceData = {
+  id?: string;
+  description: string;
+  location: string;
+  status: WorkspaceStatus;
+  type: string;
+  size: number;
+  equipment: string;
 }
