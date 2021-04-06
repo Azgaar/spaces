@@ -6,37 +6,48 @@ import DesktopWindowsIcon from "@material-ui/icons/DesktopWindows";
 import WorkspacesList from "./WorkspacesList/WorkspacesList";
 import {Autocomplete} from "@material-ui/lab";
 import {MessageType, useMessage} from "../../components/providers/MessageProvider";
-import axios from "axios";
+import axios, { AxiosPromise } from "axios";
 
 function Workspaces() {
   const classes = useStyles();
   const {pushMessage} = useMessage();
   const [isLoading, setLoading] = useState(true);
-  const [addresses, setAddresses] = useState<AddressOption[]>([]);
-  const [addressInput, setAddressInput] = useState<string>("");
-  const [addressId, setAddressId] = useState<string | null>(null);
+  const [locations, setLocations] = useState<LocationOption[]>([]);
+  const [locationInput, setLocationInput] = useState<string>("");
+  const [locationId, setLocationId] = useState<string | null>(null);
+
+  const handleAdressesRequest = (req: AxiosPromise) => {
+    req.then(res => {
+      if (!res.data) throw Error("Cannot fetch locations");
+      setLocations(() => res.data);
+    })
+    .catch(err => pushMessage({title: err.message, type: MessageType.ERROR}))
+    .then(() => setLoading(false));
+  }
 
   useEffect(() => {
-    axios.post("/getAddresses", {}, {withCredentials: true})
-      .then(res => {
-        if (!res.data) throw Error("Cannot fetch users");
-        setAddresses(() => res.data)
-      })
-      .catch(err => {
-        pushMessage({title: err.message, type: MessageType.ERROR});
-        setAddresses(() => [
-          {id: "1", description: "1st floor"},
-          {id: "2", description: "2nd floor"},
-          {id: "3", description: "3rd floor"},
-        ]);
-      })
-      .then(() => setLoading(false));
+    handleAdressesRequest(axios.post("/getLocations", {}, {withCredentials: true}));
   }, []);
 
-  const handleAddressChange = (value: AddressOption | string | null) => {
-    if (!value) setAddressId(() => null);
+  const handleLocationChange = (value: LocationOption | string | null) => {
+    if (!value) setLocationId(() => null);
     else if (typeof value === "string") return;
-    else setAddressId(() => value.id);
+    else setLocationId(() => value.id);
+  }
+
+  const addLocation = () => {
+    setLoading(true);
+    handleAdressesRequest(axios.post("/addLocation", {locationInput}, {withCredentials: true}));
+  }
+
+  const renameLocation = () => {
+    setLoading(true);
+    handleAdressesRequest(axios.post("/renameLocation", {locationId}, {withCredentials: true}));
+  }
+
+  const deleteLocation = () => {
+    setLoading(true);
+    handleAdressesRequest(axios.delete("/deleteLocation", {data: locationId, withCredentials: true}));
   }
 
   return (
@@ -49,11 +60,11 @@ function Workspaces() {
       <Container>
         <Grid container alignItems="center">
           <Grid item xs={3}>
-            <Autocomplete id="addresses" options={addresses} getOptionLabel={option => option.description}
+            <Autocomplete id="locations" options={locations} getOptionLabel={option => option.description}
               handleHomeEndKeys freeSolo
-              onChange={(e, value) => handleAddressChange(value)} onInputChange={(e, value) => setAddressInput(() => value)}
+              onChange={(e, value) => handleLocationChange(value)} onInputChange={(e, value) => setLocationInput(() => value)}
               renderInput={(params) => (
-                <TextField {...params} label="Select Address" variant="outlined" InputProps={{...params.InputProps, endAdornment: (
+                <TextField {...params} label="Select Location" variant="outlined" InputProps={{...params.InputProps, endAdornment: (
                     <>
                       {isLoading ? <CircularProgress color="inherit" size={20} /> : null}
                       {params.InputProps.endAdornment}
@@ -63,9 +74,9 @@ function Workspaces() {
               )} />
           </Grid>
           <Grid item xs={9}>
-            {addressInput && !addressId && <Button variant="contained" color="primary" className={classes.control}>Add</Button>}
-            {addressId && <Button variant="contained" color="primary" className={classes.control}>Rename</Button>}
-            {addressId && <Button variant="contained" color="primary" className={classes.control}>Delete</Button>}
+            {locationInput && !locationId && <Button variant="contained" color="primary" className={classes.control} onClick={addLocation}>Add</Button>}
+            {locationId && <Button variant="contained" color="primary" className={classes.control} onClick={renameLocation}>Rename</Button>}
+            {locationId && <Button variant="contained" color="primary" className={classes.control} onClick={deleteLocation}>Delete</Button>}
           </Grid>
         </Grid>
       </Container>
@@ -74,7 +85,7 @@ function Workspaces() {
   );
 }
 
-type AddressOption = {
+type LocationOption = {
   id: string,
   description: string
 }

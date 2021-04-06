@@ -24,7 +24,7 @@ const WorkspacesList = () => {
   const handleUsersRequest = (req: AxiosPromise) => {
     req.then(res => {
       if (!res.data) throw Error("Cannot fetch users");
-      setUsers(() => res.data)
+      setUsers(() => res.data);
     })
     .catch(err => pushMessage({title: err.message, type: MessageType.ERROR}))
     .then(() => setLoading(false));
