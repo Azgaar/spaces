@@ -7,3 +7,7 @@ export {router as changePassword} from "./changePassword.router";
 export {router as forgotPassword} from "./forgotPassword.router";
 export {router as getUsers} from "./getUsers.router";
 export {router as deleteUsers} from "./deleteUsers.router";
+export {router as getLocations} from "./getLocations.router";
+export {router as addLocation} from "./addLocation.router";
+export {router as renameLocation} from "./renameLocation.router";
+export {router as deleteLocation} from "./deleteLocation.router";
