@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import useStyles from "./WorkspacesList.style";
 import {Container} from "@material-ui/core";
 import {DataGrid, GridColDef, GridRowId, GridSelectionModelChangeParams} from "@material-ui/data-grid";
+import DeletionButton from "../../../components/Controls/DeletionButton/DeletionButton";
 import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
 import axios, {AxiosPromise} from "axios";
 import {LocationOption } from "../../../types";
@@ -19,7 +20,6 @@ const WorkspacesList = (props: {location: LocationOption}) => {
   const {pushMessage} = useMessage();
   const [isLoading, setLoading] = useState(true);
   const [workspaces, setWorkspaces] = useState([]);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selection, setSelection] = useState([] as GridRowId[]);
 
   const handleRequest = async (request: AxiosPromise) => {
@@ -54,10 +54,18 @@ const WorkspacesList = (props: {location: LocationOption}) => {
     setSelection(() => selection);
   });
 
+  const handleDeletion = async () => {
+    const res = await handleRequest(axios.delete("/deleteWorkspaces", {data: selection, withCredentials: true}));
+    if (res) setSelection(() => [] as GridRowId[]);
+  }
+
   return (
     <Container className={classes.container}>
       <DataGrid rows={workspaces} columns={columns} pageSize={5} rowsPerPageOptions={[5, 10, 20, 40]}
         getRowId={(row) => row.email} autoHeight checkboxSelection loading={isLoading} onSelectionModelChange={handleSelection} />
+      <Container className={classes.controls}>
+        {Boolean(selection.length) && <DeletionButton onDelete={handleDeletion} object={selection.length > 1 ? "workspaces" : "workspace"} />}
+      </Container>
     </Container>
   );
 };

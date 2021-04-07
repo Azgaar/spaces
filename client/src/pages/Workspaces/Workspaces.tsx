@@ -8,6 +8,7 @@ import {Autocomplete} from "@material-ui/lab";
 import {MessageType, useMessage} from "../../components/providers/MessageProvider";
 import axios, {AxiosPromise} from "axios";
 import {LocationOption} from "../../types";
+import DeletionButton from "../../components/Controls/DeletionButton/DeletionButton";
 
 function Workspaces() {
   const classes = useStyles();
@@ -78,7 +79,7 @@ function Workspaces() {
 
       <Container>
         <Grid container alignItems="center">
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <Autocomplete id="locations" value={location} options={locationList} getOptionLabel={option => option.description}
               handleHomeEndKeys freeSolo
               onChange={(e, value) => handleLocationChange(value)} onInputChange={(e, value) => setLocationInput(() => value)}
@@ -92,10 +93,10 @@ function Workspaces() {
                 }}/>
               )} />
           </Grid>
-          <Grid item xs={9}>
+          <Grid item xs={8}>
             {locationInput && !location.id && <Button variant="contained" color="primary" className={classes.control} onClick={addLocation}>Add</Button>}
             {location.id && locationInput !== location.description && <Button variant="contained" color="primary" className={classes.control} onClick={renameLocation}>Rename</Button>}
-            {location.id && <Button variant="contained" color="primary" className={classes.control} onClick={deleteLocation}>Delete</Button>}
+            {location.id && <DeletionButton onDelete={deleteLocation} object="location" title="Delete" short />}
           </Grid>
         </Grid>
       </Container>

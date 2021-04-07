@@ -24,11 +24,8 @@ const useStyles = makeStyles(theme => ({
       fontWeight: 700
     }
   },
-  deletion: {
-    margin: theme.spacing(1, 0),
-    "& > *": {
-      margin: theme.spacing(0, 1, 0, 0)
-    }
+  controls: {
+    margin: theme.spacing(1, 0)
   }
 }));
 
