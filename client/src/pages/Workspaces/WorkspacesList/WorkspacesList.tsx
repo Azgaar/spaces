@@ -6,7 +6,7 @@ import DeletionButton from "../../../components/Controls/DeletionButton/Deletion
 import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
 import {LocationOption} from "../../../types";
 import {WorkspaceService} from "../../../services";
-import { useRequest } from "../../../hooks";
+import {useRequest} from "../../../hooks";
 
 const columns: GridColDef[] = [
   {field: "status", headerName: "Status", width: 160},

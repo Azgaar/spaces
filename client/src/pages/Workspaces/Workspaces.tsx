@@ -62,6 +62,7 @@ function Workspaces() {
     if (remainingLocations) {
       pushMessage({title: `Location "${location.description}" is deleted`, type: MessageType.SUCCESS});
       setLocationList(() => remainingLocations);
+      setLocationInput(() => "");
       setLocation(() => locationDefault);
     } else {
       pushMessage({title: error, type: MessageType.ERROR});
