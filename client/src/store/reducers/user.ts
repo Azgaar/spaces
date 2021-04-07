@@ -1,4 +1,4 @@
-import {AUTH_USER, UNAUTH_USER} from "../actions/types";
+import {AUTH_USER, UNAUTH_USER, UPDATE_USER} from "../actions/types";
 import {UserData} from "../../types";
 
 const initState = {
@@ -21,6 +21,13 @@ const userReducer = (state = initState, action: {type: string, payload: UserData
       };
     case UNAUTH_USER:
       return initState;
+    case UPDATE_USER:
+      return {
+        ...state,
+        email: action.payload.email,
+        firstName: action.payload.firstName,
+        lastName: action.payload.lastName
+      };
     default:
       return state;
   }

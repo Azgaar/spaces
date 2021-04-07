@@ -1,8 +1,5 @@
 import {Router} from "express";
-import {checkinController} from "../controllers";
+import {authController} from "../controllers";
 
-const router = Router();
-
-router.post("/", checkinController);
-
-export {router as checkinRouter};
+export const router = Router();
+router.post("/", authController.checkin);

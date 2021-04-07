@@ -7,7 +7,7 @@ export type UserData = {
   email: string;
   firstName: string
   lastName: string;
-  role: UserRole;
+  role?: UserRole;
 }
 
 export interface RootState {
@@ -33,3 +33,20 @@ export type SignInForm = {
   email: string;
   password: string;
 };
+
+export type ForgotPasswordForm = {
+  email: string;
+};
+
+export type ProfileEditForm = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}
+
+export type PassportChangeForm = {
+  password: string;
+  passwordNew: string;
+  passwordNewRepeat: string;
+}

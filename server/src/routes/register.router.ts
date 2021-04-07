@@ -1,10 +1,7 @@
 import {Router} from "express";
-import {notLogged, validate} from "../middleware/validate";
-import {registerSchema} from "../validation/auth";
-import {registerController} from "../controllers";
+import {checkSession, validate} from "../middleware/validate";
+import {registerSchema} from "../validation/user";
+import {userController} from "../controllers";
 
-const router = Router();
-
-router.post("/", notLogged, validate(registerSchema), registerController);
-
-export {router as registerRouter};
+export const router = Router();
+router.post("/", checkSession(false), validate(registerSchema), userController.register);

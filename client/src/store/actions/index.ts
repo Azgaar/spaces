@@ -1,1 +1,1 @@
-export {actions} from "./auth";
+export {actions} from "./user";
