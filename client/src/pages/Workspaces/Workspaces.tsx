@@ -7,14 +7,14 @@ import WorkspacesList from "./WorkspacesList/WorkspacesList";
 import {Autocomplete} from "@material-ui/lab";
 import DeletionButton from "../../components/Controls/DeletionButton/DeletionButton";
 import {MessageType, useMessage} from "../../components/providers/MessageProvider";
-import axios from "axios";
 import {LocationOption} from "../../types";
 import {useRequest} from "../../hooks";
+import {LocationService} from "../../services";
 
 function Workspaces() {
   const classes = useStyles();
   const {pushMessage} = useMessage();
-  const locationDefault: LocationOption = {id: null, description: ""};
+  const locationDefault: LocationOption = {id: "", description: ""};
   const [location, setLocation] = useState<LocationOption>(locationDefault);
   const [locationList, setLocationList] = useState<LocationOption[]>([]);
   const [locationInput, setLocationInput] = useState<string>("");
@@ -22,7 +22,7 @@ function Workspaces() {
 
   useEffect(() => {
     async function fetchLocations() {
-      const res: LocationOption[] = await handleRequest(axios.post("/getLocations", {}, {withCredentials: true}));
+      const res: LocationOption[] = await handleRequest(LocationService.list());
       if (res) setLocationList(() => res);
       else pushMessage({title: error, type: MessageType.ERROR});
     };
@@ -36,7 +36,7 @@ function Workspaces() {
   }
 
   const addLocation = async () => {
-    const addedLocation: LocationOption = await handleRequest(axios.post("/addLocation", {description: locationInput}, {withCredentials: true}));
+    const addedLocation: LocationOption = await handleRequest(LocationService.add(locationInput));
     if (addedLocation) {
       pushMessage({title: `Location "${locationInput}" is added`, type: MessageType.SUCCESS});
       setLocationList(locations => [...locations, addedLocation]);
@@ -47,7 +47,7 @@ function Workspaces() {
   }
 
   const renameLocation = async () => {
-    const allLocations: LocationOption[] = await handleRequest(axios.post("/renameLocation", {id: location.id, description: locationInput}, {withCredentials: true}));
+    const allLocations: LocationOption[] = await handleRequest(LocationService.rename(location.id, locationInput));
     if (allLocations) {
       pushMessage({title: `Location "${locationInput}" is renamed`, type: MessageType.SUCCESS});
       setLocationList(() => allLocations);
@@ -58,7 +58,7 @@ function Workspaces() {
   }
 
   const deleteLocation = async () => {
-    const allLocations: LocationOption[] = await handleRequest(axios.delete("/deleteLocation", {data: {id: location.id}, withCredentials: true}));
+    const allLocations: LocationOption[] = await handleRequest(LocationService.remove(location.id));
     if (allLocations) {
       pushMessage({title: `Location "${location.description}" is deleted`, type: MessageType.SUCCESS});
       setLocationList(() => allLocations);
@@ -84,7 +84,7 @@ function Workspaces() {
               renderInput={(params) => (
                 <TextField {...params} label="Select Location" variant="outlined" InputProps={{...params.InputProps, endAdornment: (
                     <>
-                      {isLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                      {isLoading && <CircularProgress color="inherit" size={20} />}
                       {params.InputProps.endAdornment}
                     </>
                   ),

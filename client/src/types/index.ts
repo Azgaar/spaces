@@ -52,6 +52,6 @@ export type PassportChangeForm = {
 }
 
 export type LocationOption = {
-  id: string | null,
+  id: string,
   description: string
 }
