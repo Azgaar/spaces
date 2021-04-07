@@ -4,7 +4,9 @@ import {Container} from "@material-ui/core";
 import DeletionButton from "../../../components/Controls/DeletionButton/DeletionButton";
 import {DataGrid, GridColDef, GridRowId, GridSelectionModelChangeParams} from "@material-ui/data-grid";
 import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
-import axios, {AxiosPromise} from "axios";
+import {useRequest} from "../../../hooks";
+import {UserService} from "../../../services";
+import {UserData} from "../../../types";
 
 const columns: GridColDef[] = [
   {field: "role", headerName: "Role", width: 90},
@@ -18,21 +20,16 @@ const columns: GridColDef[] = [
 const UsersList = () => {
   const classes = useStyles();
   const {pushMessage} = useMessage();
-  const [isLoading, setLoading] = useState(true);
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState([] as UserData[]);
   const [selection, setSelection] = useState([] as GridRowId[]);
-
-  const handleUsersRequest = (req: AxiosPromise) => {
-    req.then(res => {
-      if (!res.data) throw Error("Cannot fetch users");
-      setUsers(() => res.data)
-    })
-    .catch(err => pushMessage({title: err.message, type: MessageType.ERROR}))
-    .then(() => setLoading(false));
-  };
+  const {isLoading, handleRequest} = useRequest();
 
   useEffect(() => {
-    handleUsersRequest(axios.post("/getUsers", {}, {withCredentials: true}));
+    async function fetchUsers() {
+      const allUsers: UserData[] = await handleRequest(UserService.list());
+      if (allUsers) setUsers(() => allUsers);
+    };
+    fetchUsers();
   }, []);
 
   const handleSelection = ((selectionModel: GridSelectionModelChangeParams) => {
@@ -40,10 +37,13 @@ const UsersList = () => {
     setSelection(() => selection);
   });
 
-  const handleDeletion = () => {
-    setLoading(true);
-    handleUsersRequest(axios.delete("/deleteUsers", {data: selection, withCredentials: true}));
+  const handleDeletion = async () => {
+    const remainingUsers: UserData[] = await handleRequest(UserService.remove(selection));
+    if (!remainingUsers) return;
+    setUsers(() => remainingUsers);
     setSelection(() => [] as GridRowId[]);
+    const title = selection.length > 1 ? `Users "${selection.join(", ")}" are removed` : `User "${selection[0]}" is removed`;
+    pushMessage({title, type: MessageType.SUCCESS});
   }
 
   return (
