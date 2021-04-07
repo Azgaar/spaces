@@ -34,6 +34,10 @@ export type SignInForm = {
   password: string;
 };
 
+export type ForgotPasswordForm = {
+  email: string;
+};
+
 export type ProfileEditForm = {
   firstName: string;
   lastName: string;

@@ -1,10 +1,7 @@
 import {Router} from "express";
-import {isLogged, validate} from "../middleware/validate";
+import {checkSession, validate} from "../middleware/validate";
 import {userUpdateSchema} from "../validation/user";
-import {updateUserController} from "../controllers";
+import {userController} from "../controllers";
 
-const router = Router();
-
-router.post("/", isLogged, validate(userUpdateSchema), updateUserController);
-
-export {router as updateUserRouter};
+export const router = Router();
+router.post("/", checkSession(true), validate(userUpdateSchema), userController.update);

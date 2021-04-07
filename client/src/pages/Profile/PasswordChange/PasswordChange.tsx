@@ -1,6 +1,6 @@
 import React from "react";
 import useFormStyles from "../../../styles/form";
-import {Avatar, TextField, Button, Typography, Grid} from "@material-ui/core";
+import {Avatar, TextField, Button, Typography, Grid, Container} from "@material-ui/core";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import {Link as RouterLink, useHistory} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
@@ -30,11 +30,11 @@ function PasswordChange() {
   };
 
   return (
-    <div className={formStyles.paper}>
+    <Container maxWidth="xs" className={formStyles.paper}>
       <Avatar className={formStyles.avatar}>
         <AccountCircleOutlinedIcon />
       </Avatar>
-      <Typography component="h1" variant="h5">Change Password</Typography>
+      <Typography component="h1" variant="h5" className={formStyles.header}>Change Password</Typography>
 
       <form className={formStyles.form} noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={2}>
@@ -64,7 +64,7 @@ function PasswordChange() {
           </Grid>
         </Grid>
       </form>
-    </div>
+    </Container>
   );
 }
 

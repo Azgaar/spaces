@@ -1,6 +1,6 @@
 import React from "react";
 import useFormStyles from "../../../styles/form";
-import {Avatar, TextField, Button, Typography, Grid} from "@material-ui/core";
+import {Avatar, TextField, Button, Typography, Grid, Container} from "@material-ui/core";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import {Link as RouterLink, useHistory} from "react-router-dom";
 import {useDispatch} from "react-redux";
@@ -8,14 +8,14 @@ import {useForm, SubmitHandler} from "react-hook-form";
 import {ProfileEditForm} from "../../../types";
 import {updateUserData} from "../../../services";
 import {actions} from "../../../store/actions";
-import {useUserData} from "../../../hooks";
+import {useUser} from "../../../hooks";
 import {rules} from "../../../validation";
 import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
 
 function ProfileEdit() {
   const formStyles = useFormStyles();
   const dispatch = useDispatch();
-  const user = useUserData();
+  const {user} = useUser();
   const {pushMessage} = useMessage();
   const history = useHistory();
 
@@ -37,11 +37,11 @@ function ProfileEdit() {
   };
 
   return (
-    <div className={formStyles.paper}>
+    <Container maxWidth="xs" className={formStyles.paper}>
       <Avatar className={formStyles.avatar}>
         <AccountCircleOutlinedIcon />
       </Avatar>
-      <Typography component="h1" variant="h5">Edit Profile</Typography>
+      <Typography component="h1" variant="h5" className={formStyles.header}>Edit Profile</Typography>
 
       <form className={formStyles.form} noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={2}>
@@ -75,7 +75,7 @@ function ProfileEdit() {
           </Grid>
         </Grid>
       </form>
-    </div>
+    </Container>
   );
 }
 

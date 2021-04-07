@@ -4,6 +4,7 @@ import httpStatus from "http-status";
 import logger from "../utils/logger";
 import ApiError from "../utils/apiError";
 import type {Request, Response, NextFunction} from "express";
+import {logOut} from "../services/auth";
 
 const errorConverter = (err: any, req: Request, res: Response, next: NextFunction) => {
   let error = err;
