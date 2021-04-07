@@ -12,7 +12,7 @@ export const forgotPassword = (data: ForgotPasswordForm) => post("/forgotPasswor
 type Data = SignUpForm | SignInForm | ProfileEditForm | PassportChangeForm | ForgotPasswordForm;
 async function post(endpoint: string, data?: Data) {
   try {
-    const res = await axios.post(endpoint, data, {withCredentials: true});
+    const res = await axios.post(endpoint, data);
     return {...res.data, ok: true};
   } catch (error) {
     return error.response?.data || error;
