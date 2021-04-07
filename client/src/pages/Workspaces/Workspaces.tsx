@@ -5,37 +5,26 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import DesktopWindowsIcon from "@material-ui/icons/DesktopWindows";
 import WorkspacesList from "./WorkspacesList/WorkspacesList";
 import {Autocomplete} from "@material-ui/lab";
-import {MessageType, useMessage} from "../../components/providers/MessageProvider";
-import axios, {AxiosPromise} from "axios";
-import {LocationOption} from "../../types";
 import DeletionButton from "../../components/Controls/DeletionButton/DeletionButton";
+import {MessageType, useMessage} from "../../components/providers/MessageProvider";
+import axios from "axios";
+import {LocationOption} from "../../types";
+import {useRequest} from "../../hooks";
 
 function Workspaces() {
   const classes = useStyles();
   const {pushMessage} = useMessage();
-  const [isLoading, setLoading] = useState(true);
   const locationDefault: LocationOption = {id: null, description: ""};
   const [location, setLocation] = useState<LocationOption>(locationDefault);
   const [locationList, setLocationList] = useState<LocationOption[]>([]);
   const [locationInput, setLocationInput] = useState<string>("");
-
-  const handleRequest = async (request: AxiosPromise) => {
-    setLoading(true);
-    try {
-      const res = await request;
-      return res.data;
-    } catch (error) {
-      const message = error.response?.data?.message || error.message;
-      pushMessage({title: message, type: MessageType.ERROR});
-    } finally {
-      setLoading(false);
-    }
-  }
+  const {isLoading, error, handleRequest} = useRequest();
 
   useEffect(() => {
     async function fetchLocations() {
       const res: LocationOption[] = await handleRequest(axios.post("/getLocations", {}, {withCredentials: true}));
       if (res) setLocationList(() => res);
+      else pushMessage({title: error, type: MessageType.ERROR});
     };
     fetchLocations();
   }, []);
@@ -47,27 +36,36 @@ function Workspaces() {
   }
 
   const addLocation = async () => {
-    const res: LocationOption = await handleRequest(axios.post("/addLocation", {description: locationInput}, {withCredentials: true}));
-    if (!res) return;
-    pushMessage({title: `Location "${locationInput}" is added`, type: MessageType.SUCCESS});
-    setLocationList(locations => [...locations, res]);
-    setLocation(() => res);
+    const addedLocation: LocationOption = await handleRequest(axios.post("/addLocation", {description: locationInput}, {withCredentials: true}));
+    if (addedLocation) {
+      pushMessage({title: `Location "${locationInput}" is added`, type: MessageType.SUCCESS});
+      setLocationList(locations => [...locations, addedLocation]);
+      setLocation(() => addedLocation);
+    } else {
+      pushMessage({title: error, type: MessageType.ERROR});
+    }
   }
 
   const renameLocation = async () => {
-    const res: LocationOption[] = await handleRequest(axios.post("/renameLocation", {id: location.id, description: locationInput}, {withCredentials: true}));
-    if (!res) return;
-    pushMessage({title: `Location "${locationInput}" is renamed`, type: MessageType.SUCCESS});
-    setLocationList(() => res);
-    setLocation(() => ({id: location.id, description: locationInput}));
+    const allLocations: LocationOption[] = await handleRequest(axios.post("/renameLocation", {id: location.id, description: locationInput}, {withCredentials: true}));
+    if (allLocations) {
+      pushMessage({title: `Location "${locationInput}" is renamed`, type: MessageType.SUCCESS});
+      setLocationList(() => allLocations);
+      setLocation(() => ({id: location.id, description: locationInput}));
+    } else {
+      pushMessage({title: error, type: MessageType.ERROR});
+    }
   }
 
   const deleteLocation = async () => {
-    const res: LocationOption[] = await handleRequest(axios.delete("/deleteLocation", {data: {id: location.id}, withCredentials: true}));
-    if (!res) return;
-    pushMessage({title: `Location "${location.description}" is deleted`, type: MessageType.SUCCESS});
-    setLocationList(() => res);
-    setLocation(() => locationDefault);
+    const allLocations: LocationOption[] = await handleRequest(axios.delete("/deleteLocation", {data: {id: location.id}, withCredentials: true}));
+    if (allLocations) {
+      pushMessage({title: `Location "${location.description}" is deleted`, type: MessageType.SUCCESS});
+      setLocationList(() => allLocations);
+      setLocation(() => locationDefault);
+    } else {
+      pushMessage({title: error, type: MessageType.ERROR});
+    }
   }
 
   return (
