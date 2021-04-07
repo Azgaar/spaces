@@ -40,7 +40,13 @@ const WorkspacesList = (props: {location: LocationOption}) => {
       const res = await handleRequest(axios.post("/getWorkspaces", {location: props.location}, {withCredentials: true}));
       if (res) setWorkspaces(() => res);
     };
-    fetchWorkspaces();
+
+    if (props.location.id) {
+      fetchWorkspaces();
+    } else {
+      setLoading(false);
+      setWorkspaces(() => []);
+    }
   }, [props.location]);
 
   const handleSelection = ((selectionModel: GridSelectionModelChangeParams) => {
