@@ -28,7 +28,7 @@ describe("Password change service", () => {
     await request(app).post("/changePassword")
       .set("Cookie", cookie)
       .send(user.change)
-      .expect(httpStatus.NO_CONTENT);
+      .expect(httpStatus.OK);
   });
 
   it("fails if current password is not correct", async () => {

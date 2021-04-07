@@ -54,7 +54,7 @@ const changePassword = catchAsync(async (req, res, next) => {
   if (!correctPassword) return next(new ApiError(httpStatus.UNAUTHORIZED, `Password ${password} is not correct for user ${user.email}`));
 
   await updateUser(user, {password: passwordNew});
-  res.status(httpStatus.NO_CONTENT).end();
+  res.status(httpStatus.OK).send({message: "OK"});
 });
 
 const resetPassword = catchAsync(async (req, res, next) => {
