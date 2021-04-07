@@ -1,6 +1,6 @@
 import React from "react";
 import useFormStyles from "../../styles/form";
-import {Avatar, TextField, Button, Typography, Grid} from "@material-ui/core";
+import {Avatar, TextField, Button, Typography, Grid, Container} from "@material-ui/core";
 import MailOutlineOutlinedIcon from "@material-ui/icons/MailOutlineOutlined";
 import {Link as RouterLink, useHistory} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
@@ -28,11 +28,11 @@ function ForgotPassword() {
   };
 
   return (
-    <div className={formStyles.paper}>
+    <Container maxWidth="xs" className={formStyles.paper}>
       <Avatar className={formStyles.avatar}>
         <MailOutlineOutlinedIcon />
       </Avatar>
-      <Typography component="h1" variant="h5">Forgot Password</Typography>
+      <Typography component="h1" variant="h5" className={formStyles.header}>Forgot Password</Typography>
       <form className={formStyles.form} noValidate onSubmit={handleSubmit(onSubmit)}>
         <Typography component="h2" variant="subtitle2" align="justify">
           {`Lost your password?
@@ -53,7 +53,7 @@ function ForgotPassword() {
           </Grid>
         </Grid>
       </form>
-    </div>
+    </Container>
   );
 }
 

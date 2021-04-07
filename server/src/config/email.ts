@@ -1,7 +1,7 @@
 export const getMailConfig = () => {
   const SMTP_OPTIONS = {
-    host: process.env.SMTP_SERVER_HOST,
-    port: process.env.SMTP_SERVER_PORT,
+    host: String(process.env.SMTP_SERVER_HOST) || "smtp.mailtrap.io",
+    port: Number(process.env.SMTP_SERVER_PORT) || 2525,
     auth: {
       user: process.env.SMTP_SERVER_USER,
       pass: process.env.SMTP_SERVER_PASS

@@ -4,6 +4,7 @@ import {Document} from "mongoose";
 declare module "express-session" {
   interface SessionData {
     userId: string;
+    userRole: UserRole;
     createdAt: Date;
   }
 }
@@ -19,6 +20,8 @@ export type UserData = {
   lastName: string;
   password: string;
   role: UserRole;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface UserDocument extends Document {

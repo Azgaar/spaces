@@ -1,7 +1,7 @@
 import {Router} from "express";
 import {validate} from "../middleware/validate";
 import {forgotPasswordSchema} from "../validation/user";
-import {forgotPasswordController} from "../controllers";
+import {userController} from "../controllers";
 
 export const router = Router();
-router.post("/", validate(forgotPasswordSchema), forgotPasswordController);
+router.post("/", validate(forgotPasswordSchema), userController.resetPassword);

@@ -1,6 +1,6 @@
 import React from "react";
 import useFormStyles from "../../styles/form";
-import {Avatar, TextField, Button, Typography, Grid, Link, FormHelperText} from "@material-ui/core";
+import {Avatar, TextField, Button, Typography, Grid, Link, Container} from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import {Link as RouterLink, useHistory} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
@@ -33,16 +33,16 @@ function Signin() {
   };
 
   return (
-    <div className={formStyles.paper}>
+    <Container maxWidth="xs" className={formStyles.paper}>
       <Avatar className={formStyles.avatar}>
         <LockOutlinedIcon />
       </Avatar>
-      <Typography component="h1" variant="h5">Sign in</Typography>
+      <Typography component="h1" variant="h5" className={formStyles.header}>Sign in</Typography>
       <form className={formStyles.form} noValidate onSubmit={handleSubmit(onSubmit)}>
         <TextField variant="outlined" margin="normal" required fullWidth id="email" label="Email Address" name="email"
-          autoComplete="email" autoFocus inputRef={register(rules.email)} />
+          autoComplete="email" autoFocus inputRef={register(rules.email)} error={Boolean(errors.email)} helperText={errors.email?.message} />
         <TextField variant="outlined" margin="normal" required fullWidth name="password" label="Password" type="password" id="password"
-          autoComplete="current-password" inputRef={register(rules.password)} />
+          autoComplete="current-password" inputRef={register(rules.password)} error={Boolean(errors.password)} helperText={errors.password?.message} />
 
         <Grid container>
           <Grid item xs>
@@ -53,10 +53,9 @@ function Signin() {
           </Grid>
         </Grid>
 
-        {errors && <FormHelperText error>{errors.email?.message || errors.password?.message}</FormHelperText>}
         <Button type="submit" fullWidth variant="contained" color="primary" className={formStyles.buttons}>Sign In</Button>
       </form>
-    </div>
+    </Container>
   );
 }
 

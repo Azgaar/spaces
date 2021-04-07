@@ -1,6 +1,6 @@
 import {Router} from "express";
-import {isLogged} from "../middleware/validate";
-import {logoutController} from "../controllers";
+import {checkSession} from "../middleware/validate";
+import {authController} from "../controllers";
 
 export const router = Router();
-router.post("/", isLogged, logoutController);
+router.post("/", checkSession(true), authController.logout);
