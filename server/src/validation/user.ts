@@ -12,5 +12,6 @@ const registerSchema = Joi.object({email, firstName, lastName, password, passwor
 const loginSchema = Joi.object({email, password});
 const userUpdateSchema = Joi.object({email, firstName, lastName, password});
 const passwordChangeSchema = Joi.object({password, passwordNew: password, passwordNewRepeat});
+const forgotPasswordSchema = Joi.object({email});
 
-export {registerSchema, loginSchema, userUpdateSchema, passwordChangeSchema};
+export {registerSchema, loginSchema, userUpdateSchema, passwordChangeSchema, forgotPasswordSchema};

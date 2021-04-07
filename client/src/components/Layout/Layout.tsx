@@ -11,7 +11,7 @@ const Layout: FC = ({children}) => {
     <div className={classes.app}>
       <div className={classes.background}></div>
       <Header />
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="lg">
         <>{children}</>
       </Container>
       <Footer />

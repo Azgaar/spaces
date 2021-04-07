@@ -1,4 +1,3 @@
-import {Request, Response} from "express";
 import {User} from "../models/user";
 import {UserDocument, UserData} from "../types";
 import logger from "../utils/logger";
@@ -14,4 +13,10 @@ export const updateUser = async (user: UserDocument, userData: Partial<UserData>
   const updatedUser: UserDocument = await user.save();
   logger.info(`[User] User ${updatedUser.id} is updated`);
   return updatedUser;
+};
+
+export const deleteUsers = async (emails: Array<string>) => {
+  const deletedUsers = await User.deleteMany({email: {$in: emails}});
+  logger.info(`[User] User deletion request: ${emails.join(", ")}`);
+  return deletedUsers;
 };

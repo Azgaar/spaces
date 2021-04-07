@@ -1,6 +1,6 @@
 import React from "react";
 import useFormStyles from "../../../styles/form";
-import {Avatar, TextField, Button, Typography, Grid} from "@material-ui/core";
+import {Avatar, TextField, Button, Typography, Grid, Container} from "@material-ui/core";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import {Link as RouterLink, useHistory} from "react-router-dom";
 import {useDispatch} from "react-redux";
@@ -8,37 +8,40 @@ import {useForm, SubmitHandler} from "react-hook-form";
 import {ProfileEditForm} from "../../../types";
 import {updateUserData} from "../../../services";
 import {actions} from "../../../store/actions";
-import {useUserData} from "../../../hooks";
+import {useUser} from "../../../hooks";
 import {rules} from "../../../validation";
+import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
 
 function ProfileEdit() {
   const formStyles = useFormStyles();
   const dispatch = useDispatch();
-  const user = useUserData();
+  const {user} = useUser();
+  const {pushMessage} = useMessage();
   const history = useHistory();
 
-  const {register, errors, setError, handleSubmit} = useForm<ProfileEditForm>();
+  const {register, errors, handleSubmit} = useForm<ProfileEditForm>();
 
   const onSubmit: SubmitHandler<ProfileEditForm> = async (formData: ProfileEditForm) => {
     const res = await updateUserData(formData);
 
     if (!res.ok) {
-      setError("password", {type: "server", message: res.message});
+      pushMessage({title: res.message, type: MessageType.ERROR});
       return;
     }
 
     const {email, firstName, lastName} = res;
     dispatch(actions.updateUserData({email, firstName, lastName}));
+    
+    pushMessage({title: "Profile is changed", type: MessageType.SUCCESS});
     history.push("/profile");
-    // TODO: toast to show success
   };
 
   return (
-    <div className={formStyles.paper}>
+    <Container maxWidth="xs" className={formStyles.paper}>
       <Avatar className={formStyles.avatar}>
         <AccountCircleOutlinedIcon />
       </Avatar>
-      <Typography component="h1" variant="h5">Edit Profile</Typography>
+      <Typography component="h1" variant="h5" className={formStyles.header}>Edit Profile</Typography>
 
       <form className={formStyles.form} noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={2}>
@@ -72,7 +75,7 @@ function ProfileEdit() {
           </Grid>
         </Grid>
       </form>
-    </div>
+    </Container>
   );
 }
 
