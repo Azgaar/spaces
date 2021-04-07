@@ -4,8 +4,9 @@ import {Container} from "@material-ui/core";
 import {DataGrid, GridColDef, GridRowId, GridSelectionModelChangeParams} from "@material-ui/data-grid";
 import DeletionButton from "../../../components/Controls/DeletionButton/DeletionButton";
 import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
-import axios, {AxiosPromise} from "axios";
-import {LocationOption } from "../../../types";
+import {LocationOption} from "../../../types";
+import {WorkspaceService} from "../../../services";
+import { useRequest } from "../../../hooks";
 
 const columns: GridColDef[] = [
   {field: "status", headerName: "Status", width: 160},
@@ -15,39 +16,22 @@ const columns: GridColDef[] = [
   {field: "equipment", headerName: "Equipment", width: 340},
 ];
 
-const WorkspacesList = (props: {location: LocationOption}) => {
+const WorkspacesList = ({loc}: {loc: LocationOption}) => {
   const classes = useStyles();
   const {pushMessage} = useMessage();
-  const [isLoading, setLoading] = useState(true);
   const [workspaces, setWorkspaces] = useState([]);
   const [selection, setSelection] = useState([] as GridRowId[]);
-
-  const handleRequest = async (request: AxiosPromise) => {
-    setLoading(true);
-    try {
-      const res = await request;
-      return res.data;
-    } catch (error) {
-      const message = error.response?.data?.message || error.message;
-      pushMessage({title: message, type: MessageType.ERROR});
-    } finally {
-      setLoading(false);
-    }
-  }
+  const {isLoading, error, handleRequest} = useRequest();
 
   useEffect(() => {
     async function fetchWorkspaces() {
-      const res = await handleRequest(axios.post("/getWorkspaces", {location: props.location}, {withCredentials: true}));
+      const res = await handleRequest(WorkspaceService.list(loc));
       if (res) setWorkspaces(() => res);
+      else pushMessage({title: error, type: MessageType.ERROR});
     };
 
-    if (props.location.id) {
-      fetchWorkspaces();
-    } else {
-      setLoading(false);
-      setWorkspaces(() => []);
-    }
-  }, [props.location]);
+    loc.id ? fetchWorkspaces() : setWorkspaces(() => []);
+  }, [loc]);
 
   const handleSelection = ((selectionModel: GridSelectionModelChangeParams) => {
     const selection = selectionModel.selectionModel;
@@ -55,8 +39,14 @@ const WorkspacesList = (props: {location: LocationOption}) => {
   });
 
   const handleDeletion = async () => {
-    const res = await handleRequest(axios.delete("/deleteWorkspaces", {data: selection, withCredentials: true}));
-    if (res) setSelection(() => [] as GridRowId[]);
+    const remainingWorkspaces = await handleRequest(WorkspaceService.remove(selection));
+    if (remainingWorkspaces) {
+      setSelection(() => [] as GridRowId[]);
+      const title = selection.length > 1 ? "Workspaces are deleted" : "Workspace is deleted";
+      pushMessage({title, type: MessageType.SUCCESS});
+    } else {
+      pushMessage({title: error, type: MessageType.ERROR});
+    }
   }
 
   return (

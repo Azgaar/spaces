@@ -6,7 +6,3 @@ const rename = (id: string, description: string): AxiosPromise => axios.post("/r
 const remove = (id: string): AxiosPromise => axios.delete("/deleteLocation", {data: {id}, withCredentials: true});
 
 export const LocationService = {list, add, rename, remove};
-
-// axios.delete("/deleteLocation", {data: {id: location.id}, withCredentials: true})
-// axios.post("/renameLocation", {id: location.id, description: locationInput}, {withCredentials: true})
-// axios.post("/addLocation", {description: locationInput}, {withCredentials: true})

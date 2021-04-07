@@ -22,8 +22,8 @@ function Workspaces() {
 
   useEffect(() => {
     async function fetchLocations() {
-      const res: LocationOption[] = await handleRequest(LocationService.list());
-      if (res) setLocationList(() => res);
+      const allLocations: LocationOption[] = await handleRequest(LocationService.list());
+      if (allLocations) setLocationList(() => allLocations);
       else pushMessage({title: error, type: MessageType.ERROR});
     };
     fetchLocations();
@@ -58,10 +58,10 @@ function Workspaces() {
   }
 
   const deleteLocation = async () => {
-    const allLocations: LocationOption[] = await handleRequest(LocationService.remove(location.id));
-    if (allLocations) {
+    const remainingLocations: LocationOption[] = await handleRequest(LocationService.remove(location.id));
+    if (remainingLocations) {
       pushMessage({title: `Location "${location.description}" is deleted`, type: MessageType.SUCCESS});
-      setLocationList(() => allLocations);
+      setLocationList(() => remainingLocations);
       setLocation(() => locationDefault);
     } else {
       pushMessage({title: error, type: MessageType.ERROR});
@@ -98,7 +98,7 @@ function Workspaces() {
           </Grid>
         </Grid>
       </Container>
-      <WorkspacesList location={location} />
+      <WorkspacesList loc={location} />
     </Container>
   );
 }
