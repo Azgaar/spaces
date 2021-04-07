@@ -18,13 +18,12 @@ function Workspaces() {
   const [location, setLocation] = useState<LocationOption>(locationDefault);
   const [locationList, setLocationList] = useState<LocationOption[]>([]);
   const [locationInput, setLocationInput] = useState<string>("");
-  const {isLoading, error, handleRequest} = useRequest();
+  const {isLoading, handleRequest} = useRequest();
 
   useEffect(() => {
     async function fetchLocations() {
       const allLocations: LocationOption[] = await handleRequest(LocationService.list());
       if (allLocations) setLocationList(() => allLocations);
-      else pushMessage({title: error, type: MessageType.ERROR});
     };
     fetchLocations();
   }, []);
@@ -41,8 +40,6 @@ function Workspaces() {
       pushMessage({title: `Location "${locationInput}" is added`, type: MessageType.SUCCESS});
       setLocationList(locations => [...locations, addedLocation]);
       setLocation(() => addedLocation);
-    } else {
-      pushMessage({title: error, type: MessageType.ERROR});
     }
   }
 
@@ -52,8 +49,6 @@ function Workspaces() {
       pushMessage({title: `Location "${locationInput}" is renamed`, type: MessageType.SUCCESS});
       setLocationList(() => allLocations);
       setLocation(() => ({id: location.id, description: locationInput}));
-    } else {
-      pushMessage({title: error, type: MessageType.ERROR});
     }
   }
 
@@ -64,8 +59,6 @@ function Workspaces() {
       setLocationList(() => remainingLocations);
       setLocationInput(() => "");
       setLocation(() => locationDefault);
-    } else {
-      pushMessage({title: error, type: MessageType.ERROR});
     }
   }
 

@@ -21,13 +21,12 @@ const WorkspacesList = ({loc}: {loc: LocationOption}) => {
   const {pushMessage} = useMessage();
   const [workspaces, setWorkspaces] = useState([]);
   const [selection, setSelection] = useState([] as GridRowId[]);
-  const {isLoading, error, handleRequest} = useRequest();
+  const {isLoading, handleRequest} = useRequest();
 
   useEffect(() => {
     async function fetchWorkspaces() {
-      const res = await handleRequest(WorkspaceService.list(loc));
-      if (res) setWorkspaces(() => res);
-      else pushMessage({title: error, type: MessageType.ERROR});
+      const workspaces = await handleRequest(WorkspaceService.list(loc));
+      if (workspaces) setWorkspaces(() => workspaces);
     };
 
     loc.id ? fetchWorkspaces() : setWorkspaces(() => []);
@@ -44,8 +43,6 @@ const WorkspacesList = ({loc}: {loc: LocationOption}) => {
       setSelection(() => [] as GridRowId[]);
       const title = selection.length > 1 ? "Workspaces are deleted" : "Workspace is deleted";
       pushMessage({title, type: MessageType.SUCCESS});
-    } else {
-      pushMessage({title: error, type: MessageType.ERROR});
     }
   }
 

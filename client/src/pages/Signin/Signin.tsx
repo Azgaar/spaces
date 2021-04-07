@@ -5,30 +5,23 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import {Link as RouterLink, useHistory} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
 import {useDispatch} from "react-redux";
-import {SignInForm} from "../../types";
-import {signin} from "../../services";
+import {SignInForm, UserData} from "../../types";
 import {actions} from "../../store/actions";
 import {rules} from "../../validation";
-import {MessageType, useMessage} from "../../components/providers/MessageProvider";
+import {useRequest} from "../../hooks";
+import {AuthService} from "../../services";
 
 function Signin() {
   const formStyles = useFormStyles();
   const dispatch = useDispatch();
-  const {pushMessage} = useMessage();
   const history = useHistory();
-
+  const {handleRequest} = useRequest();
   const {register, errors, handleSubmit} = useForm<SignInForm>();
 
   const onSubmit: SubmitHandler<SignInForm> = async (formData: SignInForm) => {
-    const res = await signin(formData);
-
-    if (!res.ok) {
-      pushMessage({title: res.message, type: MessageType.ERROR});
-      return;
-    }
-
-    const {email, firstName, lastName, role} = res;
-    dispatch(actions.login({email, firstName, lastName, role}));
+    const userData: UserData = await handleRequest(AuthService.signin(formData));
+    if (!userData) return;
+    dispatch(actions.login(userData));
     history.push("/dashboard");
   };
 
