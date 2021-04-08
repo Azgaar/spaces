@@ -15,6 +15,17 @@ const useFormStyles = makeStyles(theme => ({
     margin: theme.spacing(1),
     backgroundColor: theme.palette.primary.main
   },
+  label: {
+    fontSize: ".85em",
+    margin: theme.spacing(0, 0, .2, 1.6)
+  },
+  chips: {
+    display: "flex",
+    flexWrap: "wrap"
+  },
+  chip: {
+    margin: theme.spacing(.4)
+  },
   buttons: {
     margin: theme.spacing(2, 0, 1)
   }
