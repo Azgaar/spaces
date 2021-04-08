@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import useStyles from "./WorkspaceEdit.style";
+import useStyles from "./WorkspaceDialog.style";
 import {Avatar, TextField, Button, Typography, Grid, Container, Dialog, MenuItem, Chip, InputLabel, Select} from "@material-ui/core";
 import AirplayIcon from "@material-ui/icons/Airplay";
 import PersonalVideoIcon from "@material-ui/icons/PersonalVideo";
@@ -10,17 +10,15 @@ import HeadsetMicIcon from "@material-ui/icons/HeadsetMic";
 import SpeakerPhoneIcon from "@material-ui/icons/SpeakerPhone";
 import DirectionsWalkIcon from "@material-ui/icons/DirectionsWalk";
 import PhonelinkSetupIcon from '@material-ui/icons/PhonelinkSetup';
-import {useForm, SubmitHandler} from "react-hook-form";
+import {useForm} from "react-hook-form";
 import {rules} from "../../../../validation/workspace";
-import {useRequest} from "../../../../hooks";
 import {Workspace, WorkspaceStatus, WorkspaceType, Equipment} from "../../../../types";
-import {MessageType, useMessage} from "../../../../components/providers/MessageProvider";
-import {WorkspaceService} from "../../../../services";
 
 type Props = {
   open: boolean;
   workspace: Workspace;
-  closeDialog: () => void;
+  close: () => void;
+  submit: (formData: Workspace) => void;
 }
 
 const getEquipmentIcon = (value: Equipment): React.ReactElement => {
@@ -36,35 +34,26 @@ const getEquipmentIcon = (value: Equipment): React.ReactElement => {
   }
 }
 
-const WorkspaceEdit = ({open, workspace, closeDialog}: Props) => {
+const WorkspaceEdit = ({open, workspace, close, submit}: Props) => {
   const classes = useStyles();
-  const {handleRequest} = useRequest();
-  const {pushMessage} = useMessage();
   const {register, errors, setValue, handleSubmit, reset} = useForm<Workspace>();
 
   useEffect(() => {
     reset({status: workspace.status, type: workspace.type, equipment: workspace.equipment});
   }, []);
 
-  const onSubmit: SubmitHandler<Workspace> = async (formData: Workspace) => {
-    console.log(formData);
-    const res = await handleRequest(WorkspaceService.update(formData));
-    if (!res) return;
-    pushMessage({title: "Workspace is updated", type: MessageType.SUCCESS});
-  };
-
   return (
-    <Dialog open={open} onClose={closeDialog} aria-labelledby="form-dialog-title">
+    <Dialog open={open} onClose={close} aria-labelledby="form-dialog-title">
       <Container maxWidth="xs" className={classes.paper}>
         <Avatar className={classes.avatar}>
           <AirplayIcon />
         </Avatar>
         <Typography component="h1" variant="h5">Edit Workspace</Typography>
 
-        <form className={classes.form} noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+        <form className={classes.form} noValidate autoComplete="off" onSubmit={handleSubmit(submit)}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={9}>
-              <TextField variant="outlined" required fullWidth id="description" label="Title" name="title" autoFocus
+              <TextField variant="outlined" required fullWidth id="description" label="Description" name="description" autoFocus
                 defaultValue={workspace.description} inputRef={register(rules.description)} error={Boolean(errors.description)} />
             </Grid>
             <Grid item xs={12} sm={3}>
@@ -104,7 +93,7 @@ const WorkspaceEdit = ({open, workspace, closeDialog}: Props) => {
               <Button type="submit" fullWidth variant="contained" color="primary">Save</Button>
             </Grid>
             <Grid item xs={12} sm={6} className={classes.buttons}>
-              <Button fullWidth variant="contained" color="primary" onClick={closeDialog}>Close</Button>
+              <Button fullWidth variant="contained" color="primary" onClick={close}>Close</Button>
             </Grid>
           </Grid>
         </form>
