@@ -9,7 +9,7 @@ const workspaceSchema = new Schema(
     status: {type: String, enum: ["available", "unavailable"], required},
     type: {type: String, required},
     size: {type: Number, required},
-    equipment: {type: String}
+    equipment: [{type: String}]
   },
   {timestamps: true, versionKey: false}
 );
