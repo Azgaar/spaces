@@ -9,14 +9,14 @@ const useFormStyles = makeStyles(theme => ({
   },
   form: {
     width: "100%",
-    marginTop: theme.spacing(3),
+    marginTop: theme.spacing(3)
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.primary.main
   },
   buttons: {
-    margin: theme.spacing(2, 0, 1),
+    margin: theme.spacing(2, 0, 1)
   }
 }));
 

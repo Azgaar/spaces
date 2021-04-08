@@ -1,11 +1,11 @@
 import React from "react";
 import useStyles from "./WorkspaceEdit.style";
-import {Avatar, TextField, Button, Typography, Grid, Container, Dialog} from "@material-ui/core";
+import {Avatar, TextField, Button, Typography, Grid, Container, Dialog, Select, MenuItem} from "@material-ui/core";
 import AirplayIcon from "@material-ui/icons/Airplay";
 import {useForm, SubmitHandler} from "react-hook-form";
 import {rules} from "../../../../validation/workspace";
 import {useRequest} from "../../../../hooks";
-import {Workspace} from "../../../../types";
+import {Workspace, WorkspaceStatus} from "../../../../types";
 import {MessageType, useMessage} from "../../../../components/providers/MessageProvider";
 import {WorkspaceService} from "../../../../services";
 
@@ -19,9 +19,10 @@ const WorkspaceEdit = ({open, workspace, closeDialog}: Props) => {
   const classes = useStyles();
   const {handleRequest} = useRequest();
   const {pushMessage} = useMessage();
-  const {register, errors, handleSubmit} = useForm<Workspace>();
+  const {register, errors, setValue, handleSubmit} = useForm<Workspace>();
 
   const onSubmit: SubmitHandler<Workspace> = async (formData: Workspace) => {
+    console.log(formData);
     const res = await handleRequest(WorkspaceService.update(formData));
     if (!res) return;
     pushMessage({title: "Workspace is updated", type: MessageType.SUCCESS});
@@ -42,8 +43,11 @@ const WorkspaceEdit = ({open, workspace, closeDialog}: Props) => {
                 defaultValue={workspace.description} inputRef={register(rules.description)} error={Boolean(errors.description)} />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField variant="outlined" required fullWidth id="status" label="Status" name="status"
-                defaultValue={workspace.status} inputRef={register(rules.status)} error={Boolean(errors.status)} />
+              <TextField select variant="outlined" required fullWidth id="status" label="Status" name="status"
+                 defaultValue={workspace.status} inputRef={register(rules.status)} error={Boolean(errors.status)} 
+                 onChange={e => setValue("status", e.target.value)} >
+                {Object.values(WorkspaceStatus).map((option) => <MenuItem key={option} value={option}>{option}</MenuItem>)}
+              </TextField>
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField variant="outlined" required fullWidth id="type" label="Type" name="type"
