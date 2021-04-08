@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import useStyles from "./WorkspacesList.style";
 import {Button, Container} from "@material-ui/core";
-import {DataGrid, GridColDef, GridRowId, GridSelectionModelChangeParams} from "@material-ui/data-grid";
+import {DataGrid, GridColDef, GridColTypeDef, GridRowId, GridSelectionModelChangeParams} from "@material-ui/data-grid";
 import DeletionButton from "../../../components/Controls/DeletionButton/DeletionButton";
 import WorkspaceDialog from "./WorkspaceEdit/WorkspaceDialog";
 import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
@@ -9,12 +9,16 @@ import {LocationOption, Workspace, WorkspaceStatus, WorkspaceType} from "../../.
 import {WorkspaceService} from "../../../services";
 import {useRequest} from "../../../hooks";
 
+const equipmentColumn: GridColTypeDef = {
+  valueFormatter: ({value}) => Array.isArray(value) ? value.join(", ") : ""
+};
+
 const columns: GridColDef[] = [
   {field: "status", headerName: "Status", width: 160},
   {field: "description", headerName: "Description", width: 240},
   {field: "type", headerName: "Type", width: 200},
-  {field: "size", headerName: "Size", width: 120},
-  {field: "equipment", headerName: "Equipment", width: 340},
+  {field: "size", headerName: "Size", type: "number", width: 120},
+  {field: "equipment", headerName: "Equipment", width: 340, ...equipmentColumn}
 ];
 
 const WorkspacesList = ({loc}: {loc: LocationOption}) => {
@@ -60,7 +64,7 @@ const WorkspacesList = ({loc}: {loc: LocationOption}) => {
       setEdit(() => "edit");
     },
     add: () => {
-      setWorkspace(() => ({...workspace, description: "WS_" + workspaces.length}));
+      setWorkspace(workspace => ({...workspace, description: "WS_" + workspaces.length}));
       setEdit(() => "add");
     },
     close: () => setEdit(() => null)
