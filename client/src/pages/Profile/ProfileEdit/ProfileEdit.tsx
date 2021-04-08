@@ -9,7 +9,7 @@ import {ProfileEditForm} from "../../../types";
 import {UserService} from "../../../services";
 import {actions} from "../../../store/actions";
 import {useRequest, useUser} from "../../../hooks";
-import {rules} from "../../../validation";
+import {rules} from "../../../validation/user";
 import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
 
 function ProfileEdit() {

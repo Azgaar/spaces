@@ -7,7 +7,7 @@ import {useForm, SubmitHandler} from "react-hook-form";
 import {useDispatch} from "react-redux";
 import {SignInForm, UserData} from "../../types";
 import {actions} from "../../store/actions";
-import {rules} from "../../validation";
+import {rules} from "../../validation/user";
 import {useRequest} from "../../hooks";
 import {AuthService} from "../../services";
 

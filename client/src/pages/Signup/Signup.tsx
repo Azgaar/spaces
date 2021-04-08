@@ -8,7 +8,7 @@ import {useForm, SubmitHandler} from "react-hook-form";
 import {SignUpForm} from "../../types";
 import {UserService} from "../../services";
 import {actions} from "../../store/actions";
-import {rules} from "../../validation";
+import {rules} from "../../validation/user";
 import {useRequest} from "../../hooks";
 
 const TermslLabel = () => {

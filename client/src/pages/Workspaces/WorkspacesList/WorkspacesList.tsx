@@ -3,6 +3,7 @@ import useStyles from "./WorkspacesList.style";
 import {Button, Container} from "@material-ui/core";
 import {DataGrid, GridColDef, GridRowId, GridSelectionModelChangeParams} from "@material-ui/data-grid";
 import DeletionButton from "../../../components/Controls/DeletionButton/DeletionButton";
+import WorkspaceEdit from "./WorkspaceEdit/WorkspaceEdit";
 import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
 import {LocationOption, Workspace, WorkspaceStatus, WorkspaceType} from "../../../types";
 import {WorkspaceService} from "../../../services";
@@ -10,7 +11,7 @@ import {useRequest} from "../../../hooks";
 
 const columns: GridColDef[] = [
   {field: "status", headerName: "Status", width: 160},
-  {field: "description", headerName: "Title", width: 240},
+  {field: "description", headerName: "Description", width: 240},
   {field: "type", headerName: "Type", width: 200},
   {field: "size", headerName: "Size", width: 120},
   {field: "equipment", headerName: "Equipment", width: 340},
@@ -19,6 +20,7 @@ const columns: GridColDef[] = [
 const WorkspacesList = ({loc}: {loc: LocationOption}) => {
   const classes = useStyles();
   const {pushMessage} = useMessage();
+  const [showEdit, setEdit] = useState(false as boolean);
   const [workspaces, setWorkspaces] = useState([] as Workspace[]);
   const [selection, setSelection] = useState([] as GridRowId[]);
   const {isLoading, setLoading, handleRequest} = useRequest();
@@ -75,8 +77,10 @@ const WorkspacesList = ({loc}: {loc: LocationOption}) => {
         autoHeight checkboxSelection loading={isLoading} onSelectionModelChange={handleSelection} />
       <Container className={classes.controls}>
         {Boolean(loc.id) && <Button variant="contained" color="primary" onClick={addWorkspace}>Add</Button>}
-        {Boolean(selection.length) && <DeletionButton onDelete={handleDeletion} object={selection.length > 1 ? "workspaces" : "workspace"} />}
+        {selection.length === 1 && <Button variant="contained" color="primary" className={classes.button} onClick={() => setEdit(showEdit => !showEdit)}>Edit</Button>}
+        {Boolean(selection.length) && <DeletionButton onDelete={handleDeletion} title="Delete" object={selection.length > 1 ? "workspaces" : "workspace"} />}
       </Container>
+      {showEdit && <WorkspaceEdit open={showEdit} workspace={workspaces.find(ws => ws.id === selection[0]) as Workspace} closeDialog={() => setEdit(() => false)} />}
     </Container>
   );
 };

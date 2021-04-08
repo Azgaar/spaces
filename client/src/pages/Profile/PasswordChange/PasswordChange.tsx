@@ -6,7 +6,7 @@ import {Link as RouterLink, useHistory} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
 import {PassportChangeForm} from "../../../types";
 import {UserService} from "../../../services";
-import {rules} from "../../../validation";
+import {rules} from "../../../validation/user";
 import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
 import {useRequest} from "../../../hooks";
 
