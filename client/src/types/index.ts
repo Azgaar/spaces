@@ -66,9 +66,9 @@ export enum WorkspaceType {
   CONFERENCE_ROOM = "Conference room",
   MEETING_ROOM = "Meeting room",
   COWORKING = "Coworking",
-  FOCUS_ROOM = "focus room",
-  FUN_ZONE = "fun zone",
-  NAP_POD = "nap pod"
+  FOCUS_ROOM = "Focus room",
+  FUN_ZONE = "Fun zone",
+  NAP_POD = "Nap pod"
 }
 
 export type Workspace = {

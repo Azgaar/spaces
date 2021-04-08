@@ -1,11 +1,11 @@
 import React from "react";
 import useStyles from "./WorkspaceEdit.style";
-import {Avatar, TextField, Button, Typography, Grid, Container, Dialog, Select, MenuItem} from "@material-ui/core";
+import {Avatar, TextField, Button, Typography, Grid, Container, Dialog, MenuItem} from "@material-ui/core";
 import AirplayIcon from "@material-ui/icons/Airplay";
 import {useForm, SubmitHandler} from "react-hook-form";
 import {rules} from "../../../../validation/workspace";
 import {useRequest} from "../../../../hooks";
-import {Workspace, WorkspaceStatus} from "../../../../types";
+import {Workspace, WorkspaceStatus, WorkspaceType} from "../../../../types";
 import {MessageType, useMessage} from "../../../../components/providers/MessageProvider";
 import {WorkspaceService} from "../../../../services";
 
@@ -50,8 +50,11 @@ const WorkspaceEdit = ({open, workspace, closeDialog}: Props) => {
               </TextField>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField variant="outlined" required fullWidth id="type" label="Type" name="type"
-                defaultValue={workspace.type} inputRef={register(rules.type)} error={Boolean(errors.type)} />
+              <TextField select variant="outlined" required fullWidth id="type" label="Type" name="type"
+                 defaultValue={workspace.type} inputRef={register(rules.type)} error={Boolean(errors.type)} 
+                 onChange={e => setValue("type", e.target.value)} >
+                {Object.values(WorkspaceType).map((option) => <MenuItem key={option} value={option}>{option}</MenuItem>)}
+              </TextField>
             </Grid>
             <Grid item xs={12}>
               <TextField variant="outlined" required fullWidth id="size" label="Size" name="size"
