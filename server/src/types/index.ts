@@ -57,5 +57,5 @@ export type WorkspaceData = {
   status: WorkspaceStatus;
   type: string;
   size: number;
-  equipment: string;
+  equipment: string[];
 }

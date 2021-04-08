@@ -4,7 +4,8 @@ import ApiError from "../utils/apiError";
 import workspaceService from "../services/workspace";
 
 const list = catchAsync(async (req, res, next) => {
-  const workspaces = await workspaceService.list();
+  const {location} = req.body;
+  const workspaces = await workspaceService.list(location);
   if (!workspaces) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot fetch workspaces"));
 
   res.status(httpStatus.OK).send(workspaces);

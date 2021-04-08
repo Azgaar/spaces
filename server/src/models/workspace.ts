@@ -5,7 +5,7 @@ const required = true;
 const workspaceSchema = new Schema(
   {
     description: {type: String, required},
-    location: {type: Schema.Types.ObjectId, ref: "Location", required},
+    location: {type: Schema.Types.ObjectId, required},
     status: {type: String, enum: ["available", "unavailable"], required},
     type: {type: String, required},
     size: {type: Number, required},
