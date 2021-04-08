@@ -13,3 +13,4 @@ export {router as renameLocation} from "./renameLocation.router";
 export {router as deleteLocation} from "./deleteLocation.router";
 export {router as getWorkspaces} from "./getWorkspaces.router";
 export {router as addWorkspace} from "./addWorkspace.router";
+export {router as deleteWorkspaces} from "./deleteWorkspaces.router";

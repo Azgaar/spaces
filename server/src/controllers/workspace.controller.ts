@@ -24,7 +24,14 @@ const rename = catchAsync(async (req, res, next) => {
 });
 
 const remove = catchAsync(async (req, res, next) => {
-  list(req, res, next);
+  const {location, selection} = req.body;
+  const removed = await workspaceService.remove(selection);
+  if (!removed) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot remove workspaces"));
+
+  const workspaces = await workspaceService.list(location);
+  if (!workspaces) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot fetch workspaces"));
+
+  res.status(httpStatus.OK).send(workspaces);
 });
 
 export const workspaceController = {list, add, rename, remove};

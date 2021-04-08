@@ -20,9 +20,9 @@ const update = async (workspace: WorkspaceDocument, workspaceData: WorkspaceData
   return updatedWorkspace;
 };
 
-const remove = async (workspaces: Array<string>) => {
-  const deletedWorkspaces = await Workspace.deleteMany({_id: {$in: workspaces}});
-  logger.info(`[Workspace] Workspace deletion request: ${workspaces.join(", ")}`);
+const remove = async (ids: Array<string>) => {
+  const deletedWorkspaces = await Workspace.deleteMany({_id: {$in: ids}});
+  logger.info(`[Workspace] Workspace deletion request: ${ids.join(", ")}`);
   return deletedWorkspaces;
 };
 

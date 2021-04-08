@@ -25,7 +25,7 @@ const WorkspacesList = ({loc}: {loc: LocationOption}) => {
 
   useEffect(() => {
     async function fetchWorkspaces() {
-      const workspaces = await handleRequest(WorkspaceService.list(loc));
+      const workspaces: Workspace[] = await handleRequest(WorkspaceService.list(loc));
       if (workspaces) setWorkspaces(() => workspaces);
     };
 
@@ -52,19 +52,21 @@ const WorkspacesList = ({loc}: {loc: LocationOption}) => {
       equipment: []
     };
 
-    const addedWorkspace = await handleRequest(WorkspaceService.add(workspace));
+    const addedWorkspace: Workspace = await handleRequest(WorkspaceService.add(workspace));
     if (!addedWorkspace) return;
     setWorkspaces(workspaces => [...workspaces, addedWorkspace]);
     pushMessage({title: `Workspace "${addedWorkspace.description}" is added`, type: MessageType.SUCCESS});
   }
 
   const handleDeletion = async () => {
-    const remainingWorkspaces = await handleRequest(WorkspaceService.remove(selection));
-    if (remainingWorkspaces) {
-      setSelection(() => [] as GridRowId[]);
-      const title = selection.length > 1 ? "Workspaces are deleted" : "Workspace is deleted";
-      pushMessage({title, type: MessageType.SUCCESS});
-    }
+    const remaining: Workspace[] = await handleRequest(WorkspaceService.remove(loc, selection));
+    console.log(remaining);
+    if (!remaining) return;
+
+    setWorkspaces(() => remaining);
+    setSelection(() => [] as GridRowId[]);
+    const title = selection.length > 1 ? "Workspaces are deleted" : "Workspace is deleted";
+    pushMessage({title, type: MessageType.SUCCESS});
   }
 
   return (

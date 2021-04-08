@@ -72,7 +72,7 @@ export enum WorkspaceType {
 }
 
 export type Workspace = {
-  _id?: string;
+  id?: string;
   description: string;
   location: string;
   status: WorkspaceStatus;
