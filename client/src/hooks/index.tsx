@@ -32,5 +32,5 @@ export const useRequest = () => {
     }
   };
 
-  return {isLoading, handleRequest};
+  return {isLoading, setLoading, handleRequest};
 };

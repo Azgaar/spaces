@@ -21,7 +21,7 @@ const WorkspacesList = ({loc}: {loc: LocationOption}) => {
   const {pushMessage} = useMessage();
   const [workspaces, setWorkspaces] = useState([]);
   const [selection, setSelection] = useState([] as GridRowId[]);
-  const {isLoading, handleRequest} = useRequest();
+  const {isLoading, setLoading, handleRequest} = useRequest();
 
   useEffect(() => {
     async function fetchWorkspaces() {
@@ -29,7 +29,12 @@ const WorkspacesList = ({loc}: {loc: LocationOption}) => {
       if (workspaces) setWorkspaces(() => workspaces);
     };
 
-    loc.id ? fetchWorkspaces() : setWorkspaces(() => []);
+    if (loc.id) {
+      fetchWorkspaces();
+    } else {
+      setLoading(() => false);
+      setWorkspaces(() => []);
+    }
   }, [loc]);
 
   const handleSelection = ((selectionModel: GridSelectionModelChangeParams) => {
