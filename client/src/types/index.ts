@@ -88,5 +88,5 @@ export type Workspace = {
   status: WorkspaceStatus;
   type: WorkspaceType;
   size: number;
-  equipment: string[];
+  equipment: Equipment[];
 };

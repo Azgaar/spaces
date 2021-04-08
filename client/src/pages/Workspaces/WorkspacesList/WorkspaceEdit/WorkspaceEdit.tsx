@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import useStyles from "./WorkspaceEdit.style";
 import {Avatar, TextField, Button, Typography, Grid, Container, Dialog, MenuItem, Chip, InputLabel, Select} from "@material-ui/core";
 import AirplayIcon from "@material-ui/icons/Airplay";
@@ -40,7 +40,11 @@ const WorkspaceEdit = ({open, workspace, closeDialog}: Props) => {
   const classes = useStyles();
   const {handleRequest} = useRequest();
   const {pushMessage} = useMessage();
-  const {register, errors, setValue, handleSubmit} = useForm<Workspace>();
+  const {register, errors, setValue, handleSubmit, reset} = useForm<Workspace>();
+
+  useEffect(() => {
+    reset({status: workspace.status, type: workspace.type, equipment: workspace.equipment});
+  }, []);
 
   const onSubmit: SubmitHandler<Workspace> = async (formData: Workspace) => {
     console.log(formData);
