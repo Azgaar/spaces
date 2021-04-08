@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import useStyles from "./WorkspacesList.style";
-import {Container} from "@material-ui/core";
+import {Button, Container} from "@material-ui/core";
 import {DataGrid, GridColDef, GridRowId, GridSelectionModelChangeParams} from "@material-ui/data-grid";
 import DeletionButton from "../../../components/Controls/DeletionButton/DeletionButton";
 import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
-import {LocationOption} from "../../../types";
+import {LocationOption, Workspace, WorkspaceStatus, WorkspaceType} from "../../../types";
 import {WorkspaceService} from "../../../services";
 import {useRequest} from "../../../hooks";
 
@@ -19,7 +19,7 @@ const columns: GridColDef[] = [
 const WorkspacesList = ({loc}: {loc: LocationOption}) => {
   const classes = useStyles();
   const {pushMessage} = useMessage();
-  const [workspaces, setWorkspaces] = useState([]);
+  const [workspaces, setWorkspaces] = useState([] as Workspace[]);
   const [selection, setSelection] = useState([] as GridRowId[]);
   const {isLoading, setLoading, handleRequest} = useRequest();
 
@@ -42,6 +42,22 @@ const WorkspacesList = ({loc}: {loc: LocationOption}) => {
     setSelection(() => selection);
   });
 
+  const addWorkspace = async () => {
+    const workspace: Workspace = {
+      description: "WS_" + workspaces.length,
+      location: loc.id,
+      status: WorkspaceStatus.AVAILABLE,
+      type: WorkspaceType.DESK,
+      size: 1,
+      equipment: []
+    };
+
+    const addedWorkspace = await handleRequest(WorkspaceService.add(workspace));
+    if (!addedWorkspace) return;
+    setWorkspaces(workspaces => [...workspaces, addedWorkspace]);
+    pushMessage({title: `Workspace "${addedWorkspace.description}" is added`, type: MessageType.SUCCESS});
+  }
+
   const handleDeletion = async () => {
     const remainingWorkspaces = await handleRequest(WorkspaceService.remove(selection));
     if (remainingWorkspaces) {
@@ -54,8 +70,9 @@ const WorkspacesList = ({loc}: {loc: LocationOption}) => {
   return (
     <Container className={classes.container}>
       <DataGrid rows={workspaces} columns={columns} pageSize={5} rowsPerPageOptions={[5, 10, 20, 40]}
-        getRowId={(row) => row.email} autoHeight checkboxSelection loading={isLoading} onSelectionModelChange={handleSelection} />
+        autoHeight checkboxSelection loading={isLoading} onSelectionModelChange={handleSelection} />
       <Container className={classes.controls}>
+        {Boolean(loc.id) && <Button variant="contained" color="primary" onClick={addWorkspace}>Add</Button>}
         {Boolean(selection.length) && <DeletionButton onDelete={handleDeletion} object={selection.length > 1 ? "workspaces" : "workspace"} />}
       </Container>
     </Container>

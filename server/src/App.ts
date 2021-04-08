@@ -54,6 +54,7 @@ export default class App {
     this.app.use("/renameLocation", Routes.renameLocation);
     this.app.use("/deleteLocation", Routes.deleteLocation);
     this.app.use("/getWorkspaces", Routes.getWorkspaces);
+    this.app.use("/addWorkspace", Routes.addWorkspace);
 
     this.app.use("/*", (req, res, next) => next(new ApiError(httpStatus.NOT_FOUND, "Not found")));
 

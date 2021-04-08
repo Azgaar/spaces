@@ -7,21 +7,21 @@ const list = async () => {
   return locations;
 };
 
-const add = async (inputData: LocationData) => {
-  const location: LocationDocument = await Location.create(inputData);
+const add = async (locationData: LocationData) => {
+  const location: LocationDocument = await Location.create(locationData);
   logger.info(`[Location] Location ${location.id} is created`);
   return location;
 };
 
-const rename = async (inputData: LocationData) => {
-  const renamedLocation = await Location.updateOne({_id: inputData.id}, {description: inputData.description});
-  logger.info(`[Location] Location renaming request: ${inputData.id}`);
+const rename = async (locationData: LocationData) => {
+  const renamedLocation = await Location.updateOne({_id: locationData.id}, {description: locationData.description});
+  logger.info(`[Location] Location renaming request: ${locationData.id}`);
   return renamedLocation;
 };
 
-const remove = async (inputData: Partial<LocationData>) => {
-  const deletedlocation = await Location.deleteOne({_id: inputData.id});
-  logger.info(`[Location] Location deletion request: ${inputData.id}`);
+const remove = async (locationData: Partial<LocationData>) => {
+  const deletedlocation = await Location.deleteOne({_id: locationData.id});
+  logger.info(`[Location] Location deletion request: ${locationData.id}`);
   return deletedlocation;
 };
 

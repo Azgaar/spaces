@@ -1,6 +1,6 @@
 import {Schema, model} from "mongoose";
 import {hash} from "bcryptjs";
-import {UserDocument, UserData} from "../types";
+import {UserDocument, UserData, UserRole} from "../types";
 
 const required = true;
 const userSchema = new Schema(
@@ -9,7 +9,7 @@ const userSchema = new Schema(
     firstName: {type: String, required},
     lastName: {type: String, required},
     password: {type: String, required},
-    role: {type: String, enum: ["user", "admin"], required}
+    role: {type: String, enum: UserRole, required}
   },
   {timestamps: true, versionKey: false}
 );

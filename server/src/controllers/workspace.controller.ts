@@ -2,6 +2,7 @@ import httpStatus from "http-status";
 import catchAsync from "../utils/catchAsync";
 import ApiError from "../utils/apiError";
 import workspaceService from "../services/workspace";
+import logger from "../utils/logger";
 
 const list = catchAsync(async (req, res, next) => {
   const {location} = req.body;
@@ -12,7 +13,10 @@ const list = catchAsync(async (req, res, next) => {
 });
 
 const add = catchAsync(async (req, res, next) => {
-  res.status(httpStatus.OK).send(location);
+  const addedWorkspace = await workspaceService.add(req.body);
+  if (!addedWorkspace) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot add workspace"));
+
+  res.status(httpStatus.CREATED).send(addedWorkspace);
 });
 
 const rename = catchAsync(async (req, res, next) => {

@@ -38,6 +38,11 @@ export interface LocationDocument extends Document {
 
 export interface WorkspaceDocument extends Document {
   description: string;
+  location: string;
+  status: WorkspaceStatus;
+  type: WorkspaceType;
+  size: number;
+  equipment: string[];
 }
 
 export type LocationData = {
@@ -46,8 +51,18 @@ export type LocationData = {
 }
 
 export enum WorkspaceStatus {
-  AVAILABLE = "available",
-  UNAVAILABLE = "unavailable"
+  AVAILABLE = "Available",
+  UNAVAILABLE = "Unavailable"
+}
+
+export enum WorkspaceType {
+  DESK = "Desk",
+  CONFERENCE_ROOM = "Conference room",
+  MEETING_ROOM = "Meeting room",
+  COWORKING = "Coworking",
+  FOCUS_ROOM = "Focus room",
+  FUN_ZONE = "Fun zone",
+  NAP_POD = "Nap pod"
 }
 
 export type WorkspaceData = {
@@ -55,7 +70,7 @@ export type WorkspaceData = {
   description: string;
   location: string;
   status: WorkspaceStatus;
-  type: string;
+  type: WorkspaceType;
   size: number;
   equipment: string[];
 }
