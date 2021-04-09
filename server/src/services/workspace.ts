@@ -1,5 +1,5 @@
 import {Workspace} from "../models/workspace";
-import {WorkspaceData, WorkspaceDocument} from "../types";
+import {WorkspaceData, WorkspaceDocument, WorkspaceStatus} from "../types";
 import logger from "../utils/logger";
 
 const list = async (location: string) => {
@@ -13,7 +13,10 @@ const add = async (workspaceData: WorkspaceData) => {
   return workspace;
 };
 
-const update = async (workspace: WorkspaceDocument, workspaceData: WorkspaceData) => {
+const update = async (workspaceData: WorkspaceData) => {
+  const workspace = await Workspace.findById(workspaceData.id);
+  if (!workspace) return false;
+
   Object.assign(workspace, workspaceData);
   const updatedWorkspace: WorkspaceDocument = await workspace.save();
   logger.info(`[Workspace] Workspace ${updatedWorkspace.id} is updated`);

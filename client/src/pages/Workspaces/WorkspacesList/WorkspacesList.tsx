@@ -72,7 +72,6 @@ const WorkspacesList = ({loc}: {loc: LocationOption}) => {
 
   const handleCreation = async (formData: Workspace) => {
     const requestData: Workspace = {...formData, location: loc.id};
-    console.log(requestData);
     const addedWorkspace: Workspace = await handleRequest(WorkspaceService.add(requestData));
     if (!addedWorkspace) return;
 
@@ -82,18 +81,18 @@ const WorkspacesList = ({loc}: {loc: LocationOption}) => {
   }
 
   const handleUpdate = async (formData: Workspace) => {
-    const requestData: Workspace = {...formData, location: loc.id};
-    console.log(requestData);
+    const requestData = {...workspace, ...formData};
+    const remaining: Workspace[] = await handleRequest(WorkspaceService.update(requestData));
+    if (!remaining) return;
 
-    const updatedWorkspace: Workspace = await handleRequest(WorkspaceService.update(requestData));
-    if (!updatedWorkspace) return;
-    //setWorkspaces(workspaces => [...workspaces, addedWorkspace]);
-    pushMessage({title: `Workspace "${updatedWorkspace.description}" is updated`, type: MessageType.SUCCESS});
+    dialog.close();
+    setWorkspace(() => requestData);
+    setWorkspaces(() => remaining);
+    pushMessage({title: `Workspace "${requestData.description}" is updated`, type: MessageType.SUCCESS});
   }
 
   const handleDeletion = async () => {
     const remaining: Workspace[] = await handleRequest(WorkspaceService.remove(loc, selection));
-    console.log(remaining);
     if (!remaining) return;
 
     setWorkspaces(() => remaining);
