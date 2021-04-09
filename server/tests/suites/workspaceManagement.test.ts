@@ -61,7 +61,6 @@ describe("Workspace management service", () => {
   it("allows to get workspace list for admin", async () => {
     const response = await request(app).post("/getWorkspaces").set("Cookie", cookie.admin).send({location: workspace.location}).expect(httpStatus.OK);
     expect(Array.isArray(response.body)).toBe(true);
-    console.log(response.body);
     expect(response.body.length).toBe(1);
     expect(response.body[0].description).toBe(workspace.description);
     expect(response.body[0].id).toBeTruthy();
