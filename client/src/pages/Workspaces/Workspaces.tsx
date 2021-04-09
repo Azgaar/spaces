@@ -27,7 +27,11 @@ function Workspaces() {
 
       setLocationList(() => allLocations);
       const stored = localStorage.getItem("location");
-      if (stored) setLocation(() => JSON.parse(stored));
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (allLocations.find(loc => loc.id === parsed.id)) setLocation(() => parsed);
+        else localStorage.removeItem("location");
+      }
     };
     fetchLocations();
   }, []);
