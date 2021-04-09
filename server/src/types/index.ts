@@ -42,7 +42,7 @@ export interface WorkspaceDocument extends Document {
   status: WorkspaceStatus;
   type: WorkspaceType;
   size: number;
-  equipment: string[];
+  equipment: Equipment[];
 }
 
 export type LocationData = {
@@ -65,6 +65,16 @@ export enum WorkspaceType {
   NAP_POD = "Nap pod"
 }
 
+export enum Equipment {
+  PROJECTOR = "Projector",
+  MONITOR = "Monitor",
+  TELEPHONE = "Telephone",
+  SPEAKERPHONE = "Speakerphone",
+  HEADSET = "Headset",
+  STANDING_DESK = "Standing desk",
+  COUCH = "Couch"
+}
+
 export type WorkspaceData = {
   id?: string;
   description: string;
@@ -72,5 +82,5 @@ export type WorkspaceData = {
   status: WorkspaceStatus;
   type: WorkspaceType;
   size: number;
-  equipment: string[];
+  equipment: Equipment[];
 }

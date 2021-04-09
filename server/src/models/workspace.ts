@@ -1,5 +1,5 @@
 import {Schema, model} from "mongoose";
-import {WorkspaceDocument, WorkspaceStatus, WorkspaceType} from "../types";
+import {WorkspaceDocument, WorkspaceStatus, WorkspaceType, Equipment} from "../types";
 
 const required = true;
 const workspaceSchema = new Schema(
@@ -9,7 +9,7 @@ const workspaceSchema = new Schema(
     status: {type: String, enum: WorkspaceStatus, required},
     type: {type: String, enum: WorkspaceType, required},
     size: {type: Number, required},
-    equipment: [{type: String}]
+    equipment: [{type: String, enum: Equipment}]
   },
   {timestamps: true, versionKey: false}
 );
