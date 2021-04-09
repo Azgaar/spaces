@@ -15,7 +15,7 @@ const add = catchAsync(async (req, res, next) => {
   const location = await locationService.add({description});
   if (!location) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot add location"));
 
-  res.status(httpStatus.OK).send(location);
+  res.status(httpStatus.CREATED).send(location);
 });
 
 const rename = catchAsync(async (req, res, next) => {
