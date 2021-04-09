@@ -23,15 +23,21 @@ function Workspaces() {
   useEffect(() => {
     async function fetchLocations() {
       const allLocations: LocationOption[] = await handleRequest(LocationService.list());
-      if (allLocations) setLocationList(() => allLocations);
+      if (!allLocations) return;
+
+      setLocationList(() => allLocations);
+      const stored = localStorage.getItem("location");
+      if (stored) setLocation(() => JSON.parse(stored));
     };
     fetchLocations();
   }, []);
 
   const handleLocationChange = (value: LocationOption | string | null) => {
     if (!value) setLocation(() => locationDefault);
-    else if (typeof value === "string") return;
-    else setLocation(() => value);
+    if (!value || typeof value === "string") return;
+
+    setLocation(() => value);
+    localStorage.setItem("location", JSON.stringify(value));
   }
 
   const addLocation = async () => {
