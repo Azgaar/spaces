@@ -15,7 +15,6 @@ import {rules} from "../../../../validation/workspace";
 import {Workspace, WorkspaceStatus, WorkspaceType, Equipment} from "../../../../types";
 
 type Props = {
-  open: boolean;
   workspace: Workspace;
   close: () => void;
   submit: (formData: Workspace) => void;
@@ -34,7 +33,7 @@ const getEquipmentIcon = (value: Equipment): React.ReactElement => {
   }
 }
 
-const WorkspaceEdit = ({open, workspace, close, submit}: Props) => {
+const WorkspaceEdit = ({workspace, close, submit}: Props) => {
   const classes = useStyles();
   const {register, errors, setValue, handleSubmit, reset} = useForm<Workspace>();
 
@@ -43,7 +42,7 @@ const WorkspaceEdit = ({open, workspace, close, submit}: Props) => {
   }, []);
 
   return (
-    <Dialog open={open} onClose={close} aria-labelledby="form-dialog-title">
+    <Dialog open onClose={close} aria-labelledby="form-dialog-title">
       <Container maxWidth="xs" className={classes.paper}>
         <Avatar className={classes.avatar}>
           <AirplayIcon />
