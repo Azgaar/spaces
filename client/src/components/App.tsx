@@ -2,7 +2,8 @@ import React, {Suspense} from "react";
 import {Switch, Route, Redirect} from "react-router-dom";
 import Layout from "./Layout/Layout";
 import Spinner from "./Spinner/Spinner";
-import {PrivateRoute, AccessRole} from "./PrivateRoute";
+import {PrivateRoute} from "./PrivateRoute";
+import {UserRole} from "../types";
 
 const Signin = React.lazy(() => import("../pages/Signin/Signin"));
 const Signup = React.lazy(() => import("../pages/Signup/Signup"));
@@ -20,15 +21,15 @@ function App() {
       <Suspense fallback={<Spinner />}>
         <Switch>
           <Route exact path="/"><Redirect to="/dashboard" /></Route>
-          <PrivateRoute path="/signin" access={AccessRole.UNLOGGED} component={Signin} />
-          <PrivateRoute path="/signup" access={AccessRole.UNLOGGED} component={Signup} />
-          <PrivateRoute path="/forgotPassword" access={AccessRole.UNLOGGED} component={ForgotPassword} />
-          <PrivateRoute path="/profile" access={AccessRole.LOGGED} component={Profile} />
-          <PrivateRoute path="/editProfile" access={AccessRole.LOGGED} component={ProfileEdit} />
-          <PrivateRoute path="/changePassword" access={AccessRole.LOGGED} component={PasswordChange} />
-          <PrivateRoute path="/dashboard" access={AccessRole.LOGGED} component={Dashboard} />
-          <PrivateRoute path="/users" access={AccessRole.ADMIN} component={Users} />
-          <PrivateRoute path="/workspaces" access={AccessRole.ADMIN} component={Workspaces} />
+          <Route path="/signin" component={Signin} />
+          <Route path="/signup" component={Signup} />
+          <Route path="/forgotPassword" component={ForgotPassword} />
+          <PrivateRoute path="/profile" role={UserRole.USER} component={Profile} />
+          <PrivateRoute path="/editProfile" role={UserRole.USER} component={ProfileEdit} />
+          <PrivateRoute path="/changePassword" role={UserRole.USER} component={PasswordChange} />
+          <PrivateRoute path="/dashboard" role={UserRole.USER} component={Dashboard} />
+          <PrivateRoute path="/users" role={UserRole.ADMIN} component={Users} />
+          <PrivateRoute path="/workspaces" role={UserRole.ADMIN} component={Workspaces} />
           <Route path="/*"><Redirect to="/dashboard" /></Route>
         </Switch>
       </Suspense>
