@@ -11,6 +11,8 @@ import theme from "./styles/theme";
 import {MessageProvider} from "./components/providers/MessageProvider";
 import App from "./components/App";
 import {BASE_URL, REQUEST_TIMEOUT} from "./config";
+import DayJSUtils from "@date-io/dayjs";
+import {MuiPickersUtilsProvider} from "@material-ui/pickers";
 // import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
@@ -21,7 +23,9 @@ ReactDOM.render(
           <CssBaseline />
           <Router>
             <MessageProvider>
-              <App />
+              <MuiPickersUtilsProvider utils={DayJSUtils}>
+                <App />
+              </MuiPickersUtilsProvider>
             </MessageProvider>
           </Router>
         </ThemeProvider>

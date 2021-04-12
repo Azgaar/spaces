@@ -7,6 +7,7 @@ import {rules} from "../../../../validation/reservation";
 import {Reservation, Workspace} from "../../../../types";
 import {useToasterCatcher} from "../../../../hooks";
 import {WorkspaceService} from "../../../../services";
+import {DateTimePicker} from "@material-ui/pickers";
 
 type Props = {
   mode: "Add" | "Edit";
@@ -17,12 +18,11 @@ type Props = {
 
 const ReservationDialog = ({mode, reservation, close, submit}: Props) => {
   const classes = useStyles();
-  const {register, errors, control, handleSubmit} = useForm<Reservation>();
+  const {errors, control, handleSubmit} = useForm<Reservation>();
   const [freeWorkspaces, setFreeWorkspaces] = useState([] as Workspace[]);
   const {catchAndTossError} = useToasterCatcher();
 
   useEffect(() => {
-    console.log(reservation);
     async function fetchWorkspaces() {
       const {location, from, to} = reservation;
       const freeWorkspaces: Workspace[] = await catchAndTossError(WorkspaceService.find(location, from, to));
@@ -49,12 +49,16 @@ const ReservationDialog = ({mode, reservation, close, submit}: Props) => {
           <FormControl>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
-                <TextField variant="outlined" required fullWidth id="from" label="From" name="from"
-                  defaultValue={reservation.from} inputRef={register(rules.from)} error={Boolean(errors.from)} />
+                <Controller control={control} name="from" defaultValue={reservation.from} rules={rules.from} render={({onChange, ref, value}) => (
+                  <DateTimePicker required fullWidth id="from" label="From" name="from" inputVariant="outlined"
+                    showTodayButton minutesStep={15} disablePast={true} value={value} onChange={onChange} inputRef={ref} error={Boolean(errors.from)} />
+                )} />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField variant="outlined" required fullWidth id="to" label="To" name="to"
-                  defaultValue={reservation.to} inputRef={register(rules.to)} error={Boolean(errors.to)} />
+                <Controller control={control} name="to" defaultValue={reservation.to} rules={rules.to} render={({onChange, ref, value}) => (
+                  <DateTimePicker required fullWidth id="to" label="To" name="to" inputVariant="outlined"
+                    showTodayButton minutesStep={15} disablePast={true} value={value} onChange={onChange} inputRef={ref} error={Boolean(errors.to)} />
+                )} />
               </Grid>
 
               <Grid item xs={12} sm={12}>
