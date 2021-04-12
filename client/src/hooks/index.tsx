@@ -19,18 +19,33 @@ export const useUser = (): UserData => {
 
 export const useRequest = () => {
   const [isLoading, setLoading] = useState<boolean>(true);
-  const {pushMessage} = useMessage();
 
   const handleRequest = async (request: AxiosPromise) => {
     try {
       const {data} = await request;
       return data;
     } catch (err) {
-      pushMessage({title: err.response?.data?.message || err.message, type: MessageType.ERROR});
+      throw(err);
     } finally {
       setLoading(() => false);
     }
   };
 
   return {isLoading, setLoading, handleRequest};
+};
+
+export const useToasterCatcher = () => {
+  const {isLoading, setLoading, handleRequest} = useRequest();
+  const {pushMessage} = useMessage();
+
+  const catchAndTossError = async (request: AxiosPromise) => {
+    try {
+      const data = await handleRequest(request);
+      return data;
+    } catch (err) {
+      pushMessage({title: err.response?.data?.message || err.message, type: MessageType.ERROR});
+    }
+  }
+
+  return {isLoading, setLoading, catchAndTossError};
 };

@@ -8,19 +8,19 @@ import {PassportChangeForm} from "../../../types";
 import {UserService} from "../../../services";
 import {rules} from "../../../validation/user";
 import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
-import {useRequest} from "../../../hooks";
+import {useToasterCatcher} from "../../../hooks";
 
 function PasswordChange() {
   const formStyles = useFormStyles();
   const {pushMessage} = useMessage();
   const history = useHistory();
-  const {handleRequest} = useRequest();
+  const {catchAndTossError} = useToasterCatcher();
 
   const {register, errors, handleSubmit, watch} = useForm<PassportChangeForm>();
   const passwordNew = watch("passwordNew", "");
 
   const onSubmit: SubmitHandler<PassportChangeForm> = async (formData: PassportChangeForm) => {
-    const res = await handleRequest(UserService.changePassword(formData));
+    const res = await catchAndTossError(UserService.changePassword(formData));
     if (!res) return;
     pushMessage({title: "Password is changed", type: MessageType.SUCCESS});
     history.push("/profile");

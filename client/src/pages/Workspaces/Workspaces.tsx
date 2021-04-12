@@ -8,7 +8,7 @@ import {Autocomplete} from "@material-ui/lab";
 import DeletionButton from "../../components/Controls/DeletionButton/DeletionButton";
 import {MessageType, useMessage} from "../../components/providers/MessageProvider";
 import {LocationOption} from "../../types";
-import {useRequest} from "../../hooks";
+import {useToasterCatcher} from "../../hooks";
 import {LocationService} from "../../services";
 
 function Workspaces() {
@@ -18,11 +18,11 @@ function Workspaces() {
   const [location, setLocation] = useState<LocationOption>(locationDefault);
   const [locationList, setLocationList] = useState<LocationOption[]>([]);
   const [locationInput, setLocationInput] = useState<string>("");
-  const {isLoading, handleRequest} = useRequest();
+  const {isLoading, catchAndTossError} = useToasterCatcher();
 
   useEffect(() => {
     async function fetchLocations() {
-      const allLocations: LocationOption[] = await handleRequest(LocationService.list());
+      const allLocations: LocationOption[] = await catchAndTossError(LocationService.list());
       if (!allLocations) return;
 
       setLocationList(() => allLocations);
@@ -45,7 +45,7 @@ function Workspaces() {
   }
 
   const addLocation = async () => {
-    const addedLocation: LocationOption = await handleRequest(LocationService.add(locationInput));
+    const addedLocation: LocationOption = await catchAndTossError(LocationService.add(locationInput));
     if (addedLocation) {
       pushMessage({title: `Location "${locationInput}" is added`, type: MessageType.SUCCESS});
       setLocationList(locations => [...locations, addedLocation]);
@@ -54,7 +54,7 @@ function Workspaces() {
   }
 
   const renameLocation = async () => {
-    const allLocations: LocationOption[] = await handleRequest(LocationService.rename(location.id, locationInput));
+    const allLocations: LocationOption[] = await catchAndTossError(LocationService.rename(location.id, locationInput));
     if (allLocations) {
       pushMessage({title: `Location "${locationInput}" is renamed`, type: MessageType.SUCCESS});
       setLocationList(() => allLocations);
@@ -63,7 +63,7 @@ function Workspaces() {
   }
 
   const deleteLocation = async () => {
-    const remainingLocations: LocationOption[] = await handleRequest(LocationService.remove(location.id));
+    const remainingLocations: LocationOption[] = await catchAndTossError(LocationService.remove(location.id));
     if (remainingLocations) {
       pushMessage({title: `Location "${location.description}" is deleted`, type: MessageType.SUCCESS});
       setLocationList(() => remainingLocations);

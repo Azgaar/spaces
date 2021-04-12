@@ -2,7 +2,7 @@ import React from "react";
 import useStyles from "./Header.style";
 import {AppBar, Toolbar, Button, Typography} from "@material-ui/core";
 import {Link as RouterLink, useHistory} from "react-router-dom";
-import {useRequest, useUser} from "../../../../hooks";
+import {useToasterCatcher, useUser} from "../../../../hooks";
 import {actions} from "../../../../store/actions";
 import {useDispatch} from "react-redux";
 import {AuthService} from "../../../../services";
@@ -20,11 +20,11 @@ const Admin = () => {
 const Authorized = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const {handleRequest} = useRequest();
+  const {catchAndTossError} = useToasterCatcher();
 
   const handleLogout = async () => {
-    const res = await handleRequest(AuthService.logout())
-    if (!res) return
+    const result = await catchAndTossError(AuthService.logout())
+    if (!result) return
     dispatch(actions.logout());
     history.push("/signin");
   }

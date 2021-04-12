@@ -3,17 +3,17 @@ import Spinner from "../Spinner/Spinner";
 import {UserService} from "../../services";
 import {useDispatch} from "react-redux";
 import {actions} from "../../store/actions";
-import {useRequest} from "../../hooks";
+import {useToasterCatcher} from "../../hooks";
 import {UserData} from "../../types";
 
 const AuthProvider: FC = ({children}) => {
   const [isLoading, setLoading] = useState(true);
-  const {handleRequest} = useRequest();
+  const {catchAndTossError} = useToasterCatcher();
   const dispatch = useDispatch();
 
   useEffect(() => {
     async function fetchUser() {
-      const user: UserData = await handleRequest(UserService.fetch());
+      const user: UserData = await catchAndTossError(UserService.fetch());
       if (!user) return; // user is not logged in
       console.log("AuthProvider", {user});
       dispatch(actions.login(user));

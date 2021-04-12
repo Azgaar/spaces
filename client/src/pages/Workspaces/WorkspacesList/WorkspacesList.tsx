@@ -7,7 +7,7 @@ import WorkspaceDialog from "./WorkspaceEdit/WorkspaceDialog";
 import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
 import {LocationOption, Workspace, WorkspaceStatus, WorkspaceType} from "../../../types";
 import {WorkspaceService} from "../../../services";
-import {useRequest} from "../../../hooks";
+import {useToasterCatcher} from "../../../hooks";
 
 const equipmentColumn: GridColTypeDef = {
   valueFormatter: ({value}) => Array.isArray(value) ? value.join(", ") : ""
@@ -27,7 +27,7 @@ const WorkspacesList = ({loc}: {loc: LocationOption}) => {
   const [showEdit, setEdit] = useState<string | null>(null);
   const [workspaces, setWorkspaces] = useState([] as Workspace[]);
   const [selection, setSelection] = useState([] as GridRowId[]);
-  const {isLoading, setLoading, handleRequest} = useRequest();
+  const {isLoading, setLoading, catchAndTossError} = useToasterCatcher();
 
   const defaultWorkspace: Workspace = {
     description: "WS",
@@ -41,7 +41,7 @@ const WorkspacesList = ({loc}: {loc: LocationOption}) => {
 
   useEffect(() => {
     async function fetchWorkspaces() {
-      const workspaces: Workspace[] = await handleRequest(WorkspaceService.list(loc));
+      const workspaces: Workspace[] = await catchAndTossError(WorkspaceService.list(loc));
       if (workspaces) setWorkspaces(() => workspaces);
     };
 
@@ -72,7 +72,7 @@ const WorkspacesList = ({loc}: {loc: LocationOption}) => {
 
   const handleCreation = async (formData: Workspace) => {
     const requestData: Workspace = {...formData, location: loc.id};
-    const addedWorkspace: Workspace = await handleRequest(WorkspaceService.add(requestData));
+    const addedWorkspace: Workspace = await catchAndTossError(WorkspaceService.add(requestData));
     if (!addedWorkspace) return;
 
     dialog.close();
@@ -82,7 +82,7 @@ const WorkspacesList = ({loc}: {loc: LocationOption}) => {
 
   const handleUpdate = async (formData: Workspace) => {
     const requestData = {...workspace, ...formData};
-    const remaining: Workspace[] = await handleRequest(WorkspaceService.update(requestData));
+    const remaining: Workspace[] = await catchAndTossError(WorkspaceService.update(requestData));
     if (!remaining) return;
 
     dialog.close();
@@ -92,7 +92,7 @@ const WorkspacesList = ({loc}: {loc: LocationOption}) => {
   }
 
   const handleDeletion = async () => {
-    const remaining: Workspace[] = await handleRequest(WorkspaceService.remove(loc, selection));
+    const remaining: Workspace[] = await catchAndTossError(WorkspaceService.remove(loc, selection));
     if (!remaining) return;
 
     setWorkspaces(() => remaining);

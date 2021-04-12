@@ -8,7 +8,7 @@ import {useDispatch} from "react-redux";
 import {SignInForm, UserData} from "../../types";
 import {actions} from "../../store/actions";
 import {rules} from "../../validation/user";
-import {useRequest, useUser} from "../../hooks";
+import {useToasterCatcher, useUser} from "../../hooks";
 import {AuthService} from "../../services";
 
 function Signin() {
@@ -16,11 +16,11 @@ function Signin() {
   const formStyles = useFormStyles();
   const dispatch = useDispatch();
   const history = useHistory();
-  const {handleRequest} = useRequest();
+  const {catchAndTossError} = useToasterCatcher();
   const {register, errors, handleSubmit} = useForm<SignInForm>();
 
   const onSubmit: SubmitHandler<SignInForm> = async (formData: SignInForm) => {
-    const userData: UserData = await handleRequest(AuthService.signin(formData));
+    const userData: UserData = await catchAndTossError(AuthService.signin(formData));
     if (!userData) return;
     dispatch(actions.login(userData));
     history.push("/dashboard");

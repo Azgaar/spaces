@@ -9,7 +9,7 @@ import {SignUpForm} from "../../types";
 import {UserService} from "../../services";
 import {actions} from "../../store/actions";
 import {rules} from "../../validation/user";
-import {useRequest, useUser} from "../../hooks";
+import {useToasterCatcher, useUser} from "../../hooks";
 
 const TermslLabel = () => {
   return (
@@ -25,13 +25,13 @@ function Signup() {
   const formStyles = useFormStyles();
   const dispatch = useDispatch();
   const history = useHistory();
-  const {handleRequest} = useRequest();
+  const {catchAndTossError} = useToasterCatcher();
 
   const {register, errors, handleSubmit, watch} = useForm<SignUpForm>();
   const password = watch("password", "");
 
   const onSubmit: SubmitHandler<SignUpForm> = async (formData: SignUpForm) => {
-    const res = await handleRequest(UserService.signup(formData));
+    const res = await catchAndTossError(UserService.signup(formData));
     if (!res) return
     dispatch(actions.login(res));
     history.push("/dashboard");

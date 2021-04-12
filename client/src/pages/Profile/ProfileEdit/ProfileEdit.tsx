@@ -8,7 +8,7 @@ import {useForm, SubmitHandler} from "react-hook-form";
 import {ProfileEditForm} from "../../../types";
 import {UserService} from "../../../services";
 import {actions} from "../../../store/actions";
-import {useRequest, useUser} from "../../../hooks";
+import {useToasterCatcher, useUser} from "../../../hooks";
 import {rules} from "../../../validation/user";
 import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
 
@@ -18,12 +18,12 @@ function ProfileEdit() {
   const {user} = useUser();
   const {pushMessage} = useMessage();
   const history = useHistory();
-  const {handleRequest} = useRequest();
+  const {catchAndTossError} = useToasterCatcher();
 
   const {register, errors, handleSubmit} = useForm<ProfileEditForm>();
 
   const onSubmit: SubmitHandler<ProfileEditForm> = async (formData: ProfileEditForm) => {
-    const res = await handleRequest(UserService.update(formData));
+    const res = await catchAndTossError(UserService.update(formData));
     if (!res) return;
     dispatch(actions.updateUserData(res));
     pushMessage({title: "Profile is changed", type: MessageType.SUCCESS});

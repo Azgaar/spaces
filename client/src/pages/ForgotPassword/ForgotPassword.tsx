@@ -8,7 +8,7 @@ import {ForgotPasswordForm} from "../../types";
 import {UserService} from "../../services";
 import {rules} from "../../validation/user";
 import {MessageType, useMessage} from "../../components/providers/MessageProvider";
-import {useRequest, useUser} from "../../hooks";
+import {useToasterCatcher, useUser} from "../../hooks";
 
 function ForgotPassword() {
   const {isAuthenticated} = useUser();
@@ -16,10 +16,10 @@ function ForgotPassword() {
   const {pushMessage} = useMessage();
   const history = useHistory();
   const {register, errors, handleSubmit} = useForm<ForgotPasswordForm>();
-  const {handleRequest} = useRequest();
+  const {catchAndTossError} = useToasterCatcher();
 
   const onSubmit: SubmitHandler<ForgotPasswordForm> = async (formData: ForgotPasswordForm) => {
-    const res = await handleRequest(UserService.resetPassword(formData));
+    const res = await catchAndTossError(UserService.resetPassword(formData));
     if (!res) return;
     pushMessage({title: `Email is send to ${formData.email}`, type: MessageType.SUCCESS});
     history.push("/signin");

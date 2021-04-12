@@ -4,7 +4,7 @@ import {Container} from "@material-ui/core";
 import DeletionButton from "../../../components/Controls/DeletionButton/DeletionButton";
 import {DataGrid, GridColDef, GridRowId, GridSelectionModelChangeParams} from "@material-ui/data-grid";
 import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
-import {useRequest} from "../../../hooks";
+import {useToasterCatcher} from "../../../hooks";
 import {UserService} from "../../../services";
 import {UserData} from "../../../types";
 
@@ -22,11 +22,11 @@ const UsersList = () => {
   const {pushMessage} = useMessage();
   const [users, setUsers] = useState([] as UserData[]);
   const [selection, setSelection] = useState([] as GridRowId[]);
-  const {isLoading, handleRequest} = useRequest();
+  const {isLoading, catchAndTossError} = useToasterCatcher();
 
   useEffect(() => {
     async function fetchUsers() {
-      const allUsers: UserData[] = await handleRequest(UserService.list());
+      const allUsers: UserData[] = await catchAndTossError(UserService.list());
       if (allUsers) setUsers(() => allUsers);
     };
     fetchUsers();
@@ -38,7 +38,7 @@ const UsersList = () => {
   });
 
   const handleDeletion = async () => {
-    const remainingUsers: UserData[] = await handleRequest(UserService.remove(selection));
+    const remainingUsers: UserData[] = await catchAndTossError(UserService.remove(selection));
     if (!remainingUsers) return;
     setUsers(() => remainingUsers);
     setSelection(() => [] as GridRowId[]);
