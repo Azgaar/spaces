@@ -11,6 +11,7 @@ const logoPath = process.env.PUBLIC_URL + "/logo.svg";
 
 const Admin = () => {
   return (<>
+    <Button color="inherit" component={RouterLink} to="/reservations">Reservations</Button>
     <Button color="inherit" component={RouterLink} to="/workspaces">Workspaces</Button>
     <Button color="inherit" component={RouterLink} to="/users">Users</Button>
   </>

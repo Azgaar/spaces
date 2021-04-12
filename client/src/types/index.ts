@@ -90,3 +90,19 @@ export type Workspace = {
   size: number;
   equipment: Equipment[];
 };
+
+export type Reservation = {
+  id?: string;
+  location: unknown | string;
+  workspace: unknown | string;
+  requester: string;
+  status: ReservationStatus;
+  from: Date;
+  to: Date;
+};
+
+export enum ReservationStatus {
+  ACTIVE = "active",
+  BYGONE = "bygone",
+  CANCELLED = "cancelled"
+}

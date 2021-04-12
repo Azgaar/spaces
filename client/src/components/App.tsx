@@ -14,6 +14,7 @@ const PasswordChange = React.lazy(() => import("../pages/Profile/PasswordChange/
 const Dashboard = React.lazy(() => import("../pages/Dashboard/Dashboard"));
 const Users = React.lazy(() => import("../pages/Users/Users"));
 const Workspaces = React.lazy(() => import("../pages/Workspaces/Workspaces"));
+const Reservations = React.lazy(() => import("../pages/Reservations/Reservations"));
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <PrivateRoute path="/dashboard" role={UserRole.USER} component={Dashboard} />
           <PrivateRoute path="/users" role={UserRole.ADMIN} component={Users} />
           <PrivateRoute path="/workspaces" role={UserRole.ADMIN} component={Workspaces} />
+          <PrivateRoute path="/reservations" role={UserRole.ADMIN} component={Reservations} />
           <Route path="/*"><Redirect to="/dashboard" /></Route>
         </Switch>
       </Suspense>

@@ -33,7 +33,7 @@ const getEquipmentIcon = (value: Equipment): React.ReactElement => {
   }
 }
 
-const WorkspaceEdit = ({workspace, close, submit}: Props) => {
+const WorkspaceDialog = ({workspace, close, submit}: Props) => {
   const classes = useStyles();
   const {register, errors, setValue, handleSubmit, reset} = useForm<Workspace>();
 
@@ -101,4 +101,4 @@ const WorkspaceEdit = ({workspace, close, submit}: Props) => {
   );
 }
 
-export default WorkspaceEdit;
+export default WorkspaceDialog;
