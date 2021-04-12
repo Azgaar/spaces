@@ -4,7 +4,7 @@ import {Button, Container} from "@material-ui/core";
 import {DataGrid, GridColDef, GridRowId, GridSelectionModelChangeParams} from "@material-ui/data-grid";
 import DeletionButton from "../../../components/Controls/DeletionButton/DeletionButton";
 import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
-import {LocationOption, Reservation, ReservationStatus} from "../../../types";
+import {LocationOption, Reservation} from "../../../types";
 import {ReservationService} from "../../../services";
 import {useToasterCatcher, useUser} from "../../../hooks";
 import ReservationDialog from "./ReservationDialog/ReservationDialog";
@@ -15,10 +15,10 @@ import ReservationDialog from "./ReservationDialog/ReservationDialog";
 
 const columns: GridColDef[] = [
   {field: "workspace", headerName: "Workspace", width: 160},
-  {field: "status", headerName: "Status", width: 160},
+  // {field: "status", headerName: "Status", width: 160}, // make virtual based on dates
   {field: "requester", headerName: "Requester", width: 240},
-  {field: "from", headerName: "Type", type: "dateTime", width: 240},
-  {field: "to", headerName: "Size", type: "dateTime", width: 240}
+  {field: "from", headerName: "From", type: "dateTime", width: 240},
+  {field: "to", headerName: "To", type: "dateTime", width: 240}
 ];
 
 const ReservationsList = ({loc}: {loc: LocationOption}) => {
@@ -33,8 +33,7 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
   const defaultReservation: Reservation = {
     requester: user.email,
     location: loc.id,
-    workspace: null,
-    status: ReservationStatus.ACTIVE,
+    workspace: "",
     from: new Date(),
     to: new Date()
   };
@@ -71,6 +70,7 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
   }
 
   const handleCreation = async (formData: Reservation) => {
+    console.log(formData);
     const requestData: Reservation = {...formData, location: loc.id};
     const addedReservation: Reservation = await catchAndTossError(ReservationService.add(requestData));
     if (!addedReservation) return;

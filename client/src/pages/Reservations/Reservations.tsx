@@ -61,9 +61,6 @@ function Reservations() {
                 }}/>
               )} />
           </Grid>
-          <Grid item xs={8}>
-            Buttons
-          </Grid>
         </Grid>
       </Container>
       <ReservationsList loc={location} />

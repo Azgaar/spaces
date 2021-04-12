@@ -94,15 +94,14 @@ export type Workspace = {
 export type Reservation = {
   id?: string;
   location: string;
-  workspace: unknown | string;
+  workspace: string;
   requester: string;
-  status: ReservationStatus;
   from: Date;
   to: Date;
 };
 
 export enum ReservationStatus {
-  ACTIVE = "active",
-  BYGONE = "bygone",
-  CANCELLED = "cancelled"
+  FUTURE = "Future",
+  CURRENT = "Current",
+  PAST = "Past"
 }

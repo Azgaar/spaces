@@ -6,5 +6,6 @@ const list = (loc: LocationOption): AxiosPromise => axios.post("/getWorkspaces",
 const add = (workspace: Workspace): AxiosPromise => axios.post("/addWorkspace", workspace);
 const update = (workspace: Workspace): AxiosPromise => axios.post("/updateWorkspace", workspace);
 const remove = (loc: LocationOption, selection: GridRowId[]): AxiosPromise => axios.delete("/deleteWorkspaces", {data: {location: loc.id, selection}});
+const find = (location: string, from: Date, to: Date): AxiosPromise => axios.post("/findWorkspaces", {location, from, to});
 
-export const WorkspaceService = {list, add, update, remove};
+export const WorkspaceService = {list, add, update, remove, find};

@@ -1,6 +1,8 @@
 const required = true;
 
-const requester = {required};
-const status = {required, name: "status", minLength: 2, maxLength: 32};
+const workspace = {required, minLength: 2, name: "workspace"};
+const requester = {required, name: "requester"};
+const from = {required};
+const to = {required};
 
-export const rules = {requester, status};
+export const rules = {requester, from, to, workspace};
