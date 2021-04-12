@@ -93,7 +93,7 @@ export type Workspace = {
 
 export type Reservation = {
   id?: string;
-  location: unknown | string;
+  location: string;
   workspace: unknown | string;
   requester: string;
   status: ReservationStatus;

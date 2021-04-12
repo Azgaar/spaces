@@ -50,7 +50,7 @@ function Reservations() {
       <Container>
         <Grid container alignItems="center">
           <Grid item xs={4}>
-            <Autocomplete id="locations" value={location} options={locationList} getOptionLabel={option => option.description}
+            <Autocomplete id="locations" options={locationList} getOptionLabel={option => option.description}
               onChange={(e, value) => handleLocationChange(value)} handleHomeEndKeys renderInput={(params) => (
                 <TextField {...params} label="Select Location" variant="outlined" InputProps={{...params.InputProps, endAdornment: (
                     <>

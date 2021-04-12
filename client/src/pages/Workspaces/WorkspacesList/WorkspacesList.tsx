@@ -110,8 +110,8 @@ const WorkspacesList = ({loc}: {loc: LocationOption}) => {
         {selection.length === 1 && <Button variant="contained" color="primary" className={classes.button} onClick={dialog.edit}>Edit</Button>}
         {selection.length > 0 && <DeletionButton onDelete={handleDeletion} title="Delete" object={selection.length > 1 ? "workspaces" : "workspace"} />}
       </Container>
-      {showEdit === "add" && <WorkspaceDialog workspace={workspace} submit={handleCreation} close={dialog.close} />}
-      {showEdit === "edit" && <WorkspaceDialog workspace={workspace} submit={handleUpdate} close={dialog.close} />}
+      {showEdit === "add" && <WorkspaceDialog mode="Add" workspace={workspace} submit={handleCreation} close={dialog.close} />}
+      {showEdit === "edit" && <WorkspaceDialog mode="Edit" workspace={workspace} submit={handleUpdate} close={dialog.close} />}
     </Container>
   );
 };

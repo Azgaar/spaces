@@ -7,14 +7,15 @@ import {rules} from "../../../../validation/reservation";
 import {Reservation} from "../../../../types";
 
 type Props = {
+  mode: "Add" | "Edit";
   reservation: Reservation;
   close: () => void;
   submit: (formData: Reservation) => void;
 }
 
-const ReservationDialog = ({reservation, close, submit}: Props) => {
+const ReservationDialog = ({mode, reservation, close, submit}: Props) => {
   const classes = useStyles();
-  const {register, errors, setValue, handleSubmit, reset} = useForm<Reservation>();
+  const {register, errors, handleSubmit} = useForm<Reservation>();
 
   useEffect(() => {
     //reset({status: workspace.status, type: workspace.type, equipment: workspace.equipment});
@@ -26,7 +27,7 @@ const ReservationDialog = ({reservation, close, submit}: Props) => {
         <Avatar className={classes.avatar}>
           <AirplayIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">Edit Reservation</Typography>
+        <Typography component="h1" variant="h5">{mode} Reservation</Typography>
 
         <form className={classes.form} noValidate autoComplete="off" onSubmit={handleSubmit(submit)}>
           <Grid container spacing={2}>

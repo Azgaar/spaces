@@ -32,7 +32,7 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
 
   const defaultReservation: Reservation = {
     requester: user.email,
-    location: null,
+    location: loc.id,
     workspace: null,
     status: ReservationStatus.ACTIVE,
     from: new Date(),
@@ -110,8 +110,8 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
         {selection.length === 1 && <Button variant="contained" color="primary" className={classes.button} onClick={dialog.edit}>Edit</Button>}
         {selection.length > 0 && <DeletionButton onDelete={handleDeletion} title="Delete" object={selection.length > 1 ? "workspaces" : "workspace"} />}
       </Container>
-      {showEdit === "add" && <ReservationDialog reservation={reservation} submit={handleCreation} close={dialog.close} />}
-      {showEdit === "edit" && <ReservationDialog reservation={reservation} submit={handleUpdate} close={dialog.close} />}
+      {showEdit === "add" && <ReservationDialog mode="Add" reservation={reservation} submit={handleCreation} close={dialog.close} />}
+      {showEdit === "edit" && <ReservationDialog mode="Edit" reservation={reservation} submit={handleUpdate} close={dialog.close} />}
     </Container>
   );
 };
