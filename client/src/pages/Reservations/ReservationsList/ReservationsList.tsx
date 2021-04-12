@@ -40,6 +40,7 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
   const [reservation, setReservation] = useState<Reservation>(defaultReservation);
 
   useEffect(() => {
+    console.log(loc);
     async function fetchReservations() {
       const reservations: Reservation[] = await catchAndTossError(ReservationService.list(loc));
       if (reservations) setReservations(() => reservations);
@@ -64,14 +65,15 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
       setEdit(() => "edit");
     },
     add: () => {
+      setReservation(reservation => ({...reservation, location: loc.id}));
       setEdit(() => "add");
     },
     close: () => setEdit(() => null)
   }
 
   const handleCreation = async (formData: Reservation) => {
-    console.log(formData);
-    const requestData: Reservation = {...formData, location: loc.id};
+    const requestData: Reservation = {...formData};
+    console.log(requestData);
     const addedReservation: Reservation = await catchAndTossError(ReservationService.add(requestData));
     if (!addedReservation) return;
 

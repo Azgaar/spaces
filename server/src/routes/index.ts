@@ -15,3 +15,4 @@ export {router as getWorkspaces} from "./getWorkspaces.router";
 export {router as addWorkspace} from "./addWorkspace.router";
 export {router as updateWorkspace} from "./updateWorkspace.router";
 export {router as deleteWorkspaces} from "./deleteWorkspaces.router";
+export {router as findWorkspaces} from "./findWorkspaces.router";

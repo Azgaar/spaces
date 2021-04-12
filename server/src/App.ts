@@ -57,6 +57,7 @@ export default class App {
     this.app.use("/addWorkspace", Routes.addWorkspace);
     this.app.use("/updateWorkspace", Routes.updateWorkspace);
     this.app.use("/deleteWorkspaces", Routes.deleteWorkspaces);
+    this.app.use("/findWorkspaces", Routes.findWorkspaces);
 
     this.app.use("/*", (req, res, next) => next(new ApiError(httpStatus.NOT_FOUND, "Not found")));
 

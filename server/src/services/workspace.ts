@@ -29,4 +29,9 @@ const remove = async (ids: Array<string>) => {
   return deletedWorkspaces;
 };
 
-export default {list, add, update, remove};
+const find = async (location: string, from: Date, to: Date) => {
+  const workspaces: WorkspaceDocument[] = await Workspace.find({location});
+  return workspaces;
+};
+
+export default {list, add, update, remove, find};

@@ -39,4 +39,12 @@ const remove = catchAsync(async (req, res, next) => {
   res.status(httpStatus.OK).send(workspaces);
 });
 
-export const workspaceController = {list, add, update, remove};
+const find = catchAsync(async (req, res, next) => {
+  const {location, from, to} = req.body;
+  const workspaces = await workspaceService.find(location, from, to);
+  if (!workspaces) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "No free workspaces found"));
+
+  res.status(httpStatus.OK).send(workspaces);
+});
+
+export const workspaceController = {list, add, update, remove, find};
