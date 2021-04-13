@@ -1,14 +1,21 @@
 import Joi from "@hapi/joi";
 
-const id = Joi.string().min(2).max(128).required();
-const description = Joi.string().min(2).max(256).trim().required();
-const location = Joi.string().min(2).max(256).trim().required();
-const status = Joi.string().min(2).max(32).trim().required();
-const type = Joi.string().min(2).max(32).trim().required();
-const size = Joi.number().integer().min(1).max(256).required();
-const equipment = Joi.array().required();
+const getMaxDate = () => {
+  const date = new Date();
+  const month = date.getMonth();
+  const year = date.getFullYear();
+  const yearEnd = "12-31-" + (month > 10 ? year+1 : year);
+  return yearEnd;
+}
 
-const reservationCreationSchema = Joi.object({description, location, status, type, size, equipment});
-const reservationUpdateSchema = Joi.object({id, description, location, status, type, size, equipment});
+const id = Joi.string().min(2).max(128).required();
+const location = Joi.string().min(2).max(128).required();
+const workspace = Joi.string().min(2).max(128).required();
+const requester = Joi.string().email().min(6).max(128).lowercase().trim().required();
+const from = Joi.date().min("now").message('"date" cannot be is the past').max(getMaxDate()).required();
+const to = Joi.date().min("now").greater(Joi.ref("from")).max(getMaxDate()).required();
+
+const reservationCreationSchema = Joi.object({location, workspace, requester, from, to});
+const reservationUpdateSchema = Joi.object({id, workspace, requester, from, to});
 
 export {reservationCreationSchema, reservationUpdateSchema};

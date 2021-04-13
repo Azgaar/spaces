@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import useStyles from "./ReservationsList.style";
 import {Button, Container} from "@material-ui/core";
-import {DataGrid, GridColDef, GridRowId, GridSelectionModelChangeParams} from "@material-ui/data-grid";
+import {DataGrid, GridColDef, GridColTypeDef, GridRowId, GridSelectionModelChangeParams} from "@material-ui/data-grid";
 import DeletionButton from "../../../components/Controls/DeletionButton/DeletionButton";
 import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
 import {LocationOption, Reservation} from "../../../types";
@@ -10,16 +10,17 @@ import {useToasterCatcher, useUser} from "../../../hooks";
 import ReservationDialog from "./ReservationDialog/ReservationDialog";
 import dayjs from "dayjs";
 
-// const equipmentColumn: GridColTypeDef = {
-//   valueFormatter: ({value}) => Array.isArray(value) ? value.join(", ") : ""
-// };
-
+const dateFormat: GridColTypeDef = {
+  type: "dateTime",
+  width: 200,
+  valueFormatter: ({value}) => dayjs(value as Date).format("MMM D, YYYY h:mm A")
+};
 const columns: GridColDef[] = [
   {field: "workspace", headerName: "Workspace", width: 160},
   // {field: "status", headerName: "Status", width: 160}, // make virtual based on dates
-  {field: "requester", headerName: "Requester", width: 240},
-  {field: "from", headerName: "From", type: "dateTime", width: 240},
-  {field: "to", headerName: "To", type: "dateTime", width: 240}
+  {field: "requester", headerName: "Requester", width: 280},
+  {field: "from", headerName: "From", ...dateFormat},
+  {field: "to", headerName: "To", ...dateFormat}
 ];
 
 const ReservationsList = ({loc}: {loc: LocationOption}) => {
@@ -74,7 +75,7 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
   }
 
   const handleCreation = async (formData: Reservation) => {
-    const requestData: Reservation = {...formData};
+    const requestData: Reservation = {...formData, location: loc.id};
     console.log(requestData);
     const addedReservation: Reservation = await catchAndTossError(ReservationService.add(requestData));
     if (!addedReservation) return;

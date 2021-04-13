@@ -5,7 +5,7 @@ const required = true;
 const reservationSchema = new Schema(
   {
     location: {type: Schema.Types.ObjectId, required},
-    workspace: {type: Schema.Types.ObjectId, required},
+    workspace: {type: Schema.Types.ObjectId, ref: "Workspace", required},
     requester: {type: String, required},
     from: {type: Date, required},
     to: {type: Date, required}

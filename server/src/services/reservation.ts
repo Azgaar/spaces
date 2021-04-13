@@ -1,37 +1,37 @@
-import {Workspace} from "../models/workspace";
-import {WorkspaceData, WorkspaceDocument} from "../types";
+import {Reservation} from "../models/reservation";
+import {ReservationDocument, ReservationData} from "../types";
 import logger from "../utils/logger";
 
 const list = async (location: string) => {
-  const workspaces: WorkspaceDocument[] = await Workspace.find({location});
-  return workspaces;
+  const reservations: ReservationDocument[] = await Reservation.find({location});
+  return reservations;
 };
 
-const add = async (workspaceData: WorkspaceData) => {
-  const workspace: WorkspaceDocument = await Workspace.create(workspaceData);
-  logger.info(`[Workspace] Workspace ${workspace.id} is created`);
-  return workspace;
+const add = async (reservationData: ReservationData) => {
+  const reservation: ReservationDocument = await Reservation.create(reservationData);
+  logger.info(`[Reservation] Reservation ${reservation.id} is created`);
+  return reservation;
 };
 
-const update = async (workspaceData: WorkspaceData) => {
-  const workspace = await Workspace.findById(workspaceData.id);
-  if (!workspace) return false;
+const update = async (reservationData: ReservationData) => {
+  const reservation = await Reservation.findById(reservationData.id);
+  if (!reservation) return false;
 
-  Object.assign(workspace, workspaceData);
-  const updatedWorkspace: WorkspaceDocument = await workspace.save();
-  logger.info(`[Workspace] Workspace ${updatedWorkspace.id} is updated`);
-  return updatedWorkspace;
+  Object.assign(reservation, reservationData);
+  const updatedReservation: ReservationDocument = await reservation.save();
+  logger.info(`[Reservation] Reservation ${updatedReservation.id} is updated`);
+  return updatedReservation;
 };
 
 const remove = async (ids: Array<string>) => {
-  const deletedWorkspaces = await Workspace.deleteMany({_id: {$in: ids}});
-  logger.info(`[Workspace] Workspace deletion request: ${ids.join(", ")}`);
-  return deletedWorkspaces;
+  const deletedReservations = await Reservation.deleteMany({_id: {$in: ids}});
+  logger.info(`[Reservation] Reservation deletion request: ${ids.join(", ")}`);
+  return deletedReservations;
 };
 
 const find = async (location: string, from: Date, to: Date) => {
-  const workspaces: WorkspaceDocument[] = await Workspace.find({location});
-  return workspaces;
+  const reservations: ReservationDocument[] = await Reservation.find({location});
+  return reservations;
 };
 
 export default {list, add, update, remove, find};

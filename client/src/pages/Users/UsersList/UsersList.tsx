@@ -2,19 +2,26 @@ import React, {useEffect, useState} from "react";
 import useStyles from "./UsersList.style";
 import {Container} from "@material-ui/core";
 import DeletionButton from "../../../components/Controls/DeletionButton/DeletionButton";
-import {DataGrid, GridColDef, GridRowId, GridSelectionModelChangeParams} from "@material-ui/data-grid";
+import {DataGrid, GridColDef, GridColTypeDef, GridRowId, GridSelectionModelChangeParams} from "@material-ui/data-grid";
 import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
 import {useToasterCatcher} from "../../../hooks";
 import {UserService} from "../../../services";
 import {UserData} from "../../../types";
+import dayjs from "dayjs";
+
+const dateFormat: GridColTypeDef = {
+  type: "dateTime",
+  width: 200,
+  valueFormatter: ({value}) => dayjs(value as Date).format("MMM D, YYYY h:mm A")
+};
 
 const columns: GridColDef[] = [
   {field: "role", headerName: "Role", width: 90},
-  {field: "firstName", headerName: "First name", width: 130},
-  {field: "lastName", headerName: "Last name", width: 130},
-  {field: "email", headerName: "Email", width: 240},
-  {field: "created", headerName: "Created at", type: "dateTime", width: 240},
-  {field: "updated", headerName: "Updated at", type: "dateTime", width: 240},
+  {field: "firstName", headerName: "First name", width: 140},
+  {field: "lastName", headerName: "Last name", width: 140},
+  {field: "email", headerName: "Email", width: 280},
+  {field: "createdAt", headerName: "Created at", ...dateFormat},
+  {field: "updatedAt", headerName: "Updated at", ...dateFormat}
 ];
 
 const UsersList = () => {
