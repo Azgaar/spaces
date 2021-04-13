@@ -1,5 +1,5 @@
 import {Schema, model} from "mongoose";
-import {ReservationDocument, ReservationData} from "../types";
+import {ReservationDocument, WorkspaceDocument} from "../types";
 
 const required = true;
 const reservationSchema = new Schema(
@@ -16,8 +16,9 @@ const reservationSchema = new Schema(
 reservationSchema.set("toJSON", {
   transform: (doc: ReservationDocument, ret: ReservationDocument) => {
     const {_id, location, workspace, requester, from, to} = ret;
-    const reservationData: ReservationData = {id: _id, location, workspace, requester, from, to};
-    return reservationData;
+    const {description, type, size} = workspace as unknown as WorkspaceDocument;
+    const reservation = {id: _id, location, requester, from, to, description, type, size};
+    return reservation;
   }
 });
 

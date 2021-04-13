@@ -1,5 +1,6 @@
 import {Workspace} from "../models/workspace";
-import {WorkspaceData, WorkspaceDocument} from "../types";
+import {Reservation} from "../models/reservation";
+import {WorkspaceData, WorkspaceDocument, WorkspaceStatus, ReservationDocument} from "../types";
 import logger from "../utils/logger";
 
 const list = async (location: string) => {
@@ -30,7 +31,11 @@ const remove = async (ids: Array<string>) => {
 };
 
 const find = async (location: string, from: Date, to: Date) => {
-  const workspaces: WorkspaceDocument[] = await Workspace.find({location});
+  const overlappingQuery = {location, from: {$lt: to}, to: {$gt: from}};
+  const reservedWorkspaces: string[] = await Reservation.distinct("workspace", overlappingQuery);
+
+  const availableQuery = {location, status: WorkspaceStatus.AVAILABLE, _id: {$nin: reservedWorkspaces}};
+  const workspaces: WorkspaceDocument[] = await Workspace.find(availableQuery);
   return workspaces;
 };
 

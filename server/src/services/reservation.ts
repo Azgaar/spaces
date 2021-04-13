@@ -3,7 +3,7 @@ import {ReservationDocument, ReservationData} from "../types";
 import logger from "../utils/logger";
 
 const list = async (location: string) => {
-  const reservations: ReservationDocument[] = await Reservation.find({location});
+  const reservations: ReservationDocument[] = await Reservation.find({location}).populate("workspace");
   return reservations;
 };
 

@@ -96,7 +96,7 @@ export type WorkspaceData = {
 export type ReservationData = {
   id?: string;
   location: string;
-  workspace: string;
+  workspace: string | WorkspaceDocument;
   requester: string;
   from: Date;
   to: Date;

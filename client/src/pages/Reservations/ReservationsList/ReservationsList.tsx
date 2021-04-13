@@ -12,13 +12,15 @@ import dayjs from "dayjs";
 
 const dateFormat: GridColTypeDef = {
   type: "dateTime",
-  width: 200,
+  width: 180,
   valueFormatter: ({value}) => dayjs(value as Date).format("MMM D, YYYY h:mm A")
 };
 const columns: GridColDef[] = [
-  {field: "workspace", headerName: "Workspace", width: 160},
-  // {field: "status", headerName: "Status", width: 160}, // make virtual based on dates
-  {field: "requester", headerName: "Requester", width: 280},
+  {field: "status", headerName: "Status", width: 120},
+  {field: "description", headerName: "Workspace", width: 140},
+  {field: "type", headerName: "Type", width: 140},
+  {field: "size", headerName: "Size", width: 90},
+  {field: "requester", headerName: "Requester", width: 220},
   {field: "from", headerName: "From", ...dateFormat},
   {field: "to", headerName: "To", ...dateFormat}
 ];
@@ -47,6 +49,7 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
     async function fetchReservations() {
       const reservations: Reservation[] = await catchAndTossError(ReservationService.list(loc));
       if (reservations) setReservations(() => reservations);
+      console.log(reservations);
     };
 
     if (loc.id) {
