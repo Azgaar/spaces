@@ -3,7 +3,7 @@ import useStyles from "./Reservations.style";
 import {Avatar, Container, Grid, TextField, Typography} from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import ReservationsList from "./ReservationsList/ReservationsList";
-import DesktopWindowsIcon from "@material-ui/icons/DesktopWindows";
+import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
 import {Autocomplete} from "@material-ui/lab";
 import {LocationOption} from "../../types";
 import {useToasterCatcher} from "../../hooks";
@@ -11,21 +11,21 @@ import {LocationService} from "../../services";
 
 function Reservations() {
   const classes = useStyles();
-  const locationDefault: LocationOption = {id: "", description: ""};
-  const [location, setLocation] = useState<LocationOption>(locationDefault);
+  const blankLocation: LocationOption = {id: "", description: ""};
+  const [location, setLocation] = useState<LocationOption>(blankLocation);
   const [locationList, setLocationList] = useState<LocationOption[]>([]);
   const {isLoading, catchAndTossError} = useToasterCatcher();
 
   useEffect(() => {
     async function fetchLocations() {
-      const allLocations: LocationOption[] = await catchAndTossError(LocationService.list());
-      if (!allLocations) return;
+      const nonEmptyLocations: LocationOption[] = await catchAndTossError(LocationService.list({empty: false}));
+      if (!nonEmptyLocations) return;
 
-      setLocationList(() => allLocations);
+      setLocationList(() => nonEmptyLocations);
       const stored = localStorage.getItem("location");
       if (stored) {
         const parsed = JSON.parse(stored);
-        if (allLocations.find(loc => loc.id === parsed.id)) setLocation(() => parsed);
+        if (nonEmptyLocations.find(loc => loc.id === parsed.id)) setLocation(() => parsed);
         else localStorage.removeItem("location");
       }
     };
@@ -33,7 +33,7 @@ function Reservations() {
   }, []);
 
   const handleLocationChange = (value: LocationOption | string | null) => {
-    if (!value) setLocation(() => locationDefault);
+    if (!value) setLocation(() => blankLocation);
     if (!value || typeof value === "string") return;
 
     setLocation(() => value);
@@ -43,7 +43,7 @@ function Reservations() {
   return (
     <Container maxWidth="lg" className={classes.container}>
       <Avatar className={classes.avatar}>
-        <DesktopWindowsIcon />
+        <LibraryBooksIcon />
       </Avatar>
       <Typography component="h1" variant="h5" className={classes.header}>Manage Reservations</Typography>
 

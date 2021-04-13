@@ -8,6 +8,7 @@ import {LocationOption, Reservation} from "../../../types";
 import {ReservationService} from "../../../services";
 import {useToasterCatcher, useUser} from "../../../hooks";
 import ReservationDialog from "./ReservationDialog/ReservationDialog";
+import dayjs from "dayjs";
 
 // const equipmentColumn: GridColTypeDef = {
 //   valueFormatter: ({value}) => Array.isArray(value) ? value.join(", ") : ""
@@ -30,12 +31,14 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
   const [selection, setSelection] = useState([] as GridRowId[]);
   const {isLoading, setLoading, catchAndTossError} = useToasterCatcher();
 
+  const from = dayjs().add(1, "hour").set("minute", 0);
+  const to = from.add(1, "hour");
   const defaultReservation: Reservation = {
     requester: user.email,
     location: loc.id,
     workspace: "",
-    from: new Date(),
-    to: new Date()
+    from: from.toDate(),
+    to: to.toDate()
   };
   const [reservation, setReservation] = useState<Reservation>(defaultReservation);
 

@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
 import useStyles from "./ReservationDialog.style";
 import {Avatar, TextField, Button, Typography, Grid, Container, Dialog, MenuItem, FormControl} from "@material-ui/core";
-import AirplayIcon from "@material-ui/icons/Airplay";
-import {Controller, useForm} from "react-hook-form";
+import CollectionsBookmarkIcon from "@material-ui/icons/CollectionsBookmark";
+import {Controller, SubmitHandler, useForm} from "react-hook-form";
 import {rules} from "../../../../validation/reservation";
 import {Reservation, Workspace} from "../../../../types";
 import {useToasterCatcher} from "../../../../hooks";
@@ -18,7 +18,7 @@ type Props = {
 
 const ReservationDialog = ({mode, reservation, close, submit}: Props) => {
   const classes = useStyles();
-  const {errors, control, handleSubmit} = useForm<Reservation>();
+  const {formState, errors, setError, control, handleSubmit} = useForm<Reservation>();
   const [freeWorkspaces, setFreeWorkspaces] = useState([] as Workspace[]);
   const {catchAndTossError} = useToasterCatcher();
 
@@ -37,15 +37,24 @@ const ReservationDialog = ({mode, reservation, close, submit}: Props) => {
     return label;
   }
 
+  const onSubmit: SubmitHandler<Reservation> = async (formData: Reservation) => {
+    console.log(formState.errors);
+    if (formData.from >= formData.to) {
+      setError("to", {type: "manual", message: "Revervation end date must be greater than start date"});
+      return;
+    }
+    submit(formData);
+  };
+
   return (
     <Dialog open onClose={close} aria-labelledby="form-dialog-title">
       <Container maxWidth="xs" className={classes.paper}>
         <Avatar className={classes.avatar}>
-          <AirplayIcon />
+          <CollectionsBookmarkIcon />
         </Avatar>
         <Typography component="h1" variant="h5">{mode} Reservation</Typography>
 
-        <form className={classes.form} noValidate autoComplete="off" onSubmit={handleSubmit(submit)}>
+        <form className={classes.form} noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
           <FormControl>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>

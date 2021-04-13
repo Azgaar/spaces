@@ -22,7 +22,7 @@ function Workspaces() {
 
   useEffect(() => {
     async function fetchLocations() {
-      const allLocations: LocationOption[] = await catchAndTossError(LocationService.list());
+      const allLocations: LocationOption[] = await catchAndTossError(LocationService.list({empty: true}));
       if (!allLocations) return;
 
       setLocationList(() => allLocations);

@@ -4,7 +4,8 @@ import ApiError from "../utils/apiError";
 import locationService from "../services/location";
 
 const list = catchAsync(async (req, res, next) => {
-  const locations = await locationService.list();
+  const {empty} = req.body;
+  const locations = await locationService.list({empty});
   if (!locations) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot fetch locations"));
 
   res.status(httpStatus.OK).send(locations);
