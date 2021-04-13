@@ -43,7 +43,6 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
   const [reservation, setReservation] = useState<Reservation>(defaultReservation);
 
   useEffect(() => {
-    console.log(loc);
     async function fetchReservations() {
       const reservations: Reservation[] = await catchAndTossError(ReservationService.list(loc));
       if (reservations) setReservations(() => reservations);

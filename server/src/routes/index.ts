@@ -16,3 +16,7 @@ export {router as addWorkspace} from "./addWorkspace.router";
 export {router as updateWorkspace} from "./updateWorkspace.router";
 export {router as deleteWorkspaces} from "./deleteWorkspaces.router";
 export {router as findWorkspaces} from "./findWorkspaces.router";
+export {router as getReservations} from "./getReservations.router";
+export {router as addReservation} from "./addReservation.router";
+export {router as updateReservation} from "./updateReservation.router";
+export {router as deleteReservations} from "./deleteReservations.router";

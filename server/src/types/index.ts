@@ -45,6 +45,14 @@ export interface WorkspaceDocument extends Document {
   equipment: Equipment[];
 }
 
+export interface ReservationDocument extends Document {
+  location: string;
+  workspace: string;
+  requester: string;
+  from: Date;
+  to: Date;
+}
+
 export type LocationData = {
   description: string;
   id?: string;
@@ -84,3 +92,12 @@ export type WorkspaceData = {
   size: number;
   equipment: Equipment[];
 }
+
+export type ReservationData = {
+  id?: string;
+  location: string;
+  workspace: string;
+  requester: string;
+  from: Date;
+  to: Date;
+};
