@@ -4,13 +4,17 @@ import logger from "../utils/logger";
 
 const list = async (location: string) => {
   const reservations: ReservationDocument[] = await Reservation.find({location}).populate("workspace");
+  console.log("reservations list", reservations);
   return reservations;
 };
 
 const add = async (reservationData: ReservationData) => {
   const reservation: ReservationDocument = await Reservation.create(reservationData);
   logger.info(`[Reservation] Reservation ${reservation.id} is created`);
-  return reservation;
+  console.log("reservation", reservation);
+  const reservationJSON = await reservation.populate("workspace").execPopulate();
+  console.log("reservationJSON", reservationJSON);
+  return reservationJSON;
 };
 
 const update = async (reservationData: ReservationData) => {

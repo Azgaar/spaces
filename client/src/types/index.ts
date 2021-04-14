@@ -91,8 +91,7 @@ export type Workspace = {
   equipment: Equipment[];
 };
 
-export type Reservation = {
-  id?: string;
+export type ReservationReq = {
   location: string;
   workspace: string;
   requester: string;
@@ -100,8 +99,22 @@ export type Reservation = {
   to: Date;
 };
 
+export type ReservationRes = {
+  id: string;
+  location: string;
+  requester: string;
+  from: Date;
+  to: Date;
+  workspace: string;
+  description: string;
+  type: WorkspaceType;
+  size: number;
+  status: ReservationStatus;
+};
+
 export enum ReservationStatus {
-  FUTURE = "Future",
+  PAST = "Past",
   CURRENT = "Current",
-  PAST = "Past"
+  FUTURE = "Future",
 }
+

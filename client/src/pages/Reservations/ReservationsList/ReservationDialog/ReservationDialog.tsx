@@ -4,7 +4,7 @@ import {Avatar, TextField, Button, Typography, Grid, Container, Dialog, MenuItem
 import CollectionsBookmarkIcon from "@material-ui/icons/CollectionsBookmark";
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
 import {rules} from "../../../../validation/reservation";
-import {Reservation, Workspace} from "../../../../types";
+import {ReservationReq, Workspace} from "../../../../types";
 import {useToasterCatcher} from "../../../../hooks";
 import {WorkspaceService} from "../../../../services";
 import {DateTimePicker} from "@material-ui/pickers";
@@ -12,9 +12,9 @@ import {Dayjs} from "dayjs";
 
 type Props = {
   mode: "Add" | "Edit";
-  reservation: Reservation;
+  reservation: ReservationReq;
   close: () => void;
-  submit: (formData: Reservation) => void;
+  submit: (formData: ReservationReq) => void;
 }
 
 const ReservationDialog = ({mode, reservation, close, submit}: Props) => {
@@ -22,7 +22,7 @@ const ReservationDialog = ({mode, reservation, close, submit}: Props) => {
   const [slot, setSlot] = useState<{from: Date, to: Date}>({from, to});
   const [status, setStatus] = useState<string>("Select a workspace");
   const classes = useStyles();
-  const {formState, errors, setError, setValue, control, handleSubmit} = useForm<Reservation>();
+  const {formState, errors, setError, setValue, control, handleSubmit} = useForm<ReservationReq>();
   const [freeWorkspaces, setFreeWorkspaces] = useState([] as Workspace[]);
   const {isLoading, catchAndTossError} = useToasterCatcher();
 
@@ -41,7 +41,7 @@ const ReservationDialog = ({mode, reservation, close, submit}: Props) => {
     return label;
   }
 
-  const onSubmit: SubmitHandler<Reservation> = async (formData: Reservation) => {
+  const onSubmit: SubmitHandler<ReservationReq> = async (formData: ReservationReq) => {
     console.log({from, to, workspace, requester}, formData, formState);
     if (formData.from >= formData.to) {
       setError("to", {type: "manual", message: "Revervation end date must be greater than start date"});

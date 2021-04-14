@@ -13,6 +13,11 @@ const reservationSchema = new Schema(
   {timestamps: true, versionKey: false}
 );
 
+const getWorkspaceAttributes = (workspace: WorkspaceDocument) => {
+  const {_id, description, type, size} = workspace as WorkspaceDocument;
+  return {workspace: _id, description, type, size};
+}
+
 const getStatus = (from: Date, to: Date): ReservationStatus => {
   const now = new Date();
   if (to < now) return ReservationStatus.PAST;
@@ -23,9 +28,9 @@ const getStatus = (from: Date, to: Date): ReservationStatus => {
 reservationSchema.set("toJSON", {
   transform: (doc: ReservationDocument, ret: ReservationDocument) => {
     const {_id, location, workspace, requester, from, to} = ret;
-    const {description, type, size} = workspace as unknown as WorkspaceDocument;
+    const ws = getWorkspaceAttributes(workspace as WorkspaceDocument);
     const status = getStatus(from, to);
-    const reservation = {id: _id, location, requester, from, to, description, type, size, status};
+    const reservation = {id: _id, location, requester, from, to, status, ...ws};
     return reservation;
   }
 });

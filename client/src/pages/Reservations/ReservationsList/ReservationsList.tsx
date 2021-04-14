@@ -4,7 +4,7 @@ import {Button, Container} from "@material-ui/core";
 import {DataGrid, GridColDef, GridColTypeDef, GridRowId, GridSelectionModelChangeParams} from "@material-ui/data-grid";
 import DeletionButton from "../../../components/Controls/DeletionButton/DeletionButton";
 import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
-import {LocationOption, Reservation} from "../../../types";
+import {LocationOption, ReservationReq, ReservationRes} from "../../../types";
 import {ReservationService} from "../../../services";
 import {useToasterCatcher, useUser} from "../../../hooks";
 import ReservationDialog from "./ReservationDialog/ReservationDialog";
@@ -30,24 +30,24 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
   const {pushMessage} = useMessage();
   const [showEdit, setEdit] = useState<string | null>(null);
   const {user} = useUser();
-  const [reservations, setReservations] = useState([] as Reservation[]);
+  const [reservations, setReservations] = useState([] as ReservationRes[]);
   const [selection, setSelection] = useState([] as GridRowId[]);
   const {isLoading, setLoading, catchAndTossError} = useToasterCatcher();
 
   const from = dayjs().add(1, "hour").set("minute", 0).set("second", 0);
   const to = from.add(1, "hour");
-  const defaultReservation: Reservation = {
+  const defaultReservation: ReservationReq = {
     requester: user.email,
     location: loc.id,
     workspace: "",
     from: from.toDate(),
     to: to.toDate()
   };
-  const [reservation, setReservation] = useState<Reservation>(defaultReservation);
+  const [reservation, setReservation] = useState<ReservationReq>(defaultReservation);
 
   useEffect(() => {
     async function fetchReservations() {
-      const reservations: Reservation[] = await catchAndTossError(ReservationService.list(loc));
+      const reservations: ReservationRes[] = await catchAndTossError(ReservationService.list(loc));
       if (reservations) setReservations(() => reservations);
       console.log(reservations);
     };
@@ -67,7 +67,10 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
 
   const dialog = {
     edit: () => {
-      setReservation(() => reservations.find(rs => rs.id === selection[0]) as Reservation);
+      const selected: ReservationRes | undefined = reservations.find(rs => rs.id === selection[0]);
+      if (!selected) return;
+      const {location, workspace, requester, from, to} = selected;
+      setReservation(() => ({location, workspace, requester, from, to}) as ReservationReq);
       setEdit(() => "edit");
     },
     add: () => {
@@ -77,10 +80,10 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
     close: () => setEdit(() => null)
   }
 
-  const handleCreation = async (formData: Reservation) => {
-    const requestData: Reservation = {...formData, location: loc.id};
+  const handleCreation = async (formData: ReservationReq) => {
+    const requestData: ReservationReq = {...formData, location: loc.id};
     console.log(requestData);
-    const addedReservation: Reservation = await catchAndTossError(ReservationService.add(requestData));
+    const addedReservation: ReservationRes = await catchAndTossError(ReservationService.add(requestData));
     if (!addedReservation) return;
 
     dialog.close();
@@ -88,9 +91,9 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
     pushMessage({title: "Reservation is added", type: MessageType.SUCCESS});
   }
 
-  const handleUpdate = async (formData: Reservation) => {
-    const requestData: Reservation = {...reservation, ...formData};
-    const remaining: Reservation[] = await catchAndTossError(ReservationService.update(requestData));
+  const handleUpdate = async (formData: ReservationReq) => {
+    const requestData: ReservationReq = {...reservation, ...formData};
+    const remaining: ReservationRes[] = await catchAndTossError(ReservationService.update(requestData));
     if (!remaining) return;
 
     dialog.close();
@@ -100,7 +103,7 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
   }
 
   const handleDeletion = async () => {
-    const remaining: Reservation[] = await catchAndTossError(ReservationService.remove(loc, selection));
+    const remaining: ReservationRes[] = await catchAndTossError(ReservationService.remove(loc, selection));
     if (!remaining) return;
 
     setReservations(() => remaining);
