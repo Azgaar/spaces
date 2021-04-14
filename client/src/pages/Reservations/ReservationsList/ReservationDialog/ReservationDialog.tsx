@@ -4,9 +4,9 @@ import {Avatar, TextField, Button, Typography, Grid, Container, Dialog, MenuItem
 import CollectionsBookmarkIcon from "@material-ui/icons/CollectionsBookmark";
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
 import {rules} from "../../../../validation/reservation";
-import {ReservationReq, Workspace} from "../../../../types";
+import {ReservationReq, UserData, Workspace} from "../../../../types";
 import {useToasterCatcher} from "../../../../hooks";
-import {WorkspaceService} from "../../../../services";
+import {UserService, WorkspaceService} from "../../../../services";
 import {DateTimePicker} from "@material-ui/pickers";
 import {Dayjs} from "dayjs";
 
@@ -31,19 +31,25 @@ const ReservationDialog = ({mode, reservation, close, submit}: Props) => {
   const [slot, setSlot] = useState<{from: Date, to: Date}>({from, to});
   const classes = useStyles();
   const {errors, setValue, getValues, control, handleSubmit} = useForm<ReservationReq>();
-  const [freeWorkspaces, setFreeWorkspaces] = useState([] as Workspace[]);
+  const [freeWorkspaces, setFreeWorkspaces] = useState<Workspace[]>([]);
+  const [users, setUsers] = useState<UserData[]>([]);
   const {isLoading, catchAndTossError} = useToasterCatcher();
-
-  console.log("Errors", errors);
 
   useEffect(() => {
     async function fetchWorkspaces() {
       const freeWorkspaces: Workspace[] = await catchAndTossError(WorkspaceService.find(location, slot.from, slot.to));
       if (freeWorkspaces) setFreeWorkspaces(() => freeWorkspaces);
-      console.log("fetchWorkspaces", freeWorkspaces);
     };
     if (!errors.from && !errors.to) fetchWorkspaces();
   }, [slot]);
+
+  useEffect(() => {
+    async function fetchUsers() {
+      const users: UserData[] = await catchAndTossError(UserService.list());
+      if (users) setUsers(() => users);
+    };
+    fetchUsers();
+  }, []);
 
   const getLabel = (ws: Workspace) => {
     let label = `${ws.description}: ${ws.type} [${ws.size}]`;
@@ -101,8 +107,11 @@ const ReservationDialog = ({mode, reservation, close, submit}: Props) => {
 
               <Grid item xs={12} sm={12}>
                 <Controller control={control} name="requester" defaultValue={requester} rules={rules.requester} as={
-                  <TextField variant="outlined" required fullWidth id="requester" label="Request for" name="requester"
-                  error={Boolean(errors.requester)} />} />
+                  <TextField select variant="outlined" required fullWidth id="requester" label="Request for" name="requester"
+                  error={Boolean(errors.requester)} helperText={errors.requester?.message} >
+                    {users.map((user) => <MenuItem key={user.email} value={user.email}>{user.email}</MenuItem>)}
+                  </TextField>
+                } />
               </Grid>
             </Grid>
 
