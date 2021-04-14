@@ -34,7 +34,7 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
   const [selection, setSelection] = useState([] as GridRowId[]);
   const {isLoading, setLoading, catchAndTossError} = useToasterCatcher();
 
-  const from = dayjs().add(1, "hour").set("minute", 0);
+  const from = dayjs().add(1, "hour").set("minute", 0).set("second", 0);
   const to = from.add(1, "hour");
   const defaultReservation: Reservation = {
     requester: user.email,

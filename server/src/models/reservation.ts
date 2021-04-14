@@ -1,5 +1,5 @@
 import {Schema, model} from "mongoose";
-import {ReservationDocument, WorkspaceDocument} from "../types";
+import {ReservationDocument, WorkspaceDocument, ReservationStatus} from "../types";
 
 const required = true;
 const reservationSchema = new Schema(
@@ -13,11 +13,19 @@ const reservationSchema = new Schema(
   {timestamps: true, versionKey: false}
 );
 
+const getStatus = (from: Date, to: Date): ReservationStatus => {
+  const now = new Date();
+  if (to < now) return ReservationStatus.PAST;
+  if (from > now) return ReservationStatus.FUTURE;
+  return ReservationStatus.CURRENT;
+}
+
 reservationSchema.set("toJSON", {
   transform: (doc: ReservationDocument, ret: ReservationDocument) => {
     const {_id, location, workspace, requester, from, to} = ret;
     const {description, type, size} = workspace as unknown as WorkspaceDocument;
-    const reservation = {id: _id, location, requester, from, to, description, type, size};
+    const status = getStatus(from, to);
+    const reservation = {id: _id, location, requester, from, to, description, type, size, status};
     return reservation;
   }
 });

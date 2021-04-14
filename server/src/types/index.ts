@@ -101,3 +101,9 @@ export type ReservationData = {
   from: Date;
   to: Date;
 };
+
+export enum ReservationStatus {
+  PAST = "Past",
+  CURRENT = "Current",
+  FUTURE = "Future",
+}
