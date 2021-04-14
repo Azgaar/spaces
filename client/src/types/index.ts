@@ -117,4 +117,3 @@ export enum ReservationStatus {
   CURRENT = "Current",
   FUTURE = "Future",
 }
-

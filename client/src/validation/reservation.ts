@@ -1,8 +1,4 @@
-const required = true;
+const workspace = {required: "Consider selecting different time slot of no workspaces available", name: "workspace"};
+const requester = {required: "The field is required", name: "requester"};
 
-const workspace = {required, name: "workspace"};
-const requester = {required, name: "requester"};
-const from = {required};
-const to = {required};
-
-export const rules = {requester, from, to, workspace};
+export const rules = {requester, workspace};
