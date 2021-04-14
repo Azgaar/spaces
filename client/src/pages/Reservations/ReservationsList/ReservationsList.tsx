@@ -49,7 +49,6 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
     async function fetchReservations() {
       const reservations: ReservationRes[] = await catchAndTossError(ReservationService.list(loc));
       if (reservations) setReservations(() => reservations);
-      console.log(reservations);
     };
 
     if (loc.id) {
@@ -91,7 +90,7 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
   }
 
   const handleUpdate = async (formData: ReservationReq) => {
-    const requestData: ReservationReq = {...reservation, ...formData};
+    const requestData: ReservationReq = {...formData, location: loc.id};
     const remaining: ReservationRes[] = await catchAndTossError(ReservationService.update(requestData));
     if (!remaining) return;
 

@@ -15,7 +15,7 @@ const add = async (reservationData: ReservationData) => {
 };
 
 const update = async (reservationData: ReservationData) => {
-  const reservation = await Reservation.findById(reservationData.id);
+  const reservation: ReservationDocument = await Reservation.findById(reservationData.id) as ReservationDocument;
   if (!reservation) return false;
 
   Object.assign(reservation, reservationData);
@@ -30,9 +30,4 @@ const remove = async (ids: Array<string>) => {
   return deletedReservations;
 };
 
-const find = async (location: string, from: Date, to: Date) => {
-  const reservations: ReservationDocument[] = await Reservation.find({location});
-  return reservations;
-};
-
-export default {list, add, update, remove, find};
+export default {list, add, update, remove};

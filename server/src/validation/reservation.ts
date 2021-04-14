@@ -16,6 +16,6 @@ const from = Joi.date().min("now").max(getMaxDate()).required();
 const to = Joi.date().min("now").greater(Joi.ref("from")).max(getMaxDate()).required();
 
 const reservationCreationSchema = Joi.object({location, workspace, requester, from, to});
-const reservationUpdateSchema = Joi.object({id, workspace, requester, from, to});
+const reservationUpdateSchema = Joi.object({id, location, workspace, requester, from, to});
 
 export {reservationCreationSchema, reservationUpdateSchema};

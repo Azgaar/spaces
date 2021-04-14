@@ -19,15 +19,24 @@ const add = catchAsync(async (req, res, next) => {
 });
 
 const update = catchAsync(async (req, res, next) => {
-  next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Not implemented"));
+  const updatedReservation = await reservationService.update(req.body);
+  if (!updatedReservation) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot update reservation"));
+
+  const reservations = await reservationService.list(updatedReservation.location);
+  if (!reservations) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot fetch reservations"));
+
+  res.status(httpStatus.OK).send(reservations);
 });
 
 const remove = catchAsync(async (req, res, next) => {
-  next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Not implemented"));
+  const {location, selection} = req.body;
+  const removed = await reservationService.remove(selection);
+  if (!removed) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot remove reservations"));
+
+  const reservations = await reservationService.list(location);
+  if (!reservations) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot fetch reservations"));
+
+  res.status(httpStatus.OK).send(reservations);
 });
 
-const find = catchAsync(async (req, res, next) => {
-  next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Not implemented"));
-});
-
-export const reservationController = {list, add, update, remove, find};
+export const reservationController = {list, add, update, remove};
