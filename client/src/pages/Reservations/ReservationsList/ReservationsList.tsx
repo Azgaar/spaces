@@ -34,14 +34,14 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
   const [selection, setSelection] = useState([] as GridRowId[]);
   const {isLoading, setLoading, catchAndTossError} = useToasterCatcher();
 
-  const from = dayjs().add(1, "hour").set("minute", 0).set("second", 0);
+  const from = dayjs().set("minute", 0).set("second", 0).set("millisecond", 0).add(1, "hour");
   const to = from.add(1, "hour");
   const defaultReservation: ReservationReq = {
     requester: user.email,
     location: loc.id,
     workspace: "",
-    from: from.toDate(),
-    to: to.toDate()
+    from: from.toISOString(),
+    to: to.toISOString()
   };
   const [reservation, setReservation] = useState<ReservationReq>(defaultReservation);
 
@@ -69,12 +69,12 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
     edit: () => {
       const selected: ReservationRes | undefined = reservations.find(rs => rs.id === selection[0]);
       if (!selected) return;
-      const {location, workspace, requester, from, to} = selected;
-      setReservation(() => ({location, workspace, requester, from, to}) as ReservationReq);
+      const {id, location, workspace, requester, from, to} = selected;
+      setReservation(() => ({id, location, workspace, requester, from, to}) as ReservationReq);
       setEdit(() => "edit");
     },
     add: () => {
-      setReservation(reservation => ({...reservation, location: loc.id}));
+      setReservation(() => defaultReservation);
       setEdit(() => "add");
     },
     close: () => setEdit(() => null)
@@ -82,7 +82,6 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
 
   const handleCreation = async (formData: ReservationReq) => {
     const requestData: ReservationReq = {...formData, location: loc.id};
-    console.log(requestData);
     const addedReservation: ReservationRes = await catchAndTossError(ReservationService.add(requestData));
     if (!addedReservation) return;
 
@@ -119,7 +118,7 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
       <Container className={classes.controls}>
         {Boolean(loc.id) && <Button variant="contained" color="primary" onClick={dialog.add}>Add</Button>}
         {selection.length === 1 && <Button variant="contained" color="primary" className={classes.button} onClick={dialog.edit}>Edit</Button>}
-        {selection.length > 0 && <DeletionButton onDelete={handleDeletion} title="Delete" object={selection.length > 1 ? "workspaces" : "workspace"} />}
+        {selection.length > 0 && <DeletionButton onDelete={handleDeletion} title="Delete" object={selection.length > 1 ? "reservations" : "reservation"} />}
       </Container>
       {showEdit === "add" && <ReservationDialog mode="Add" reservation={reservation} submit={handleCreation} close={dialog.close} />}
       {showEdit === "edit" && <ReservationDialog mode="Edit" reservation={reservation} submit={handleUpdate} close={dialog.close} />}

@@ -92,19 +92,20 @@ export type Workspace = {
 };
 
 export type ReservationReq = {
+  id?: string;
   location: string;
   workspace: string;
   requester: string;
-  from: Date;
-  to: Date;
+  from: string;
+  to: string;
 };
 
 export type ReservationRes = {
   id: string;
   location: string;
   requester: string;
-  from: Date;
-  to: Date;
+  from: string;
+  to: string;
   workspace: string;
   description: string;
   type: WorkspaceType;

@@ -30,8 +30,9 @@ const remove = async (ids: Array<string>) => {
   return deletedWorkspaces;
 };
 
-const find = async (location: string, from: Date, to: Date) => {
-  const overlappingQuery = {location, from: {$lt: to}, to: {$gt: from}};
+const find = async (location: string, from: Date, to: Date, current?: string) => {
+  const overlappingQuery: {location: string, from: {}, to: {}, _id?: {}} = {location, from: {$lt: to}, to: {$gt: from}};
+  if (current) overlappingQuery._id = {$ne: current};
 
   const reservations = await Reservation.find(overlappingQuery);
   console.log(`reservations overlapping within ${from} - ${to}`, reservations);
@@ -39,7 +40,7 @@ const find = async (location: string, from: Date, to: Date) => {
   const reservedWorkspaces: string[] = await Reservation.distinct("workspace", overlappingQuery);
   console.log({reservedWorkspaces});
 
-  const availableQuery = {location, status: WorkspaceStatus.AVAILABLE, _id: {$nin: reservedWorkspaces}};
+  const availableQuery: {location: string, status: WorkspaceStatus, _id: {}} = {location, status: WorkspaceStatus.AVAILABLE, _id: {$nin: reservedWorkspaces}};
   const workspaces: WorkspaceDocument[] = await Workspace.find(availableQuery);
   console.log({workspaces});
   return workspaces;

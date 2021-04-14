@@ -47,7 +47,7 @@ export interface WorkspaceDocument extends Document {
 
 export interface ReservationDocument extends Document {
   location: string;
-  workspace: string | WorkspaceDocument;
+  workspace: string;
   requester: string;
   from: Date;
   to: Date;
@@ -96,7 +96,7 @@ export type WorkspaceData = {
 export type ReservationData = {
   id?: string;
   location: string;
-  workspace: string | WorkspaceDocument;
+  workspace: string;
   requester: string;
   from: Date;
   to: Date;

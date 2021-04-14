@@ -12,7 +12,7 @@ const id = Joi.string().min(2).max(128).required();
 const location = Joi.string().min(2).max(128).required();
 const workspace = Joi.string().min(2).max(128).required();
 const requester = Joi.string().email().min(6).max(128).lowercase().trim().required();
-const from = Joi.date().min("now").message('"date" cannot be is the past').max(getMaxDate()).required();
+const from = Joi.date().min("now").max(getMaxDate()).required();
 const to = Joi.date().min("now").greater(Joi.ref("from")).max(getMaxDate()).required();
 
 const reservationCreationSchema = Joi.object({location, workspace, requester, from, to});
