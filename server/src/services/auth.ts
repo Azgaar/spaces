@@ -7,8 +7,9 @@ export const getUserId = (req: Request) => req.session?.userId;
 export const getUserRole = (req: Request) => req.session?.userRole;
 export const isLoggedIn = (req: Request) => !!req.session!.userId;
 
-export const logIn = (req: Request, userId: string, userRole: UserRole) => {
+export const logIn = (req: Request, userId: string, userEmail: string, userRole: UserRole) => {
   req.session!.userId = userId;
+  req.session!.userEmail = userEmail;
   req.session!.userRole = userRole;
   req.session!.createdAt = new Date();
   logger.info(`[Auth] User ${userId} is logged in`);
