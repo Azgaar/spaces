@@ -40,19 +40,19 @@ const remove = catchAsync(async (req, res, next) => {
 });
 
 const listUserReservations = catchAsync(async (req, res, next) => {
-  const {location} = req.body;
-  const reservations = await reservationService.list(location);
+  const {email} = req.body;
+  const reservations = await reservationService.requestList(email);
   if (!reservations) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot fetch reservations"));
 
   res.status(httpStatus.OK).send(reservations);
 });
 
 const removeUserReservations = catchAsync(async (req, res, next) => {
-  const {location, selection} = req.body;
-  const removed = await reservationService.remove(selection);
+  const {email, selection} = req.body;
+  const removed = await reservationService.requestRemoval(email, selection);
   if (!removed) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot remove reservations"));
 
-  const reservations = await reservationService.list(location);
+  const reservations = await reservationService.requestList(email);
   if (!reservations) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot fetch reservations"));
 
   res.status(httpStatus.OK).send(reservations);

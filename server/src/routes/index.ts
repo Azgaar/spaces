@@ -20,3 +20,5 @@ export {router as getReservations} from "./getReservations.router";
 export {router as addReservation} from "./addReservation.router";
 export {router as updateReservation} from "./updateReservation.router";
 export {router as deleteReservations} from "./deleteReservations.router";
+export {router as getUserReservations} from "./getUserReservations.router";
+export {router as deleteUserReservations} from "./deleteUserReservations.router";

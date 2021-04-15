@@ -1,5 +1,5 @@
 import {ObjectSchema, StringSchema} from "@hapi/joi";
-import {isLoggedIn, getUserRole} from "../services/auth";
+import {isLoggedIn, getUserRole, getUserEmail} from "../services/auth";
 import httpStatus from "http-status";
 import ApiError from "../utils/apiError";
 import config from "../config";
@@ -36,4 +36,15 @@ const checkRole = (roleExpected: UserRole) => (req: Request, res: Response, next
   return next();
 };
 
-export {validate, checkSession, checkRole};
+const checkEmail = (req: Request, res: Response, next: NextFunction) => {
+  const emailAddedToRequest = req.body.email;
+  const emailOfLoggedUser = getUserEmail(req);
+  if (!emailAddedToRequest || emailAddedToRequest !== emailOfLoggedUser) {
+    const mess = `User ${emailOfLoggedUser} is not authorized to perform the operation for user ${emailAddedToRequest}`;
+    return next(new ApiError(httpStatus.FORBIDDEN, mess, OBFUSCATE_MESSAGE));
+  }
+
+  return next();
+};
+
+export {validate, checkSession, checkRole, checkEmail};

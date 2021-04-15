@@ -18,7 +18,7 @@ const register = catchAsync(async (req, res, next) => {
 
   const userData = {email, firstName, lastName, password, role: UserRole.USER};
   const user = await createUser(userData);
-  logIn(req, user.id, user.role);
+  logIn(req, user.id, user.email, user.role);
 
   res.status(httpStatus.CREATED).send({email, firstName, lastName});
 });

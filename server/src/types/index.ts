@@ -4,6 +4,7 @@ import {Document} from "mongoose";
 declare module "express-session" {
   interface SessionData {
     userId: string;
+    userEmail: string;
     userRole: UserRole;
     createdAt: Date;
   }

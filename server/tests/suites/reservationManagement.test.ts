@@ -26,7 +26,7 @@ const admin: UserData = {email: "admin@reg.com", firstName: "John", lastName: "D
 const user: UserData = {email: "user@reg.com", firstName: "Jane", lastName: "Dowson", password: "Secret1234", role: UserRole.USER};
 const location: LocationData = {description: "testLoc1"};
 const workspace: WorkspaceData = {description: "WS_1", location: "", status: WorkspaceStatus.AVAILABLE, type: WorkspaceType.DESK, size: 1, equipment: []};
-const reservation: ReservationData = {location: "", workspace: "", requester: user.email, from: IN_1_HOUR, to: IN_2_HOURS};
+const reservation: ReservationData = {location: "", workspace: "", requester: admin.email, from: IN_1_HOUR, to: IN_2_HOURS};
 let reservationId: null | string = null;
 
 describe("Reservation management service", () => {
@@ -64,7 +64,7 @@ describe("Reservation management service", () => {
       // add workspace
       const workspaceDocument = await workspaceService.add(workspace);
       expect(workspaceDocument.id).toBeTruthy();
-      workspace.id = reservation.workspace = workspaceDocument.id;
+      reservation.workspace = workspaceDocument.id;
     }
   });
 
@@ -72,6 +72,7 @@ describe("Reservation management service", () => {
     const response = await request(app).post("/addReservation").set("Cookie", cookie.admin).send(reservation).expect(httpStatus.CREATED);
     expect(response.body.location).toBe(reservation.location);
     expect(response.body.workspace).toBe(reservation.workspace);
+    expect(response.body.requester).toBe(reservation.requester);
     expect(response.body.description).toBe(workspace.description);
     expect(response.body.type).toBe(workspace.type);
     expect(response.body.size).toBe(workspace.size);
@@ -117,38 +118,33 @@ describe("Reservation management service", () => {
     expect(response.body.length).toBe(0);
   });
 
+  it("allows to re-add reservation for admin", async () => {
+    await request(app).post("/addReservation").set("Cookie", cookie.admin).send(reservation).expect(httpStatus.CREATED);
+  });
+
   it("allows user to add reservation", async () => {
-    const response = await request(app).post("/addReservation").set("Cookie", cookie.user).send(reservation)//.expect(httpStatus.CREATED);
-    console.log(response.body)
-    expect(response.body.location).toBe(reservation.location);
-    expect(response.body.workspace).toBe(reservation.workspace);
-    expect(response.body.description).toBe(workspace.description);
-    expect(response.body.type).toBe(workspace.type);
-    expect(response.body.size).toBe(workspace.size);
-    expect(response.body.status).toBe(ReservationStatus.FUTURE);
-    expect(response.body.from).toBe(reservation.from.toISOString());
-    expect(response.body.to).toBe(reservation.to.toISOString());
+    const resData: ReservationData = {...reservation, requester: user.email, from: IN_2_HOURS, to: MAX_DAY};
+    const response = await request(app).post("/addReservation").set("Cookie", cookie.user).send(resData).expect(httpStatus.CREATED);
+    expect(response.body.requester).toBe(resData.requester);
+    expect(response.body.from).toBe(resData.from.toISOString());
+    expect(response.body.to).toBe(resData.to.toISOString());
     expect(response.body.id).toBeTruthy();
     reservationId = response.body.id;
   });
 
-  // NOT IMPLEMENTED
-  // it("allows user to list his reservations", async () => {
-  //   const response = await request(app).post("/getReservations").set("Cookie", cookie.user).send({location: workspace.location}).expect(httpStatus.OK);
-  //   expect(Array.isArray(response.body)).toBe(true);
-  //   expect(response.body.length).toBe(1);
-  //   expect(response.body[0].description).toBe(workspace.description);
-  //   expect(response.body[0].id).toBeTruthy();
-  //   workspace.id = response.body[0].id;
-  // });
+  it("allows user to list only his reservations", async () => {
+    const response = await request(app).post("/getUserReservations").set("Cookie", cookie.user).send({email: user.email}).expect(httpStatus.OK);
+    expect(Array.isArray(response.body)).toBe(true);
+    expect(response.body.length).toBe(1);
+    expect(response.body[0].requester).toBe(user.email);
+  });
 
-  // NOT IMPLEMENTED
-  // it("allows user to delete his reservations", async () => {
-  //   const data = {location: workspace.location, selection: [workspace.id]};
-  //   const response = await request(app).delete("/deleteReservations").set("Cookie", cookie.user).send(data).expect(httpStatus.OK);
-  //   expect(Array.isArray(response.body)).toBe(true);
-  //   expect(response.body.length).toBe(0);
-  // });
+  it("allows user to delete his reservations", async () => {
+    const data = {email: user.email, selection: [reservationId]};
+    const response = await request(app).delete("/deleteUserReservations").set("Cookie", cookie.user).send(data).expect(httpStatus.OK);
+    expect(Array.isArray(response.body)).toBe(true);
+    expect(response.body.length).toBe(0);
+  });
 
   it("not allows to list all reservations for non-admin", async () => {
     await request(app).post("/getReservations").set("Cookie", cookie.user).send({location: workspace.location}).expect(httpStatus.INTERNAL_SERVER_ERROR);

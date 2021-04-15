@@ -30,4 +30,15 @@ const remove = async (ids: Array<string>) => {
   return deletedReservations;
 };
 
-export default {list, add, update, remove};
+const requestList = async (email: string) => {
+  const reservations: ReservationDocument[] = await Reservation.find({requester: email}).populate("workspace");
+  return reservations;
+};
+
+const requestRemoval = async (email: string, ids: Array<string>) => {
+  const deletedReservations = await Reservation.deleteMany({requester: email, _id: {$in: ids}});
+  logger.info(`[Reservation] Reservation deletion request: ${ids.join(", ")}`);
+  return deletedReservations;
+};
+
+export default {list, add, update, remove, requestList, requestRemoval};

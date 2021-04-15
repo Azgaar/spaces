@@ -5,6 +5,7 @@ import logger from "../utils/logger";
 
 export const getUserId = (req: Request) => req.session?.userId;
 export const getUserRole = (req: Request) => req.session?.userRole;
+export const getUserEmail = (req: Request) => req.session?.userEmail;
 export const isLoggedIn = (req: Request) => !!req.session!.userId;
 
 export const logIn = (req: Request, userId: string, userEmail: string, userRole: UserRole) => {

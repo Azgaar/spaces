@@ -62,6 +62,8 @@ export default class App {
     this.app.use("/addReservation", Routes.addReservation);
     this.app.use("/updateReservation", Routes.updateReservation);
     this.app.use("/deleteReservations", Routes.deleteReservations);
+    this.app.use("/getUserReservations", Routes.getUserReservations);
+    this.app.use("/deleteUserReservations", Routes.deleteUserReservations);
 
     this.app.use("/*", (req, res, next) => next(new ApiError(httpStatus.NOT_FOUND, "Not found")));
 
