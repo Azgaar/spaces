@@ -90,7 +90,7 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
   }
 
   const handleUpdate = async (formData: ReservationReq) => {
-    const requestData: ReservationReq = {...formData, location: loc.id};
+    const requestData: ReservationReq = {id: reservation.id, ...formData, location: loc.id};
     const remaining: ReservationRes[] = await catchAndTossError(ReservationService.update(requestData));
     if (!remaining) return;
 

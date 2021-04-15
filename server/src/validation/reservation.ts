@@ -1,6 +1,6 @@
 import Joi from "@hapi/joi";
 
-const getMaxDate = () => {
+export const getMaxDate = () => {
   const date = new Date();
   const month = date.getMonth();
   const year = date.getFullYear();
