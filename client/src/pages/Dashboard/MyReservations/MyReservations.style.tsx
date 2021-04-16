@@ -3,32 +3,22 @@ import {makeStyles} from "@material-ui/core/styles";
 const useStyles = makeStyles(theme => ({
   container: {
     width: "100%",
-    marginTop: theme.spacing(3),
-    "& div.MuiDataGrid-root": {
-      border: "1px solid #aaaaaa",
-      color: "#000000",
-      backgroundColor: "#f2f2f299",
-      boxShadow: "0 0 25px 15px #f2f2f299"
-    },
-    "& div.MuiDataGrid-cell": {
-      borderBottom: "1px solid #aaaaaa"
-    },
-    "& div.MuiDataGrid-columnsContainer": {
-      backgroundColor: "#8c93a94a",
-      borderBottom: `1px solid ${theme.palette.primary.main}`
-    },
-    "& div.MuiDataGrid-columnSeparator": {
-      color: theme.palette.primary.main
-    },
-    "& div.MuiDataGrid-colCellTitle": {
-      fontWeight: 700
-    }
+    marginTop: theme.spacing(3)
   },
-  controls: {
-    margin: theme.spacing(1, 0)
+  bullet: {
+    display: "inline-block",
+    margin: "0 2px",
+    transform: "scale(.8)"
   },
-  button: {
-    marginLeft: theme.spacing(1)
+  title: {
+    fontSize: theme.spacing(0.8)
+  },
+  location: {
+    wordWrap: "break-word",
+    marginBottom: theme.spacing(1.5)
+  },
+  content: {
+    padding: theme.spacing(1, 2, 0, 2)
   }
 }));
 

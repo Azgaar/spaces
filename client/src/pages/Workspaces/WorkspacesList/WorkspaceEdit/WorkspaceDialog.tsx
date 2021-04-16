@@ -23,13 +23,13 @@ type Props = {
 
 const getEquipmentIcon = (value: Equipment): React.ReactElement => {
   switch (value) {
-    case "Projector": return <RouterIcon />;
-    case "Monitor": return <PersonalVideoIcon />;
-    case "Telephone": return <PhoneIcon />;
-    case "Speakerphone": return <SpeakerPhoneIcon />;
-    case "Standing desk": return <DirectionsWalkIcon />;
-    case "Headset": return <HeadsetMicIcon />;
-    case "Couch": return <WeekendIcon />;
+    case Equipment.PROJECTOR: return <RouterIcon />;
+    case Equipment.MONITOR: return <PersonalVideoIcon />;
+    case Equipment.TELEPHONE: return <PhoneIcon />;
+    case Equipment.SPEAKERPHONE: return <SpeakerPhoneIcon />;
+    case Equipment.STANDING_DESK: return <DirectionsWalkIcon />;
+    case Equipment.HEADSET: return <HeadsetMicIcon />;
+    case Equipment.COUCH: return <WeekendIcon />;
     default: return <PhonelinkSetupIcon />;
   }
 }
