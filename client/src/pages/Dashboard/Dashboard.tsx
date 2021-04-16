@@ -12,7 +12,7 @@ function Dashboard() {
       <Avatar className={classes.avatar}>
         <BookmarksIcon />
       </Avatar>
-      <Typography component="h1" variant="h5" className={classes.header}>Reservations</Typography>
+      <Typography component="h1" variant="h5" className={classes.header}>My Reservations</Typography>
       <MyReservations />
     </Container>
   );
