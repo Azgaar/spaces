@@ -5,11 +5,6 @@ const useStyles = makeStyles(theme => ({
     width: "100%",
     marginTop: theme.spacing(3)
   },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(.8)"
-  },
   title: {
     fontSize: theme.spacing(0.8)
   },
