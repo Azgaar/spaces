@@ -2,18 +2,12 @@ import React, {useEffect, useState} from "react";
 import useStyles from "./UsersList.style";
 import {Container} from "@material-ui/core";
 import DeletionButton from "../../../components/Controls/DeletionButton/DeletionButton";
-import {DataGrid, GridColDef, GridColTypeDef, GridRowId, GridSelectionModelChangeParams} from "@material-ui/data-grid";
+import {DataGrid, GridColDef, GridRowId, GridSelectionModelChangeParams} from "@material-ui/data-grid";
 import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
 import {useToasterCatcher} from "../../../hooks";
 import {UserService} from "../../../services";
 import {UserData} from "../../../types";
-import dayjs from "dayjs";
-
-const dateFormat: GridColTypeDef = {
-  type: "dateTime",
-  width: 200,
-  valueFormatter: ({value}) => dayjs(value as Date).format("MMM D, YYYY h:mm A")
-};
+import {dateFormat} from "../../../utils";
 
 const columns: GridColDef[] = [
   {field: "role", headerName: "Role", width: 90},
@@ -27,8 +21,8 @@ const columns: GridColDef[] = [
 const UsersList = () => {
   const classes = useStyles();
   const {pushMessage} = useMessage();
-  const [users, setUsers] = useState([] as UserData[]);
-  const [selection, setSelection] = useState([] as GridRowId[]);
+  const [users, setUsers] = useState<UserData[]>([]);
+  const [selection, setSelection] = useState<GridRowId[]>([]);
   const {isLoading, catchAndTossError} = useToasterCatcher();
 
   useEffect(() => {

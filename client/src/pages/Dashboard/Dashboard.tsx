@@ -1,11 +1,19 @@
 import React from "react";
-import {Container, Typography} from "@material-ui/core";
+import {Avatar, Container, Typography} from "@material-ui/core";
+import BookmarksIcon from "@material-ui/icons/Bookmarks";
+import useStyles from "./Dashboard.style";
+import MyReservations from "./MyReservations/MyReservations";
 
 function Dashboard() {
+  const classes = useStyles();
+
   return (
-    <Container maxWidth="lg">
-      <Typography variant="h1" component="h1">SPɅCES</Typography>
-      <Typography variant="h3" component="h3">Dashboard</Typography>
+    <Container maxWidth="lg" className={classes.container}>
+      <Avatar className={classes.avatar}>
+        <BookmarksIcon />
+      </Avatar>
+      <Typography component="h1" variant="h5" className={classes.header}>Reservations</Typography>
+      <MyReservations />
     </Container>
   );
 }

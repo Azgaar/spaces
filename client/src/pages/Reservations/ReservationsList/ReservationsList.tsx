@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import useStyles from "./ReservationsList.style";
 import {Button, Container} from "@material-ui/core";
-import {DataGrid, GridColDef, GridColTypeDef, GridRowId, GridSelectionModelChangeParams} from "@material-ui/data-grid";
+import {DataGrid, GridColDef, GridRowId, GridSelectionModelChangeParams} from "@material-ui/data-grid";
 import DeletionButton from "../../../components/Controls/DeletionButton/DeletionButton";
 import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
 import {LocationOption, ReservationReq, ReservationRes} from "../../../types";
@@ -9,12 +9,8 @@ import {ReservationService} from "../../../services";
 import {useToasterCatcher, useUser} from "../../../hooks";
 import ReservationDialog from "./ReservationDialog/ReservationDialog";
 import dayjs from "dayjs";
+import {dateFormat} from "../../../utils";
 
-const dateFormat: GridColTypeDef = {
-  type: "dateTime",
-  width: 180,
-  valueFormatter: ({value}) => dayjs(value as Date).format("MMM D, YYYY h:mm A")
-};
 const columns: GridColDef[] = [
   {field: "status", headerName: "Status", width: 120},
   {field: "description", headerName: "Workspace", width: 140},
@@ -30,8 +26,8 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
   const {pushMessage} = useMessage();
   const [showEdit, setEdit] = useState<string | null>(null);
   const {user} = useUser();
-  const [reservations, setReservations] = useState([] as ReservationRes[]);
-  const [selection, setSelection] = useState([] as GridRowId[]);
+  const [reservations, setReservations] = useState<ReservationRes[]>([]);
+  const [selection, setSelection] = useState<GridRowId[]>([]);
   const {isLoading, setLoading, catchAndTossError} = useToasterCatcher();
 
   const from = dayjs().set("minute", 0).set("second", 0).set("millisecond", 0).add(1, "hour");

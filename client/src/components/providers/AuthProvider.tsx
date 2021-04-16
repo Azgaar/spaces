@@ -15,7 +15,6 @@ const AuthProvider: FC = ({children}) => {
     async function fetchUser() {
       const user: UserData = await catchAndTossError(UserService.fetch());
       if (!user) return; // user is not logged in
-      console.log("AuthProvider", {user});
       dispatch(actions.login(user));
     };
     fetchUser().then(() => setLoading(false));

@@ -11,7 +11,6 @@ type RouteProps = {
 
 const PrivateRoute = ({path, role, component}: RouteProps) => {
   const {isAuthenticated, isAdmin} = useUser();
-  console.log("PrivateRoute", {path, isAuthenticated, isAdmin});
 
   if (role === UserRole.USER && !isAuthenticated) return <Redirect to="/signin" />;
   if (role === UserRole.ADMIN && !isAdmin) return <Redirect to="/dashboard" />;

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import useStyles from "./ReservationDialog.style";
 import {Avatar, TextField, Button, Typography, Grid, Container, Dialog, MenuItem, FormControl} from "@material-ui/core";
 import CollectionsBookmarkIcon from "@material-ui/icons/CollectionsBookmark";
-import {Controller, SubmitHandler, useForm} from "react-hook-form";
+import {Controller, useForm} from "react-hook-form";
 import {rules} from "../../../../validation/reservation";
 import {ReservationReq, UserData, Workspace} from "../../../../types";
 import {useToasterCatcher} from "../../../../hooks";
@@ -59,11 +59,6 @@ const ReservationDialog = ({mode, reservation, close, submit}: Props) => {
     return label;
   }
 
-  const onSubmit: SubmitHandler<ReservationReq> = async (formData: ReservationReq) => {
-    console.log(formData);
-    submit(formData);
-  };
-
   const changeDate = (date: Dayjs | null, name: "from" | "to") => {
     if (!date) return;
     const dateString = date.toISOString();
@@ -80,7 +75,7 @@ const ReservationDialog = ({mode, reservation, close, submit}: Props) => {
         </Avatar>
         <Typography component="h1" variant="h5">{mode} Reservation</Typography>
 
-        <form className={classes.form} noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+        <form className={classes.form} noValidate autoComplete="off" onSubmit={handleSubmit(submit)}>
           <FormControl>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
