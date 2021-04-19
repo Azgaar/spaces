@@ -33,14 +33,14 @@ const remove = async (ids: Array<string>) => {
 const requestList = async (email: string, active: boolean) => {
   const timeNow = new Date();
   const toQuery = active ? {$gt: timeNow} : {$lt: timeNow};
-  const reservations: ReservationDocument[] = await Reservation.find({requester: email, to: toQuery}).populate("workspace");
+  const reservations: ReservationDocument[] = await Reservation.find({requester: email, to: toQuery}).populate("workspace").populate("location");
   return reservations;
 };
 
 const requestRemoval = async (email: string, id: string) => {
-  const deletedReservations = await Reservation.deleteOne({requester: email, _id: id});
+  const deletedReservation = await Reservation.deleteOne({requester: email, _id: id});
   logger.info(`[Reservation] Reservation deletion request: ${id}`);
-  return deletedReservations;
+  return deletedReservation;
 };
 
 export default {list, add, update, remove, requestList, requestRemoval};

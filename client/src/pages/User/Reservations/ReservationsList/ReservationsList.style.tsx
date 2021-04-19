@@ -8,9 +8,13 @@ const useStyles = makeStyles(theme => ({
   title: {
     fontSize: theme.spacing(0.8)
   },
-  location: {
-    wordWrap: "break-word",
-    marginBottom: theme.spacing(1.5)
+  cardHeader: {
+    "& .MuiCardHeader-subheader": {
+      overflow: "hidden",
+      whiteSpace: "nowrap",
+      textOverflow: "ellipsis",
+      maxWidth: "12em"
+    }
   },
   content: {
     padding: theme.spacing(1, 2, 0, 2)

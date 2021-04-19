@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import useStyles from "./ReservationsList.style";
-import {Typography, Card, CardContent, Container, CardActions, Button, Grid, CardHeader, Badge, Divider} from "@material-ui/core";
+import {Typography, Card, CardContent, Container, CardActions, Button, Grid, CardHeader, Badge, Divider, IconButton} from "@material-ui/core";
 import Spinner from "../../../../components/Spinner/Spinner";
 import WorkspaceTypeIcon from "../../../../components/Icons/WorkspaceTypeIcon/WorkspaceTypeIcon";
 import {MessageType, useMessage} from "../../../../components/Providers/MessageProvider";
@@ -8,6 +8,7 @@ import {ReservationRes} from "../../../../types";
 import {useToasterCatcher, useUser} from "../../../../hooks";
 import {ReservationService} from "../../../../services";
 import {getDate, getTime} from "../../../../utils";
+import PlaceIcon from "@material-ui/icons/Place";
 
 const ReservationsList = () => {
   const classes = useStyles();
@@ -32,6 +33,11 @@ const ReservationsList = () => {
     pushMessage({title: "Reservation is removed", type: MessageType.SUCCESS});
   }
 
+  const openMap = async (address: string) => {
+    const url = `https://www.google.com/maps/search/${address}`;
+    window.open(url, "_blank", "location=yes");
+  }
+
   if (isLoading) return <Spinner />
   return (
     <Container className={classes.container}>
@@ -39,12 +45,16 @@ const ReservationsList = () => {
         {reservations.map(reservation => (
           <Grid key={reservation.id} item xs={3}>
             <Card variant="outlined">
-              <CardHeader avatar={
+              <CardHeader className={classes.cardHeader} avatar={
                 <Badge badgeContent={reservation.size > 1 && reservation.size}>
                   <WorkspaceTypeIcon type={reservation.type} />
                 </Badge>}
-              title={`${reservation.type} ${reservation.description}`}
-              subheader="Minsk, Tolstogo 10, 3th floor"/>
+                title={`${reservation.type} ${reservation.description}`}
+                subheader={reservation.location}
+                action={(
+                  <IconButton aria-label="locate" onClick={() => openMap(reservation.location)}>
+                    <PlaceIcon fontSize="small" />
+                  </IconButton>)}/>
               <Divider variant="middle" />
 
               <CardContent className={classes.content}>
