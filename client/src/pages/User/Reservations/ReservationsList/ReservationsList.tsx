@@ -25,12 +25,12 @@ const ReservationsList = () => {
     fetchMyReservations();
   }, []);
 
-  // const handleDeletion = async () => {
-  //   const remaining: ReservationRes[] = await catchAndTossError(ReservationService.requestRemoval(user.email, selection));
-  //   if (!remaining) return;
-  //   setReservations(() => remaining);
-  //   pushMessage({title: "Reservation is removed", type: MessageType.SUCCESS});
-  // }
+  const handleDeletion = async (id: string) => {
+    const remaining: ReservationRes[] = await catchAndTossError(ReservationService.requestRemoval(user.email, id));
+    if (!remaining) return;
+    setReservations(() => remaining);
+    pushMessage({title: "Reservation is removed", type: MessageType.SUCCESS});
+  }
 
   if (isLoading) return <Spinner />
   return (
@@ -57,7 +57,7 @@ const ReservationsList = () => {
               </CardContent>
 
               <CardActions>
-                <Button size="small" color="primary">Cancel</Button>
+                <Button size="small" color="primary" onClick={() => handleDeletion(reservation.id)}>Cancel</Button>
               </CardActions>
             </Card>
           </Grid>

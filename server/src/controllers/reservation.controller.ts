@@ -48,8 +48,8 @@ const listUserReservations = catchAsync(async (req, res, next) => {
 });
 
 const removeUserReservations = catchAsync(async (req, res, next) => {
-  const {email, selection} = req.body;
-  const removed = await reservationService.requestRemoval(email, selection);
+  const {email, id} = req.body;
+  const removed = await reservationService.requestRemoval(email, id);
   if (!removed) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot remove reservations"));
 
   const reservations = await reservationService.requestList(email, true);

@@ -22,6 +22,6 @@ const active = Joi.bool().required();
 const reservationCreationSchema = Joi.object({location, workspace, requester, from, to});
 const reservationUpdateSchema = Joi.object({id, location, workspace, requester, from, to});
 const reservationUserListSchema = Joi.object({email, active});
-const reservationUserDeleteSchema = Joi.object({email, selection});
+const reservationUserDeleteSchema = Joi.object({email, id});
 
 export {reservationCreationSchema, reservationUpdateSchema, reservationUserListSchema, reservationUserDeleteSchema};

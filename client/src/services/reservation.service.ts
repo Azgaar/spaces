@@ -8,6 +8,6 @@ const update = (reservation: ReservationReq): AxiosPromise => axios.post("/updat
 const remove = (loc: LocationOption, selection: GridRowId[]): AxiosPromise => axios.delete("/deleteReservations", {data: {location: loc.id, selection}});
 const requestActive = (email: string): AxiosPromise => axios.post("/getUserReservations", {email, active: true});
 const requestHistorical = (email: string): AxiosPromise => axios.post("/getUserReservations", {email, active: false});
-const requestRemoval = (email: string, selection: GridRowId[]): AxiosPromise => axios.delete("/deleteUserReservations", {data: {email, selection}});
+const requestRemoval = (email: string, id: string): AxiosPromise => axios.delete("/deleteUserReservations", {data: {email, id}});
 
 export const ReservationService = {list, add, update, remove, requestActive, requestHistorical, requestRemoval};

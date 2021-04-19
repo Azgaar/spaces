@@ -37,9 +37,9 @@ const requestList = async (email: string, active: boolean) => {
   return reservations;
 };
 
-const requestRemoval = async (email: string, ids: Array<string>) => {
-  const deletedReservations = await Reservation.deleteMany({requester: email, _id: {$in: ids}});
-  logger.info(`[Reservation] Reservation deletion request: ${ids.join(", ")}`);
+const requestRemoval = async (email: string, id: string) => {
+  const deletedReservations = await Reservation.deleteOne({requester: email, _id: id});
+  logger.info(`[Reservation] Reservation deletion request: ${id}`);
   return deletedReservations;
 };
 
