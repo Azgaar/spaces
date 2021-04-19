@@ -2,7 +2,7 @@ import {useState} from "react";
 import {useSelector} from "react-redux";
 import {AxiosPromise} from "axios";
 import {RootState, UserRole} from "../types";
-import {MessageType, useMessage} from "../components/providers/MessageProvider";
+import {MessageType, useMessage} from "../components/Providers/MessageProvider";
 
 type UserData = {
   user: RootState["user"];

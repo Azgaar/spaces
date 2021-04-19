@@ -5,9 +5,9 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import ReservationsList from "./ReservationsList/ReservationsList";
 import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
 import {Autocomplete} from "@material-ui/lab";
-import {LocationOption} from "../../types";
-import {useToasterCatcher} from "../../hooks";
-import {LocationService} from "../../services";
+import {LocationOption} from "../../../types";
+import {useToasterCatcher} from "../../../hooks";
+import {LocationService} from "../../../services";
 
 function Reservations() {
   const classes = useStyles();

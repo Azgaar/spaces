@@ -5,11 +5,11 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import DesktopWindowsIcon from "@material-ui/icons/DesktopWindows";
 import WorkspacesList from "./WorkspacesList/WorkspacesList";
 import {Autocomplete} from "@material-ui/lab";
-import DeletionButton from "../../components/Controls/DeletionButton/DeletionButton";
-import {MessageType, useMessage} from "../../components/providers/MessageProvider";
-import {LocationOption} from "../../types";
-import {useToasterCatcher} from "../../hooks";
-import {LocationService} from "../../services";
+import DeletionButton from "../../../components/Controls/DeletionButton/DeletionButton";
+import {MessageType, useMessage} from "../../../components/Providers/MessageProvider";
+import {LocationOption} from "../../../types";
+import {useToasterCatcher} from "../../../hooks";
+import {LocationService} from "../../../services";
 
 function Workspaces() {
   const classes = useStyles();

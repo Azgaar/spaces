@@ -7,7 +7,7 @@ import {useForm, SubmitHandler} from "react-hook-form";
 import {PassportChangeForm} from "../../../types";
 import {UserService} from "../../../services";
 import {rules} from "../../../validation/user";
-import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
+import {MessageType, useMessage} from "../../../components/Providers/MessageProvider";
 import {useToasterCatcher} from "../../../hooks";
 
 function PasswordChange() {

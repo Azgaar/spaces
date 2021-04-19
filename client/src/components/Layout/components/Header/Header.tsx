@@ -9,15 +9,6 @@ import {AuthService} from "../../../../services";
 
 const logoPath = process.env.PUBLIC_URL + "/logo.svg";
 
-const Admin = () => {
-  return (<>
-    <Button color="inherit" component={RouterLink} to="/reservations">Reservations</Button>
-    <Button color="inherit" component={RouterLink} to="/workspaces">Workspaces</Button>
-    <Button color="inherit" component={RouterLink} to="/users">Users</Button>
-  </>
-  );
-}
-
 const Authorized = () => {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -45,6 +36,24 @@ const Unauthorized = () => {
   );
 }
 
+const Admin = () => {
+  return (<>
+    <Button color="inherit" component={RouterLink} to="/admin/reservations">Reservations</Button>
+    <Button color="inherit" component={RouterLink} to="/admin/workspaces">Workspaces</Button>
+    <Button color="inherit" component={RouterLink} to="/admin/users">Users</Button>
+  </>
+  );
+}
+
+const User = () => {
+  return (<>
+    <Button color="inherit" component={RouterLink} to="/reserve">Reserve</Button>
+    <Button color="inherit" component={RouterLink} to="/reservations">Reservations</Button>
+    <Button color="inherit" component={RouterLink} to="/history">History</Button>
+  </>
+  );
+}
+
 function Header() {
   const classes = useStyles();
   const {isAuthenticated, isAdmin} = useUser();
@@ -57,8 +66,7 @@ function Header() {
           SPɅCES
         </Typography>
         <div className={classes.buttons}>
-          {isAuthenticated && <Button color="inherit" component={RouterLink} to="/dashboard">Dashboard</Button>}
-          {isAdmin && <Admin />}
+          {isAuthenticated && (isAdmin ? <Admin /> : <User />)}
           {isAuthenticated ? <Authorized /> : <Unauthorized />}
         </div>
       </Toolbar>

@@ -2,14 +2,14 @@ import React, {useEffect, useState} from "react";
 import useStyles from "./ReservationsList.style";
 import {Button, Container} from "@material-ui/core";
 import {DataGrid, GridColDef, GridRowId, GridSelectionModelChangeParams} from "@material-ui/data-grid";
-import DeletionButton from "../../../components/Controls/DeletionButton/DeletionButton";
-import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
-import {LocationOption, ReservationReq, ReservationRes} from "../../../types";
-import {ReservationService} from "../../../services";
-import {useToasterCatcher, useUser} from "../../../hooks";
+import DeletionButton from "../../../../components/Controls/DeletionButton/DeletionButton";
+import {MessageType, useMessage} from "../../../../components/Providers/MessageProvider";
+import {LocationOption, ReservationReq, ReservationRes} from "../../../../types";
+import {ReservationService} from "../../../../services";
+import {useToasterCatcher, useUser} from "../../../../hooks";
 import ReservationDialog from "./ReservationDialog/ReservationDialog";
 import dayjs from "dayjs";
-import {dateFormat} from "../../../utils";
+import {dateFormat} from "../../../../utils";
 
 const columns: GridColDef[] = [
   {field: "status", headerName: "Status", width: 120},

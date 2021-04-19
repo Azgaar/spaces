@@ -1,38 +1,48 @@
 import React, {Suspense} from "react";
-import {Switch, Route, Redirect} from "react-router-dom";
+import {Switch, Route} from "react-router-dom";
 import Layout from "./Layout/Layout";
 import Spinner from "./Spinner/Spinner";
 import {PrivateRoute} from "./PrivateRoute";
 import {UserRole} from "../types";
 
-const Signin = React.lazy(() => import("../pages/Signin/Signin"));
-const Signup = React.lazy(() => import("../pages/Signup/Signup"));
-const ForgotPassword = React.lazy(() => import("../pages/ForgotPassword/ForgotPassword"));
-const Profile = React.lazy(() => import("../pages/Profile/Profile"));
+const Home = React.lazy(() => import("../pages/Home/Home"));
+
+const Signin = React.lazy(() => import("../pages/Auth/Signin/Signin"));
+const Signup = React.lazy(() => import("../pages/Auth/Signup/Signup"));
+const ForgotPassword = React.lazy(() => import("../pages/Auth/ForgotPassword/ForgotPassword"));
+
+const Profile = React.lazy(() => import("../pages/Profile/Profile/Profile"));
 const ProfileEdit = React.lazy(() => import("../pages/Profile/ProfileEdit/ProfileEdit"));
 const PasswordChange = React.lazy(() => import("../pages/Profile/PasswordChange/PasswordChange"));
-const Dashboard = React.lazy(() => import("../pages/Dashboard/Dashboard"));
-const Users = React.lazy(() => import("../pages/Users/Users"));
-const Workspaces = React.lazy(() => import("../pages/Workspaces/Workspaces"));
-const Reservations = React.lazy(() => import("../pages/Reservations/Reservations"));
+
+const Reservations = React.lazy(() => import("../pages/User/Reservations/Reservations"));
+
+const ManageReservations = React.lazy(() => import("../pages/Admin/Reservations/Reservations"));
+const ManageUsers = React.lazy(() => import("../pages/Admin/Users/Users"));
+const ManageWorkspaces = React.lazy(() => import("../pages/Admin/Workspaces/Workspaces"));
 
 function App() {
   return (
     <Layout>
       <Suspense fallback={<Spinner />}>
         <Switch>
-          <Route exact path="/"><Redirect to="/dashboard" /></Route>
+          <Route exact path="/" component={Home} />
+
           <Route path="/signin" component={Signin} />
           <Route path="/signup" component={Signup} />
           <Route path="/forgotPassword" component={ForgotPassword} />
+
           <PrivateRoute path="/profile" role={UserRole.USER} component={Profile} />
           <PrivateRoute path="/editProfile" role={UserRole.USER} component={ProfileEdit} />
           <PrivateRoute path="/changePassword" role={UserRole.USER} component={PasswordChange} />
-          <PrivateRoute path="/dashboard" role={UserRole.USER} component={Dashboard} />
-          <PrivateRoute path="/users" role={UserRole.ADMIN} component={Users} />
-          <PrivateRoute path="/workspaces" role={UserRole.ADMIN} component={Workspaces} />
-          <PrivateRoute path="/reservations" role={UserRole.ADMIN} component={Reservations} />
-          <Route path="/*"><Redirect to="/dashboard" /></Route>
+          
+          <PrivateRoute path="/reservations" role={UserRole.USER} component={Reservations} />
+
+          <PrivateRoute path="/admin/users" role={UserRole.ADMIN} component={ManageUsers} />
+          <PrivateRoute path="/admin/workspaces" role={UserRole.ADMIN} component={ManageWorkspaces} />
+          <PrivateRoute path="/admin/reservations" role={UserRole.ADMIN} component={ManageReservations} />
+
+          <Route path="/*" component={Home} />
         </Switch>
       </Suspense>
     </Layout>

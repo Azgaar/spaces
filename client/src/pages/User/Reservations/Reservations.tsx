@@ -1,10 +1,10 @@
 import React from "react";
 import {Avatar, Container, Typography} from "@material-ui/core";
 import BookmarksIcon from "@material-ui/icons/Bookmarks";
-import useStyles from "./Dashboard.style";
-import MyReservations from "./MyReservations/MyReservations";
+import useStyles from "./Reservations.style";
+import ReservationsList from "./ReservationsList/ReservationsList";
 
-function Dashboard() {
+function Reservations() {
   const classes = useStyles();
 
   return (
@@ -12,10 +12,10 @@ function Dashboard() {
       <Avatar className={classes.avatar}>
         <BookmarksIcon />
       </Avatar>
-      <Typography component="h1" variant="h5" className={classes.header}>My Reservations</Typography>
-      <MyReservations />
+      <Typography component="h1" variant="h5" className={classes.header}>Active Reservations</Typography>
+      <ReservationsList />
     </Container>
   );
 }
 
-export default Dashboard;
+export default Reservations;

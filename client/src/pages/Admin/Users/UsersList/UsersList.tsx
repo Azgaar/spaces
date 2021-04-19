@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from "react";
 import useStyles from "./UsersList.style";
 import {Container} from "@material-ui/core";
-import DeletionButton from "../../../components/Controls/DeletionButton/DeletionButton";
+import DeletionButton from "../../../../components/Controls/DeletionButton/DeletionButton";
 import {DataGrid, GridColDef, GridRowId, GridSelectionModelChangeParams} from "@material-ui/data-grid";
-import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
-import {useToasterCatcher} from "../../../hooks";
-import {UserService} from "../../../services";
-import {UserData} from "../../../types";
-import {dateFormat} from "../../../utils";
+import {MessageType, useMessage} from "../../../../components/Providers/MessageProvider";
+import {useToasterCatcher} from "../../../../hooks";
+import {UserService} from "../../../../services";
+import {UserData} from "../../../../types";
+import {dateFormat} from "../../../../utils";
 
 const columns: GridColDef[] = [
   {field: "role", headerName: "Role", width: 90},

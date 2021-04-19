@@ -13,7 +13,7 @@ const PrivateRoute = ({path, role, component}: RouteProps) => {
   const {isAuthenticated, isAdmin} = useUser();
 
   if (role === UserRole.USER && !isAuthenticated) return <Redirect to="/signin" />;
-  if (role === UserRole.ADMIN && !isAdmin) return <Redirect to="/dashboard" />;
+  if (role === UserRole.ADMIN && !isAdmin) return <Redirect to="/home" />;
   return <Route path={path} component={component} />;
 };
 

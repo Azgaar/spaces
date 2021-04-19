@@ -3,10 +3,10 @@ import useStyles from "./ReservationDialog.style";
 import {Avatar, TextField, Button, Typography, Grid, Container, Dialog, MenuItem, FormControl} from "@material-ui/core";
 import CollectionsBookmarkIcon from "@material-ui/icons/CollectionsBookmark";
 import {Controller, useForm} from "react-hook-form";
-import {rules} from "../../../../validation/reservation";
-import {ReservationReq, UserData, Workspace} from "../../../../types";
-import {useToasterCatcher} from "../../../../hooks";
-import {UserService, WorkspaceService} from "../../../../services";
+import {rules} from "../../../../../validation/reservation";
+import {ReservationReq, UserData, Workspace} from "../../../../../types";
+import {useToasterCatcher} from "../../../../../hooks";
+import {UserService, WorkspaceService} from "../../../../../services";
 import {DateTimePicker} from "@material-ui/pickers";
 import {Dayjs} from "dayjs";
 

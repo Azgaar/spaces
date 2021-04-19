@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
-import useStyles from "./MyReservations.style";
+import useStyles from "./ReservationsList.style";
 import {Typography, Card, CardContent, Container, CardActions, Button, Grid, CardHeader, Badge, Divider} from "@material-ui/core";
-import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
-import {ReservationRes, WorkspaceType} from "../../../types";
-import {useToasterCatcher, useUser} from "../../../hooks";
-import {ReservationService} from "../../../services";
-import Spinner from "../../../components/Spinner/Spinner";
+import {MessageType, useMessage} from "../../../../components/Providers/MessageProvider";
+import {ReservationRes, WorkspaceType} from "../../../../types";
+import {useToasterCatcher, useUser} from "../../../../hooks";
+import {ReservationService} from "../../../../services";
+import Spinner from "../../../../components/Spinner/Spinner";
 import DesktopWindowsIcon from "@material-ui/icons/DesktopWindows";
 import GroupWorkOutlinedIcon from "@material-ui/icons/GroupWorkOutlined";
 import VolumeOffOutlinedIcon from "@material-ui/icons/VolumeOffOutlined";

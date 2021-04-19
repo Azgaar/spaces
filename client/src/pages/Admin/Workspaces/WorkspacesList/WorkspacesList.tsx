@@ -2,12 +2,12 @@ import React, {useEffect, useState} from "react";
 import useStyles from "./WorkspacesList.style";
 import {Button, Container} from "@material-ui/core";
 import {DataGrid, GridColDef, GridColTypeDef, GridRowId, GridSelectionModelChangeParams} from "@material-ui/data-grid";
-import DeletionButton from "../../../components/Controls/DeletionButton/DeletionButton";
+import DeletionButton from "../../../../components/Controls/DeletionButton/DeletionButton";
 import WorkspaceDialog from "./WorkspaceEdit/WorkspaceDialog";
-import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
-import {LocationOption, Workspace, WorkspaceStatus, WorkspaceType} from "../../../types";
-import {WorkspaceService} from "../../../services";
-import {useToasterCatcher} from "../../../hooks";
+import {MessageType, useMessage} from "../../../../components/Providers/MessageProvider";
+import {LocationOption, Workspace, WorkspaceStatus, WorkspaceType} from "../../../../types";
+import {WorkspaceService} from "../../../../services";
+import {useToasterCatcher} from "../../../../hooks";
 
 const equipmentColumn: GridColTypeDef = {
   valueFormatter: ({value}) => Array.isArray(value) ? value.join(", ") : ""

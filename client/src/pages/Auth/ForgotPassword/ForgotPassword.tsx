@@ -1,14 +1,14 @@
 import React from "react";
-import useFormStyles from "../../styles/form";
+import useFormStyles from "../../../styles/form";
 import {Avatar, TextField, Button, Typography, Grid, Container} from "@material-ui/core";
 import MailOutlineOutlinedIcon from "@material-ui/icons/MailOutlineOutlined";
 import {Link as RouterLink, Redirect, useHistory} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
-import {ForgotPasswordForm} from "../../types";
-import {UserService} from "../../services";
-import {rules} from "../../validation/user";
-import {MessageType, useMessage} from "../../components/providers/MessageProvider";
-import {useToasterCatcher, useUser} from "../../hooks";
+import {ForgotPasswordForm} from "../../../types";
+import {UserService} from "../../../services";
+import {rules} from "../../../validation/user";
+import {MessageType, useMessage} from "../../../components/Providers/MessageProvider";
+import {useToasterCatcher, useUser} from "../../../hooks";
 
 function ForgotPassword() {
   const {isAuthenticated} = useUser();
@@ -25,7 +25,7 @@ function ForgotPassword() {
     history.push("/signin");
   };
 
-  if (isAuthenticated) return <Redirect to="/dashboard" />;
+  if (isAuthenticated) return <Redirect to="/home" />;
   return (
     <Container maxWidth="xs" className={formStyles.paper}>
       <Avatar className={formStyles.avatar}>

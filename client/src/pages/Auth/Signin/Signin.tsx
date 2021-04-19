@@ -1,15 +1,15 @@
 import React from "react";
-import useFormStyles from "../../styles/form";
+import useFormStyles from "../../../styles/form";
 import {Avatar, TextField, Button, Typography, Grid, Link, Container} from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import {Link as RouterLink, Redirect, useHistory} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
 import {useDispatch} from "react-redux";
-import {SignInForm, UserData} from "../../types";
-import {actions} from "../../store/actions";
-import {rules} from "../../validation/user";
-import {useToasterCatcher, useUser} from "../../hooks";
-import {AuthService} from "../../services";
+import {SignInForm, UserData} from "../../../types";
+import {actions} from "../../../store/actions";
+import {rules} from "../../../validation/user";
+import {useToasterCatcher, useUser} from "../../../hooks";
+import {AuthService} from "../../../services";
 
 function Signin() {
   const {isAuthenticated} = useUser();
@@ -23,10 +23,10 @@ function Signin() {
     const userData: UserData = await catchAndTossError(AuthService.signin(formData));
     if (!userData) return;
     dispatch(actions.login(userData));
-    history.push("/dashboard");
+    history.push("/home");
   };
 
-  if (isAuthenticated) return <Redirect to="/dashboard" />;
+  if (isAuthenticated) return <Redirect to="/home" />;
   return (
     <Container maxWidth="xs" className={formStyles.paper}>
       <Avatar className={formStyles.avatar}>

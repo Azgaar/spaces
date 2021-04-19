@@ -11,8 +11,8 @@ import SpeakerPhoneIcon from "@material-ui/icons/SpeakerPhone";
 import DirectionsWalkIcon from "@material-ui/icons/DirectionsWalk";
 import PhonelinkSetupIcon from '@material-ui/icons/PhonelinkSetup';
 import {useForm} from "react-hook-form";
-import {rules} from "../../../../validation/workspace";
-import {Workspace, WorkspaceStatus, WorkspaceType, Equipment} from "../../../../types";
+import {rules} from "../../../../../validation/workspace";
+import {Workspace, WorkspaceStatus, WorkspaceType, Equipment} from "../../../../../types";
 
 type Props = {
   mode: "Edit" | "Add";

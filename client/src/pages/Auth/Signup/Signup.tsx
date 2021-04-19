@@ -1,15 +1,15 @@
 import React from "react";
-import useFormStyles from "../../styles/form";
+import useFormStyles from "../../../styles/form";
 import {Avatar, TextField, Button, Checkbox, Typography, Grid, Link, FormHelperText, FormControlLabel, Container} from "@material-ui/core";
 import ListAltOutlinedIcon from "@material-ui/icons/ListAltOutlined";
 import {Link as RouterLink, Redirect, useHistory} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {useForm, SubmitHandler} from "react-hook-form";
-import {SignUpForm} from "../../types";
-import {UserService} from "../../services";
-import {actions} from "../../store/actions";
-import {rules} from "../../validation/user";
-import {useToasterCatcher, useUser} from "../../hooks";
+import {SignUpForm} from "../../../types";
+import {UserService} from "../../../services";
+import {actions} from "../../../store/actions";
+import {rules} from "../../../validation/user";
+import {useToasterCatcher, useUser} from "../../../hooks";
 
 const TermslLabel = () => {
   return (
@@ -34,10 +34,10 @@ function Signup() {
     const res = await catchAndTossError(UserService.signup(formData));
     if (!res) return
     dispatch(actions.login(res));
-    history.push("/dashboard");
+    history.push("/home");
   };
 
-  if (isAuthenticated) return <Redirect to="/dashboard" />;
+  if (isAuthenticated) return <Redirect to="/home" />;
   return (
     <Container maxWidth="xs" className={formStyles.paper}>
       <Avatar className={formStyles.avatar}>
