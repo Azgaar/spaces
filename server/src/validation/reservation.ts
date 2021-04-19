@@ -17,10 +17,11 @@ const to = Joi.date().min("now").greater(Joi.ref("from")).max(getMaxDate()).requ
 
 const email = Joi.string().email().min(6).max(128).lowercase().trim().required();
 const selection = Joi.array().min(1).items(Joi.string()).required();
+const active = Joi.bool().required();
 
 const reservationCreationSchema = Joi.object({location, workspace, requester, from, to});
 const reservationUpdateSchema = Joi.object({id, location, workspace, requester, from, to});
-const reservationUserListSchema = Joi.object({email});
+const reservationUserListSchema = Joi.object({email, active});
 const reservationUserDeleteSchema = Joi.object({email, selection});
 
 export {reservationCreationSchema, reservationUpdateSchema, reservationUserListSchema, reservationUserDeleteSchema};

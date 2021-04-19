@@ -57,7 +57,7 @@ const ReservationsList = () => {
 
   useEffect(() => {
     async function fetchMyReservations() {
-      const reservations: ReservationRes[] = await catchAndTossError(ReservationService.requestList(user.email));
+      const reservations: ReservationRes[] = await catchAndTossError(ReservationService.requestActive(user.email));
       if (reservations) setReservations(() => reservations);
       console.log(reservations);
     };
