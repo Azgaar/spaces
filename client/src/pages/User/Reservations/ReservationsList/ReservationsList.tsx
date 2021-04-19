@@ -43,7 +43,7 @@ const ReservationsList = () => {
     <Container className={classes.container}>
       <Grid container spacing={2} alignItems="center">
         {reservations.map(reservation => (
-          <Grid key={reservation.id} item xs={3}>
+          <Grid key={reservation.id} item lg={3} md={4} sm={6} xs={12} >
             <Card variant="outlined">
               <CardHeader className={classes.cardHeader} avatar={
                 <Badge badgeContent={reservation.size > 1 && reservation.size}>
