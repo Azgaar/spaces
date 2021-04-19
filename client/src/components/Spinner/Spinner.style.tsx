@@ -2,9 +2,12 @@ import {makeStyles} from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
   spinner: {
-    width: "8em",
-    height: "8em",
-    margin: "30% auto",
+    width: theme.spacing(10),
+    height: theme.spacing(10),
+    position: "fixed",
+    top: "40%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
     "& div": {
       width: "33%",
       height: "33%",
