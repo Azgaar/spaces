@@ -24,7 +24,11 @@ const useFormStyles = makeStyles(theme => ({
     flexWrap: "wrap"
   },
   chip: {
-    margin: theme.spacing(.4)
+    margin: theme.spacing(.25),
+    padding: theme.spacing(0, .5),
+    "& span.MuiChip-label": {
+      padding: theme.spacing(0, 1, 0, .5)
+    }
   },
   buttons: {
     margin: theme.spacing(2, 0, 1)
