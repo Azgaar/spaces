@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import useStyles from "./ReservationsList.style";
-import {Typography, Card, CardContent, Container, CardActions, Button, Grid, CardHeader, Badge, Divider, IconButton} from "@material-ui/core";
+import {Typography, Card, CardContent, Container, CardActions, Grid, CardHeader, Badge, Divider, IconButton} from "@material-ui/core";
 import Spinner from "../../../../components/Spinner/Spinner";
 import WorkspaceTypeIcon from "../../../../components/Icons/WorkspaceTypeIcon/WorkspaceTypeIcon";
 import {MessageType, useMessage} from "../../../../components/Providers/MessageProvider";
@@ -9,6 +9,7 @@ import {useToasterCatcher, useUser} from "../../../../hooks";
 import {ReservationService} from "../../../../services";
 import {getDate, getTime} from "../../../../utils";
 import PlaceIcon from "@material-ui/icons/Place";
+import DeletionButton from "../../../../components/Controls/DeletionButton/DeletionButton";
 
 const ReservationsList = ({active}: {active: boolean}) => {
   const classes = useStyles();
@@ -67,7 +68,7 @@ const ReservationsList = ({active}: {active: boolean}) => {
               </CardContent>
 
               <CardActions>
-                {active && <Button size="small" color="primary" onClick={() => handleDeletion(reservation.id)}>Cancel</Button>}
+                {active && <DeletionButton onDelete={() => handleDeletion(reservation.id)} title="Cancel" cancel="Back" confirm="Confirm" showText={false} />}
               </CardActions>
             </Card>
           </Grid>
