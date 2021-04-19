@@ -10,7 +10,7 @@ import {ReservationService} from "../../../../services";
 import {getDate, getTime} from "../../../../utils";
 import PlaceIcon from "@material-ui/icons/Place";
 
-const ReservationsList = () => {
+const ReservationsList = ({active}: {active: boolean}) => {
   const classes = useStyles();
   const {pushMessage} = useMessage();
   const {user} = useUser();
@@ -18,12 +18,12 @@ const ReservationsList = () => {
   const {isLoading, catchAndTossError} = useToasterCatcher();
 
   useEffect(() => {
-    async function fetchMyReservations() {
-      const reservations: ReservationRes[] = await catchAndTossError(ReservationService.requestActive(user.email));
+    async function fetchUserReservations() {
+      const reservations: ReservationRes[] = await catchAndTossError(ReservationService.requestList(user.email, active));
       if (reservations) setReservations(() => reservations);
     };
 
-    fetchMyReservations();
+    fetchUserReservations();
   }, []);
 
   const handleDeletion = async (id: string) => {
@@ -67,7 +67,7 @@ const ReservationsList = () => {
               </CardContent>
 
               <CardActions>
-                <Button size="small" color="primary" onClick={() => handleDeletion(reservation.id)}>Cancel</Button>
+                {active && <Button size="small" color="primary" onClick={() => handleDeletion(reservation.id)}>Cancel</Button>}
               </CardActions>
             </Card>
           </Grid>

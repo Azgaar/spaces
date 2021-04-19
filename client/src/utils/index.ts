@@ -10,12 +10,11 @@ export const dateFormat: GridColTypeDef = {
 
 dayjs.extend(relativeTime);
 export const getDate = (from: string, to: string) => {
-  const now = dayjs();
   const start = dayjs(from).format("ddd, MMMM D");
   const end = dayjs(to).format("ddd, MMMM D");
   const date = start === end ? start : `${dayjs(from).format("MMMM D")} — ${dayjs(to).format("MMMM D")}`;
-  const inDays = now.to(dayjs(from > now.toISOString() ? from : to));
-  return `${inDays} | ${date}`;
+  const readable = getHumanReadDiff(from, to);
+  return `${readable} | ${date}`;
 }
 
 export const getTime = (from: string, to: string) => {
@@ -24,4 +23,11 @@ export const getTime = (from: string, to: string) => {
   const start = dayjs(from).format(startA === endA ? "h:mm" : "h:mm A");
   const end = dayjs(to).format("h:mm A");
   return `${start} — ${end}`;
+}
+
+const getHumanReadDiff = (from: string, to: string) => {
+  const now = dayjs().toISOString();
+  if (from > now) return "Begins " + dayjs().to(dayjs(from));
+  if (from < now && to > now) return "Ends " + dayjs().to(dayjs(to));
+  else return dayjs().to(dayjs(to));
 }

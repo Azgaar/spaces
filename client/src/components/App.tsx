@@ -15,7 +15,8 @@ const Profile = React.lazy(() => import("../pages/Profile/Profile/Profile"));
 const ProfileEdit = React.lazy(() => import("../pages/Profile/ProfileEdit/ProfileEdit"));
 const PasswordChange = React.lazy(() => import("../pages/Profile/PasswordChange/PasswordChange"));
 
-const Reservations = React.lazy(() => import("../pages/User/Reservations/Reservations"));
+const ActiveReservations = React.lazy(() => import("../pages/User/Reservations/ActiveReservations"));
+const ReservationsHistory = React.lazy(() => import("../pages/User/Reservations/ReservationsHistory"));
 
 const ManageReservations = React.lazy(() => import("../pages/Admin/Reservations/Reservations"));
 const ManageUsers = React.lazy(() => import("../pages/Admin/Users/Users"));
@@ -36,7 +37,8 @@ function App() {
           <PrivateRoute path="/editProfile" role={UserRole.USER} component={ProfileEdit} />
           <PrivateRoute path="/changePassword" role={UserRole.USER} component={PasswordChange} />
           
-          <PrivateRoute path="/reservations" role={UserRole.USER} component={Reservations} />
+          <PrivateRoute path="/reservations" role={UserRole.USER} component={ActiveReservations} />
+          <PrivateRoute path="/history" role={UserRole.USER} component={ReservationsHistory} />
 
           <PrivateRoute path="/admin/users" role={UserRole.ADMIN} component={ManageUsers} />
           <PrivateRoute path="/admin/workspaces" role={UserRole.ADMIN} component={ManageWorkspaces} />
