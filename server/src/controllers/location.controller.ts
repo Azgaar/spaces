@@ -24,7 +24,10 @@ const rename = catchAsync(async (req, res, next) => {
   const location = await locationService.rename({id, description});
   if (!location) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot rename location"));
 
-  list(req, res, next);
+  const locations = await locationService.list({empty: true});
+  if (!locations) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot fetch locations"));
+
+  res.status(httpStatus.OK).send(locations);
 });
 
 const remove = catchAsync(async (req, res, next) => {
@@ -32,7 +35,10 @@ const remove = catchAsync(async (req, res, next) => {
   const location = await locationService.remove({id});
   if (!location) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot remove location"));
 
-  list(req, res, next);
+  const locations = await locationService.list({empty: true});
+  if (!locations) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot fetch locations"));
+
+  res.status(httpStatus.OK).send(locations);
 });
 
 export const locationController = {list, add, rename, remove};
