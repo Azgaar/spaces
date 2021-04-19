@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import useStyles from "./Reservations.style";
-import {Avatar, Container, Grid, TextField, Typography} from "@material-ui/core";
+import {Box, Avatar, Link, Container, Grid, TextField, Typography} from "@material-ui/core";
+import {Link as RouterLink} from "react-router-dom";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import ReservationsList from "./ReservationsList/ReservationsList";
 import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
@@ -49,7 +50,7 @@ function Reservations() {
 
       <Container>
         <Grid container alignItems="center">
-          <Grid item xs={4}>
+          <Grid item lg={4} md={6} xs={12}>
             <Autocomplete id="locations" value={location} options={locationList} getOptionLabel={option => option.description}
               onChange={(e, value) => handleLocationChange(value)} handleHomeEndKeys renderInput={(params) => (
                 <TextField {...params} label="Select Location" variant="outlined" InputProps={{...params.InputProps, endAdornment: (
@@ -60,6 +61,15 @@ function Reservations() {
                   ),
                 }}/>
               )} />
+          </Grid>
+
+          <Grid item lg={4} md={6} xs={12}>
+            <Box mx={1}>
+              <Link href="#" variant="body2" component={RouterLink} to="/reservations">Show my active reservations</Link>
+            </Box>
+            <Box mx={1}>
+              <Link href="#" variant="body2" component={RouterLink} to="/history">Show my reservations history</Link>
+            </Box>
           </Grid>
         </Grid>
       </Container>
