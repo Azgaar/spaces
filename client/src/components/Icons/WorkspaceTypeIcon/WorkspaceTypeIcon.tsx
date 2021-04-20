@@ -1,3 +1,4 @@
+import React, {ReactElement} from "react";
 import DesktopWindowsIcon from "@material-ui/icons/DesktopWindows";
 import GroupWorkOutlinedIcon from "@material-ui/icons/GroupWorkOutlined";
 import VolumeOffOutlinedIcon from "@material-ui/icons/VolumeOffOutlined";
@@ -8,17 +9,19 @@ import AirlineSeatFlatOutlinedIcon from "@material-ui/icons/AirlineSeatFlatOutli
 import RoomIcon from "@material-ui/icons/Room";
 import {WorkspaceType} from "../../../types";
 
-const WorkspaceTypeIcon = ({type}: {type: WorkspaceType}): React.ReactElement => {
-  switch (type) {
-    case WorkspaceType.DESK: return <DesktopWindowsIcon />;
-    case WorkspaceType.MEETING_ROOM: return <WbIncandescentOutlinedIcon />;
-    case WorkspaceType.CONFERENCE_ROOM: return <RouterOutlinedIcon />;
-    case WorkspaceType.COWORKING: return <GroupWorkOutlinedIcon />;
-    case WorkspaceType.FOCUS_ROOM: return <VolumeOffOutlinedIcon />;
-    case WorkspaceType.FUN_ZONE: return <SportsEsportsOutlinedIcon />;
-    case WorkspaceType.NAP_POD: return <AirlineSeatFlatOutlinedIcon />;
-    default: return <RoomIcon />;
-  }
+const WorkspaceTypeIconMap = {
+  [WorkspaceType.DESK]: DesktopWindowsIcon,
+  [WorkspaceType.MEETING_ROOM]: WbIncandescentOutlinedIcon,
+  [WorkspaceType.CONFERENCE_ROOM]: RouterOutlinedIcon,
+  [WorkspaceType.COWORKING]: GroupWorkOutlinedIcon,
+  [WorkspaceType.FOCUS_ROOM]: VolumeOffOutlinedIcon,
+  [WorkspaceType.FUN_ZONE]: SportsEsportsOutlinedIcon,
+  [WorkspaceType.NAP_POD]: AirlineSeatFlatOutlinedIcon
+}
+
+const WorkspaceTypeIcon = ({value}: {value: WorkspaceType}): ReactElement => {
+  const IconComponent = WorkspaceTypeIconMap[value];
+  return IconComponent ? <IconComponent/> : <RoomIcon />
 }
 
 export default WorkspaceTypeIcon;

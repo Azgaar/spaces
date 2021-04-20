@@ -1,4 +1,4 @@
-import React, {FC, ReactElement} from "react";
+import React, {ReactElement} from "react";
 import PersonalVideoIcon from "@material-ui/icons/PersonalVideo";
 import RouterIcon from "@material-ui/icons/Router";
 import WeekendIcon from "@material-ui/icons/Weekend";
