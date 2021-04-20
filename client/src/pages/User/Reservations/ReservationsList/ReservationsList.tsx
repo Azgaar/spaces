@@ -48,7 +48,7 @@ const ReservationsList = ({active}: {active: boolean}) => {
             <Card variant="outlined">
               <CardHeader className={classes.cardHeader} avatar={
                 <Badge badgeContent={reservation.size > 1 && reservation.size}>
-                  <WorkspaceTypeIcon type={reservation.type} />
+                  <WorkspaceTypeIcon value={reservation.type} />
                 </Badge>}
                 title={`${reservation.type} ${reservation.description}`}
                 subheader={reservation.location}
