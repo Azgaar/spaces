@@ -81,7 +81,7 @@ function Workspaces() {
 
       <Container>
         <Grid container alignItems="center">
-          <Grid item xs={4}>
+          <Grid item lg={4} md={6} xs={12}>
             <Autocomplete id="locations" value={location} options={locationList} getOptionLabel={option => option.description}
               onChange={(e, value) => handleLocationChange(value)} onInputChange={(e, value) => setLocationInput(() => value)}
               handleHomeEndKeys freeSolo renderInput={(params) => (

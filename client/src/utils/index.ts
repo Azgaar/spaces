@@ -32,3 +32,11 @@ const getHumanReadDiff = (from: string, to: string) => {
   if (from < now && to > now) return "Ends " + dayjs().to(dayjs(to));
   else return dayjs().to(dayjs(to));
 }
+
+export const getMaxDate = () => {
+  const date = new Date();
+  const month = date.getMonth();
+  const year = date.getFullYear();
+  const yearEnd = "12-31-" + (month > 10 ? year+1 : year);
+  return yearEnd;
+}

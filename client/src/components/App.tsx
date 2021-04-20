@@ -17,6 +17,7 @@ const PasswordChange = React.lazy(() => import("../pages/Profile/PasswordChange/
 
 const ActiveReservations = React.lazy(() => import("../pages/User/Reservations/ActiveReservations"));
 const ReservationsHistory = React.lazy(() => import("../pages/User/Reservations/ReservationsHistory"));
+const ReserveWorkspace = React.lazy(() => import("../pages/User/Reserve/ReserveWorkspace"));
 
 const ManageReservations = React.lazy(() => import("../pages/Admin/Reservations/Reservations"));
 const ManageUsers = React.lazy(() => import("../pages/Admin/Users/Users"));
@@ -39,6 +40,7 @@ function App() {
           
           <PrivateRoute path="/reservations" component={ActiveReservations} />
           <PrivateRoute path="/history" component={ReservationsHistory} />
+          <PrivateRoute path="/reserve" component={ReserveWorkspace} />
 
           <PrivateRoute path="/admin/users" requiredRole={UserRole.ADMIN} component={ManageUsers} />
           <PrivateRoute path="/admin/workspaces" requiredRole={UserRole.ADMIN} component={ManageWorkspaces} />

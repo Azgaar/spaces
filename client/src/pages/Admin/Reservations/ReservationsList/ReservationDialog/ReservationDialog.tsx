@@ -9,6 +9,7 @@ import {useToasterCatcher} from "../../../../../hooks";
 import {UserService, WorkspaceService} from "../../../../../services";
 import {DateTimePicker} from "@material-ui/pickers";
 import {Dayjs} from "dayjs";
+import {getMaxDate} from "../../../../../utils";
 
 type Props = {
   mode: "Add" | "Edit";
@@ -16,15 +17,6 @@ type Props = {
   close: () => void;
   submit: (formData: ReservationReq) => void;
 }
-
-const getMaxDate = () => {
-  const date = new Date();
-  const month = date.getMonth();
-  const year = date.getFullYear();
-  const yearEnd = "12-31-" + (month > 10 ? year+1 : year);
-  return yearEnd;
-}
-const MAX_DATE = getMaxDate();
 
 const ReservationDialog = ({mode, reservation, close, submit}: Props) => {
   const {from, to, workspace, location, requester} = reservation;
@@ -81,7 +73,7 @@ const ReservationDialog = ({mode, reservation, close, submit}: Props) => {
               <Grid item xs={12} sm={6}>
                 <Controller control={control} name="from" defaultValue={from} rules={{validate: ((value) => value < getValues("to"))}} render={({ref, value}) => (
                   <DateTimePicker required fullWidth id="from" label="From" name="from" inputVariant="outlined" error={Boolean(errors.from)}
-                  maxDate={MAX_DATE} minutesStep={15} disablePast={true} value={value} onChange={(date) => changeDate(date, "from")} inputRef={ref} />
+                  maxDate={getMaxDate()} minutesStep={15} disablePast={true} value={value} onChange={(date) => changeDate(date, "from")} inputRef={ref} />
                 )} />
               </Grid>
               <Grid item xs={12} sm={6}>

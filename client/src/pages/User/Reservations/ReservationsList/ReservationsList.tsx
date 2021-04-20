@@ -82,7 +82,7 @@ const ReservationsList = ({active}: {active: boolean}) => {
             </Card>
           </Grid>
         }
-        
+
         {reservations.map(reservation => (
           <Grid key={reservation.id} item lg={3} md={4} sm={6} xs={12} >
             <Card variant="outlined">
