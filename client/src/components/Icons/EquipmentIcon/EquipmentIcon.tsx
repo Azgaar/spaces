@@ -1,3 +1,4 @@
+import React, {FC, ReactElement} from "react";
 import PersonalVideoIcon from "@material-ui/icons/PersonalVideo";
 import RouterIcon from "@material-ui/icons/Router";
 import WeekendIcon from "@material-ui/icons/Weekend";
@@ -8,17 +9,19 @@ import DirectionsWalkIcon from "@material-ui/icons/DirectionsWalk";
 import PhonelinkSetupIcon from '@material-ui/icons/PhonelinkSetup';
 import {Equipment} from "../../../types";
 
-const EquipmentIcon = ({value}: {value: Equipment}): React.ReactElement => {
-  switch (value) {
-    case Equipment.PROJECTOR: return <RouterIcon />;
-    case Equipment.MONITOR: return <PersonalVideoIcon />;
-    case Equipment.TELEPHONE: return <PhoneIcon />;
-    case Equipment.SPEAKERPHONE: return <SpeakerPhoneIcon />;
-    case Equipment.STANDING_DESK: return <DirectionsWalkIcon />;
-    case Equipment.HEADSET: return <HeadsetMicIcon />;
-    case Equipment.COUCH: return <WeekendIcon />;
-    default: return <PhonelinkSetupIcon />;
-  }
+const EquipmentIconMap = {
+  [Equipment.PROJECTOR]: RouterIcon,
+  [Equipment.MONITOR]: PersonalVideoIcon,
+  [Equipment.TELEPHONE]: PhoneIcon,
+  [Equipment.SPEAKERPHONE]: SpeakerPhoneIcon,
+  [Equipment.STANDING_DESK]: DirectionsWalkIcon,
+  [Equipment.HEADSET]: HeadsetMicIcon,
+  [Equipment.COUCH]: WeekendIcon
+}
+
+const EquipmentIcon = ({value}: {value: Equipment}): ReactElement => {
+  const IconComponent = EquipmentIconMap[value];
+  return IconComponent ? <IconComponent/> : <PhonelinkSetupIcon />
 }
 
 export default EquipmentIcon;
