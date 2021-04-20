@@ -10,6 +10,7 @@ import {ReservationService} from "../../../../services";
 import {getDate, getTime} from "../../../../utils";
 import PlaceIcon from "@material-ui/icons/Place";
 import DeletionButton from "../../../../components/Controls/DeletionButton/DeletionButton";
+import {MAP_SEARCH_BASE_URL} from "../../../../config";
 
 const ReservationsList = ({active}: {active: boolean}) => {
   const classes = useStyles();
@@ -34,8 +35,8 @@ const ReservationsList = ({active}: {active: boolean}) => {
     pushMessage({title: "Reservation is removed", type: MessageType.SUCCESS});
   }
 
-  const openMap = async (address: string) => {
-    const url = `https://www.google.com/maps/search/${address}`;
+  const openMap = (address: string) => {
+    const url = MAP_SEARCH_BASE_URL + encodeURI(address);
     window.open(url, "_blank", "location=yes");
   }
 
