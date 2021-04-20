@@ -9,7 +9,15 @@ import {AuthService} from "../../../../services";
 
 const logoPath = process.env.PUBLIC_URL + "/logo.svg";
 
-const Authorized = () => {
+const UnauthorizedUserNavButtons = () => {
+  return (<>
+    <Button color="inherit" component={RouterLink} to="/signin">Sign In</Button>
+    <Button color="inherit" component={RouterLink} to="/signup">Sign Up</Button>
+  </>
+  );
+}
+
+const AuthorizedUserNavButtons = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const {catchAndTossError} = useToasterCatcher();
@@ -28,15 +36,7 @@ const Authorized = () => {
   );
 }
 
-const Unauthorized = () => {
-  return (<>
-    <Button color="inherit" component={RouterLink} to="/signin">Sign In</Button>
-    <Button color="inherit" component={RouterLink} to="/signup">Sign Up</Button>
-  </>
-  );
-}
-
-const Admin = () => {
+const AdminNavButtons = () => {
   return (<>
     <Button color="inherit" component={RouterLink} to="/admin/reservations">Reservations</Button>
     <Button color="inherit" component={RouterLink} to="/admin/workspaces">Workspaces</Button>
@@ -45,7 +45,7 @@ const Admin = () => {
   );
 }
 
-const User = () => {
+const UserNavButtons = () => {
   return (<>
     <Button color="inherit" component={RouterLink} to="/reserve">Reserve</Button>
     <Button color="inherit" component={RouterLink} to="/reservations">Reservations</Button>
@@ -66,8 +66,8 @@ function Header() {
           SPɅCES
         </Typography>
         <div className={classes.buttons}>
-          {isAuthenticated && (isAdmin ? <Admin /> : <User />)}
-          {isAuthenticated ? <Authorized /> : <Unauthorized />}
+          {isAuthenticated && (isAdmin ? <AdminNavButtons /> : <UserNavButtons />)}
+          {isAuthenticated ? <AuthorizedUserNavButtons /> : <UnauthorizedUserNavButtons />}
         </div>
       </Toolbar>
     </AppBar>
