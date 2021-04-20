@@ -5,15 +5,15 @@ import {UserRole} from "../types";
 
 type RouteProps = {
   path: string,
-  role: UserRole,
+  requiredRole?: UserRole,
   component: React.FC
 }
 
-const PrivateRoute = ({path, role, component}: RouteProps) => {
-  const {isAuthenticated, isAdmin} = useUser();
+const PrivateRoute = ({path, requiredRole, component}: RouteProps) => {
+  const {isAuthenticated, user} = useUser();
 
-  if (role === UserRole.USER && !isAuthenticated) return <Redirect to="/signin" />;
-  if (role === UserRole.ADMIN && !isAdmin) return <Redirect to="/home" />;
+  if (!isAuthenticated) return <Redirect to="/signin" />;
+  if (requiredRole && user.role !== requiredRole) return <Redirect to="/home" />;
   return <Route path={path} component={component} />;
 };
 

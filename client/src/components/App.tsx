@@ -33,16 +33,16 @@ function App() {
           <Route path="/signup" component={Signup} />
           <Route path="/forgotPassword" component={ForgotPassword} />
 
-          <PrivateRoute path="/profile" role={UserRole.USER} component={Profile} />
-          <PrivateRoute path="/editProfile" role={UserRole.USER} component={ProfileEdit} />
-          <PrivateRoute path="/changePassword" role={UserRole.USER} component={PasswordChange} />
+          <PrivateRoute path="/profile" component={Profile} />
+          <PrivateRoute path="/editProfile" component={ProfileEdit} />
+          <PrivateRoute path="/changePassword" component={PasswordChange} />
           
-          <PrivateRoute path="/reservations" role={UserRole.USER} component={ActiveReservations} />
-          <PrivateRoute path="/history" role={UserRole.USER} component={ReservationsHistory} />
+          <PrivateRoute path="/reservations" component={ActiveReservations} />
+          <PrivateRoute path="/history" component={ReservationsHistory} />
 
-          <PrivateRoute path="/admin/users" role={UserRole.ADMIN} component={ManageUsers} />
-          <PrivateRoute path="/admin/workspaces" role={UserRole.ADMIN} component={ManageWorkspaces} />
-          <PrivateRoute path="/admin/reservations" role={UserRole.ADMIN} component={ManageReservations} />
+          <PrivateRoute path="/admin/users" requiredRole={UserRole.ADMIN} component={ManageUsers} />
+          <PrivateRoute path="/admin/workspaces" requiredRole={UserRole.ADMIN} component={ManageWorkspaces} />
+          <PrivateRoute path="/admin/reservations" requiredRole={UserRole.ADMIN} component={ManageReservations} />
 
           <Route path="/*" component={Home} />
         </Switch>
