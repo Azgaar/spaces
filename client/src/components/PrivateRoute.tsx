@@ -9,7 +9,7 @@ type RouteProps = {
   component: React.FC
 }
 
-const PrivateRoute = ({path, requiredRole, component}: RouteProps) => {
+const PrivateRoute = ({path, requiredRole, component}: RouteProps): React.ReactElement => {
   const {isAuthenticated, user} = useUser();
 
   if (!isAuthenticated) return <Redirect to="/signin" />;
