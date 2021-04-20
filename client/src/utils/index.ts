@@ -1,17 +1,18 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import {GridColTypeDef} from "@material-ui/data-grid";
+dayjs.extend(relativeTime);
+const DATE_FORMAT = "ddd, MMMM D";
 
-export const dateFormat: GridColTypeDef = {
+export const gridColDateFormat: GridColTypeDef = {
   type: "dateTime",
   width: 180,
   valueFormatter: ({value}) => dayjs(value as Date).format("MMM D, YYYY h:mm A")
 };
 
-dayjs.extend(relativeTime);
 export const getDate = (from: string, to: string) => {
-  const start = dayjs(from).format("ddd, MMMM D");
-  const end = dayjs(to).format("ddd, MMMM D");
+  const start = dayjs(from).format(DATE_FORMAT);
+  const end = dayjs(to).format(DATE_FORMAT);
   const date = start === end ? start : `${dayjs(from).format("MMMM D")} — ${dayjs(to).format("MMMM D")}`;
   const readable = getHumanReadDiff(from, to);
   return `${readable} | ${date}`;

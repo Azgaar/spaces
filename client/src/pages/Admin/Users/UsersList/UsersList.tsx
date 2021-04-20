@@ -7,15 +7,15 @@ import {MessageType, useMessage} from "../../../../components/Providers/MessageP
 import {useToasterCatcher} from "../../../../hooks";
 import {UserService} from "../../../../services";
 import {UserData} from "../../../../types";
-import {dateFormat} from "../../../../utils";
+import {gridColDateFormat} from "../../../../utils";
 
 const columns: GridColDef[] = [
   {field: "role", headerName: "Role", width: 90},
   {field: "firstName", headerName: "First name", width: 140},
   {field: "lastName", headerName: "Last name", width: 140},
   {field: "email", headerName: "Email", width: 280},
-  {field: "createdAt", headerName: "Created at", ...dateFormat},
-  {field: "updatedAt", headerName: "Updated at", ...dateFormat}
+  {field: "createdAt", headerName: "Created at", ...gridColDateFormat},
+  {field: "updatedAt", headerName: "Updated at", ...gridColDateFormat}
 ];
 
 const UsersList = () => {

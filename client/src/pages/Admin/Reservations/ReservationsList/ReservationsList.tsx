@@ -9,7 +9,7 @@ import {ReservationService} from "../../../../services";
 import {useToasterCatcher, useUser} from "../../../../hooks";
 import ReservationDialog from "./ReservationDialog/ReservationDialog";
 import dayjs from "dayjs";
-import {dateFormat} from "../../../../utils";
+import {gridColDateFormat} from "../../../../utils";
 
 const columns: GridColDef[] = [
   {field: "status", headerName: "Status", width: 120},
@@ -17,8 +17,8 @@ const columns: GridColDef[] = [
   {field: "type", headerName: "Type", width: 140},
   {field: "size", headerName: "Size", width: 90},
   {field: "requester", headerName: "Requester", width: 220},
-  {field: "from", headerName: "From", ...dateFormat},
-  {field: "to", headerName: "To", ...dateFormat}
+  {field: "from", headerName: "From", ...gridColDateFormat},
+  {field: "to", headerName: "To", ...gridColDateFormat}
 ];
 
 const ReservationsList = ({loc}: {loc: LocationOption}) => {
