@@ -4,8 +4,8 @@ import ApiError from "../utils/apiError";
 import locationService from "../services/location";
 
 const list = catchAsync(async (req, res, next) => {
-  const {empty} = req.body;
-  const locations = await locationService.list({empty});
+  const {onlyWithWorkspaces} = req.body;
+  const locations = await locationService.list({onlyWithWorkspaces});
   if (!locations) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot fetch locations"));
 
   res.status(httpStatus.OK).send(locations);
@@ -24,7 +24,7 @@ const rename = catchAsync(async (req, res, next) => {
   const location = await locationService.rename({id, description});
   if (!location) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot rename location"));
 
-  const locations = await locationService.list({empty: true});
+  const locations = await locationService.list({onlyWithWorkspaces: false});
   if (!locations) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot fetch locations"));
 
   res.status(httpStatus.OK).send(locations);
@@ -35,7 +35,7 @@ const remove = catchAsync(async (req, res, next) => {
   const location = await locationService.remove({id});
   if (!location) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot remove location"));
 
-  const locations = await locationService.list({empty: true});
+  const locations = await locationService.list({onlyWithWorkspaces: false});
   if (!locations) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot fetch locations"));
 
   res.status(httpStatus.OK).send(locations);

@@ -19,14 +19,14 @@ function Reservations() {
 
   useEffect(() => {
     async function fetchLocations() {
-      const nonEmptyLocations: LocationOption[] = await catchAndTossError(LocationService.list({empty: false}));
-      if (!nonEmptyLocations) return;
+      const locationsWithWorkspaces: LocationOption[] = await catchAndTossError(LocationService.list({onlyWithWorkspaces: true}));
+      if (!locationsWithWorkspaces) return;
 
-      setLocationList(() => nonEmptyLocations);
+      setLocationList(() => locationsWithWorkspaces);
       const stored = localStorage.getItem("location");
       if (stored) {
         const parsed = JSON.parse(stored);
-        if (nonEmptyLocations.find(loc => loc.id === parsed.id)) setLocation(() => parsed);
+        if (locationsWithWorkspaces.find(loc => loc.id === parsed.id)) setLocation(() => parsed);
         else localStorage.removeItem("location");
       }
     };

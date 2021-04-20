@@ -45,7 +45,7 @@ describe("Location management service", () => {
   });
 
   it("allows to get locations list for admin", async () => {
-    const response = await request(app).post("/getLocations").set("Cookie", cookie.admin).send({empty: true}).expect(httpStatus.OK);
+    const response = await request(app).post("/getLocations").set("Cookie", cookie.admin).send({onlyWithWorkspaces: false}).expect(httpStatus.OK);
     expect(Array.isArray(response.body)).toBe(true);
     expect(response.body.length).toBe(1);
     expect(response.body[0].description).toBe(location.description);

@@ -3,14 +3,14 @@ import { Workspace } from "../models/workspace";
 import {LocationData, LocationDocument} from "../types";
 import logger from "../utils/logger";
 
-const list = async ({empty}: {empty: boolean}) => {
-  if (empty) {
-    const locations: LocationDocument[] = await Location.find();
+const list = async ({onlyWithWorkspaces}: {onlyWithWorkspaces: boolean}) => {
+  if (onlyWithWorkspaces) {
+    const locationsWithWorkspacesIds: string[] = await Workspace.distinct("location");
+    const locations: LocationDocument[] = await Location.find({_id: {$in: locationsWithWorkspacesIds}});
     return locations;
   }
 
-  const locationIds: string[] = await Workspace.distinct("location");
-  const locations: LocationDocument[] = await Location.find({_id: {$in: locationIds}});
+  const locations: LocationDocument[] = await Location.find();
   return locations;
 };
 
