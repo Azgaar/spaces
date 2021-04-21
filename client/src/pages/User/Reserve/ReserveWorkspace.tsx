@@ -5,8 +5,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import CollectionsBookmarkIcon from "@material-ui/icons/CollectionsBookmark";
 import {Autocomplete} from "@material-ui/lab";
 import {Equipment, LocationOption, WorkspaceType} from "../../../types";
-import {useToasterCatcher} from "../../../hooks";
-import {LocationService} from "../../../services";
+import {useLocations} from "../../../hooks";
 import AvailableWorkspaces from "./AvailableWorkspaces/AvailableWorkspaces";
 import {DateTimePicker} from "@material-ui/pickers";
 import dayjs, {Dayjs} from "dayjs";
@@ -34,8 +33,7 @@ type ReservationFormErrors = {
 
 function ReserveWorkspace() {
   const classes = useStyles();
-  const [locationList, setLocationList] = useState<LocationOption[]>([]);
-  const {isLoading, catchAndTossError} = useToasterCatcher();
+  const {locations, locationsLoading, defaultLocation, fetchLocations} = useLocations();
 
   const from = dayjs().set("minute", 0).set("second", 0).set("millisecond", 0).add(1, "hour");
   const to = from.add(1, "hour");
@@ -52,22 +50,12 @@ function ReserveWorkspace() {
   const [formErrors, setFormErrors] = useState<ReservationFormErrors>({} as ReservationFormErrors);
 
   useEffect(() => {
-    async function fetchLocations() {
-      const allLocations: LocationOption[] = await catchAndTossError(LocationService.list({onlyWithWorkspaces: true}));
-      if (!allLocations) return;
-
-      setLocationList(() => allLocations);
-      const stored = localStorage.getItem("location");
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        if (allLocations.find(loc => loc.id === parsed.id)) {
-          setFormData(formData => ({...formData, location: parsed}));
-        }
-        else localStorage.removeItem("location");
-      }
-    };
-    fetchLocations();
+    fetchLocations({onlyWithWorkspaces: true});
   }, []);
+
+  useEffect(() => {
+    setFormData(formData => ({...formData, location: defaultLocation}));
+  }, [defaultLocation]);
 
   const changeLocation = (location: LocationOption | string | null) => {
     if (!location) setFormData(formData => ({...formData, location: {id: "", description: ""}}));
@@ -119,11 +107,11 @@ function ReserveWorkspace() {
         <form noValidate autoComplete="off" onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item lg={3} sm={6} xs={12}>
-              <Autocomplete id="locations" options={locationList} getOptionLabel={option => option.description}
+              <Autocomplete id="locations" options={locations} getOptionLabel={option => option.description}
                 value={formData.location} onChange={(e, value) => changeLocation(value)} handleHomeEndKeys renderInput={(params) => (
                   <TextField {...params} variant="outlined" label="Select Location" InputProps={{...params.InputProps, endAdornment: (
                     <>
-                      {isLoading && <CircularProgress color="inherit" size={20} />}
+                      {locationsLoading && <CircularProgress color="inherit" size={20} />}
                       {params.InputProps.endAdornment}
                     </>
                   ),

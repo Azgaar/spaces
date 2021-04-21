@@ -7,31 +7,21 @@ import ReservationsList from "./ReservationsList/ReservationsList";
 import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
 import {Autocomplete} from "@material-ui/lab";
 import {LocationOption} from "../../../types";
-import {useToasterCatcher} from "../../../hooks";
-import {LocationService} from "../../../services";
+import {useLocations} from "../../../hooks";
 
 function Reservations() {
   const classes = useStyles();
   const blankLocation: LocationOption = {id: "", description: ""};
-  const [location, setLocation] = useState<LocationOption>(blankLocation);
-  const [locationList, setLocationList] = useState<LocationOption[]>([]);
-  const {isLoading, catchAndTossError} = useToasterCatcher();
+  const [location, setLocation] = useState(blankLocation);
+  const {locations, locationsLoading, defaultLocation, fetchLocations} = useLocations();
 
   useEffect(() => {
-    async function fetchLocations() {
-      const locationsWithWorkspaces: LocationOption[] = await catchAndTossError(LocationService.list({onlyWithWorkspaces: true}));
-      if (!locationsWithWorkspaces) return;
-
-      setLocationList(() => locationsWithWorkspaces);
-      const stored = localStorage.getItem("location");
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        if (locationsWithWorkspaces.find(loc => loc.id === parsed.id)) setLocation(() => parsed);
-        else localStorage.removeItem("location");
-      }
-    };
-    fetchLocations();
+    fetchLocations({onlyWithWorkspaces: true});
   }, []);
+
+  useEffect(() => {
+    setLocation(() => defaultLocation)
+  }, [defaultLocation]);
 
   const handleLocationChange = (value: LocationOption | string | null) => {
     if (!value) setLocation(() => blankLocation);
@@ -51,11 +41,11 @@ function Reservations() {
       <Container>
         <Grid container alignItems="center">
           <Grid item lg={4} md={6} xs={12}>
-            <Autocomplete id="locations" value={location} options={locationList} getOptionLabel={option => option.description}
+            <Autocomplete id="locations" value={location} options={locations} getOptionLabel={option => option.description}
               onChange={(e, value) => handleLocationChange(value)} handleHomeEndKeys renderInput={(params) => (
                 <TextField {...params} label="Select Location" variant="outlined" InputProps={{...params.InputProps, endAdornment: (
                     <>
-                      {isLoading && <CircularProgress color="inherit" size={20} />}
+                      {locationsLoading && <CircularProgress color="inherit" size={20} />}
                       {params.InputProps.endAdornment}
                     </>
                   ),

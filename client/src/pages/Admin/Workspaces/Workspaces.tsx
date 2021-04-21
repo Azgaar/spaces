@@ -8,36 +8,28 @@ import {Autocomplete} from "@material-ui/lab";
 import DeletionButton from "../../../components/Controls/DeletionButton/DeletionButton";
 import {MessageType, useMessage} from "../../../components/Providers/MessageProvider";
 import {LocationOption} from "../../../types";
-import {useToasterCatcher} from "../../../hooks";
+import {useLocations, useToasterCatcher} from "../../../hooks";
 import {LocationService} from "../../../services";
 
 function Workspaces() {
   const classes = useStyles();
   const {pushMessage} = useMessage();
-  const locationDefault: LocationOption = {id: "", description: ""};
-  const [location, setLocation] = useState<LocationOption>(locationDefault);
-  const [locationList, setLocationList] = useState<LocationOption[]>([]);
+  const blankLocation: LocationOption = {id: "", description: ""};
+  const [location, setLocation] = useState<LocationOption>(blankLocation);
+  const {locations, setLocations, locationsLoading, defaultLocation, fetchLocations} = useLocations();
   const [locationInput, setLocationInput] = useState<string>("");
-  const {isLoading, catchAndTossError} = useToasterCatcher();
+  const {catchAndTossError} = useToasterCatcher();
 
   useEffect(() => {
-    async function fetchLocations() {
-      const allLocations: LocationOption[] = await catchAndTossError(LocationService.list({onlyWithWorkspaces: false}));
-      if (!allLocations) return;
-
-      setLocationList(() => allLocations);
-      const stored = localStorage.getItem("location");
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        if (allLocations.find(loc => loc.id === parsed.id)) setLocation(() => parsed);
-        else localStorage.removeItem("location");
-      }
-    };
-    fetchLocations();
+    fetchLocations({onlyWithWorkspaces: false});
   }, []);
 
+  useEffect(() => {
+    setLocation(() => defaultLocation)
+  }, [defaultLocation]);
+
   const handleLocationChange = (value: LocationOption | string | null) => {
-    if (!value) setLocation(() => locationDefault);
+    if (!value) setLocation(() => blankLocation);
     if (!value || typeof value === "string") return;
 
     setLocation(() => value);
@@ -48,7 +40,7 @@ function Workspaces() {
     const addedLocation: LocationOption = await catchAndTossError(LocationService.add(locationInput));
     if (addedLocation) {
       pushMessage({title: `Location "${locationInput}" is added`, type: MessageType.SUCCESS});
-      setLocationList(locations => [...locations, addedLocation]);
+      setLocations(locations => [...locations, addedLocation]);
       setLocation(() => addedLocation);
     }
   }
@@ -57,7 +49,7 @@ function Workspaces() {
     const allLocations: LocationOption[] = await catchAndTossError(LocationService.rename(location.id, locationInput));
     if (allLocations) {
       pushMessage({title: `Location "${locationInput}" is renamed`, type: MessageType.SUCCESS});
-      setLocationList(() => allLocations);
+      setLocations(() => allLocations);
       setLocation(() => ({id: location.id, description: locationInput}));
     }
   }
@@ -66,9 +58,9 @@ function Workspaces() {
     const remainingLocations: LocationOption[] = await catchAndTossError(LocationService.remove(location.id));
     if (remainingLocations) {
       pushMessage({title: `Location "${location.description}" is deleted`, type: MessageType.SUCCESS});
-      setLocationList(() => remainingLocations);
+      setLocations(() => remainingLocations);
       setLocationInput(() => "");
-      setLocation(() => locationDefault);
+      setLocation(() => blankLocation);
     }
   }
 
@@ -82,12 +74,12 @@ function Workspaces() {
       <Container>
         <Grid container alignItems="center">
           <Grid item lg={4} md={6} xs={12}>
-            <Autocomplete id="locations" value={location} options={locationList} getOptionLabel={option => option.description}
+            <Autocomplete id="locations" value={location} options={locations} getOptionLabel={option => option.description}
               onChange={(e, value) => handleLocationChange(value)} onInputChange={(e, value) => setLocationInput(() => value)}
               handleHomeEndKeys freeSolo renderInput={(params) => (
                 <TextField {...params} label="Select Location" variant="outlined" InputProps={{...params.InputProps, endAdornment: (
                     <>
-                      {isLoading && <CircularProgress color="inherit" size={20} />}
+                      {locationsLoading && <CircularProgress color="inherit" size={20} />}
                       {params.InputProps.endAdornment}
                     </>
                   ),
