@@ -40,8 +40,12 @@ function ReserveWorkspace() {
 
   const changeLocation = (location: LocationOption | string | null) => {
     if (!location) setFormData(formData => ({...formData, location: {id: "", description: ""}}));
-    if (!location || typeof location === "string") return;
+    if (!location || typeof location === "string") {
+      setFormErrors(errors => ({...errors, location: true}));
+      return;
+    }
 
+    setFormErrors(errors => ({...errors, location: false}));
     setFormData(formData => ({...formData, location}));
     localStorage.setItem("location", JSON.stringify(location));
   }
@@ -90,12 +94,11 @@ function ReserveWorkspace() {
                 <Grid item xs={12}>
                   <Autocomplete id="locations" options={locations} getOptionLabel={option => option.description}
                     value={formData.location} onChange={(e, value) => changeLocation(value)} handleHomeEndKeys renderInput={(params) => (
-                      <TextField {...params} variant="outlined" label="Location" required InputProps={{...params.InputProps, endAdornment: (
-                        <>
+                      <TextField {...params} variant="outlined" label="Location" required error={formErrors.location}
+                        InputProps={{...params.InputProps, endAdornment: (<>
                           {locationsLoading && <CircularProgress color="inherit" size={20} />}
                           {params.InputProps.endAdornment}
-                        </>
-                      ),
+                        </>),
                     }}/>
                   )} />
                 </Grid>
@@ -148,7 +151,7 @@ function ReserveWorkspace() {
             </Grid>
           </Grid>
 
-          <AvailableWorkspaces formData={formData} />
+          <AvailableWorkspaces formData={formData} formErrors={formErrors} />
 
           <Grid container spacing={2}>
             <Grid item lg={2} md={3} sm={6} xs={12}>
