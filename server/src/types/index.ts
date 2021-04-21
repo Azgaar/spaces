@@ -94,6 +94,16 @@ export type WorkspaceData = {
   equipment: Equipment[];
 }
 
+export type WorkspaceSearchCriteria = {
+  location: string;
+  from: string;
+  to: string;
+  size?: number;
+  type?: WorkspaceType;
+  equipment?: Equipment[];
+  excludeReservation?: string
+}
+
 export type ReservationData = {
   id?: string;
   location: string;

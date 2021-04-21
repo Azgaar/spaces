@@ -71,6 +71,16 @@ export enum WorkspaceType {
   NAP_POD = "Nap pod"
 }
 
+export type WorkspaceSearchCriteria = {
+  location: string;
+  from: string;
+  to: string;
+  size?: number;
+  type?: WorkspaceType;
+  equipment?: Equipment[];
+  excludeReservation?: string
+}
+
 export enum Equipment {
   PROJECTOR = "Projector",
   MONITOR = "Monitor",
@@ -117,4 +127,23 @@ export enum ReservationStatus {
   PAST = "Past",
   CURRENT = "Current",
   FUTURE = "Future",
+}
+
+export type ReservationForm = {
+  location: LocationOption;
+  workspace: string;
+  from: string;
+  to: string;
+  size: number;
+  type: WorkspaceType | "Any";
+  equipment: Equipment[];
+}
+
+export type ReservationFormErrors = {
+  location: boolean;
+  workspace: boolean;
+  from: boolean;
+  to: boolean;
+  size: boolean;
+  equipment: boolean;
 }

@@ -3,7 +3,7 @@ import useStyles from "./ReserveWorkspace.style";
 import {Button, Chip, Container, Grid, InputLabel, MenuItem, Select, TextField} from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import {Autocomplete} from "@material-ui/lab";
-import {Equipment, LocationOption, WorkspaceType} from "../../../types";
+import {Equipment, LocationOption, ReservationForm, ReservationFormErrors, WorkspaceType} from "../../../types";
 import {useLocations} from "../../../hooks";
 import AvailableWorkspaces from "./AvailableWorkspaces/AvailableWorkspaces";
 import {DateTimePicker} from "@material-ui/pickers";
@@ -11,26 +11,6 @@ import dayjs, {Dayjs} from "dayjs";
 import {getMaxDate} from "../../../utils";
 import Headline from "../../../components/Layout/components/Main/Headline/Headline";
 import EquipmentIcon from "../../../components/Icons/EquipmentIcon/EquipmentIcon";
-
-type ReservationForm = {
-  location: LocationOption;
-  workspace: string;
-  from: string;
-  to: string;
-  size: number;
-  type: WorkspaceType,
-  equipment: Equipment[]
-}
-
-type ReservationFormErrors = {
-  location: boolean;
-  workspace: boolean;
-  from: boolean;
-  to: boolean;
-  size: boolean;
-  type: boolean,
-  equipment: boolean
-}
 
 function ReserveWorkspace() {
   const classes = useStyles();
@@ -40,11 +20,11 @@ function ReserveWorkspace() {
   const to = from.add(1, "hour");
   const defaultFormData: ReservationForm = {
     location: {id: "", description: ""},
+    type: "Any",
     workspace: "",
     from: from.toISOString(),
     to: to.toISOString(),
     size: 1,
-    type: WorkspaceType.DESK,
     equipment: []
   };
   const [formData, setFormData] = useState<ReservationForm>(defaultFormData);
@@ -77,9 +57,7 @@ function ReserveWorkspace() {
   }
 
   const changeType: ChangeEventHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const type = e.target.value as WorkspaceType;
-    const error = !type;
-    setFormErrors(errors => ({...errors, type: error}));
+    const type = e.target.value as WorkspaceType | "Any";
     setFormData(formData => ({...formData, type}));
   }
 
@@ -97,9 +75,7 @@ function ReserveWorkspace() {
 
   const handleSubmit: FormEventHandler = (e: FormEvent): void => {
     e.preventDefault();
-
-    console.log("Errors: ", formErrors);
-    console.log(formData);
+    console.log({formErrors}, {formData});
   }
 
   return (
@@ -125,14 +101,15 @@ function ReserveWorkspace() {
                 </Grid>
 
                 <Grid item xs={8}>
-                  <TextField select variant="outlined" required fullWidth id="type" label="Type" name="type"
-                    value={formData.type} error={formErrors.type} onChange={changeType} >
+                  <TextField select variant="outlined" fullWidth id="type" label="Type"
+                    value={formData.type} onChange={changeType} >
+                    <MenuItem value="Any" className={classes.typeAny}>Any</MenuItem>
                     {Object.values(WorkspaceType).map((option) => <MenuItem key={option} value={option}>{option}</MenuItem>)}
                   </TextField>
                 </Grid>
 
                 <Grid item xs={4}>
-                  <TextField type="number" variant="outlined" required fullWidth id="size" label="Size" name="size"
+                  <TextField type="number" variant="outlined" required fullWidth id="size" label="Min size"
                     value={formData.size} error={formErrors.size} InputProps={{inputProps: {max: 256, min: 1}}} onChange={changeSize} />
                 </Grid>
               </Grid>
@@ -141,12 +118,12 @@ function ReserveWorkspace() {
             <Grid item lg={4} sm={6} xs={12}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <DateTimePicker required fullWidth id="from" label="From" name="from" inputVariant="outlined" error={formErrors.from}
+                  <DateTimePicker required fullWidth id="from" label="From" inputVariant="outlined" error={formErrors.from}
                     value={formData.from} maxDate={getMaxDate()} minutesStep={15} disablePast={true} onChange={(date) => changeDate(date, "from")} />
                 </Grid>
 
                 <Grid item xs={12}>
-                  <DateTimePicker required fullWidth id="to" label="To" name="to" inputVariant="outlined" error={formErrors.to}
+                  <DateTimePicker required fullWidth id="to" label="To" inputVariant="outlined" error={formErrors.to}
                     value={formData.to} minDate={formData.from} minutesStep={15} disablePast={true} onChange={(date) => changeDate(date, "to")} />
                 </Grid>
               </Grid>
@@ -171,11 +148,7 @@ function ReserveWorkspace() {
             </Grid>
           </Grid>
 
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <AvailableWorkspaces />
-            </Grid>
-          </Grid>
+          <AvailableWorkspaces formData={formData} />
 
           <Grid container spacing={2}>
             <Grid item lg={2} md={3} sm={6} xs={12}>

@@ -14,6 +14,9 @@ const useStyles = makeStyles(theme => ({
     fontSize: ".85em",
     margin: theme.spacing(-1.54, 0, .2, 1.6)
   },
+  typeAny: {
+    fontStyle: "italic"
+  },
   chips: {
     display: "flex",
     flexWrap: "wrap"

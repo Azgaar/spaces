@@ -13,6 +13,10 @@ const session = getSessionConfig();
 const cors = {origin: process.env.CLIENT, credentials: true};
 const email = getMailConfig();
 
-const config = {env, port, mongo, joi, session, cors, email};
+const workspaces = {
+  maxNumberToReturn: 60
+};
+
+const config = {env, port, mongo, joi, session, cors, email, workspaces};
 
 export default config;

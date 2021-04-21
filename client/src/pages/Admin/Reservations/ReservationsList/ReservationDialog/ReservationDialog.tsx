@@ -31,7 +31,8 @@ const ReservationDialog = ({mode, reservation, close, submit}: Props) => {
   useEffect(() => {
     async function fetchWorkspaces() {
       const {from, to} = slot;
-      const freeWorkspaces: Workspace[] = await catchAndTossError(WorkspaceService.find(location, from, to, reservation.id));
+      const excludeReservation = reservation.id;
+      const freeWorkspaces: Workspace[] = await catchAndTossError(WorkspaceService.find({location, from, to, excludeReservation}));
       if (freeWorkspaces) setFreeWorkspaces(() => freeWorkspaces);
       if (!freeWorkspaces.length) setValue("workspace", "");
     };
