@@ -1,6 +1,6 @@
 import React, {ChangeEvent, ChangeEventHandler, FormEvent, FormEventHandler, useEffect, useState} from "react";
 import useStyles from "./ReserveWorkspace.style";
-import {Button, Container, Grid, MenuItem, TextField} from "@material-ui/core";
+import {Button, Chip, Container, Grid, InputLabel, MenuItem, Select, TextField} from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import {Autocomplete} from "@material-ui/lab";
 import {Equipment, LocationOption, WorkspaceType} from "../../../types";
@@ -10,6 +10,7 @@ import {DateTimePicker} from "@material-ui/pickers";
 import dayjs, {Dayjs} from "dayjs";
 import {getMaxDate} from "../../../utils";
 import Headline from "../../../components/Layout/components/Main/Headline/Headline";
+import EquipmentIcon from "../../../components/Icons/EquipmentIcon/EquipmentIcon";
 
 type ReservationForm = {
   location: LocationOption;
@@ -89,6 +90,11 @@ function ReserveWorkspace() {
     setFormData(formData => ({...formData, size}));
   }
 
+  const changeEquipment = (event: ChangeEvent<{value: unknown}>) => {
+    const equipment = event.target.value as Equipment[];
+    setFormData(formData => ({...formData, equipment}));
+  }
+
   const handleSubmit: FormEventHandler = (e: FormEvent): void => {
     e.preventDefault();
 
@@ -103,41 +109,69 @@ function ReserveWorkspace() {
       <Container className={classes.form} maxWidth="lg">
         <form noValidate autoComplete="off" onSubmit={handleSubmit}>
           <Grid container spacing={2}>
-            <Grid item lg={3} sm={6} xs={12}>
-              <Autocomplete id="locations" options={locations} getOptionLabel={option => option.description}
-                value={formData.location} onChange={(e, value) => changeLocation(value)} handleHomeEndKeys renderInput={(params) => (
-                  <TextField {...params} variant="outlined" label="Select Location" InputProps={{...params.InputProps, endAdornment: (
-                    <>
-                      {locationsLoading && <CircularProgress color="inherit" size={20} />}
-                      {params.InputProps.endAdornment}
-                    </>
-                  ),
-                }}/>
-              )} />
+            <Grid item lg={4} sm={6} xs={12}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Autocomplete id="locations" options={locations} getOptionLabel={option => option.description}
+                    value={formData.location} onChange={(e, value) => changeLocation(value)} handleHomeEndKeys renderInput={(params) => (
+                      <TextField {...params} variant="outlined" label="Location" required InputProps={{...params.InputProps, endAdornment: (
+                        <>
+                          {locationsLoading && <CircularProgress color="inherit" size={20} />}
+                          {params.InputProps.endAdornment}
+                        </>
+                      ),
+                    }}/>
+                  )} />
+                </Grid>
+
+                <Grid item xs={8}>
+                  <TextField select variant="outlined" required fullWidth id="type" label="Type" name="type"
+                    value={formData.type} error={formErrors.type} onChange={changeType} >
+                    {Object.values(WorkspaceType).map((option) => <MenuItem key={option} value={option}>{option}</MenuItem>)}
+                  </TextField>
+                </Grid>
+
+                <Grid item xs={4}>
+                  <TextField type="number" variant="outlined" required fullWidth id="size" label="Size" name="size"
+                    value={formData.size} error={formErrors.size} InputProps={{inputProps: {max: 256, min: 1}}} onChange={changeSize} />
+                </Grid>
+              </Grid>
             </Grid>
 
-            <Grid item lg={2} sm={4} xs={8}>
-              <TextField select variant="outlined" required fullWidth id="type" label="Type" name="type"
-                value={formData.type} error={formErrors.type} onChange={changeType} >
-                {Object.values(WorkspaceType).map((option) => <MenuItem key={option} value={option}>{option}</MenuItem>)}
-              </TextField>
+            <Grid item lg={4} sm={6} xs={12}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <DateTimePicker required fullWidth id="from" label="From" name="from" inputVariant="outlined" error={formErrors.from}
+                    value={formData.from} maxDate={getMaxDate()} minutesStep={15} disablePast={true} onChange={(date) => changeDate(date, "from")} />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <DateTimePicker required fullWidth id="to" label="To" name="to" inputVariant="outlined" error={formErrors.to}
+                    value={formData.to} minDate={formData.from} minutesStep={15} disablePast={true} onChange={(date) => changeDate(date, "to")} />
+                </Grid>
+              </Grid>
             </Grid>
 
-            <Grid item lg={1} sm={2} xs={4}>
-              <TextField type="number" variant="outlined" required fullWidth id="size" label="Size" name="size"
-                value={formData.size} error={formErrors.size} InputProps={{inputProps: {max: 256, min: 1}}} onChange={changeSize} />
+            <Grid item lg={4} sm={6} xs={12}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <InputLabel id="equipmentLabel" className={classes.label}>Equipment</InputLabel>
+                  <Select multiple fullWidth id="equipment" labelId="equipmentLabel" labelWidth={0} variant="outlined"
+                    value={formData.equipment} error={formErrors.equipment} renderValue={selected =>
+                      <div className={classes.chips}>
+                        {(selected as string[]).map(value => (
+                          <Chip key={value} label={value} icon={<EquipmentIcon value={value as Equipment} />} className={classes.chip} />
+                        ))}
+                      </div>
+                    } onChange={changeEquipment} >
+                    {Object.values(Equipment).map((option) => <MenuItem key={option} value={option}>{option}</MenuItem>)}
+                  </Select>
+                </Grid>
+              </Grid>
             </Grid>
+          </Grid>
 
-            <Grid item lg={3} sm={6} xs={12}>
-              <DateTimePicker required fullWidth id="from" label="From" name="from" inputVariant="outlined" error={formErrors.from}
-                value={formData.from} maxDate={getMaxDate()} minutesStep={15} disablePast={true} onChange={(date) => changeDate(date, "from")} />
-            </Grid>
-
-            <Grid item lg={3} sm={6} xs={12}>
-              <DateTimePicker required fullWidth id="to" label="To" name="to" inputVariant="outlined" error={formErrors.to}
-                value={formData.to} minDate={formData.from} minutesStep={15} disablePast={true} onChange={(date) => changeDate(date, "to")} />
-            </Grid>
-
+          <Grid container spacing={2}>
             <Grid item xs={12}>
               <AvailableWorkspaces />
             </Grid>

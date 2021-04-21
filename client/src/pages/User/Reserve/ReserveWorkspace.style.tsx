@@ -9,6 +9,21 @@ const useStyles = makeStyles(theme => ({
   },
   form: {
     marginTop: theme.spacing(4)
+  },
+  label: {
+    fontSize: ".85em",
+    margin: theme.spacing(-1.54, 0, .2, 1.6)
+  },
+  chips: {
+    display: "flex",
+    flexWrap: "wrap"
+  },
+  chip: {
+    margin: theme.spacing(.25),
+    padding: theme.spacing(0, .5),
+    "& span.MuiChip-label": {
+      padding: theme.spacing(0, 1, 0, .5)
+    }
   }
 }));
 
