@@ -39,7 +39,7 @@ const find = async (criteria: WorkspaceSearchCriteria) => {
   const reservedWorkspaces: string[] = await Reservation.distinct("workspace", overlappingQuery);
 
   const availableQuery: workspacesSQ = {location, status: WorkspaceStatus.AVAILABLE};
-  if (size) availableQuery.size = {$gte: size};
+  if (size && size > 1) availableQuery.size = {$gte: size};
   if (type) availableQuery.type = type;
   if (equipment && equipment.length) availableQuery.equipment = {$all: equipment};
   if (reservedWorkspaces.length) availableQuery._id = {$nin: reservedWorkspaces};
