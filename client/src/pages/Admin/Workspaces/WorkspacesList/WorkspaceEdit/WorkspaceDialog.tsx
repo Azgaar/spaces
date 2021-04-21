@@ -1,11 +1,11 @@
 import React, {useEffect} from "react";
 import useStyles from "./WorkspaceDialog.style";
-import {Avatar, TextField, Button, Typography, Grid, Container, Dialog, MenuItem, Chip, InputLabel, Select} from "@material-ui/core";
-import AirplayIcon from "@material-ui/icons/Airplay";
+import {TextField, Button, Grid, Container, Dialog, MenuItem, Chip, InputLabel, Select} from "@material-ui/core";
 import {useForm} from "react-hook-form";
 import {rules} from "../../../../../validation/workspace";
 import {Workspace, WorkspaceStatus, WorkspaceType, Equipment} from "../../../../../types";
 import EquipmentIcon from "../../../../../components/Icons/EquipmentIcon/EquipmentIcon";
+import Headline from "../../../../../components/Layout/components/Main/Headline/Headline";
 
 type Props = {
   mode: "Edit" | "Add";
@@ -17,6 +17,7 @@ type Props = {
 const WorkspaceDialog = ({mode, workspace, close, submit}: Props) => {
   const classes = useStyles();
   const {register, errors, setValue, handleSubmit, reset} = useForm<Workspace>();
+  const pagename: string = `${mode} Workspace`;
 
   useEffect(() => {
     reset({status: workspace.status, type: workspace.type, equipment: workspace.equipment});
@@ -25,10 +26,7 @@ const WorkspaceDialog = ({mode, workspace, close, submit}: Props) => {
   return (
     <Dialog open onClose={close} aria-labelledby="form-dialog-title">
       <Container maxWidth="xs" className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <AirplayIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">{mode} Workspace</Typography>
+        <Headline pagename={pagename} />
 
         <form className={classes.form} noValidate autoComplete="off" onSubmit={handleSubmit(submit)}>
           <Grid container spacing={2}>

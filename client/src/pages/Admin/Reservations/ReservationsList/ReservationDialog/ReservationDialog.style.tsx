@@ -11,10 +11,6 @@ const useFormStyles = makeStyles(theme => ({
     width: "100%",
     marginTop: theme.spacing(3)
   },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.primary.main
-  },
   label: {
     fontSize: ".85em",
     margin: theme.spacing(0, 0, .2, 1.6)

@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import useStyles from "./ReservationDialog.style";
-import {Avatar, TextField, Button, Typography, Grid, Container, Dialog, MenuItem, FormControl} from "@material-ui/core";
-import CollectionsBookmarkIcon from "@material-ui/icons/CollectionsBookmark";
+import {TextField, Button, Grid, Container, Dialog, MenuItem, FormControl} from "@material-ui/core";
 import {Controller, useForm} from "react-hook-form";
 import {rules} from "../../../../../validation/reservation";
 import {ReservationReq, UserData, Workspace} from "../../../../../types";
@@ -10,6 +9,7 @@ import {UserService, WorkspaceService} from "../../../../../services";
 import {DateTimePicker} from "@material-ui/pickers";
 import {Dayjs} from "dayjs";
 import {getMaxDate} from "../../../../../utils";
+import Headline from "../../../../../components/Layout/components/Main/Headline/Headline";
 
 type Props = {
   mode: "Add" | "Edit";
@@ -26,6 +26,7 @@ const ReservationDialog = ({mode, reservation, close, submit}: Props) => {
   const [freeWorkspaces, setFreeWorkspaces] = useState<Workspace[]>([]);
   const [users, setUsers] = useState<string[]>([requester]);
   const {isLoading, catchAndTossError} = useToasterCatcher();
+  const pagename: string = `${mode} Reservation`;
 
   useEffect(() => {
     async function fetchWorkspaces() {
@@ -62,10 +63,7 @@ const ReservationDialog = ({mode, reservation, close, submit}: Props) => {
   return (
     <Dialog open onClose={close} aria-labelledby="form-dialog-title">
       <Container maxWidth="xs" className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <CollectionsBookmarkIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">{mode} Reservation</Typography>
+        <Headline pagename={pagename} />
 
         <form className={classes.form} noValidate autoComplete="off" onSubmit={handleSubmit(submit)}>
           <FormControl>

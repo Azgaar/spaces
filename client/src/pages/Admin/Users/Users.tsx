@@ -1,7 +1,7 @@
 import React from "react";
 import useStyles from "./Users.style";
-import {Avatar, Container, Typography} from "@material-ui/core";
-import PeopleAltOutlinedIcon from "@material-ui/icons/PeopleAltOutlined";
+import {Container} from "@material-ui/core";
+import Headline from "../../../components/Layout/components/Main/Headline/Headline";
 import UsersList from "./UsersList/UsersList";
 
 function User() {
@@ -9,10 +9,7 @@ function User() {
 
   return (
     <Container maxWidth="lg" className={classes.container}>
-      <Avatar className={classes.avatar}>
-        <PeopleAltOutlinedIcon />
-      </Avatar>
-      <Typography component="h1" variant="h5" className={classes.header}>Manage Users</Typography>
+      <Headline pagename="Manage Users" />
       <UsersList />
     </Container>
   );

@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from "react";
 import useStyles from "./Reservations.style";
-import {Box, Avatar, Link, Container, Grid, TextField, Typography} from "@material-ui/core";
+import {Box, Link, Container, Grid, TextField} from "@material-ui/core";
 import {Link as RouterLink} from "react-router-dom";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import ReservationsList from "./ReservationsList/ReservationsList";
-import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
 import {Autocomplete} from "@material-ui/lab";
 import {LocationOption} from "../../../types";
 import {useLocations} from "../../../hooks";
+import Headline from "../../../components/Layout/components/Main/Headline/Headline";
 
 function Reservations() {
   const classes = useStyles();
@@ -33,10 +33,7 @@ function Reservations() {
 
   return (
     <Container maxWidth="lg" className={classes.container}>
-      <Avatar className={classes.avatar}>
-        <LibraryBooksIcon />
-      </Avatar>
-      <Typography component="h1" variant="h5" className={classes.header}>Manage Reservations</Typography>
+      <Headline pagename="Manage Reservations" />
 
       <Container>
         <Grid container alignItems="center">

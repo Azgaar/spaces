@@ -1,8 +1,7 @@
 import React, {ChangeEvent, ChangeEventHandler, FormEvent, FormEventHandler, useEffect, useState} from "react";
 import useStyles from "./ReserveWorkspace.style";
-import {Avatar, Button, Container, Grid, MenuItem, TextField, Typography} from "@material-ui/core";
+import {Button, Container, Grid, MenuItem, TextField} from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import CollectionsBookmarkIcon from "@material-ui/icons/CollectionsBookmark";
 import {Autocomplete} from "@material-ui/lab";
 import {Equipment, LocationOption, WorkspaceType} from "../../../types";
 import {useLocations} from "../../../hooks";
@@ -10,6 +9,7 @@ import AvailableWorkspaces from "./AvailableWorkspaces/AvailableWorkspaces";
 import {DateTimePicker} from "@material-ui/pickers";
 import dayjs, {Dayjs} from "dayjs";
 import {getMaxDate} from "../../../utils";
+import Headline from "../../../components/Layout/components/Main/Headline/Headline";
 
 type ReservationForm = {
   location: LocationOption;
@@ -98,10 +98,7 @@ function ReserveWorkspace() {
 
   return (
     <Container maxWidth="lg" className={classes.container}>
-      <Avatar className={classes.avatar}>
-        <CollectionsBookmarkIcon />
-      </Avatar>
-      <Typography component="h1" variant="h5">Reserve Workspace</Typography>
+      <Headline pagename="Reserve Workspace" />
 
       <Container className={classes.form} maxWidth="lg">
         <form noValidate autoComplete="off" onSubmit={handleSubmit}>
