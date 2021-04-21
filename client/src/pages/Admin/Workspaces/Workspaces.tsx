@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
 import useStyles from "./Workspaces.style";
-import {Avatar, Button, Container, Grid, TextField, Typography} from "@material-ui/core";
+import {Button, Container, Grid, TextField} from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import DesktopWindowsIcon from "@material-ui/icons/DesktopWindows";
+import Headline from "../../../components/Layout/components/Main/Headline/Headline";
 import WorkspacesList from "./WorkspacesList/WorkspacesList";
 import {Autocomplete} from "@material-ui/lab";
 import DeletionButton from "../../../components/Controls/DeletionButton/DeletionButton";
@@ -66,10 +66,7 @@ function Workspaces() {
 
   return (
     <Container maxWidth="lg" className={classes.container}>
-      <Avatar className={classes.avatar}>
-        <DesktopWindowsIcon />
-      </Avatar>
-      <Typography component="h1" variant="h5" className={classes.header}>Manage Workspaces</Typography>
+      <Headline pagename="Manage Workspaces" />
 
       <Container>
         <Grid container alignItems="center">

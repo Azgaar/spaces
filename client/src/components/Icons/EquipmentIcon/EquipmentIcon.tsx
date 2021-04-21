@@ -1,4 +1,4 @@
-import React, {ReactElement} from "react";
+import React, {ElementType, ReactElement} from "react";
 import PersonalVideoIcon from "@material-ui/icons/PersonalVideo";
 import RouterIcon from "@material-ui/icons/Router";
 import WeekendIcon from "@material-ui/icons/Weekend";
@@ -9,7 +9,8 @@ import DirectionsWalkIcon from "@material-ui/icons/DirectionsWalk";
 import PhonelinkSetupIcon from '@material-ui/icons/PhonelinkSetup';
 import {Equipment} from "../../../types";
 
-const EquipmentIconMap = {
+const EquipmentIconDefault: ElementType = PhonelinkSetupIcon;
+const EquipmentIconMap: {[key: string]: ElementType} = {
   [Equipment.PROJECTOR]: RouterIcon,
   [Equipment.MONITOR]: PersonalVideoIcon,
   [Equipment.TELEPHONE]: PhoneIcon,
@@ -20,8 +21,8 @@ const EquipmentIconMap = {
 }
 
 const EquipmentIcon = ({value}: {value: Equipment}): ReactElement => {
-  const IconComponent = EquipmentIconMap[value];
-  return IconComponent ? <IconComponent/> : <PhonelinkSetupIcon />
+  const IconComponent = EquipmentIconMap[value] || EquipmentIconDefault;
+  return <IconComponent/>;
 }
 
 export default EquipmentIcon;
