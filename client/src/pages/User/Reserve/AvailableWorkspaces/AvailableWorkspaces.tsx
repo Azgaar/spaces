@@ -28,9 +28,8 @@ const AvailableWorkspaces = ({formData, formErrors}: {formData: ReservationForm,
       if (freeWorkspaces) setWorkspaces(() => freeWorkspaces);
     };
 
-
     errored ? setLoading(() => false) : fetchWorkspaces();
-  }, [formData]);
+  }, [formErrors]);
 
   if (isLoading) return <Spinner />
   return (
