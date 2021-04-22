@@ -12,23 +12,23 @@ import {getMaxDate} from "../../../utils";
 import Headline from "../../../components/Layout/components/Main/Headline/Headline";
 import EquipmentIcon from "../../../components/Icons/EquipmentIcon/EquipmentIcon";
 
+const from = dayjs().set("minute", 0).set("second", 0).set("millisecond", 0).add(1, "hour");
+const to = from.add(1, "hour");
+const defaultFormData: ReservationForm = {
+  location: {id: "", description: ""},
+  type: "Any",
+  workspace: "",
+  from: from.toISOString(),
+  to: to.toISOString(),
+  size: 1,
+  equipment: []
+};
+
 function ReserveWorkspace() {
   const classes = useStyles();
   const {locations, locationsLoading, defaultLocation, fetchLocations} = useLocations();
-
-  const from = dayjs().set("minute", 0).set("second", 0).set("millisecond", 0).add(1, "hour");
-  const to = from.add(1, "hour");
-  const defaultFormData: ReservationForm = {
-    location: {id: "", description: ""},
-    type: "Any",
-    workspace: "",
-    from: from.toISOString(),
-    to: to.toISOString(),
-    size: 1,
-    equipment: []
-  };
   const [formData, setFormData] = useState<ReservationForm>(defaultFormData);
-  const [formErrors, setFormErrors] = useState<ReservationFormErrors>({} as ReservationFormErrors);
+  const [formErrors, setFormErrors] = useState<ReservationFormErrors>(validateForm());
 
   useEffect(() => {
     fetchLocations({onlyWithWorkspaces: true});
@@ -38,26 +38,31 @@ function ReserveWorkspace() {
     setFormData(formData => ({...formData, location: defaultLocation}));
   }, [defaultLocation]);
 
+  useEffect(() => {
+    const errors = validateForm();
+    setFormErrors(() => errors);
+  }, [formData]);
+
+  function validateForm(): ReservationFormErrors {
+    return {
+      location: !formData.location.id,
+      workspace: !formData.workspace,
+      from: !formData.from || formData.from > formData.to,
+      to: !formData.to || formData.to <= formData.from,
+      size: isNaN(formData.size) || formData.size < 1 || formData.size > 255
+    };
+  }
+
   const changeLocation = (location: LocationOption | string | null) => {
     if (!location) setFormData(formData => ({...formData, location: {id: "", description: ""}}));
-    if (!location || typeof location === "string") {
-      setFormErrors(errors => ({...errors, location: true}));
-      return;
-    }
+    if (!location || typeof location === "string") return;
 
-    setFormErrors(errors => ({...errors, location: false}));
     setFormData(formData => ({...formData, location}));
     localStorage.setItem("location", JSON.stringify(location));
   }
 
   const changeDate = (date: Dayjs | null, name: "from" | "to") => {
-    if (!date) return;
-    const dateString = date.toISOString();
-
-    const fromError = name === "from" && dateString >= formData.to;
-    const toError = name === "to" && dateString <= formData.from;
-    setFormErrors(errors => ({...errors, from: fromError, to: toError}));
-    setFormData(formData => ({...formData, [name]: dateString}));
+    date && setFormData(formData => ({...formData, [name]: date.toISOString()}));
   }
 
   const changeType: ChangeEventHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -67,8 +72,6 @@ function ReserveWorkspace() {
 
   const changeSize: ChangeEventHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const size = +e.target.value;
-    const error = isNaN(size) || size < 1 || size > 256;
-    setFormErrors(errors => ({...errors, size: error}));
     setFormData(formData => ({...formData, size}));
   }
 
@@ -137,7 +140,7 @@ function ReserveWorkspace() {
                 <Grid item xs={12}>
                   <InputLabel id="equipmentLabel" className={classes.label}>Equipment</InputLabel>
                   <Select multiple fullWidth id="equipment" labelId="equipmentLabel" labelWidth={0} variant="outlined"
-                    value={formData.equipment} error={formErrors.equipment} renderValue={selected =>
+                    value={formData.equipment} renderValue={selected =>
                       <div className={classes.chips}>
                         {(selected as string[]).map(value => (
                           <Chip key={value} label={value} icon={<EquipmentIcon value={value as Equipment} />} className={classes.chip} />
@@ -155,7 +158,7 @@ function ReserveWorkspace() {
 
           <Grid container spacing={2}>
             <Grid item lg={2} md={3} sm={6} xs={12}>
-              <Button type="submit" fullWidth variant="contained" color="primary">Reserve</Button>
+              <Button type="submit" fullWidth variant="contained" color="primary" disabled={Object.values(formErrors).some(value => value)}>Reserve</Button>
             </Grid>
           </Grid>
         </form>

@@ -145,5 +145,4 @@ export type ReservationFormErrors = {
   from: boolean;
   to: boolean;
   size: boolean;
-  equipment: boolean;
 }

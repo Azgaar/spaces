@@ -11,9 +11,11 @@ import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 
 const AvailableWorkspaces = ({formData, formErrors}: {formData: ReservationForm, formErrors: ReservationFormErrors}) => {
   const classes = useStyles();
-  const {isLoading, catchAndTossError} = useToasterCatcher();
+  const {isLoading, setLoading, catchAndTossError} = useToasterCatcher();
   const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
-  const errors = Object.values(formErrors).some(value => value === true);
+
+  const {workspace, ...filterErrors} = formErrors;
+  const errored = Object.values(filterErrors).some(value => value);
 
   useEffect(() => {
     async function fetchWorkspaces() {
@@ -21,28 +23,30 @@ const AvailableWorkspaces = ({formData, formErrors}: {formData: ReservationForm,
       const criteria: WorkspaceSearchCriteria = {location: location.id, from, to, size, equipment};
       if (formData.type !== "Any") criteria.type = formData.type;
       console.log({criteria});
+
       const freeWorkspaces: Workspace[] = await catchAndTossError(WorkspaceService.find(criteria));
       if (freeWorkspaces) setWorkspaces(() => freeWorkspaces);
     };
 
-    if (!errors) fetchWorkspaces();
-  }, [formData, formErrors]);
+
+    errored ? setLoading(() => false) : fetchWorkspaces();
+  }, [formData]);
 
   if (isLoading) return <Spinner />
   return (
     <Grid container spacing={2} alignItems="center">
-      {errors &&
+      {errored &&
         <Grid item lg={3} md={4} sm={6} xs={12} >
           <Card variant="outlined">
             <CardHeader className={classes.cardHeader}
               avatar={<ErrorOutlineIcon />}
               title="Validation error"
-              subheader="Change the field in red"/>
+              subheader="Fix the error in red"/>
           </Card>
         </Grid>
       }
 
-      {!errors && !workspaces.length &&
+      {!errored && !workspaces.length &&
         <Grid item lg={3} md={4} sm={6} xs={12} >
           <Card variant="outlined">
             <CardHeader className={classes.cardHeader}
@@ -53,7 +57,7 @@ const AvailableWorkspaces = ({formData, formErrors}: {formData: ReservationForm,
         </Grid>
       }
 
-      {!errors && workspaces.map(workspace => (
+      {!errored && workspaces.map(workspace => (
         <Grid key={workspace.id} item lg={2} md={3} sm={4} xs={6} >
           <Card variant="outlined">
             <CardHeader className={classes.cardHeader} avatar={
