@@ -1,5 +1,5 @@
 import {Schema, model} from "mongoose";
-import {ReservationDocument, WorkspaceDocument, ReservationStatus, WorkspaceStatus, WorkspaceType, Equipment} from "../types";
+import {ReservationDocument, ReservationStatus, WorkspaceStatus, WorkspaceType, Equipment} from "../types";
 
 const required = true;
 const reservationSchema = new Schema(

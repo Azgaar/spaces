@@ -21,7 +21,8 @@ const defaultFormData: ReservationForm = {
   from: from.toISOString(),
   to: to.toISOString(),
   size: 1,
-  equipment: []
+  equipment: [],
+  description: ""
 };
 
 function ReserveWorkspace() {
@@ -80,6 +81,11 @@ function ReserveWorkspace() {
     setFormData(formData => ({...formData, equipment}));
   }
 
+  const changeWorkspaceDescription: ChangeEventHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const description = e.target.value;
+    setFormData(formData => ({...formData, description}));
+  }
+
   const handleSubmit: FormEventHandler = (e: FormEvent): void => {
     e.preventDefault();
     console.log({formErrors}, {formData});
@@ -116,7 +122,7 @@ function ReserveWorkspace() {
 
                 <Grid item xs={4}>
                   <TextField type="number" variant="outlined" required fullWidth id="size" label="Min size"
-                    value={formData.size} error={formErrors.size} InputProps={{inputProps: {max: 256, min: 1}}} onChange={changeSize} />
+                    value={formData.size} error={formErrors.size} InputProps={{inputProps: {max: 255, min: 1}}} onChange={changeSize} />
                 </Grid>
               </Grid>
             </Grid>
@@ -137,6 +143,11 @@ function ReserveWorkspace() {
 
             <Grid item lg={4} sm={6} xs={12}>
               <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextField variant="outlined" fullWidth id="description" label="Label"
+                    value={formData.description} onChange={changeWorkspaceDescription} />
+                </Grid>
+
                 <Grid item xs={12}>
                   <InputLabel id="equipmentLabel" className={classes.label}>Equipment</InputLabel>
                   <Select multiple fullWidth id="equipment" labelId="equipmentLabel" labelWidth={0} variant="outlined"

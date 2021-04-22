@@ -101,6 +101,7 @@ export type WorkspaceSearchCriteria = {
   size?: number;
   type?: WorkspaceType;
   equipment?: Equipment[];
+  description?: string;
   excludeReservation?: string
 }
 

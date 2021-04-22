@@ -78,6 +78,7 @@ export type WorkspaceSearchCriteria = {
   size?: number;
   type?: WorkspaceType;
   equipment?: Equipment[];
+  description?: string;
   excludeReservation?: string
 }
 
@@ -137,6 +138,7 @@ export type ReservationForm = {
   size: number;
   type: WorkspaceType | "Any";
   equipment: Equipment[];
+  description: string;
 }
 
 export type ReservationFormErrors = {

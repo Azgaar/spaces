@@ -32,7 +32,7 @@ const remove = async (ids: Array<string>) => {
 };
 
 const find = async (criteria: WorkspaceSearchCriteria) => {
-  const {location, from, to, size, type, equipment, excludeReservation} = criteria;
+  const {location, from, to, size, type, equipment, description, excludeReservation} = criteria;
 
   const overlappingQuery: reservationsSQ = {location, from: {$lt: to}, to: {$gt: from}};
   if (excludeReservation) overlappingQuery._id = {$ne: excludeReservation};
@@ -42,10 +42,11 @@ const find = async (criteria: WorkspaceSearchCriteria) => {
   if (size && size > 1) availableQuery.size = {$gte: size};
   if (type) availableQuery.type = type;
   if (equipment && equipment.length) availableQuery.equipment = {$all: equipment};
+  if (description) availableQuery.description = {$regex: description.replace(/[-[\]{}()*+?.,\\/^$|#\s]/g, "\\$&")};
   if (reservedWorkspaces.length) availableQuery._id = {$nin: reservedWorkspaces};
   const workspaces: WorkspaceDocument[] = await Workspace.find(availableQuery).limit(config.workspaces.maxNumberToReturn);
 
-  console.log({overlappingQuery}, {reservedWorkspaces}, {availableQuery}, {workspaces});
+  console.log({criteria}, {overlappingQuery}, {reservedWorkspaces}, {availableQuery}, {workspaces: workspaces.length});
   return workspaces;
 };
 
@@ -59,10 +60,19 @@ type reservationsSQ = {
 type workspacesSQ = {
   location: string;
   status: WorkspaceStatus;
-  size?: {};
+  size?: {
+    $gte: number;
+  };
   type?: WorkspaceType;
-  equipment?: {};
-  _id?: {};
+  equipment?: {
+    $all: Equipment[];
+  };
+  description?: {
+    $regex: string;
+  };
+  _id?: {
+    $nin: string[];
+  };
 }
 
 export default {list, add, update, remove, find};

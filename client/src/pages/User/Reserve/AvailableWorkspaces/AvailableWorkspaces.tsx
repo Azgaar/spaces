@@ -19,8 +19,8 @@ const AvailableWorkspaces = ({formData, formErrors}: {formData: ReservationForm,
 
   useEffect(() => {
     async function fetchWorkspaces() {
-      const {location, from, to, size, equipment} = formData;
-      const criteria: WorkspaceSearchCriteria = {location: location.id, from, to, size, equipment};
+      const {location, from, to, size, equipment, description} = formData;
+      const criteria: WorkspaceSearchCriteria = {location: location.id, from, to, size, equipment, description};
       if (formData.type !== "Any") criteria.type = formData.type;
       console.log({criteria});
 
