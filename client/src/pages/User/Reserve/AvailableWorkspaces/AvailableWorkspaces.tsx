@@ -35,7 +35,7 @@ const AvailableWorkspaces = ({formData, formErrors, selected, onClick}: Props) =
       if (freeWorkspaces) setWorkspaces(() => freeWorkspaces);
     };
 
-    errored ? setLoading(() => false) : fetchWorkspaces();
+    errored || !formData.location.id ? setLoading(() => false) : fetchWorkspaces();
   }, [formErrors]);
 
   if (isLoading) return <Spinner />

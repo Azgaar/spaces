@@ -46,7 +46,7 @@ function ReserveWorkspace() {
 
   function validateForm(): ReservationFormErrors {
     return {
-      location: !formData.location.id,
+      location: locations.length > 0 && !formData.location.id,
       workspace: !formData.workspace,
       from: !formData.from || formData.from > formData.to,
       to: !formData.to || formData.to <= formData.from,
