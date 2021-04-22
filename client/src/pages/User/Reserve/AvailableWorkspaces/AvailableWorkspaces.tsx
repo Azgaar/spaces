@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import useStyles from "./AvailableWorkspaces.style";
-import {Badge, Card, CardHeader, Grid} from "@material-ui/core";
+import {Badge, Card, CardActionArea, CardHeader, Grid} from "@material-ui/core";
 import Spinner from "../../../../components/Spinner/Spinner";
 import {useToasterCatcher} from "../../../../hooks";
 import {WorkspaceService} from "../../../../services";
@@ -9,7 +9,14 @@ import WorkspaceTypeIcon from "../../../../components/Icons/WorkspaceTypeIcon/Wo
 import SearchIcon from "@material-ui/icons/Search";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 
-const AvailableWorkspaces = ({formData, formErrors}: {formData: ReservationForm, formErrors: ReservationFormErrors}) => {
+type Props = {
+  formData: ReservationForm;
+  formErrors: ReservationFormErrors;
+  selected: string;
+  onClick: (workspaceId: string) => void;
+}
+
+const AvailableWorkspaces = ({formData, formErrors, selected, onClick}: Props) => {
   const classes = useStyles();
   const {isLoading, setLoading, catchAndTossError} = useToasterCatcher();
   const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
@@ -36,7 +43,7 @@ const AvailableWorkspaces = ({formData, formErrors}: {formData: ReservationForm,
     <Grid container spacing={2} alignItems="center">
       {errored &&
         <Grid item lg={3} md={4} sm={6} xs={12} >
-          <Card variant="outlined">
+          <Card className={classes.card} variant="outlined">
             <CardHeader className={classes.cardHeader}
               avatar={<ErrorOutlineIcon />}
               title="Validation error"
@@ -47,7 +54,7 @@ const AvailableWorkspaces = ({formData, formErrors}: {formData: ReservationForm,
 
       {!errored && !workspaces.length &&
         <Grid item lg={3} md={4} sm={6} xs={12} >
-          <Card variant="outlined">
+          <Card className={classes.card} variant="outlined">
             <CardHeader className={classes.cardHeader}
               avatar={<SearchIcon />}
               title="No workspaces"
@@ -58,13 +65,15 @@ const AvailableWorkspaces = ({formData, formErrors}: {formData: ReservationForm,
 
       {!errored && workspaces.map(workspace => (
         <Grid key={workspace.id} item lg={2} md={3} sm={4} xs={6} >
-          <Card variant="outlined">
-            <CardHeader className={classes.cardHeader} avatar={
-              <Badge badgeContent={workspace.size > 1 && workspace.size}>
-                <WorkspaceTypeIcon value={workspace.type} />
-              </Badge>}
-              title={workspace.description}
-              subheader={workspace.type} />
+          <Card className={workspace.id === selected ? classes.selectedCard : classes.card} variant="outlined">
+            <CardActionArea onClick={() => onClick(workspace.id as string)}>
+              <CardHeader className={classes.cardHeader} avatar={
+                <Badge badgeContent={workspace.size > 1 && workspace.size}>
+                  <WorkspaceTypeIcon value={workspace.type} />
+                </Badge>}
+                title={workspace.description}
+                subheader={workspace.type} />
+            </CardActionArea>
           </Card>
         </Grid>
       ))}

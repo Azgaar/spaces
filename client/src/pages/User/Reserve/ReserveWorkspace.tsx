@@ -86,6 +86,10 @@ function ReserveWorkspace() {
     setFormData(formData => ({...formData, description}));
   }
 
+  const changeWorkspace = (workspaceId: string) => {
+    setFormData(formData => ({...formData, workspace: workspaceId}));
+  }
+
   const handleSubmit: FormEventHandler = (e: FormEvent): void => {
     e.preventDefault();
     console.log({formErrors}, {formData});
@@ -165,7 +169,7 @@ function ReserveWorkspace() {
             </Grid>
           </Grid>
 
-          <AvailableWorkspaces formData={formData} formErrors={formErrors} />
+          <AvailableWorkspaces formData={formData} formErrors={formErrors} selected={formData.workspace} onClick={changeWorkspace} />
 
           <Grid container spacing={2}>
             <Grid item lg={2} md={3} sm={6} xs={12}>

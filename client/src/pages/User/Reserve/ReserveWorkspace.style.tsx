@@ -8,7 +8,10 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
   },
   form: {
-    marginTop: theme.spacing(4)
+    marginTop: theme.spacing(4),
+    "& div.MuiTextField-root, & .MuiSelect-root": {
+      backgroundColor: "#ffffff40"
+    }
   },
   label: {
     fontSize: ".85em",
