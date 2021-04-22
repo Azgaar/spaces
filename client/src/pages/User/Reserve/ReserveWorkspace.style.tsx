@@ -5,10 +5,12 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(5),
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
+    alignItems: "center"
   },
   form: {
     marginTop: theme.spacing(4),
+    backgroundColor: "#ffffff20",
+    boxShadow: "0 0 40px 50px #ffffff20",
     "& div.MuiTextField-root, & .MuiSelect-root": {
       backgroundColor: "#ffffff40"
     }
