@@ -3,39 +3,51 @@ import useStyles from "./AvailableWorkspaces.style";
 import {Badge, Card, CardActionArea, CardHeader, Grid, LinearProgress} from "@material-ui/core";
 import {useToasterCatcher} from "../../../../hooks";
 import {WorkspaceService} from "../../../../services";
-import {ReservationForm, ReservationFormErrors, Workspace, WorkspaceSearchCriteria} from "../../../../types";
+import {ReservationFilters, Workspace, WorkspaceSearchCriteria} from "../../../../types";
 import WorkspaceTypeIcon from "../../../../components/Icons/WorkspaceTypeIcon/WorkspaceTypeIcon";
 import SearchIcon from "@material-ui/icons/Search";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 
 type Props = {
-  formData: ReservationForm;
-  formErrors: ReservationFormErrors;
-  selected: string;
-  onClick: (workspaceId: string) => void;
+  filters: ReservationFilters;
+  errored: boolean | undefined;
+  selectedWS: string;
+  selectWorkspace: (workspaceId: string) => void;
 }
 
-const AvailableWorkspaces = ({formData, formErrors, selected, onClick}: Props) => {
+const AvailableWorkspaces = ({filters, errored, selectedWS, selectWorkspace}: Props) => {
   const classes = useStyles();
   const {isLoading, setLoading, catchAndTossError} = useToasterCatcher();
   const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
-
-  const {workspace, ...filterErrors} = formErrors;
-  const errored = Object.values(filterErrors).some(value => value);
+  const [lastSelectedWS, setLastSelectedWS] = useState<string>(selectedWS);
 
   useEffect(() => {
     async function fetchWorkspaces() {
-      const {location, from, to, size, equipment, description} = formData;
-      const criteria: WorkspaceSearchCriteria = {location: location.id, from, to, size, equipment, description};
-      if (formData.type !== "Any") criteria.type = formData.type;
-      console.log({criteria});
+      const location = filters.location.id;
+      const type = filters.type === "Any" ? undefined : filters.type;
+      const criteria: WorkspaceSearchCriteria = {...filters, location, type};
 
       const freeWorkspaces: Workspace[] = await catchAndTossError(WorkspaceService.find(criteria));
-      if (freeWorkspaces) setWorkspaces(() => freeWorkspaces);
+      setWorkspaces(() => freeWorkspaces || []);
     };
 
-    errored || !formData.location.id ? setLoading(() => false) : fetchWorkspaces();
-  }, [formErrors]);
+    errored || !filters.location.id ? setLoading(() => false) : fetchWorkspaces();
+  }, [filters]);
+
+  useEffect(() => {
+    if (selectedWS) {
+      const availableSelectedElement = workspaces.find(ws => ws.id === selectedWS);
+      if (!availableSelectedElement) selectWorkspace("");
+    } else if (lastSelectedWS) {
+      const availableLastSelectedElement = workspaces.find(ws => ws.id === lastSelectedWS);
+      if (availableLastSelectedElement) selectWorkspace(lastSelectedWS);
+    }
+  }, [workspaces]);
+
+  const handleSelect = (workspaceId: string): void => {
+    if (workspaceId) setLastSelectedWS(() => workspaceId);
+    selectWorkspace(workspaceId);
+  }
 
   return (
     <Grid container spacing={2} alignItems="center">
@@ -65,8 +77,8 @@ const AvailableWorkspaces = ({formData, formErrors, selected, onClick}: Props) =
 
       {!errored && workspaces.map(workspace => (
         <Grid key={workspace.id} item lg={2} md={3} sm={4} xs={6} >
-          <Card className={workspace.id === selected ? classes.selectedCard : classes.card} variant="outlined">
-            <CardActionArea onClick={() => onClick(workspace.id as string)}>
+          <Card className={workspace.id === selectedWS ? classes.selectedCard : classes.card} variant="outlined">
+            <CardActionArea onClick={() => handleSelect(workspace.id as string)}>
               <CardHeader className={classes.cardHeader} avatar={
                 <Badge badgeContent={workspace.size > 1 && workspace.size}>
                   <WorkspaceTypeIcon value={workspace.type} />

@@ -130,9 +130,8 @@ export enum ReservationStatus {
   FUTURE = "Future",
 }
 
-export type ReservationForm = {
+export type ReservationFilters = {
   location: LocationOption;
-  workspace: string;
   from: string;
   to: string;
   size: number;
@@ -141,10 +140,10 @@ export type ReservationForm = {
   description: string;
 }
 
-export type ReservationFormErrors = {
+export type ReservationFilterErrors = {
   location: boolean;
-  workspace: boolean;
   from: boolean;
   to: boolean;
   size: boolean;
+  errored?: boolean;
 }
