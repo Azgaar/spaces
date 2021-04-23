@@ -82,7 +82,7 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
     if (!addedReservation) return;
 
     dialog.close();
-    setReservations(reservations => [...reservations, addedReservation]);
+    setReservations(reservations => [addedReservation, ...reservations]);
     pushMessage({title: "Reservation is added", type: MessageType.SUCCESS});
   }
 
