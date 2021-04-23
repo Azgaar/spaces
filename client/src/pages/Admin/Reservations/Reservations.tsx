@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import useStyles from "./Reservations.style";
-import {Box, Link, Container, Grid, TextField} from "@material-ui/core";
-import {Link as RouterLink} from "react-router-dom";
+import {Container, Grid, TextField, ButtonGroup, Button, Box} from "@material-ui/core";
+import {Link} from "react-router-dom";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import ReservationsList from "./ReservationsList/ReservationsList";
 import {Autocomplete} from "@material-ui/lab";
@@ -50,12 +50,13 @@ function Reservations() {
               )} />
           </Grid>
 
-          <Grid item lg={4} md={6} xs={12}>
-            <Box mx={1}>
-              <Link href="#" variant="body2" component={RouterLink} to="/reservations">Show my active reservations</Link>
-            </Box>
-            <Box mx={1}>
-              <Link href="#" variant="body2" component={RouterLink} to="/history">Show my reservations history</Link>
+          <Grid item lg={8} md={6} xs={12}>
+            <Box display="flex" justifyContent="flex-end">
+              <ButtonGroup variant="contained" color="secondary">
+                <Button component={Link} to="/reserve">Reserve</Button>
+                <Button component={Link} to="/reservations">Active</Button>
+                <Button component={Link} to="/history">History</Button>
+              </ButtonGroup>
             </Box>
           </Grid>
         </Grid>

@@ -12,11 +12,11 @@ import dayjs from "dayjs";
 import {gridColDateFormat} from "../../../../utils";
 
 const columns: GridColDef[] = [
-  {field: "status", headerName: "Status", flex: 1},
-  {field: "description", headerName: "Workspace", flex: 1},
-  {field: "type", headerName: "Type", flex: 1},
+  {field: "status", headerName: "Status", flex: .6},
+  {field: "description", headerName: "Workspace", flex: .8},
+  {field: "type", headerName: "Type", flex: .8},
   {field: "size", headerName: "Size", flex: .6},
-  {field: "requester", headerName: "Requester", flex: 1.4},
+  {field: "requester", headerName: "Requester", flex: 1.2},
   {field: "from", headerName: "From", ...gridColDateFormat},
   {field: "to", headerName: "To", ...gridColDateFormat}
 ];

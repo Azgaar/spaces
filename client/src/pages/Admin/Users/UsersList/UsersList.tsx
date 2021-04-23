@@ -10,9 +10,9 @@ import {UserData} from "../../../../types";
 import {gridColDateFormat} from "../../../../utils";
 
 const columns: GridColDef[] = [
-  {field: "firstName", headerName: "First name", flex: 1},
-  {field: "lastName", headerName: "Last name", flex: 1},
-  {field: "email", headerName: "Email", flex: 1.5},
+  {field: "firstName", headerName: "First name", flex: .7},
+  {field: "lastName", headerName: "Last name", flex: .8},
+  {field: "email", headerName: "Email", flex: 1.4},
   {field: "createdAt", headerName: "Created at", ...gridColDateFormat},
   {field: "updatedAt", headerName: "Updated at", ...gridColDateFormat}
 ];
