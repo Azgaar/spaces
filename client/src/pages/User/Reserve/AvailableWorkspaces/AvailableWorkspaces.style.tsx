@@ -6,12 +6,14 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(3)
   },
   card: {
-    backgroundColor: "#ffffff40",
-    border: "1px solid #00000040"
+    backgroundColor: "#ffffffdd",
+    border: "1px solid #00000050",
+    padding: "1px"
   },
   selectedCard: {
-    backgroundColor: theme.palette.primary.main + "20",
-    border: "1px solid " + theme.palette.primary.main
+    backgroundColor: "#ffffff",
+    border: "2px solid " + theme.palette.primary.main,
+    padding: 0
   },
   cardHeader: {
     "& .MuiCardHeader-subheader": {

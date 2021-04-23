@@ -1,6 +1,6 @@
 import React, {ChangeEvent, ChangeEventHandler, FormEvent, FormEventHandler, useEffect, useState} from "react";
 import useStyles from "./ReserveWorkspace.style";
-import {Button, Chip, Container, Grid, InputLabel, MenuItem, Select, TextField} from "@material-ui/core";
+import {Button, Chip, Container, FilledInput, FormControl, Grid, InputLabel, MenuItem, Select, TextField} from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import {Autocomplete} from "@material-ui/lab";
 import {Equipment, LocationOption, ReservationForm, ReservationFormErrors, WorkspaceType} from "../../../types";
@@ -107,7 +107,7 @@ function ReserveWorkspace() {
                 <Grid item xs={12}>
                   <Autocomplete id="locations" options={locations} getOptionLabel={option => option.description}
                     value={formData.location} onChange={(e, value) => changeLocation(value)} handleHomeEndKeys renderInput={(params) => (
-                      <TextField {...params} variant="outlined" label="Location" required error={formErrors.location}
+                      <TextField {...params} variant="filled" label="Location" required error={formErrors.location}
                         InputProps={{...params.InputProps, endAdornment: (<>
                           {locationsLoading && <CircularProgress color="inherit" size={20} />}
                           {params.InputProps.endAdornment}
@@ -117,7 +117,7 @@ function ReserveWorkspace() {
                 </Grid>
 
                 <Grid item xs={8}>
-                  <TextField select variant="outlined" fullWidth id="type" label="Type"
+                  <TextField select variant="filled" fullWidth id="type" label="Type"
                     value={formData.type} onChange={changeType} >
                     <MenuItem value="Any" className={classes.typeAny}>Any</MenuItem>
                     {Object.values(WorkspaceType).map((option) => <MenuItem key={option} value={option}>{option}</MenuItem>)}
@@ -125,7 +125,7 @@ function ReserveWorkspace() {
                 </Grid>
 
                 <Grid item xs={4}>
-                  <TextField type="number" variant="outlined" required fullWidth id="size" label="Min size"
+                  <TextField type="number" variant="filled" required fullWidth id="size" label="Min size"
                     value={formData.size} error={formErrors.size} InputProps={{inputProps: {max: 255, min: 1}}} onChange={changeSize} />
                 </Grid>
               </Grid>
@@ -134,36 +134,38 @@ function ReserveWorkspace() {
             <Grid item lg={4} sm={6} xs={12}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <DateTimePicker required fullWidth id="from" label="From" inputVariant="outlined" error={formErrors.from}
+                  <DateTimePicker required fullWidth id="from" label="From" inputVariant="filled" error={formErrors.from}
                     value={formData.from} maxDate={getMaxDate()} minutesStep={15} disablePast={true} onChange={(date) => changeDate(date, "from")} />
                 </Grid>
 
                 <Grid item xs={12}>
-                  <DateTimePicker required fullWidth id="to" label="To" inputVariant="outlined" error={formErrors.to}
+                  <DateTimePicker required fullWidth id="to" label="To" inputVariant="filled" error={formErrors.to}
                     value={formData.to} minDate={formData.from} minutesStep={15} disablePast={true} onChange={(date) => changeDate(date, "to")} />
                 </Grid>
               </Grid>
             </Grid>
 
-            <Grid item lg={4} sm={6} xs={12}>
+            <Grid item lg={4} sm={12} xs={12}>
               <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <TextField variant="outlined" fullWidth id="description" label="Label"
+                <Grid item lg={12} sm={6} xs={12}>
+                  <TextField variant="filled" fullWidth id="description" label="Label"
                     value={formData.description} onChange={changeWorkspaceDescription} />
                 </Grid>
 
-                <Grid item xs={12}>
-                  <InputLabel id="equipmentLabel" className={classes.label}>Equipment</InputLabel>
-                  <Select multiple fullWidth id="equipment" labelId="equipmentLabel" labelWidth={0} variant="outlined"
-                    value={formData.equipment} renderValue={selected =>
-                      <div className={classes.chips}>
-                        {(selected as string[]).map(value => (
-                          <Chip key={value} label={value} icon={<EquipmentIcon value={value as Equipment} />} className={classes.chip} />
-                        ))}
-                      </div>
-                    } onChange={changeEquipment} >
-                    {Object.values(Equipment).map((option) => <MenuItem key={option} value={option}>{option}</MenuItem>)}
-                  </Select>
+                <Grid item lg={12} sm={6} xs={12}>
+                  <FormControl variant="filled" className={classes.multiSelect}>
+                    <InputLabel htmlFor="equipment">Equipment</InputLabel>
+                    <Select multiple id="equipment" value={formData.equipment} input={<FilledInput fullWidth />}
+                      onChange={changeEquipment} renderValue={selected =>
+                        <div className={classes.chips}>
+                          {(selected as string[]).map(value => (
+                            <Chip key={value} label={value} icon={<EquipmentIcon value={value as Equipment} />} className={classes.chip} />
+                          ))}
+                        </div>
+                      } >
+                      {Object.values(Equipment).map((option) => <MenuItem key={option} value={option}>{option}</MenuItem>)}
+                    </Select>
+                  </FormControl>
                 </Grid>
               </Grid>
             </Grid>

@@ -9,18 +9,17 @@ const useStyles = makeStyles(theme => ({
   },
   form: {
     marginTop: theme.spacing(4),
-    backgroundColor: "#ffffff20",
-    boxShadow: "0 0 40px 50px #ffffff20",
-    "& div.MuiTextField-root, & .MuiSelect-root": {
-      backgroundColor: "#ffffff40"
+    backgroundColor: "#00000020",
+    boxShadow: "0 0 40px 50px #00000020",
+    "& div.MuiInputBase-root": {
+      backgroundColor: "#ffffffdd"
     }
-  },
-  label: {
-    fontSize: ".85em",
-    margin: theme.spacing(-1.54, 0, .2, 1.6)
   },
   typeAny: {
     fontStyle: "italic"
+  },
+  multiSelect: {
+    width: "100%"
   },
   chips: {
     display: "flex",
