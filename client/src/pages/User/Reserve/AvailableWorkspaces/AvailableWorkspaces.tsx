@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import useStyles from "./AvailableWorkspaces.style";
-import {Badge, Card, CardActionArea, CardHeader, Grid} from "@material-ui/core";
-import Spinner from "../../../../components/Spinner/Spinner";
+import {Badge, Card, CardActionArea, CardHeader, Grid, LinearProgress} from "@material-ui/core";
 import {useToasterCatcher} from "../../../../hooks";
 import {WorkspaceService} from "../../../../services";
 import {ReservationForm, ReservationFormErrors, Workspace, WorkspaceSearchCriteria} from "../../../../types";
@@ -38,9 +37,10 @@ const AvailableWorkspaces = ({formData, formErrors, selected, onClick}: Props) =
     errored || !formData.location.id ? setLoading(() => false) : fetchWorkspaces();
   }, [formErrors]);
 
-  if (isLoading) return <Spinner />
   return (
     <Grid container spacing={2} alignItems="center">
+      <LinearProgress className={`${classes.progress} ${isLoading ? "" : classes.inactive}`} />
+
       {errored &&
         <Grid item lg={3} md={4} sm={6} xs={12} >
           <Card className={classes.card} variant="outlined">

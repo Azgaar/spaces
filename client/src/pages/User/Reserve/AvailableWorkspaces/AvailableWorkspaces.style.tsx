@@ -5,6 +5,14 @@ const useStyles = makeStyles(theme => ({
     width: "100%",
     marginTop: theme.spacing(3)
   },
+  progress: {
+    width: "100%",
+    margin: theme.spacing(1, 1, 0),
+    height: theme.spacing(.5)
+  },
+  inactive: {
+    visibility: "hidden"
+  },
   card: {
     backgroundColor: "#ffffffdd",
     border: "1px solid #00000050",

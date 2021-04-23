@@ -23,6 +23,7 @@ export const useRequest = () => {
 
   const handleRequest = async (request: AxiosPromise) => {
     try {
+      setLoading(() => true);
       const {data} = await request;
       return data;
     } catch (err) {
