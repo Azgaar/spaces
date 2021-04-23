@@ -43,13 +43,13 @@ describe("Users management service", () => {
     }
   });
 
-  it("returns all users for admin", async () => {
+  it("returns all non-admin users for admin", async () => {
     const response = await request(app).post("/getUsers").set("Cookie", cookie.admin).expect(httpStatus.OK);
     expect(Array.isArray(response.body)).toBe(true);
-    expect(response.body.length).toBe(4);
-    expect(response.body[0].email).toBe(admin.email);
-    expect(response.body[0].firstName).toBe(admin.firstName);
-    expect(response.body[0].lastName).toBe(admin.lastName);
+    expect(response.body.length).toBe(3);
+    expect(response.body[0].email).toBe(user.email);
+    expect(response.body[0].firstName).toBe(user.firstName);
+    expect(response.body[0].lastName).toBe(user.lastName);
   });
 
   it("allows to delete single user", async () => {

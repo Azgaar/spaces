@@ -91,6 +91,10 @@ describe("Reservation management service", () => {
     expect(response.body[0].id).toBeTruthy();
   });
 
+  it("fails to add concurrent reservation for admin", async () => {
+    await request(app).post("/addReservation").set("Cookie", cookie.admin).send(reservation).expect(httpStatus.INTERNAL_SERVER_ERROR);
+  });
+
   it("allows to update reservation to max day for admin", async () => {
     const to = MAX_DAY;
     const response = await request(app).post("/updateReservation").set("Cookie", cookie.admin).send({...reservation, id: reservationId, to}).expect(httpStatus.OK);
