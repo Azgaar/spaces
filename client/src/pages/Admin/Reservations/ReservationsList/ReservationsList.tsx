@@ -64,8 +64,9 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
     edit: () => {
       const selected: ReservationRes | undefined = reservations.find(rs => rs.id === selection[0]);
       if (!selected) return;
-      const {id, location, workspace, requester, from, to} = selected;
-      setReservation(() => ({id, location, workspace, requester, from, to}) as ReservationReq);
+
+      const {id, workspace, requester, from, to} = selected;
+      setReservation(() => ({id, workspace, requester, from, to, location: loc.id}) as ReservationReq);
       setEdit(() => "edit");
     },
     add: () => {
@@ -86,6 +87,7 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
   }
 
   const handleUpdate = async (formData: ReservationReq) => {
+    console.log({formData});
     const requestData: ReservationReq = {id: reservation.id, ...formData, location: loc.id};
     const remaining: ReservationRes[] = await catchAndTossError(ReservationService.update(requestData));
     if (!remaining) return;

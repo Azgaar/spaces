@@ -4,7 +4,7 @@ import {TextField, Button, Grid, Container, Dialog, MenuItem, FormControl} from 
 import {Controller, useForm} from "react-hook-form";
 import {rules} from "../../../../../validation/reservation";
 import {ReservationReq, UserData, Workspace} from "../../../../../types";
-import {useToasterCatcher} from "../../../../../hooks";
+import {useToasterCatcher, useUser} from "../../../../../hooks";
 import {UserService, WorkspaceService} from "../../../../../services";
 import {DateTimePicker} from "@material-ui/pickers";
 import {Dayjs} from "dayjs";
@@ -24,6 +24,7 @@ const ReservationDialog = ({mode, reservation, close, submit}: Props) => {
   const classes = useStyles();
   const {errors, setValue, getValues, control, handleSubmit} = useForm<ReservationReq>();
   const [freeWorkspaces, setFreeWorkspaces] = useState<Workspace[]>([]);
+  const {user} = useUser();
   const [users, setUsers] = useState<string[]>([requester]);
   const {isLoading, catchAndTossError} = useToasterCatcher();
   const pagename: string = `${mode} Reservation`;
@@ -95,6 +96,7 @@ const ReservationDialog = ({mode, reservation, close, submit}: Props) => {
                 <Controller control={control} name="requester" defaultValue={requester} rules={rules.requester} as={
                   <TextField select variant="outlined" required fullWidth id="requester" label="Request for" name="requester"
                   error={Boolean(errors.requester)} helperText={errors.requester?.message} >
+                    <MenuItem key={user.email} value={user.email}>{user.email}</MenuItem>
                     {users.map(user => <MenuItem key={user} value={user}>{user}</MenuItem>)}
                   </TextField>
                 } />

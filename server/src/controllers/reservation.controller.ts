@@ -22,6 +22,9 @@ const add = catchAsync(async (req, res, next) => {
 });
 
 const update = catchAsync(async (req, res, next) => {
+  const alreadyReserved = await reservationService.check(req.body);
+  if (alreadyReserved) return next(new ApiError(httpStatus.FORBIDDEN, "Workspace is already reserved"));
+
   const updatedReservation = await reservationService.update(req.body);
   if (!updatedReservation) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot update reservation"));
 

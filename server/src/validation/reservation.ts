@@ -16,7 +16,6 @@ const from = Joi.date().min("now").max(getMaxDate()).required();
 const to = Joi.date().min("now").greater(Joi.ref("from")).max(getMaxDate()).required();
 
 const email = Joi.string().email().min(6).max(128).lowercase().trim().required();
-const selection = Joi.array().min(1).items(Joi.string()).required();
 const active = Joi.bool().required();
 
 const reservationCreationSchema = Joi.object({location, workspace, requester, from, to});
