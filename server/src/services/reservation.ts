@@ -14,6 +14,13 @@ const add = async (reservationData: ReservationData) => {
   return reservationJSON;
 };
 
+const check = async(reservationData: ReservationData) => {
+  const {location, workspace, from, to} = reservationData;
+  const reserved: ReservationDocument | null = await Reservation.findOne({location, workspace, from: {$lt: to}, to: {$gt: from}});
+  reserved && logger.info(`[Reservation] Workspace ${reservationData.workspace} is already reserved`);
+  return reserved;
+}
+
 const update = async (reservationData: ReservationData) => {
   const reservation: ReservationDocument = await Reservation.findById(reservationData.id) as ReservationDocument;
   if (!reservation) return false;
@@ -43,4 +50,4 @@ const requestRemoval = async (email: string, id: string) => {
   return deletedReservation;
 };
 
-export default {list, add, update, remove, requestList, requestRemoval};
+export default {list, add, check, update, remove, requestList, requestRemoval};
