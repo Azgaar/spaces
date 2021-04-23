@@ -3,14 +3,16 @@ import useStyles from "./ReserveWorkspace.style";
 import {Button, Chip, Container, FilledInput, FormControl, Grid, InputLabel, MenuItem, Select, TextField} from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import {Autocomplete} from "@material-ui/lab";
-import {Equipment, LocationOption, ReservationFilters, ReservationFilterErrors, WorkspaceType} from "../../../types";
-import {useLocations} from "../../../hooks";
+import {Equipment, LocationOption, ReservationFilters, ReservationFilterErrors, WorkspaceType, ReservationReq, ReservationRes} from "../../../types";
+import {useLocations, useToasterCatcher, useUser} from "../../../hooks";
 import AvailableWorkspaces from "./AvailableWorkspaces/AvailableWorkspaces";
 import {DateTimePicker} from "@material-ui/pickers";
 import dayjs, {Dayjs} from "dayjs";
 import {getMaxDate} from "../../../utils";
 import Headline from "../../../components/Layout/components/Main/Headline/Headline";
 import EquipmentIcon from "../../../components/Icons/EquipmentIcon/EquipmentIcon";
+import {MessageType, useMessage} from "../../../components/Providers/MessageProvider";
+import {ReservationService} from "../../../services";
 
 const from = dayjs().set("minute", 0).set("second", 0).set("millisecond", 0).add(1, "hour");
 const to = from.add(1, "hour");
@@ -29,8 +31,12 @@ function ReserveWorkspace() {
   const {locations, locationsLoading, defaultLocation, fetchLocations} = useLocations();
   const [filters, setFilters] = useState<ReservationFilters>(defaultFilters);
   const [filterErrors, setfilterErrors] = useState<ReservationFilterErrors>(validateFilters());
-  const [workspace, setWorkspace] = useState<string>("");
+  const [workspaceId, setWorkspaceId] = useState<string>("");
 
+  const {pushMessage} = useMessage();
+  const {user} = useUser();
+  const {catchAndTossError} = useToasterCatcher();
+  
   useEffect(() => {
     fetchLocations({onlyWithWorkspaces: true});
   }, []);
@@ -87,14 +93,26 @@ function ReserveWorkspace() {
     setFilters(filters => ({...filters, description}));
   }
 
-  const selectWorkspace = (workspaceId: string) => {
-    const newWorkspace = workspaceId === workspace ? "" : workspaceId;
-    setWorkspace(() => newWorkspace);
+  const selectWorkspace = (selected: string) => {
+    const newWorkspaceId = selected === workspaceId ? "" : selected;
+    setWorkspaceId(() => newWorkspaceId);
   }
 
-  const handleSubmit: FormEventHandler = (e: FormEvent): void => {
+  const handleSubmit: FormEventHandler = async (e: FormEvent) => {
     e.preventDefault();
-    console.log({filterErrors}, {filters});
+    if (filterErrors.errored || !workspaceId) return;
+
+    const {from, to} = filters;
+    const location = filters.location.id;
+    const requester = user.email;
+    const requestData: ReservationReq = {from, to, location, requester, workspace: workspaceId};
+
+    const addedReservation: ReservationRes = await catchAndTossError(ReservationService.add(requestData));
+    if (!addedReservation) return;
+
+    pushMessage({title: "Reservation is added", type: MessageType.SUCCESS});
+    setWorkspaceId(() => "");
+    setFilters(() => ({...filters})); // trigger workspaces list update
   }
 
   return (
@@ -173,11 +191,11 @@ function ReserveWorkspace() {
             </Grid>
           </Grid>
 
-          <AvailableWorkspaces filters={filters} errored={filterErrors.errored} selectedWS={workspace} selectWorkspace={selectWorkspace} />
+          <AvailableWorkspaces filters={filters} errored={filterErrors.errored} selectedWS={workspaceId} selectWorkspace={selectWorkspace} />
 
           <Grid container spacing={2}>
             <Grid item lg={2} md={3} sm={4} xs={6}>
-              <Button type="submit" fullWidth variant="contained" color="primary" disabled={!workspace || filterErrors.errored}>Reserve</Button>
+              <Button type="submit" fullWidth variant="contained" color="primary" disabled={!workspaceId || filterErrors.errored}>Reserve</Button>
             </Grid>
           </Grid>
         </form>
