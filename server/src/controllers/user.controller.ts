@@ -86,7 +86,7 @@ const remove = catchAsync(async (req, res, next) => {
 });
 
 const list = catchAsync(async (req, res, next) => {
-  const userDocuments = await User.find();
+  const userDocuments = await User.find({role: {$ne: UserRole.ADMIN}});
   if (!userDocuments) {
     return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Users cannot be fetched"));
   }

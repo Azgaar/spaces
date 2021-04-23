@@ -14,11 +14,11 @@ const equipmentColumn: GridColTypeDef = {
 };
 
 const columns: GridColDef[] = [
-  {field: "status", headerName: "Status", width: 160},
-  {field: "description", headerName: "Description", width: 240},
-  {field: "type", headerName: "Type", width: 200},
-  {field: "size", headerName: "Size", type: "number", width: 120},
-  {field: "equipment", headerName: "Equipment", width: 340, ...equipmentColumn}
+  {field: "status", headerName: "Status", flex: 1},
+  {field: "description", headerName: "Description", flex: 1},
+  {field: "type", headerName: "Type", flex: 1},
+  {field: "size", headerName: "Size", type: "number", flex: .5},
+  {field: "equipment", headerName: "Equipment", flex: 1.5, ...equipmentColumn}
 ];
 
 const WorkspacesList = ({loc}: {loc: LocationOption}) => {

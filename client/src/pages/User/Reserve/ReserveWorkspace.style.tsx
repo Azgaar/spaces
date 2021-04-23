@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
   form: {
     marginTop: theme.spacing(4),
     backgroundColor: "#00000020",
-    boxShadow: "0 0 40px 50px #00000020",
+    boxShadow: "0 0 30px 20px #00000020",
     "& div.MuiInputBase-root": {
       backgroundColor: "#ffffffdd"
     }

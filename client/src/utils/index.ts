@@ -6,7 +6,7 @@ const DATE_FORMAT = "ddd, MMMM D";
 
 export const gridColDateFormat: GridColTypeDef = {
   type: "dateTime",
-  width: 180,
+  flex: 1,
   valueFormatter: ({value}) => dayjs(value as Date).format("MMM D, YYYY h:mm A")
 };
 
