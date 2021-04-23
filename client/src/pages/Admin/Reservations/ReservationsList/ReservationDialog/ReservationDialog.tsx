@@ -67,7 +67,7 @@ const ReservationDialog = ({mode, reservation, close, submit}: Props) => {
         <Headline pagename={pagename} />
 
         <form className={classes.form} noValidate autoComplete="off" onSubmit={handleSubmit(submit)}>
-          <FormControl>
+          <FormControl fullWidth>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <Controller control={control} name="from" defaultValue={from} rules={{validate: ((value) => value < getValues("to"))}} render={({ref, value}) => (

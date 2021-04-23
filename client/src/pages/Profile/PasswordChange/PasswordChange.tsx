@@ -41,7 +41,7 @@ function PasswordChange() {
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <TextField variant="outlined" required fullWidth name="passwordNew" label="Password" type="password" id="passwordNew"
+            <TextField variant="outlined" required fullWidth name="passwordNew" label="New Password" type="password" id="passwordNew"
               inputRef={register(rules.password)} error={Boolean(errors.passwordNew)} helperText={errors.passwordNew?.message} />
           </Grid>
 
