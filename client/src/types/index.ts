@@ -114,6 +114,7 @@ export type ReservationReq = {
 export type ReservationRes = {
   id: string;
   location: string;
+  locationDescription: string;
   requester: string;
   from: string;
   to: string;

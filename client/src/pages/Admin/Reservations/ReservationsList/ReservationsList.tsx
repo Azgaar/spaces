@@ -29,6 +29,7 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
   const [reservations, setReservations] = useState<ReservationRes[]>([]);
   const [selection, setSelection] = useState<GridRowId[]>([]);
   const {isLoading, setLoading, catchAndTossError} = useToasterCatcher();
+  const [isEditable, setEditable] = useState<boolean>(false);
 
   const from = dayjs().set("minute", 0).set("second", 0).set("millisecond", 0).add(1, "hour");
   const to = from.add(1, "hour");
@@ -58,6 +59,12 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
   const handleSelection = ((selectionModel: GridSelectionModelChangeParams) => {
     const selection = selectionModel.selectionModel;
     setSelection(() => selection);
+
+    if (selection.length === 1) {
+      const selected = reservations.find(rs => rs.id === selection[0]);
+      const currentTime = new Date().toISOString();
+      setEditable(() => Boolean(selected && selected.from > currentTime));
+    } else setEditable(() => false);
   });
 
   const dialog = {
@@ -87,7 +94,6 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
   }
 
   const handleUpdate = async (formData: ReservationReq) => {
-    console.log({formData});
     const requestData: ReservationReq = {id: reservation.id, ...formData, location: loc.id};
     const remaining: ReservationRes[] = await catchAndTossError(ReservationService.update(requestData));
     if (!remaining) return;
@@ -114,7 +120,7 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
         autoHeight checkboxSelection loading={isLoading} onSelectionModelChange={handleSelection} />
       <Container className={classes.controls}>
         {Boolean(loc.id) && <Button variant="contained" color="primary" onClick={dialog.add}>Add</Button>}
-        {selection.length === 1 && <Button variant="contained" color="primary" className={classes.button} onClick={dialog.edit}>Edit</Button>}
+        {isEditable && <Button variant="contained" color="primary" className={classes.button} onClick={dialog.edit}>Edit</Button>}
         {selection.length > 0 && <DeletionButton onDelete={handleDeletion} title="Delete" object={selection.length > 1 ? "reservations" : "reservation"} />}
       </Container>
       {showEdit === "add" && <ReservationDialog mode="Add" reservation={reservation} submit={handleCreation} close={dialog.close} />}

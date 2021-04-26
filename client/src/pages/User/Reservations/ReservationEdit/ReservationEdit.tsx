@@ -1,52 +1,39 @@
 import React, {useEffect, useState} from "react";
-import useStyles from "./ReservationDialog.style";
+import useStyles from "./ReservationEdit.style";
 import {TextField, Button, Grid, Container, Dialog, MenuItem, FormControl} from "@material-ui/core";
+import Headline from "../../../../components/Layout/components/Main/Headline/Headline";
 import {Controller, useForm} from "react-hook-form";
-import {rules} from "../../../../../validation/reservation";
-import {ReservationReq, UserData, Workspace} from "../../../../../types";
-import {useToasterCatcher, useUser} from "../../../../../hooks";
-import {UserService, WorkspaceService} from "../../../../../services";
-import {DateTimePicker} from "@material-ui/pickers";
 import {Dayjs} from "dayjs";
-import {getMaxDate} from "../../../../../utils";
-import Headline from "../../../../../components/Layout/components/Main/Headline/Headline";
+import {ReservationReq, Workspace} from "../../../../types";
+import {WorkspaceService} from "../../../../services";
+import {DateTimePicker} from "@material-ui/pickers";
+import {useToasterCatcher} from "../../../../hooks";
+import {getMaxDate} from "../../../../utils";
+import {rules} from "../../../../validation/reservation";
 
 type Props = {
-  mode: "Add" | "Edit";
   reservation: ReservationReq;
   close: () => void;
   submit: (formData: ReservationReq) => void;
 }
 
-const ReservationDialog = ({mode, reservation, close, submit}: Props) => {
-  const {from, to, workspace, location, requester} = reservation;
+const ReservationEdit = ({reservation, close, submit}: Props) => {
+  const {id, from, to, workspace, location} = reservation;
   const [slot, setSlot] = useState<{from: string, to: string}>({from, to});
   const classes = useStyles();
   const {errors, setValue, getValues, control, handleSubmit} = useForm<ReservationReq>();
   const [freeWorkspaces, setFreeWorkspaces] = useState<Workspace[]>([]);
-  const {user} = useUser();
-  const [users, setUsers] = useState<string[]>([requester]);
   const {isLoading, catchAndTossError} = useToasterCatcher();
-  const pagename: string = `${mode} Reservation`;
 
   useEffect(() => {
     async function fetchWorkspaces() {
       const {from, to} = slot;
-      const excludeReservation = reservation.id;
-      const freeWorkspaces: Workspace[] = await catchAndTossError(WorkspaceService.find({location, from, to, excludeReservation}));
+      const freeWorkspaces: Workspace[] = await catchAndTossError(WorkspaceService.find({location, from, to, excludeReservation: id}));
       if (freeWorkspaces) setFreeWorkspaces(() => freeWorkspaces);
       if (!freeWorkspaces || !freeWorkspaces.length) setValue("workspace", "");
     };
     if (!errors.from && !errors.to) fetchWorkspaces();
   }, [slot]);
-
-  useEffect(() => {
-    async function fetchUsers() {
-      const users: UserData[] = await catchAndTossError(UserService.list());
-      if (users) setUsers(() => users.map(user => user.email));
-    };
-    fetchUsers();
-  }, []);
 
   const getLabel = (ws: Workspace) => {
     let label = `${ws.description}: ${ws.type} [${ws.size}]`;
@@ -65,7 +52,7 @@ const ReservationDialog = ({mode, reservation, close, submit}: Props) => {
   return (
     <Dialog open onClose={close} aria-labelledby="form-dialog-title">
       <Container maxWidth="xs" className={classes.paper}>
-        <Headline pagename={pagename} />
+        <Headline pagename="Edit Reservation" />
 
         <form className={classes.form} noValidate autoComplete="off" onSubmit={handleSubmit(submit)}>
           <FormControl fullWidth>
@@ -91,16 +78,6 @@ const ReservationDialog = ({mode, reservation, close, submit}: Props) => {
                   </TextField>
                 } />
               </Grid>
-
-              <Grid item xs={12} sm={12}>
-                <Controller control={control} name="requester" defaultValue={requester} rules={rules.requester} as={
-                  <TextField select variant="outlined" required fullWidth id="requester" label="Request for" name="requester"
-                  error={Boolean(errors.requester)} helperText={errors.requester?.message} >
-                    <MenuItem key={user.email} value={user.email}>{user.email}</MenuItem>
-                    {users.map(user => <MenuItem key={user} value={user}>{user}</MenuItem>)}
-                  </TextField>
-                } />
-              </Grid>
             </Grid>
 
             <Grid container spacing={2}>
@@ -118,4 +95,4 @@ const ReservationDialog = ({mode, reservation, close, submit}: Props) => {
   );
 }
 
-export default ReservationDialog;
+export default ReservationEdit;

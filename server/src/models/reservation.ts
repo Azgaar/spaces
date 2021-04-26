@@ -18,8 +18,8 @@ const getWorkspaceAttributes = (workspace: ReservationJSON["workspace"]) => {
   return {workspace: id, description, type, size};
 }
 
-const getLocationDescription = (location: ReservationJSON["location"]) => {
-  return location.description;
+const getLocationAttributes = (location: ReservationJSON["location"]) => {
+  return {locationDescription: location.description, location: location.id};
 }
 
 const getStatus = (from: Date, to: Date): ReservationStatus => {
@@ -33,9 +33,9 @@ reservationSchema.set("toJSON", {
   transform: (doc: ReservationDocument, ret: ReservationJSON) => {
     const {_id, location, workspace, requester, from, to} = ret;
     const workspaceAttributes = getWorkspaceAttributes(workspace);
-    const locationDescription = getLocationDescription(location);
+    const locationAttributes = getLocationAttributes(location);
     const status = getStatus(from, to);
-    const reservation = {id: _id, requester, from, to, status, ...workspaceAttributes, location: locationDescription};
+    const reservation = {id: _id, requester, from, to, status, ...workspaceAttributes, ...locationAttributes};
     return reservation;
   }
 });

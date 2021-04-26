@@ -4,7 +4,7 @@ import {Typography, Card, CardContent, Container, CardActions, Grid, CardHeader,
 import Spinner from "../../../../components/Spinner/Spinner";
 import WorkspaceTypeIcon from "../../../../components/Icons/WorkspaceTypeIcon/WorkspaceTypeIcon";
 import {MessageType, useMessage} from "../../../../components/Providers/MessageProvider";
-import {ReservationRes} from "../../../../types";
+import {ReservationReq, ReservationRes, ReservationStatus} from "../../../../types";
 import {useToasterCatcher, useUser} from "../../../../hooks";
 import {ReservationService} from "../../../../services";
 import {getDate, getTime} from "../../../../utils";
@@ -15,6 +15,7 @@ import {Skeleton} from "@material-ui/lab";
 import PostAddIcon from "@material-ui/icons/PostAdd";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import {useHistory} from "react-router-dom";
+import ReservationEdit from "../ReservationEdit/ReservationEdit";
 
 const ReservationsList = ({active}: {active: boolean}) => {
   const classes = useStyles();
@@ -23,6 +24,7 @@ const ReservationsList = ({active}: {active: boolean}) => {
   const [reservations, setReservations] = useState<ReservationRes[]>([]);
   const {isLoading, catchAndTossError} = useToasterCatcher();
   const history = useHistory();
+  const [editReservation, setEditReservation] = useState<ReservationReq | null>(null);
 
   useEffect(() => {
     async function fetchUserReservations() {
@@ -38,6 +40,29 @@ const ReservationsList = ({active}: {active: boolean}) => {
     if (!remaining) return;
     setReservations(() => remaining);
     pushMessage({title: "Reservation is removed", type: MessageType.SUCCESS});
+  }
+
+  const handleEdit = (reservation: ReservationReq) => {
+    console.log(reservation);
+    setEditReservation(() => reservation);
+  }
+
+  const handleEditClose = () => {
+    setEditReservation(() => null);
+  }
+
+  const handleUpdate = async (formData: ReservationReq) => {
+    console.log({formData});
+    const requester = user.email;
+    const {id, location} = editReservation as ReservationReq;
+    const requestData: ReservationReq = {...formData, id, location, requester};
+    await catchAndTossError(ReservationService.update(requestData));
+
+    const reservations: ReservationRes[] = await catchAndTossError(ReservationService.requestList(user.email, active));
+    if (reservations) setReservations(() => reservations);
+
+    handleEditClose();
+    pushMessage({title: "Reservation is updated", type: MessageType.SUCCESS});
   }
 
   const openMap = (address: string) => {
@@ -91,9 +116,9 @@ const ReservationsList = ({active}: {active: boolean}) => {
                   <WorkspaceTypeIcon value={reservation.type} />
                 </Badge>}
                 title={`${reservation.type} ${reservation.description}`}
-                subheader={reservation.location}
+                subheader={reservation.locationDescription}
                 action={(
-                  <IconButton aria-label="locate" onClick={() => openMap(reservation.location)}>
+                  <IconButton aria-label="locate" onClick={() => openMap(reservation.locationDescription)}>
                     <PlaceIcon fontSize="small" />
                   </IconButton>)}/>
               <Divider variant="middle" />
@@ -108,12 +133,17 @@ const ReservationsList = ({active}: {active: boolean}) => {
               </CardContent>
 
               <CardActions>
-                {active && <DeletionButton onDelete={() => handleDeletion(reservation.id)} title="Cancel" cancel="Back" confirm="Confirm" showText={false} />}
+                {active && <Box mx={1}>
+                  {reservation.status === ReservationStatus.FUTURE && <Button variant="contained" color="primary" onClick={() => handleEdit(reservation)}>Edit</Button>}
+                  <DeletionButton onDelete={() => handleDeletion(reservation.id)} title="Cancel" cancel="Back" confirm="Confirm" showText={false} />
+                </Box>}
               </CardActions>
             </Card>
           </Grid>
         ))}
       </Grid>
+
+      {editReservation && <ReservationEdit reservation={editReservation} submit={handleUpdate} close={handleEditClose} />}
     </Container>
   );
 };
