@@ -4,6 +4,7 @@ import {AxiosPromise} from "axios";
 import {LocationOption, RootState, UserRole} from "../types";
 import {MessageType, useMessage} from "../components/Providers/MessageProvider";
 import {LocationService} from "../services";
+import {getStored} from "../utils";
 
 type UserData = {
   user: RootState["user"];
@@ -54,7 +55,7 @@ export const useToasterCatcher = () => {
 
 export const useLocations = () => {
   const [locations, setLocations] = useState<LocationOption[]>([]);
-  const [defaultLocation, setDefaultLocation] = useState<LocationOption>({id: "", description: ""});
+  const [location, setLocation] = useState<LocationOption>({id: "", description: ""});
   const {isLoading, catchAndTossError} = useToasterCatcher();
 
   const fetchLocations = async ({onlyWithWorkspaces}: {onlyWithWorkspaces: boolean}) => {
@@ -64,13 +65,12 @@ export const useLocations = () => {
   }
 
   const checkStoredLocation = (fetchedLocations: LocationOption[]) => {
-    const storedLocation = localStorage.getItem("location");
+    const storedLocation = getStored("location") as LocationOption;
     if (!storedLocation) return;
 
-    const parsedLocation = JSON.parse(storedLocation);
-    const storedLocationFetched = fetchedLocations.find(loc => loc.id === parsedLocation.id);
-    storedLocationFetched ? setDefaultLocation(() => parsedLocation) : localStorage.removeItem("location");
+    const storedFetchedLocation = fetchedLocations.find(loc => loc.id === storedLocation.id);
+    storedFetchedLocation && setLocation(() => storedLocation);
   }
 
-  return {locations, setLocations, locationsLoading: isLoading, defaultLocation, fetchLocations};
+  return {locations, setLocations, locationsLoading: isLoading, location, setLocation, fetchLocations};
 };

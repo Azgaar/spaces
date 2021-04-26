@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import useStyles from "./Reservations.style";
 import {Container, Grid, TextField, ButtonGroup, Button, Box} from "@material-ui/core";
 import {Link} from "react-router-dom";
@@ -12,16 +12,11 @@ import Headline from "../../../components/Layout/components/Main/Headline/Headli
 function Reservations() {
   const classes = useStyles();
   const blankLocation: LocationOption = {id: "", description: ""};
-  const [location, setLocation] = useState(blankLocation);
-  const {locations, locationsLoading, defaultLocation, fetchLocations} = useLocations();
+  const {locations, locationsLoading, location, setLocation, fetchLocations} = useLocations();
 
   useEffect(() => {
     fetchLocations({onlyWithWorkspaces: true});
   }, []);
-
-  useEffect(() => {
-    setLocation(() => defaultLocation)
-  }, [defaultLocation]);
 
   const handleLocationChange = (value: LocationOption | string | null) => {
     if (!value) setLocation(() => blankLocation);

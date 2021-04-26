@@ -15,18 +15,13 @@ function Workspaces() {
   const classes = useStyles();
   const {pushMessage} = useMessage();
   const blankLocation: LocationOption = {id: "", description: ""};
-  const [location, setLocation] = useState<LocationOption>(blankLocation);
-  const {locations, setLocations, locationsLoading, defaultLocation, fetchLocations} = useLocations();
+  const {locations, setLocations, locationsLoading, location, setLocation, fetchLocations} = useLocations();
   const [locationInput, setLocationInput] = useState<string>("");
   const {catchAndTossError} = useToasterCatcher();
 
   useEffect(() => {
     fetchLocations({onlyWithWorkspaces: false});
   }, []);
-
-  useEffect(() => {
-    setLocation(() => defaultLocation)
-  }, [defaultLocation]);
 
   const handleLocationChange = (value: LocationOption | string | null) => {
     if (!value) setLocation(() => blankLocation);

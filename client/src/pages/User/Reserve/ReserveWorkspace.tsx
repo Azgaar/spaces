@@ -8,16 +8,17 @@ import {useLocations, useToasterCatcher, useUser} from "../../../hooks";
 import AvailableWorkspaces from "./AvailableWorkspaces/AvailableWorkspaces";
 import {DateTimePicker} from "@material-ui/pickers";
 import dayjs, {Dayjs} from "dayjs";
-import {getMaxDate} from "../../../utils";
+import {getMaxDate, getStored} from "../../../utils";
 import Headline from "../../../components/Layout/components/Main/Headline/Headline";
 import EquipmentIcon from "../../../components/Icons/EquipmentIcon/EquipmentIcon";
 import {MessageType, useMessage} from "../../../components/Providers/MessageProvider";
 import {ReservationService} from "../../../services";
 
+const blankLocation: LocationOption = {id: "", description: ""};
 const from = dayjs().set("minute", 0).set("second", 0).set("millisecond", 0).add(1, "hour");
 const to = from.add(1, "hour");
 const defaultFilters: ReservationFilters = {
-  location: {id: "", description: ""},
+  location: getStored("location") as LocationOption || blankLocation,
   type: "Any",
   from: from.toISOString(),
   to: to.toISOString(),
@@ -28,7 +29,7 @@ const defaultFilters: ReservationFilters = {
 
 function ReserveWorkspace() {
   const classes = useStyles();
-  const {locations, locationsLoading, defaultLocation, fetchLocations} = useLocations();
+  const {locations, locationsLoading, fetchLocations} = useLocations();
   const [filters, setFilters] = useState<ReservationFilters>(defaultFilters);
   const [filterErrors, setfilterErrors] = useState<ReservationFilterErrors>(validateFilters());
   const [workspaceId, setWorkspaceId] = useState<string>("");
@@ -40,10 +41,6 @@ function ReserveWorkspace() {
   useEffect(() => {
     fetchLocations({onlyWithWorkspaces: true});
   }, []);
-
-  useEffect(() => {
-    setFilters(filters => ({...filters, location: defaultLocation}));
-  }, [defaultLocation]);
 
   useEffect(() => {
     const errors = validateFilters();
@@ -62,7 +59,7 @@ function ReserveWorkspace() {
   }
 
   const changeLocation = (location: LocationOption | string | null) => {
-    if (!location) setFilters(filters => ({...filters, location: {id: "", description: ""}}));
+    if (!location) setFilters(filters => ({...filters, location: blankLocation}));
     if (!location || typeof location === "string") return;
 
     setFilters(filters => ({...filters, location}));
