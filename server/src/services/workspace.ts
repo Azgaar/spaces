@@ -46,7 +46,6 @@ const find = async (criteria: WorkspaceSearchCriteria) => {
   if (reservedWorkspaces.length) availableQuery._id = {$nin: reservedWorkspaces};
   const workspaces: WorkspaceDocument[] = await Workspace.find(availableQuery).limit(config.workspaces.maxNumberToReturn);
 
-  console.log({criteria}, {overlappingQuery}, {reservedWorkspaces}, {availableQuery}, {workspaces: workspaces.length});
   return workspaces;
 };
 

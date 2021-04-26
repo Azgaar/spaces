@@ -43,7 +43,6 @@ const ReservationsList = ({active}: {active: boolean}) => {
   }
 
   const handleEdit = (reservation: ReservationReq) => {
-    console.log(reservation);
     setEditReservation(() => reservation);
   }
 
@@ -52,7 +51,6 @@ const ReservationsList = ({active}: {active: boolean}) => {
   }
 
   const handleUpdate = async (formData: ReservationReq) => {
-    console.log({formData});
     const requester = user.email;
     const {id, location} = editReservation as ReservationReq;
     const requestData: ReservationReq = {...formData, id, location, requester};
