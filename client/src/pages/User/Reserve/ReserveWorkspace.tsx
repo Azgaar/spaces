@@ -110,7 +110,7 @@ function ReserveWorkspace() {
     const addedReservation: ReservationRes = await catchAndTossError(ReservationService.add(requestData));
     if (!addedReservation) return;
 
-    pushMessage({title: "Reservation is added", type: MessageType.SUCCESS});
+    pushMessage({title: "Workspace is reserved", type: MessageType.SUCCESS});
     setWorkspaceId(() => "");
     setFilters(() => ({...filters})); // trigger workspaces list update
   }
@@ -193,7 +193,7 @@ function ReserveWorkspace() {
 
           <AvailableWorkspaces filters={filters} errored={filterErrors.errored} selectedWS={workspaceId} selectWorkspace={selectWorkspace} />
 
-          <Grid container spacing={2}>
+          <Grid container spacing={2} className={classes.controls}>
             <Grid item lg={2} md={3} sm={4} xs={6}>
               <Button type="submit" fullWidth variant="contained" color="primary" disabled={!workspaceId || filterErrors.errored}>Reserve</Button>
             </Grid>

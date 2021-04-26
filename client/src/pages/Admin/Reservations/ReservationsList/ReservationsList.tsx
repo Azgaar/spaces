@@ -83,7 +83,7 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
 
     dialog.close();
     setReservations(reservations => [addedReservation, ...reservations]);
-    pushMessage({title: "Reservation is added", type: MessageType.SUCCESS});
+    pushMessage({title: "Workspace is reserved", type: MessageType.SUCCESS});
   }
 
   const handleUpdate = async (formData: ReservationReq) => {

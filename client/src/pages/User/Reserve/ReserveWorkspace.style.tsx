@@ -31,6 +31,9 @@ const useStyles = makeStyles(theme => ({
     "& span.MuiChip-label": {
       padding: theme.spacing(0, 1, 0, .5)
     }
+  },
+  controls: {
+    marginTop: theme.spacing(1)
   }
 }));
 
