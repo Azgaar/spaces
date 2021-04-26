@@ -13,6 +13,7 @@ import Headline from "../../../components/Layout/components/Main/Headline/Headli
 import EquipmentIcon from "../../../components/Icons/EquipmentIcon/EquipmentIcon";
 import {MessageType, useMessage} from "../../../components/Providers/MessageProvider";
 import {ReservationService} from "../../../services";
+import AddServices from "./AddServices/AddServices";
 
 const blankLocation: LocationOption = {id: "", description: ""};
 const from = dayjs().set("minute", 0).set("second", 0).set("millisecond", 0).add(1, "hour");
@@ -33,11 +34,11 @@ function ReserveWorkspace() {
   const [filters, setFilters] = useState<ReservationFilters>(defaultFilters);
   const [filterErrors, setfilterErrors] = useState<ReservationFilterErrors>(validateFilters());
   const [workspaceId, setWorkspaceId] = useState<string>("");
-
+  const [services, setServices] = useState<Services>({isOpen: false, list: []});
   const {pushMessage} = useMessage();
   const {user} = useUser();
   const {catchAndTossError} = useToasterCatcher();
-  
+
   useEffect(() => {
     fetchLocations({onlyWithWorkspaces: true});
   }, []);
@@ -111,6 +112,16 @@ function ReserveWorkspace() {
     setWorkspaceId(() => "");
     setFilters(() => ({...filters})); // trigger workspaces list update
   }
+
+  const showServices = () => setServices(services => ({...services, isOpen: true}));
+  const closeServices = () => setServices(services => ({...services, isOpen: false}));
+  const addService = (service: string) => {
+    if (services.list.find(item => item === service)) return;
+    setServices(services => ({...services, list: [...services.list, service]}));
+  }
+  const deleteService = (service: string) => {
+    setServices(services => ({...services, list: services.list.filter(item => item !== service)}))
+  };
 
   return (
     <Container maxWidth="lg" className={classes.container}>
@@ -191,14 +202,24 @@ function ReserveWorkspace() {
           <AvailableWorkspaces filters={filters} errored={filterErrors.errored} selectedWS={workspaceId} selectWorkspace={selectWorkspace} />
 
           <Grid container spacing={2} className={classes.controls}>
-            <Grid item lg={2} md={3} sm={4} xs={6}>
+            <Grid item lg={2} md={3} sm={4} xs={12}>
               <Button type="submit" fullWidth variant="contained" color="primary" disabled={!workspaceId || filterErrors.errored}>Reserve</Button>
+            </Grid>
+            <Grid item lg={2} md={3} sm={4} xs={12}>
+              <Button fullWidth variant="contained" color="secondary" onClick={showServices}>Add Services</Button>
             </Grid>
           </Grid>
         </form>
       </Container>
+
+      <AddServices open={services.isOpen} services={services.list} onClose={closeServices} onAdd={addService} onDelete={deleteService}/>
     </Container>
   );
+}
+
+type Services = {
+  isOpen: boolean;
+  list: string[];
 }
 
 export default ReserveWorkspace;
