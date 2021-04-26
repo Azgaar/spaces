@@ -8,6 +8,9 @@ const useStyles = makeStyles(theme => ({
   title: {
     fontSize: theme.spacing(0.8)
   },
+  card: {
+    padding: theme.spacing(0, 0, 1, 0)
+  },
   cardHeader: {
     "& .MuiCardHeader-subheader": {
       overflow: "hidden",

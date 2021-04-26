@@ -9,13 +9,13 @@ import {useToasterCatcher, useUser} from "../../../../hooks";
 import {ReservationService} from "../../../../services";
 import {getDate, getTime} from "../../../../utils";
 import PlaceIcon from "@material-ui/icons/Place";
-import DeletionButton from "../../../../components/Controls/DeletionButton/DeletionButton";
 import {MAP_SEARCH_BASE_URL} from "../../../../config";
 import {Skeleton} from "@material-ui/lab";
 import PostAddIcon from "@material-ui/icons/PostAdd";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import {useHistory} from "react-router-dom";
 import ReservationEdit from "../ReservationEdit/ReservationEdit";
+import ConfirmationDialog from "../../../../components/Controls/ConfirmationDialog/ConfirmationDialog";
 
 const ReservationsList = ({active}: {active: boolean}) => {
   const classes = useStyles();
@@ -24,7 +24,7 @@ const ReservationsList = ({active}: {active: boolean}) => {
   const [reservations, setReservations] = useState<ReservationRes[]>([]);
   const {isLoading, catchAndTossError} = useToasterCatcher();
   const history = useHistory();
-  const [editReservation, setEditReservation] = useState<ReservationReq | null>(null);
+  const [dialog, setDialog] = useState<Dialog>({action: "none", reservation: reservations[0]});
 
   useEffect(() => {
     async function fetchUserReservations() {
@@ -35,32 +35,30 @@ const ReservationsList = ({active}: {active: boolean}) => {
     fetchUserReservations();
   }, []);
 
-  const handleDeletion = async (id: string) => {
-    const remaining: ReservationRes[] = await catchAndTossError(ReservationService.requestRemoval(user.email, id));
+  const closeDialog = () => {
+    setDialog(() => ({...dialog, action: "none"}));
+  } 
+
+  const handleDeletion = async () => {
+    const remaining: ReservationRes[] = await catchAndTossError(ReservationService.requestRemoval(user.email, dialog.reservation.id));
     if (!remaining) return;
     setReservations(() => remaining);
+
     pushMessage({title: "Reservation is removed", type: MessageType.SUCCESS});
-  }
-
-  const handleEdit = (reservation: ReservationReq) => {
-    setEditReservation(() => reservation);
-  }
-
-  const handleEditClose = () => {
-    setEditReservation(() => null);
+    closeDialog();
   }
 
   const handleUpdate = async (formData: ReservationReq) => {
     const requester = user.email;
-    const {id, location} = editReservation as ReservationReq;
+    const {id, location} = dialog.reservation;
     const requestData: ReservationReq = {...formData, id, location, requester};
     await catchAndTossError(ReservationService.update(requestData));
 
     const reservations: ReservationRes[] = await catchAndTossError(ReservationService.requestList(user.email, active));
     if (reservations) setReservations(() => reservations);
 
-    handleEditClose();
     pushMessage({title: "Reservation is updated", type: MessageType.SUCCESS});
+    closeDialog();
   }
 
   const openMap = (address: string) => {
@@ -108,7 +106,7 @@ const ReservationsList = ({active}: {active: boolean}) => {
 
         {reservations.map(reservation => (
           <Grid key={reservation.id} item lg={3} md={4} sm={6} xs={12} >
-            <Card variant="outlined">
+            <Card variant="outlined" className={classes.card}>
               <CardHeader className={classes.cardHeader} avatar={
                 <Badge badgeContent={reservation.size > 1 && reservation.size}>
                   <WorkspaceTypeIcon value={reservation.type} />
@@ -131,19 +129,25 @@ const ReservationsList = ({active}: {active: boolean}) => {
               </CardContent>
 
               <CardActions>
-                {active && <Box mx={1}>
-                  {reservation.status === ReservationStatus.FUTURE && <Button variant="contained" color="primary" onClick={() => handleEdit(reservation)}>Edit</Button>}
-                  <DeletionButton onDelete={() => handleDeletion(reservation.id)} title="Cancel" cancel="Back" confirm="Confirm" showText={false} />
-                </Box>}
+                {active && <>
+                  {reservation.status === ReservationStatus.FUTURE && <Button color="primary" onClick={() => setDialog(() => ({action: "edit", reservation}))}>Edit</Button>}
+                  <Button color="primary" onClick={() => setDialog(() => ({action: "cancel", reservation}))}>Cancel</Button>
+                </>}
               </CardActions>
             </Card>
           </Grid>
         ))}
       </Grid>
 
-      {editReservation && <ReservationEdit reservation={editReservation} submit={handleUpdate} close={handleEditClose} />}
+      {dialog.action === "edit" && <ReservationEdit reservation={dialog.reservation} submit={handleUpdate} close={closeDialog} />}
+      <ConfirmationDialog open={dialog.action === "cancel"} onConfirm={handleDeletion} onClose={closeDialog} />
     </Container>
   );
 };
+
+type Dialog = {
+  action: "none" | "edit" | "cancel";
+  reservation: ReservationRes;
+}
 
 export default ReservationsList;
