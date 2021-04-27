@@ -54,6 +54,26 @@ export interface ReservationDocument extends Document {
   to: Date;
 }
 
+export interface ServiceDocument extends Document {
+  requester: string;
+  description: string;
+  status: ServiceRequestStatus;
+}
+
+export enum ServiceRequestStatus {
+  PENDING = "Pending",
+  FULFILLED = "Fulfilled",
+  REJECTED = "Rejected"
+}
+
+export type ServiceData = {
+  reservation: string;
+  description: string;
+  requester: string;
+  status: ServiceRequestStatus;
+  id?: string;
+}
+
 export type LocationData = {
   description: string;
   id?: string;
