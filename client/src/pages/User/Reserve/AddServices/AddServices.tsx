@@ -3,7 +3,7 @@ import useStyles from "./AddServices.style";
 import {Container, FormControl, Dialog, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, TextField, Button} from "@material-ui/core";
 import Headline from "../../../../components/Layout/components/Main/Headline/Headline";
 import {Autocomplete} from "@material-ui/lab";
-import DeleteIcon from '@material-ui/icons/Delete';
+import DeleteIcon from "@material-ui/icons/Delete";
 
 const defaultServiceOptions: string[] = ["Clean workspace", "Bring projector", "Bring speakerphone", "Bring telephone",
   "Bring adapter", "Bring headset", "Bring additional chair", "Orginize coffee break"];

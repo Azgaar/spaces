@@ -123,6 +123,7 @@ export type ReservationRes = {
   type: WorkspaceType;
   size: number;
   status: ReservationStatus;
+  requests: ServiceRes[];
 };
 
 export enum ReservationStatus {
@@ -147,4 +148,17 @@ export type ReservationFilterErrors = {
   to: boolean;
   size: boolean;
   errored?: boolean;
+}
+
+export type ServiceRes = {
+  id: string;
+  description: string;
+  status: ServiceRequestStatus;
+  requester: string;
+}
+
+export enum ServiceRequestStatus {
+  PENDING = "Pending",
+  FULFILLED = "Fulfilled",
+  REJECTED = "Rejected"
 }

@@ -16,6 +16,7 @@ import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import {useHistory} from "react-router-dom";
 import ReservationEdit from "../ReservationEdit/ReservationEdit";
 import ConfirmationDialog from "../../../../components/Controls/ConfirmationDialog/ConfirmationDialog";
+import ServiceRequestList from "./ServiceRequestList/ServiceRequestList";
 
 const ReservationsList = ({active}: {active: boolean}) => {
   const classes = useStyles();
@@ -127,7 +128,7 @@ const ReservationsList = ({active}: {active: boolean}) => {
                   {getTime(reservation.from, reservation.to)}
                 </Typography>
 
-                
+                {active && reservation.requests.length && <ServiceRequestList requests={reservation.requests} />}
               </CardContent>
 
               <CardActions>

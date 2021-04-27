@@ -3,7 +3,7 @@ import useStyles from "./ReserveWorkspace.style";
 import {Button, Chip, Container, FilledInput, FormControl, Grid, InputLabel, MenuItem, Select, TextField} from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import {Autocomplete} from "@material-ui/lab";
-import {Equipment, LocationOption, ReservationFilters, ReservationFilterErrors, WorkspaceType, ReservationReq, ReservationRes} from "../../../types";
+import {Equipment, LocationOption, ReservationFilters, ReservationFilterErrors, WorkspaceType, ReservationReq, ReservationRes, ServiceRes} from "../../../types";
 import {useLocations, useToasterCatcher, useUser} from "../../../hooks";
 import AvailableWorkspaces from "./AvailableWorkspaces/AvailableWorkspaces";
 import {DateTimePicker} from "@material-ui/pickers";
@@ -112,7 +112,7 @@ function ReserveWorkspace() {
       return;
     }
 
-    const addedServices = await catchAndTossError(RequestService.add(addedReservation.id, user.email, services.list));
+    const addedServices: ServiceRes[] = await catchAndTossError(RequestService.add(addedReservation.id, user.email, services.list));
     if (addedServices) pushMessage({title: "Workspace is reserved, services are requested", type: MessageType.SUCCESS});
     else pushMessage({title: "Workspace is reserved, but services request is failed", type: MessageType.ERROR});
   }
