@@ -100,17 +100,18 @@ function ReserveWorkspace() {
     e.preventDefault();
     if (filterErrors.errored || !workspaceId) return;
 
-    const {from, to} = filters;
-    const location = filters.location.id;
-    const requester = user.email;
-    const requestData: ReservationReq = {from, to, location, requester, workspace: workspaceId};
-
+    const requestData: ReservationReq = {from: filters.from, to: filters.to, location: filters.location.id, requester: user.email, workspace: workspaceId};
     const addedReservation: ReservationRes = await catchAndTossError(ReservationService.add(requestData));
     if (!addedReservation) return;
 
     pushMessage({title: "Workspace is reserved", type: MessageType.SUCCESS});
     setWorkspaceId(() => "");
     setFilters(() => ({...filters})); // trigger workspaces list update
+
+    if (!services.list.length) return;
+    const addedRequests = await catchAndTossError(ReservationService.requestServices(addedReservation.id, services.list));
+    if (addedRequests) pushMessage({title: "Workspace is reserved, services are requested", type: MessageType.SUCCESS});
+    else pushMessage({title: "Workspace is reserved, but services request is failed", type: MessageType.ERROR});
   }
 
   const showServices = () => setServices(services => ({...services, isOpen: true}));
@@ -206,7 +207,9 @@ function ReserveWorkspace() {
               <Button type="submit" fullWidth variant="contained" color="primary" disabled={!workspaceId || filterErrors.errored}>Reserve</Button>
             </Grid>
             <Grid item lg={2} md={3} sm={4} xs={12}>
-              <Button fullWidth variant="contained" color="secondary" onClick={showServices}>Add Services</Button>
+              <Button fullWidth variant="contained" color="secondary" onClick={showServices}>
+                {services.list.length ? `Services: ${services.list.length}` : "Add Services"}
+              </Button>
             </Grid>
           </Grid>
         </form>
