@@ -3,7 +3,11 @@ import {ReservationDocument, ReservationData} from "../types";
 import logger from "../utils/logger";
 
 const list = async (location: string) => {
-  const reservations: ReservationDocument[] = await Reservation.find({location}).populate("workspace");
+  const reservations: ReservationDocument[] = await Reservation
+    .find({location})
+    .populate("workspace")
+    .populate("location")
+    .populate("requests");
   return reservations;
 };
 
@@ -43,7 +47,8 @@ const requestList = async (email: string, {active}: {active: boolean}) => {
   const reservations: ReservationDocument[] = await Reservation
     .find({requester: email, to: toQuery})
     .populate("workspace")
-    .populate("location");
+    .populate("location")
+    .populate("requests");
   return reservations;
 };
 

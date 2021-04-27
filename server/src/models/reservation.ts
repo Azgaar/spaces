@@ -1,5 +1,6 @@
 import {Schema, model} from "mongoose";
 import {ReservationDocument, ReservationStatus, WorkspaceStatus, WorkspaceType, Equipment} from "../types";
+import {Service} from "./service";
 
 const required = true;
 const reservationSchema = new Schema(
@@ -8,7 +9,8 @@ const reservationSchema = new Schema(
     workspace: {type: Schema.Types.ObjectId, ref: "Workspace", required},
     requester: {type: String, required},
     from: {type: Date, required},
-    to: {type: Date, required}
+    to: {type: Date, required},
+    requests: {type: [{type: Schema.Types.ObjectId, ref: "Service"}], required: false}
   },
   {timestamps: true, versionKey: false}
 );
@@ -31,11 +33,11 @@ const getStatus = (from: Date, to: Date): ReservationStatus => {
 
 reservationSchema.set("toJSON", {
   transform: (doc: ReservationDocument, ret: ReservationJSON) => {
-    const {_id, location, workspace, requester, from, to} = ret;
+    const {_id, location, workspace, requester, from, to, requests} = ret;
     const workspaceAttributes = getWorkspaceAttributes(workspace);
     const locationAttributes = getLocationAttributes(location);
     const status = getStatus(from, to);
-    const reservation = {id: _id, requester, from, to, status, ...workspaceAttributes, ...locationAttributes};
+    const reservation = {id: _id, requester, from, to, status, ...workspaceAttributes, ...locationAttributes, requests};
     return reservation;
   }
 });
@@ -58,6 +60,7 @@ interface ReservationJSON {
   requester: string;
   from: Date;
   to: Date;
+  requests: string[];
 }
 
 export const Reservation = model<ReservationDocument>("Reservation", reservationSchema);
