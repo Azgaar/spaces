@@ -2,16 +2,18 @@ import httpStatus from "http-status";
 import catchAsync from "../utils/catchAsync";
 import ApiError from "../utils/apiError";
 import service from "../services/service";
+import logger from "../utils/logger";
 
 const list = catchAsync(async (req, res, next) => {
 
 });
 
 const add = catchAsync(async (req, res, next) => {
-  const addedServices = await service.add(req.body);
-  if (!addedServices) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot request services"));
+  const {services, reservation} = await service.add(req.body);
+  if (!services || !reservation) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot request services"));
 
-  res.status(httpStatus.CREATED).send(addedServices);
+  logger.info(`[Service] Service requests ${services.map(s => s.id).join(", ")} are created and added to reservation ${reservation.id}`);
+  res.status(httpStatus.CREATED).send(services);
 });
 
 const process = catchAsync(async (req, res, next) => {

@@ -126,6 +126,8 @@ const ReservationsList = ({active}: {active: boolean}) => {
                 <Typography variant="h6">
                   {getTime(reservation.from, reservation.to)}
                 </Typography>
+
+                
               </CardContent>
 
               <CardActions>

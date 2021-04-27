@@ -1,5 +1,6 @@
+import {Reservation} from "../models/reservation";
 import {Service} from "../models/service";
-import {ServiceData, ServiceDocument, ServiceRequestStatus} from "../types";
+import {ReservationDocument, ServiceData, ServiceDocument, ServiceRequestStatus} from "../types";
 import logger from "../utils/logger";
 
 const list = async (location: string) => {
@@ -15,9 +16,9 @@ type RequestServicesReq = {
 
 const add = async ({reservationId, requester, servicesList}: RequestServicesReq) => {
   const servicesData = servicesList.map(description => ({reservation: reservationId, requester, description, status: ServiceRequestStatus.PENDING}));
-  const services: ServiceDocument[] = await Service.insertMany(servicesData);
-  logger.info(`[Service] Service requests ${services.map(s => s.id).join(", ")} are created`);
-  return services;
+  const services: ServiceDocument[] | null = await Service.insertMany(servicesData);
+  const reservation: ReservationDocument | null = await Reservation.findOneAndUpdate({_id: reservationId}, {$push: {requests: {$each: services.map(s => s.id)}}}, {new: true, useFindAndModify: false});
+  return {services, reservation};
 };
 
 const update = async (reservationData: ServiceData) => {

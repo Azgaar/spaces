@@ -40,7 +40,10 @@ const remove = async (ids: Array<string>) => {
 const requestList = async (email: string, {active}: {active: boolean}) => {
   const timeNow = new Date();
   const toQuery = active ? {$gt: timeNow} : {$lt: timeNow};
-  const reservations: ReservationDocument[] = await Reservation.find({requester: email, to: toQuery}).populate("workspace").populate("location");
+  const reservations: ReservationDocument[] = await Reservation
+    .find({requester: email, to: toQuery})
+    .populate("workspace")
+    .populate("location");
   return reservations;
 };
 

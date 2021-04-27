@@ -104,13 +104,16 @@ function ReserveWorkspace() {
     const addedReservation: ReservationRes = await catchAndTossError(ReservationService.add(requestData));
     if (!addedReservation) return;
 
-    pushMessage({title: "Workspace is reserved", type: MessageType.SUCCESS});
     setWorkspaceId(() => "");
     setFilters(() => ({...filters})); // trigger workspaces list update
 
-    if (!services.list.length) return;
-    const addedRequests = await catchAndTossError(RequestService.add(addedReservation.id, user.email, services.list));
-    if (addedRequests) pushMessage({title: "Workspace is reserved, services are requested", type: MessageType.SUCCESS});
+    if (!services.list.length) {
+      pushMessage({title: "Workspace is reserved", type: MessageType.SUCCESS});
+      return;
+    }
+
+    const addedServices = await catchAndTossError(RequestService.add(addedReservation.id, user.email, services.list));
+    if (addedServices) pushMessage({title: "Workspace is reserved, services are requested", type: MessageType.SUCCESS});
     else pushMessage({title: "Workspace is reserved, but services request is failed", type: MessageType.ERROR});
   }
 
