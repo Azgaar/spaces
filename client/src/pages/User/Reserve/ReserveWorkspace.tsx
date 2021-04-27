@@ -10,10 +10,10 @@ import {DateTimePicker} from "@material-ui/pickers";
 import dayjs, {Dayjs} from "dayjs";
 import {getMaxDate, getStored} from "../../../utils";
 import Headline from "../../../components/Layout/components/Main/Headline/Headline";
+import AddServices from "./AddServices/AddServices";
 import EquipmentIcon from "../../../components/Icons/EquipmentIcon/EquipmentIcon";
 import {MessageType, useMessage} from "../../../components/Providers/MessageProvider";
-import {ReservationService} from "../../../services";
-import AddServices from "./AddServices/AddServices";
+import {ReservationService, RequestService} from "../../../services";
 
 const blankLocation: LocationOption = {id: "", description: ""};
 const from = dayjs().set("minute", 0).set("second", 0).set("millisecond", 0).add(1, "hour");
@@ -109,7 +109,7 @@ function ReserveWorkspace() {
     setFilters(() => ({...filters})); // trigger workspaces list update
 
     if (!services.list.length) return;
-    const addedRequests = await catchAndTossError(ReservationService.requestServices(addedReservation.id, services.list));
+    const addedRequests = await catchAndTossError(RequestService.add(addedReservation.id, user.email, services.list));
     if (addedRequests) pushMessage({title: "Workspace is reserved, services are requested", type: MessageType.SUCCESS});
     else pushMessage({title: "Workspace is reserved, but services request is failed", type: MessageType.ERROR});
   }

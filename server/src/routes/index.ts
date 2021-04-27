@@ -22,3 +22,8 @@ export {router as updateReservation} from "./updateReservation.router";
 export {router as deleteReservations} from "./deleteReservations.router";
 export {router as getUserReservations} from "./getUserReservations.router";
 export {router as deleteUserReservations} from "./deleteUserReservations.router";
+export {router as requestServices} from "./requestServices.router";
+export {router as processService} from "./processService.router";
+export {router as updateService} from "./updateService.router";
+export {router as deleteServices} from "./deleteServices.router";
+export {router as getServices} from "./getServices.router";

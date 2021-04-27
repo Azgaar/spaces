@@ -34,12 +34,6 @@ export default class App {
   }
 
   private initRoutes(): void {
-    // TEMP to log Session data
-    this.app.use("/", (req, res, next) => {
-      logger.info("[Cookie] " + (req.headers.cookie || "not set"));
-      next();
-    });
-
     this.app.use("/register", Routes.register);
     this.app.use("/login", Routes.login);
     this.app.use("/logout", Routes.logout);
@@ -64,6 +58,11 @@ export default class App {
     this.app.use("/deleteReservations", Routes.deleteReservations);
     this.app.use("/getUserReservations", Routes.getUserReservations);
     this.app.use("/deleteUserReservations", Routes.deleteUserReservations);
+    this.app.use("/requestServices", Routes.requestServices);
+    this.app.use("/processService", Routes.processService);
+    this.app.use("/updateService", Routes.updateService);
+    this.app.use("/deleteServices", Routes.deleteServices);
+    this.app.use("/getServices", Routes.getServices);
 
     this.app.use("/*", (req, res, next) => next(new ApiError(httpStatus.NOT_FOUND, "Not found")));
 

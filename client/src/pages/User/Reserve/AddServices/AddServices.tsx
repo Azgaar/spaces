@@ -18,12 +18,24 @@ type Props = {
 
 const AddServices = ({open, services, onClose, onAdd, onDelete}: Props) => {
   const classes = useStyles();
-  const [service, setService] = useState<{value: string, input: string}>({value: "", input: ""});
+  const blankService = {value: "", input: "", error: false};
+  const [service, setService] = useState<Service>(blankService);
 
   const handleAdd = (value: string | null) => {
-    setService(() => ({value: "", input: ""}));
+    if (service.error) return;
+    setService(() => blankService);
     if (!value) return;
     onAdd(value);
+  }
+
+  const handleInputChange = (inputValue: string) => {
+    setService(service => ({...service, input: inputValue, error: validate(inputValue)}));
+  }
+
+  const validate = (value: string) => {
+    if (!value || value.length < 3) return "Min request length is 3 characters";
+    if (value.length > 512) return "Max request length is 512 characters";
+    return false;
   }
 
   return (
@@ -34,9 +46,8 @@ const AddServices = ({open, services, onClose, onAdd, onDelete}: Props) => {
         <FormControl fullWidth className={classes.form}>
           <Autocomplete fullWidth value={service.value} inputValue={service.input}
             options={defaultServiceOptions} handleHomeEndKeys freeSolo clearOnEscape
-            onChange={(e, value) => handleAdd(value)}
-            onInputChange={(e, value) => setService(service => ({...service, input: value}))}
-            renderInput={params => <TextField {...params} label="Service" variant="outlined" autoFocus />} />
+            onChange={(e, value) => handleAdd(value)} onInputChange={(e, value) => handleInputChange(value)}
+            renderInput={params => <TextField {...params} label="Service" variant="outlined" autoFocus error={!!service.error} helperText={service.error}/>} />
 
           <List dense className={classes.list}>
             {!services.length && <ListItem>Select a service from the list above or type a free text request and press Enter</ListItem>}
@@ -59,5 +70,11 @@ const AddServices = ({open, services, onClose, onAdd, onDelete}: Props) => {
     </Dialog>
   );
 };
+
+type Service = {
+  value: string;
+  input: string;
+  error: boolean | string;
+}
 
 export default AddServices;
