@@ -5,7 +5,8 @@ import Headline from "../../../../components/Layout/components/Main/Headline/Hea
 import {Autocomplete} from "@material-ui/lab";
 import DeleteIcon from '@material-ui/icons/Delete';
 
-const serviceOptions: string[] = ["Clean", "Bring projector", "Bring speakerphone", "Bring telephone", "Bring adapter", "Bring additional chair"];
+const defaultServiceOptions: string[] = ["Clean workspace", "Bring projector", "Bring speakerphone", "Bring telephone",
+  "Bring adapter", "Bring headset", "Bring additional chair", "Orginize coffee break"];
 
 type Props = {
   open: boolean;
@@ -32,7 +33,7 @@ const AddServices = ({open, services, onClose, onAdd, onDelete}: Props) => {
 
         <FormControl fullWidth className={classes.form}>
           <Autocomplete fullWidth value={service.value} inputValue={service.input}
-            options={serviceOptions} handleHomeEndKeys freeSolo clearOnEscape
+            options={defaultServiceOptions} handleHomeEndKeys freeSolo clearOnEscape
             onChange={(e, value) => handleAdd(value)}
             onInputChange={(e, value) => setService(service => ({...service, input: value}))}
             renderInput={params => <TextField {...params} label="Service" variant="outlined" autoFocus />} />
@@ -44,7 +45,7 @@ const AddServices = ({open, services, onClose, onAdd, onDelete}: Props) => {
                   <ListItemText>{value}</ListItemText>
                   <ListItemSecondaryAction>
                     <IconButton edge="end" aria-label="removeItem" onClick={() => onDelete(value)}>
-                      <DeleteIcon />
+                      <DeleteIcon fontSize="small" />
                     </IconButton>
                   </ListItemSecondaryAction>
                 </ListItem>
