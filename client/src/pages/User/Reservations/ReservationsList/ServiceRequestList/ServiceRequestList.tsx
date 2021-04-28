@@ -31,8 +31,17 @@ const ServiceRequestList = ({requests, editable, handleDelete, handleCreate}: Pr
   const [creation, setCreation] = useState<CreationRequest>({isActive: false, value: "", error: true});
   const [deletion, setDeletion] = useState<DeletionRequest>({isActive: false, id: null});
 
-  const showAddRequestInput = () => setCreation(() => ({...creation, isActive: true}));
+  const toggleAddRequestInput = () => setCreation(creation => ({...creation, isActive: !creation.isActive}));
   const hideAddRequestInput = () => setCreation(() => ({...creation, isActive: false}));
+  const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setCreation(() => ({isActive: true, value, error: validate(value)}));
+  }
+  const validate = (value: string) => {
+    if (!value || value.length < 3) return "Min request length is 3 characters";
+    if (value.length > 512) return "Max request length is 512 characters";
+    return false;
+  }
   const confirmCreation = () => {
     if (creation.error) return;
     handleCreate(creation.value);
@@ -43,24 +52,13 @@ const ServiceRequestList = ({requests, editable, handleDelete, handleCreate}: Pr
   const hideDeleteRequestDialog = () => setDeletion(() => ({isActive: false, id: null}));
   const confirmDeletion = () => handleDelete(deletion.id as string);
 
-  const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setCreation(() => ({isActive: true, value, error: validate(value)}));
-  }
-
-  const validate = (value: string) => {
-    if (!value || value.length < 3) return "Min request length is 3 characters";
-    if (value.length > 512) return "Max request length is 512 characters";
-    return false;
-  }
-
   return (
     <List dense={true} className={classes.list}>
       <ListItem>
         <ListItemText disableTypography={true}>{requests.length ? "Requested services:" : "Add services"}</ListItemText>
         {editable && 
           <ListItemSecondaryAction>
-            <IconButton edge="end" aria-label="addItem" onClick={showAddRequestInput}>
+            <IconButton edge="end" aria-label="addItem" onClick={toggleAddRequestInput}>
               <AddCircleOutlineIcon fontSize="inherit" />
             </IconButton>
           </ListItemSecondaryAction>
