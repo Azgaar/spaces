@@ -1,4 +1,5 @@
 import {makeStyles} from "@material-ui/core/styles";
+import {green, red, yellow} from "@material-ui/core/colors";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -25,7 +26,40 @@ const useStyles = makeStyles(theme => ({
     }
   },
   controls: {
-    margin: theme.spacing(1, 0)
+    margin: theme.spacing(1, 0),
+    "& button": {
+      marginRight: theme.spacing(1)
+    }
+  },
+  green: {
+    color: theme.palette.getContrastText(green[500]),
+    backgroundColor: green[500],
+    "&:hover": {
+      backgroundColor: green[700],
+      "@media (hover: none)": {
+        backgroundColor: green[500]
+      }
+    }
+  },
+  red: {
+    color: theme.palette.getContrastText(red[500]),
+    backgroundColor: red[500],
+    "&:hover": {
+      backgroundColor: red[700],
+      "@media (hover: none)": {
+        backgroundColor: red[500]
+      }
+    }
+  },
+  yellow: {
+    color: theme.palette.getContrastText(yellow[500]),
+    backgroundColor: yellow[500],
+    "&:hover": {
+      backgroundColor: yellow[700],
+      "@media (hover: none)": {
+        backgroundColor: yellow[500]
+      }
+    }
   }
 }));
 
