@@ -6,31 +6,31 @@ import {DataGrid, GridColDef, GridRowId, GridSelectionModelChangeParams} from "@
 import {MessageType, useMessage} from "../../../../components/Providers/MessageProvider";
 import {useToasterCatcher} from "../../../../hooks";
 import {RequestService} from "../../../../services";
-import {UserData} from "../../../../types";
-import {gridColDateFormat, gridColLastUpdateFormat} from "../../../../utils";
+import {ServiceRequestStatus, ServiceRes} from "../../../../types";
+import {gridColLastUpdateFormat} from "../../../../utils";
 
 const columns: GridColDef[] = [
   {field: "status", headerName: "Status", flex: .6},
   {field: "description", headerName: "Request", flex: 1.4},
+  {field: "workspace", headerName: "Workspace", flex: .8},
   {field: "requester", headerName: "Requester", flex: 1.2},
-  {field: "createdAt", headerName: "Created at", ...gridColDateFormat},
-  {field: "updatedAt", headerName: "Last updated", ...gridColLastUpdateFormat}
+  {field: "updatedAt", headerName: "Updated", ...gridColLastUpdateFormat}
 ];
 
-const RequestList = () => {
+const RequestList = ({status}: {status: ServiceRequestStatus}) => {
   const classes = useStyles();
   const {pushMessage} = useMessage();
-  const [requests, setRequests] = useState<UserData[]>([]);
+  const [requests, setRequests] = useState<ServiceRes[]>([]);
   const [selection, setSelection] = useState<GridRowId[]>([]);
   const {isLoading, catchAndTossError} = useToasterCatcher();
 
   useEffect(() => {
     async function fetchRequests() {
-      const allRequests: UserData[] = await catchAndTossError(RequestService.list());
+      const allRequests: ServiceRes[] = await catchAndTossError(RequestService.list(status));
       if (allRequests) setRequests(() => allRequests);
     };
     fetchRequests();
-  }, []);
+  }, [status]);
 
   const handleSelection = ((selectionModel: GridSelectionModelChangeParams) => {
     const selection = selectionModel.selectionModel;
@@ -43,10 +43,10 @@ const RequestList = () => {
 
   return (
     <Container className={classes.container}>
-      <DataGrid rows={requests} columns={columns} pageSize={10} rowsPerPageOptions={[10, 20, 50]}
+      <DataGrid rows={requests} columns={columns} pageSize={8} rowsPerPageOptions={[8, 16, 32, 64, 128]}
         autoHeight checkboxSelection loading={isLoading} onSelectionModelChange={handleSelection} density="compact" />
       <Container className={classes.controls}>
-        {Boolean(selection.length) && <DeletionButton onDelete={handleDeletion} object={selection.length > 1 ? "users" : "user"} />}
+        {Boolean(selection.length) && <DeletionButton onDelete={handleDeletion} object={selection.length > 1 ? "requests" : "request"} />}
       </Container>
     </Container>
   );

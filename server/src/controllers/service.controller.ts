@@ -21,7 +21,8 @@ const requestRemoval = catchAsync(async (req, res, next) => {
 });
 
 const list = catchAsync(async (req, res, next) => {
-  const services = await service.list();
+  const {status} = req.body;
+  const services = await service.list(status);
   if (!services) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot get service requests"));
   res.status(httpStatus.OK).send(services);
 });

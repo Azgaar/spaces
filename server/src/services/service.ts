@@ -1,10 +1,10 @@
 import {Reservation} from "../models/reservation";
 import {Service} from "../models/service";
-import {ReservationDocument, ServiceData, ServiceDocument, ServiceRequestStatus} from "../types";
-import logger from "../utils/logger";
+import {ReservationDocument, ServiceDocument, ServiceRequestStatus} from "../types";
 
-const list = async () => {
-  const services: ServiceDocument[] = await Service.find().populate("reservation");
+const list = async (status?: ServiceRequestStatus) => {
+  const filter = status ? {status} : {};
+  const services: ServiceDocument[] = await Service.find(filter).populate("reservation");
   return services;
 };
 
