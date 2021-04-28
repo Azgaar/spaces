@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
       color: theme.palette.primary.main
     },
     "& div.MuiDataGrid-colCellTitle": {
-      fontWeight: 700
+      fontWeight: 900
     }
   },
   controls: {
@@ -32,32 +32,32 @@ const useStyles = makeStyles(theme => ({
     }
   },
   green: {
-    color: theme.palette.getContrastText(green[500]),
-    backgroundColor: green[500],
+    color: theme.palette.getContrastText(green[700]),
+    backgroundColor: green[700],
     "&:hover": {
-      backgroundColor: green[700],
+      backgroundColor: green[900],
       "@media (hover: none)": {
-        backgroundColor: green[500]
+        backgroundColor: green[700]
       }
     }
   },
   red: {
-    color: theme.palette.getContrastText(red[500]),
-    backgroundColor: red[500],
+    color: theme.palette.getContrastText(red[700]),
+    backgroundColor: red[700],
     "&:hover": {
-      backgroundColor: red[700],
+      backgroundColor: red[900],
       "@media (hover: none)": {
-        backgroundColor: red[500]
+        backgroundColor: red[700]
       }
     }
   },
   yellow: {
-    color: theme.palette.getContrastText(yellow[500]),
-    backgroundColor: yellow[500],
+    color: theme.palette.getContrastText(yellow[700]),
+    backgroundColor: yellow[700],
     "&:hover": {
-      backgroundColor: yellow[700],
+      backgroundColor: yellow[900],
       "@media (hover: none)": {
-        backgroundColor: yellow[500]
+        backgroundColor: yellow[700]
       }
     }
   }
