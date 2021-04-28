@@ -1,20 +1,31 @@
-import React, {useEffect, useState} from "react";
+import React, {ReactElement, useEffect, useState} from "react";
 import useStyles from "./ReservationsList.style";
 import {Button, Container} from "@material-ui/core";
 import {DataGrid, GridCellValue, GridColDef, GridRowId, GridSelectionModelChangeParams} from "@material-ui/data-grid";
 import DeletionButton from "../../../../components/Controls/DeletionButton/DeletionButton";
 import {MessageType, useMessage} from "../../../../components/Providers/MessageProvider";
-import {LocationOption, ReservationReq, ReservationRes} from "../../../../types";
+import {LocationOption, ReservationReq, ReservationRes, ServiceRequestStatus} from "../../../../types";
 import {ReservationService} from "../../../../services";
 import {useToasterCatcher, useUser} from "../../../../hooks";
 import ReservationDialog from "./ReservationDialog/ReservationDialog";
 import dayjs from "dayjs";
 import {gridColDateFormat} from "../../../../utils";
+import RequestStatusIcon from "../../../../components/Icons/RequestStatusIcon/RequestStatusIcon";
 
 const countRequests = {
-  type: "number",
-  valueFormatter: ({value}: {value: GridCellValue}): number => {
-    return Array.isArray(value) ? value.length : 0;
+  renderCell: ({value}: {value: GridCellValue}): ReactElement => {
+    if (!Array.isArray(value) || value.length === 0) return <>no</>;
+
+    const {PENDING, FULFILLED, REJECTED} = ServiceRequestStatus;
+    const pending = value.filter(request => request.status === PENDING).length;
+    const fullfilled = value.filter(request => request.status === FULFILLED).length;
+    const rejected = value.filter(request => request.status === REJECTED).length;
+
+    return (<>
+      {!!pending && <>{pending}<RequestStatusIcon value={PENDING} /></>}
+      {!!fullfilled && <>{fullfilled}<RequestStatusIcon value={FULFILLED} /></>}
+      {!!rejected && <>{rejected}<RequestStatusIcon value={REJECTED} /></>}
+    </>);
   }
 };
 
@@ -23,7 +34,7 @@ const columns: GridColDef[] = [
   {field: "description", headerName: "Workspace", flex: .8},
   {field: "type", headerName: "Type", flex: .6},
   {field: "requester", headerName: "Requester", flex: 1.1},
-  {field: "size", headerName: "Size", type: "number", flex: .5},
+  {field: "size", headerName: "Size", flex: .5},
   {field: "requests", headerName: "Requests", flex: .7, ...countRequests},
   {field: "from", headerName: "From", ...gridColDateFormat},
   {field: "to", headerName: "To", ...gridColDateFormat}
