@@ -26,8 +26,8 @@ const RequestList = ({status}: {status: ServiceRequestStatus}) => {
 
   useEffect(() => {
     async function fetchRequests() {
-      const allRequests: ServiceRes[] = await catchAndTossError(RequestService.list(status));
-      if (allRequests) setRequests(() => allRequests);
+      const fetchedRequests: ServiceRes[] = await catchAndTossError(RequestService.list(status));
+      if (fetchedRequests) setRequests(() => fetchedRequests);
     };
     fetchRequests();
   }, [status]);
@@ -38,7 +38,14 @@ const RequestList = ({status}: {status: ServiceRequestStatus}) => {
   });
 
   const handleDeletion = async () => {
+    const deletionResult = await catchAndTossError(RequestService.remove(selection));
+    if (!deletionResult) return;
+
+    setSelection(() => [] as GridRowId[]);
     pushMessage({title: "Service requests are removed", type: MessageType.SUCCESS});
+
+    const fetchedRequests: ServiceRes[] = await catchAndTossError(RequestService.list(status));
+    if (fetchedRequests) setRequests(() => fetchedRequests);
   }
 
   return (
