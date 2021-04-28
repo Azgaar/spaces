@@ -24,7 +24,8 @@ const HeadlineIconMap: {[key: string]: ElementType} = {
   "Reserve Workspace": BookIcon,
   "Active Reservations": TodayIcon,
   "Reservations History": DateRangeIcon,
-  "Request Services": RoomServiceIcon
+  "Request Services": RoomServiceIcon,
+  "Manage Service Requests": RoomServiceIcon
 }
 
 function Headline({pagename}: {pagename: string}): ReactElement {

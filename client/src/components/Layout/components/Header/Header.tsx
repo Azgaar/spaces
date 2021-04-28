@@ -39,6 +39,7 @@ const AuthorizedUserNavButtons = () => {
 const AdminNavButtons = () => {
   return (<>
     <Button color="inherit" component={RouterLink} to="/admin/reservations">Reservations</Button>
+    <Button color="inherit" component={RouterLink} to="/admin/requests">Requests</Button>
     <Button color="inherit" component={RouterLink} to="/admin/workspaces">Workspaces</Button>
     <Button color="inherit" component={RouterLink} to="/admin/users">Users</Button>
   </>

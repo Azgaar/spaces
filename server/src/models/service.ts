@@ -14,8 +14,8 @@ const serviceSchema = new Schema(
 
 serviceSchema.set("toJSON", {
   transform: (doc: ServiceDocument, ret: ServiceJSON) => {
-    const {_id, requester, description, status} = ret;
-    const serviceRequest = {id: _id, requester, description, status};
+    const {_id, requester, description, status, createdAt, updatedAt} = ret;
+    const serviceRequest = {id: _id, requester, description, status, createdAt, updatedAt};
     return serviceRequest;
   }
 });
@@ -25,6 +25,8 @@ interface ServiceJSON {
   requester: string;
   description: string;
   status: ServiceRequestStatus;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export const Service = model<ServiceDocument>("Service", serviceSchema);

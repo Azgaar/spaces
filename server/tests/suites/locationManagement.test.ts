@@ -53,6 +53,12 @@ describe("Location management service", () => {
     location.id = response.body[0].id;
   });
 
+  it("allows to get locations list for user", async () => {
+    const response = await request(app).post("/getLocations").set("Cookie", cookie.user).send({onlyWithWorkspaces: false}).expect(httpStatus.OK);
+    expect(Array.isArray(response.body)).toBe(true);
+    expect(response.body.length).toBe(1);
+  });
+
   it("allows to rename location for admin", async () => {
     const description = "renameLocation";
     const response = await request(app).post("/renameLocation").set("Cookie", cookie.admin).send({id: location.id, description}).expect(httpStatus.OK);
@@ -77,7 +83,6 @@ describe("Location management service", () => {
 
   it("is not allowed for non-admin", async () => {
     await request(app).post("/addLocation").set("Cookie", cookie.user).send({description: location.description}).expect(httpStatus.INTERNAL_SERVER_ERROR);
-    await request(app).post("/getLocations").set("Cookie", cookie.user).expect(httpStatus.INTERNAL_SERVER_ERROR);
     await request(app).post("/renameLocation").set("Cookie", cookie.user).send(location).expect(httpStatus.INTERNAL_SERVER_ERROR);
     await request(app).delete("/deleteLocation").set("Cookie", cookie.user).send({id: location.id}).expect(httpStatus.INTERNAL_SERVER_ERROR);
   });
