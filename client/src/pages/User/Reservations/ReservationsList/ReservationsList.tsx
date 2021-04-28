@@ -4,7 +4,7 @@ import {Typography, Card, CardContent, Container, CardActions, Grid, CardHeader,
 import Spinner from "../../../../components/Spinner/Spinner";
 import WorkspaceTypeIcon from "../../../../components/Icons/WorkspaceTypeIcon/WorkspaceTypeIcon";
 import {MessageType, useMessage} from "../../../../components/Providers/MessageProvider";
-import {ReservationReq, ReservationRes, ServiceRes} from "../../../../types";
+import {ReservationReq, ReservationRes, ServiceReq, ServiceRes} from "../../../../types";
 import {useToasterCatcher, useUser} from "../../../../hooks";
 import {RequestService, ReservationService} from "../../../../services";
 import {getDate, getTime} from "../../../../utils";
@@ -50,9 +50,8 @@ const ReservationsList = ({active}: {active: boolean}) => {
   }
 
   const handleReservationUpdate = async (formData: ReservationReq) => {
-    const requester = user.email;
     const {id, location} = dialog.reservation;
-    const requestData: ReservationReq = {...formData, id, location, requester};
+    const requestData: ReservationReq = {...formData, id, location, requester: user.email};
     await catchAndTossError(ReservationService.update(requestData));
 
     const reservations: ReservationRes[] = await catchAndTossError(ReservationService.requestList(user.email, active));
@@ -62,8 +61,10 @@ const ReservationsList = ({active}: {active: boolean}) => {
     closeDialog();
   }
 
-  const handleServiceCreation = async (reservationId: string, description: string) => {
-    const addedServices: ServiceRes[] = await catchAndTossError(RequestService.add(reservationId, user.email, [description]));
+  const handleServiceCreation = async (reservation: ReservationRes, description: string) => {
+    const {id, location} = reservation;
+    const requestData: ServiceReq = {location, reservationId: id, requester: user.email, servicesList: [description]};
+    const addedServices: ServiceRes[] = await catchAndTossError(RequestService.add(requestData));
     if (!addedServices) return;
 
     const reservations: ReservationRes[] = await catchAndTossError(ReservationService.requestList(user.email, active));
@@ -153,7 +154,7 @@ const ReservationsList = ({active}: {active: boolean}) => {
                   </Typography>
 
                   {showServices && <ServiceRequestList requests={reservation.requests} editable={isEditable}
-                    handleDelete={handleServiceDeletion} handleCreate={(description) => handleServiceCreation(reservation.id, description)} />}
+                    handleDelete={handleServiceDeletion} handleCreate={(description) => handleServiceCreation(reservation, description)} />}
                 </CardContent>
 
                 <CardActions>

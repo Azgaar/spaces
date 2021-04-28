@@ -4,6 +4,7 @@ import {ServiceDocument, ServiceRequestStatus} from "../types";
 const required = true;
 const serviceSchema = new Schema(
   {
+    location: {type: Schema.Types.ObjectId, required},
     reservation: {type: Schema.Types.ObjectId, ref: "Reservation", required},
     description: {type: String, required},
     requester: {type: String, required},

@@ -7,13 +7,6 @@ const useStyles = makeStyles(theme => ({
     flexDirection: "column",
     alignItems: "center",
   },
-  topControlSection: {
-    display: "flex",
-    justifyContent: "flex-end",
-    width: "100%",
-    padding: theme.spacing(0, 3),
-    zIndex: 2
-  },
   selectedButton: {
     "backgroundColor": theme.palette.primary.main
   }

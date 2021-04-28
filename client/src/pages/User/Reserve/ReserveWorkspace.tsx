@@ -3,7 +3,7 @@ import useStyles from "./ReserveWorkspace.style";
 import {Button, Chip, Container, FilledInput, FormControl, Grid, InputLabel, MenuItem, Select, TextField} from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import {Autocomplete} from "@material-ui/lab";
-import {Equipment, LocationOption, ReservationFilters, ReservationFilterErrors, WorkspaceType, ReservationReq, ReservationRes, ServiceRes} from "../../../types";
+import {Equipment, LocationOption, ReservationFilters, ReservationFilterErrors, WorkspaceType, ReservationReq, ReservationRes, ServiceRes, ServiceReq} from "../../../types";
 import {useLocations, useToasterCatcher, useUser} from "../../../hooks";
 import AvailableWorkspaces from "./AvailableWorkspaces/AvailableWorkspaces";
 import {DateTimePicker} from "@material-ui/pickers";
@@ -100,8 +100,8 @@ function ReserveWorkspace() {
     e.preventDefault();
     if (filterErrors.errored || !workspaceId) return;
 
-    const requestData: ReservationReq = {from: filters.from, to: filters.to, location: filters.location.id, requester: user.email, workspace: workspaceId};
-    const addedReservation: ReservationRes = await catchAndTossError(ReservationService.add(requestData));
+    const reservationData: ReservationReq = {from: filters.from, to: filters.to, location: filters.location.id, requester: user.email, workspace: workspaceId};
+    const addedReservation: ReservationRes = await catchAndTossError(ReservationService.add(reservationData));
     if (!addedReservation) return;
 
     setWorkspaceId(() => "");
@@ -112,7 +112,8 @@ function ReserveWorkspace() {
       return;
     }
 
-    const addedServices: ServiceRes[] = await catchAndTossError(RequestService.add(addedReservation.id, user.email, services.list));
+    const requestData: ServiceReq = {location: filters.location.id, reservationId: addedReservation.id, requester: user.email, servicesList: services.list};
+    const addedServices: ServiceRes[] = await catchAndTossError(RequestService.add(requestData));
     if (addedServices) pushMessage({title: "Workspace is reserved, services are requested", type: MessageType.SUCCESS});
     else pushMessage({title: "Workspace is reserved, but services request is failed", type: MessageType.ERROR});
   }

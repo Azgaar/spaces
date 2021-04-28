@@ -150,8 +150,16 @@ export type ReservationFilterErrors = {
   errored?: boolean;
 }
 
+export type ServiceReq = {
+  location: string;
+  reservationId: string;
+  requester: string;
+  servicesList: string[]
+}
+
 export type ServiceRes = {
   id: string;
+  location: string;
   description: string;
   status: ServiceRequestStatus;
   requester: string;

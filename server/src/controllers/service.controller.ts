@@ -21,8 +21,8 @@ const requestRemoval = catchAsync(async (req, res, next) => {
 });
 
 const list = catchAsync(async (req, res, next) => {
-  const {status} = req.body;
-  const services = await service.list(status);
+  const {location, status} = req.body;
+  const services = await service.list(location, status);
   if (!services) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot get service requests"));
   res.status(httpStatus.OK).send(services);
 });
@@ -31,11 +31,8 @@ const process = catchAsync(async (req, res, next) => {
   const {serviceIds, status} = req.body;
   const result = await service.process(serviceIds, status);
   if (!result) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot process service requests"));
-
-  const services = await service.list();
-  if (!services) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot get service requests"));
   logger.info(`[Service] Service requests ${serviceIds.join(", ")} are processed to ${status}`);
-  res.status(httpStatus.OK).send(services);
+  res.status(httpStatus.OK).send(result);
 });
 
 const remove = catchAsync(async (req, res, next) => {

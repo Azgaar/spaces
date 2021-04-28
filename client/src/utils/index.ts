@@ -1,2 +1,2 @@
-export {gridColDateFormat, gridColLastUpdateFormat, getDate, getTime, getMaxDate} from "./dates";
+export {gridColDateFormat, gridColDateDiffFormat, getDate, getTime, getMaxDate, getDiff} from "./dates";
 export {getStored} from "./storage";

@@ -2,14 +2,14 @@ import {Reservation} from "../models/reservation";
 import {Service} from "../models/service";
 import {ReservationDocument, ServiceDocument, ServiceRequestStatus} from "../types";
 
-const list = async (status?: ServiceRequestStatus) => {
-  const filter = status ? {status} : {};
-  const services: ServiceDocument[] = await Service.find(filter).populate("reservation");
+const list = async (location: string, status: ServiceRequestStatus) => {
+  const services: ServiceDocument[] = await Service.find({location, status})
+    .populate({path: "reservation", model: "Reservation", populate: "workspace"});
   return services;
 };
 
-const add = async ({reservationId, requester, servicesList}: RequestServicesReq) => {
-  const servicesData = servicesList.map(description => ({reservation: reservationId, requester, description, status: ServiceRequestStatus.PENDING}));
+const add = async ({location, reservationId, requester, servicesList}: RequestServicesReq) => {
+  const servicesData = servicesList.map(description => ({location, reservation: reservationId, requester, description, status: ServiceRequestStatus.PENDING}));
   const services: ServiceDocument[] | null = await Service.insertMany(servicesData);
   const reservation: ReservationDocument | null = await Reservation.findOneAndUpdate({_id: reservationId}, {$push: {requests: {$each: services.map(s => s.id)}}}, {new: true, useFindAndModify: false});
   return {services, reservation};
@@ -28,6 +28,7 @@ const requestRemoval = async (id: string, requester: string) => {
 };
 
 type RequestServicesReq = {
+  location: string;
   reservationId: string;
   requester: string;
   servicesList: string[];

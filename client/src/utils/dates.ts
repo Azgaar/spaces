@@ -11,10 +11,10 @@ export const gridColDateFormat: GridColTypeDef = {
   valueFormatter: ({value}) => dayjs(value as Date).format(DATETIME_FORMAT)
 };
 
-export const gridColLastUpdateFormat: GridColTypeDef = {
+export const gridColDateDiffFormat: GridColTypeDef = {
   type: "string",
-  flex: .8,
-  valueFormatter: ({value}) => dayjs().to(dayjs(value as Date))
+  flex: .9,
+  valueFormatter: ({value}) => getDiff(value as string)
 };
 
 export const getDate = (from: string, to: string) => {
@@ -33,11 +33,13 @@ export const getTime = (from: string, to: string) => {
   return `${start} — ${end}`;
 }
 
+export const getDiff = (date: string) => dayjs().to(dayjs(date));
+
 const getHumanReadDiff = (from: string, to: string) => {
   const now = dayjs().toISOString();
-  if (from > now) return "Begins " + dayjs().to(dayjs(from));
-  if (from < now && to > now) return "Ends " + dayjs().to(dayjs(to));
-  else return dayjs().to(dayjs(to));
+  if (from > now) return "Begins " + getDiff(from);
+  if (from < now && to > now) return "Ends " + getDiff(to);
+  else return getDiff(to);
 }
 
 export const getMaxDate = () => {

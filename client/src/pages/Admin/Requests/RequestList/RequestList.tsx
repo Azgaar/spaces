@@ -6,18 +6,20 @@ import {DataGrid, GridColDef, GridRowId, GridSelectionModelChangeParams} from "@
 import {MessageType, useMessage} from "../../../../components/Providers/MessageProvider";
 import {useToasterCatcher} from "../../../../hooks";
 import {RequestService} from "../../../../services";
-import {ServiceRequestStatus, ServiceRes} from "../../../../types";
-import {gridColLastUpdateFormat} from "../../../../utils";
+import {LocationOption, ReservationRes, ServiceRequestStatus, ServiceRes} from "../../../../types";
+import {gridColDateDiffFormat, getDiff} from "../../../../utils";
 
+const getWorkspaceDesc = ({type, description, size}: ReservationRes) => `${description}: ${type} [${size}]`;
 const columns: GridColDef[] = [
   {field: "status", headerName: "Status", flex: .6},
+  {field: "createdAt", headerName: "Requested", ...gridColDateDiffFormat},
   {field: "description", headerName: "Request", flex: 1.4},
-  {field: "workspace", headerName: "Workspace", flex: .8},
+  {field: "reservation", headerName: "Workspace", flex: 1, valueFormatter: (params) => params.row?.reservation && getWorkspaceDesc(params.row.reservation)},
   {field: "requester", headerName: "Requester", flex: 1.2},
-  {field: "updatedAt", headerName: "Updated", ...gridColLastUpdateFormat}
+  {field: "from", headerName: "Deadline", flex: .9, valueFormatter: (params) => getDiff(params.row?.reservation?.from)}
 ];
 
-const RequestList = ({status}: {status: ServiceRequestStatus}) => {
+const RequestList = ({status, location}: {status: ServiceRequestStatus, location: LocationOption}) => {
   const classes = useStyles();
   const {pushMessage} = useMessage();
   const [requests, setRequests] = useState<ServiceRes[]>([]);
@@ -26,11 +28,11 @@ const RequestList = ({status}: {status: ServiceRequestStatus}) => {
 
   useEffect(() => {
     async function fetchRequests() {
-      const fetchedRequests: ServiceRes[] = await catchAndTossError(RequestService.list(status));
+      const fetchedRequests: ServiceRes[] = await catchAndTossError(RequestService.list(location, status));
       if (fetchedRequests) setRequests(() => fetchedRequests);
     };
-    fetchRequests();
-  }, [status]);
+    if (location.id && status) fetchRequests();
+  }, [location, status]);
 
   const handleSelection = ((selectionModel: GridSelectionModelChangeParams) => {
     const selection = selectionModel.selectionModel;
@@ -44,7 +46,7 @@ const RequestList = ({status}: {status: ServiceRequestStatus}) => {
     setSelection(() => [] as GridRowId[]);
     pushMessage({title: "Service requests are removed", type: MessageType.SUCCESS});
 
-    const fetchedRequests: ServiceRes[] = await catchAndTossError(RequestService.list(status));
+    const fetchedRequests: ServiceRes[] = await catchAndTossError(RequestService.list(location, status));
     if (fetchedRequests) setRequests(() => fetchedRequests);
   }
 
