@@ -15,35 +15,37 @@ type Props = {
   handleCreate: (description: string) => void;
 }
 
-type AddRequest = {
+type CreationRequest = {
   isActive: boolean;
   value: string;
   error: boolean | string;
 }
 
+type DeletionRequest = {
+  isActive: boolean;
+  id: null | string;
+}
+
 const ServiceRequestList = ({requests, editable, handleDelete, handleCreate}: Props) => {
   const classes = useStyles();
-  const [addRequest, setAddRequest] = useState<AddRequest>({isActive: false, value: "", error: true});
-  const [confirm, setConfirm] = useState<string>("");
+  const [creation, setCreation] = useState<CreationRequest>({isActive: false, value: "", error: true});
+  const [deletion, setDeletion] = useState<DeletionRequest>({isActive: false, id: null});
 
-  const showAddRequestInput = () => setAddRequest(() => ({...addRequest, isActive: true}));
-  const hideAddRequestInput = () => setAddRequest(() => ({...addRequest, isActive: false}));
-
-  const requestDeletion = (id: string) => setConfirm(() => id);
-  const confirmDeletion = () => {
-    handleDelete(confirm);
-    setConfirm(() => "");
-  }
-  const cancelDeletion = () => setConfirm(() => "");
-
-  const handleAdd = () => {
-    handleCreate(addRequest.value);
-    setAddRequest(() => ({isActive: false, value: "", error: true}));
+  const showAddRequestInput = () => setCreation(() => ({...creation, isActive: true}));
+  const hideAddRequestInput = () => setCreation(() => ({...creation, isActive: false}));
+  const confirmCreation = () => {
+    if (creation.error) return;
+    handleCreate(creation.value);
+    setCreation(() => ({isActive: false, value: "", error: true}));
   };
+
+  const showDeleteRequestDialog = (id: string) => setDeletion(() => ({isActive: true, id}));
+  const hideDeleteRequestDialog = () => setDeletion(() => ({isActive: false, id: null}));
+  const confirmDeletion = () => handleDelete(deletion.id as string);
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setAddRequest(() => ({isActive: true, value, error: validate(value)}));
+    setCreation(() => ({isActive: true, value, error: validate(value)}));
   }
 
   const validate = (value: string) => {
@@ -73,7 +75,7 @@ const ServiceRequestList = ({requests, editable, handleDelete, handleCreate}: Pr
           <ListItemText disableTypography={true}>{request.description}</ListItemText>
           {editable && 
             <ListItemSecondaryAction>
-              <IconButton edge="end" aria-label="removeItem" onClick={() => requestDeletion(request.id)}>
+              <IconButton edge="end" aria-label="removeItem" onClick={() => showDeleteRequestDialog(request.id)}>
                 <ClearIcon fontSize="inherit" />
               </IconButton>
             </ListItemSecondaryAction>
@@ -81,24 +83,24 @@ const ServiceRequestList = ({requests, editable, handleDelete, handleCreate}: Pr
         </ListItem>
       ))}
 
-      {addRequest.isActive &&
+      {creation.isActive &&
         <ListItem>
-          <TextField value={addRequest.value} onChange={handleInput} autoFocus
-            error={!!addRequest.error} helperText={addRequest.error} />
+          <TextField value={creation.value} onChange={handleInput} autoFocus
+            error={!!creation.error} helperText={creation.error} />
           <ListItemSecondaryAction>
-            {!addRequest.error &&
-              <IconButton edge="end" aria-label="addLineItem">
-                <DoneIcon fontSize="inherit" onClick={handleAdd} />
+            {!creation.error &&
+              <IconButton edge="end" aria-label="addLineItem" onClick={confirmCreation}>
+                <DoneIcon fontSize="inherit" />
               </IconButton>
             }
-            <IconButton edge="end" aria-label="cancelAddingItem">
-              <ClearIcon fontSize="inherit" onClick={hideAddRequestInput} />
+            <IconButton edge="end" aria-label="cancelAddingItem" onClick={hideAddRequestInput}>
+              <ClearIcon fontSize="inherit" />
             </IconButton>
           </ListItemSecondaryAction>
         </ListItem>
       }
 
-      <ConfirmationDialog open={!!confirm} onConfirm={confirmDeletion} onClose={cancelDeletion} />
+      <ConfirmationDialog open={deletion.isActive} onConfirm={confirmDeletion} onClose={hideDeleteRequestDialog} />
     </List>
   );
 };
