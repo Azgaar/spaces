@@ -13,20 +13,39 @@ const add = catchAsync(async (req, res, next) => {
 });
 
 const requestRemoval = catchAsync(async (req, res, next) => {
-
+  const {id, requester} = req.body;
+  const result = await service.requestRemoval(id, requester);
+  if (!result) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot remove service request"));
+  logger.info(`[Service] Service request ${id} is removed`);
+  res.status(httpStatus.OK).send(id);
 });
 
 const list = catchAsync(async (req, res, next) => {
-
+  const services = await service.list();
+  if (!services) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot get service requests"));
+  res.status(httpStatus.OK).send(services);
 });
 
 const process = catchAsync(async (req, res, next) => {
+  const {serviceIds, status} = req.body;
+  const result = await service.process(serviceIds, status);
+  if (!result) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot process service requests"));
 
-
+  const services = await service.list();
+  if (!services) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot get service requests"));
+  logger.info(`[Service] Service requests ${serviceIds.join(", ")} are processed to ${status}`);
+  res.status(httpStatus.OK).send(services);
 });
 
 const remove = catchAsync(async (req, res, next) => {
+  const {serviceIds} = req.body;
+  const result = await service.remove(serviceIds);
+  if (!result) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot remove service requests"));
 
+  const services = await service.list();
+  if (!services) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot get service requests"));
+  logger.info(`[Service] Service requests ${serviceIds.join(", ")} are processed to ${status}`);
+  res.status(httpStatus.OK).send(services);
 });
 
 export const serviceController = {add, requestRemoval, list, process, remove};

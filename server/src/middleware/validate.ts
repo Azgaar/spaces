@@ -37,7 +37,7 @@ const checkRole = (roleExpected: UserRole) => (req: Request, res: Response, next
 };
 
 const checkEmail = (req: Request, res: Response, next: NextFunction) => {
-  const emailAddedToRequest = req.body.email;
+  const emailAddedToRequest = req.body.email || req.body.requester;
   const emailOfLoggedUser = getUserEmail(req);
   if (!emailAddedToRequest || emailAddedToRequest !== emailOfLoggedUser) {
     const mess = `User ${emailOfLoggedUser} is not authorized to perform the operation for user ${emailAddedToRequest}`;

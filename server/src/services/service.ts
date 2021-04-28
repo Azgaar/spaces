@@ -3,16 +3,10 @@ import {Service} from "../models/service";
 import {ReservationDocument, ServiceData, ServiceDocument, ServiceRequestStatus} from "../types";
 import logger from "../utils/logger";
 
-const list = async (location: string) => {
-  const reservations: ServiceDocument[] = await Service.find({location}).populate("workspace");
-  return reservations;
+const list = async () => {
+  const services: ServiceDocument[] = await Service.find().populate("reservation");
+  return services;
 };
-
-type RequestServicesReq = {
-  reservationId: string;
-  requester: string;
-  servicesList: string[];
-}
 
 const add = async ({reservationId, requester, servicesList}: RequestServicesReq) => {
   const servicesData = servicesList.map(description => ({reservation: reservationId, requester, description, status: ServiceRequestStatus.PENDING}));
@@ -21,20 +15,22 @@ const add = async ({reservationId, requester, servicesList}: RequestServicesReq)
   return {services, reservation};
 };
 
-const update = async (reservationData: ServiceData) => {
-  const reservation: ServiceDocument = await Service.findById(reservationData.id) as ServiceDocument;
-  if (!reservation) return false;
-
-  Object.assign(reservation, reservationData);
-  const updatedService: ServiceDocument = await reservation.save();
-  logger.info(`[Service] Service ${updatedService.id} is updated`);
-  return updatedService;
+const process = async (serviceIds: string[], status: ServiceRequestStatus) => {
+  return await Service.updateMany({_id: {$in: serviceIds}}, {status});
 };
 
-const remove = async (ids: Array<string>) => {
-  const deletedServices = await Service.deleteMany({_id: {$in: ids}});
-  logger.info(`[Service] Service deletion request: ${ids.join(", ")}`);
-  return deletedServices;
+const remove = async (serviceIds: string[]) => {
+  return await Service.deleteMany({_id: {$in: serviceIds}});
 };
 
-export default {list, add, update, remove};
+const requestRemoval = async (id: string, requester: string) => {
+  return await Service.deleteOne({_id: id, requester});
+};
+
+type RequestServicesReq = {
+  reservationId: string;
+  requester: string;
+  servicesList: string[];
+}
+
+export default {list, add, process, remove, requestRemoval};
