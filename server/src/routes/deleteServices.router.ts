@@ -1,7 +1,8 @@
 import {Router} from "express";
-import {checkSession, validate} from "../middleware/validate";
-import {serviceDeleteSchema} from "../validation/service";
 import {serviceController} from "../controllers";
+import {checkSession, checkRole, validate} from "../middleware/validate";
+import {serviceDeleteSchema} from "../validation/service";
+import {UserRole} from "../types";
 
 export const router = Router();
-router.delete("/", checkSession(true), validate(serviceDeleteSchema), serviceController.remove);
+router.post("/", checkSession(true), checkRole(UserRole.ADMIN), validate(serviceDeleteSchema), serviceController.remove);

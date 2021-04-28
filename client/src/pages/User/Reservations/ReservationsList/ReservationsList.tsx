@@ -4,7 +4,7 @@ import {Typography, Card, CardContent, Container, CardActions, Grid, CardHeader,
 import Spinner from "../../../../components/Spinner/Spinner";
 import WorkspaceTypeIcon from "../../../../components/Icons/WorkspaceTypeIcon/WorkspaceTypeIcon";
 import {MessageType, useMessage} from "../../../../components/Providers/MessageProvider";
-import {ReservationReq, ReservationRes, ReservationStatus} from "../../../../types";
+import {ReservationReq, ReservationRes} from "../../../../types";
 import {useToasterCatcher, useUser} from "../../../../hooks";
 import {ReservationService} from "../../../../services";
 import {getDate, getTime} from "../../../../utils";
@@ -74,7 +74,7 @@ const ReservationsList = ({active}: {active: boolean}) => {
   if (isLoading) return <Spinner />
   return (
     <Container className={classes.container}>
-      <Grid container spacing={2} alignItems="center">
+      <Grid container spacing={2}>
 
         {!reservations.length &&
           <Grid item lg={3} md={4} sm={6} xs={12} >
@@ -105,41 +105,44 @@ const ReservationsList = ({active}: {active: boolean}) => {
           </Grid>
         }
 
-        {reservations.map(reservation => (
-          <Grid key={reservation.id} item lg={3} md={4} sm={6} xs={12} >
-            <Card variant="outlined" className={classes.card}>
-              <CardHeader className={classes.cardHeader} avatar={
-                <Badge badgeContent={reservation.size > 1 && reservation.size}>
-                  <WorkspaceTypeIcon value={reservation.type} />
-                </Badge>}
-                title={`${reservation.type} ${reservation.description}`}
-                subheader={reservation.locationDescription}
-                action={(
-                  <IconButton aria-label="locate" onClick={() => openMap(reservation.locationDescription)}>
-                    <PlaceIcon fontSize="small" />
-                  </IconButton>)}/>
-              <Divider variant="middle" />
+        {reservations.map(reservation => {
+          const isEditable = active && reservation.from > new Date().toISOString();
+          const showServices = reservation.requests.length || isEditable;
 
-              <CardContent className={classes.content}>
-                <Typography variant="caption">
-                  {getDate(reservation.from, reservation.to)}
-                </Typography>
-                <Typography variant="h6">
-                  {getTime(reservation.from, reservation.to)}
-                </Typography>
+          return (
+            <Grid key={reservation.id} item lg={3} md={4} sm={6} xs={12} >
+              <Card variant="outlined" className={classes.card}>
+                <CardHeader className={classes.cardHeader} avatar={
+                  <Badge badgeContent={reservation.size > 1 && reservation.size}>
+                    <WorkspaceTypeIcon value={reservation.type} />
+                  </Badge>}
+                  title={`${reservation.type} ${reservation.description}`}
+                  subheader={reservation.locationDescription}
+                  action={(
+                    <IconButton aria-label="locate" onClick={() => openMap(reservation.locationDescription)}>
+                      <PlaceIcon fontSize="small" />
+                    </IconButton>)}/>
+                <Divider variant="middle" />
 
-                {active && reservation.requests.length && <ServiceRequestList requests={reservation.requests} />}
-              </CardContent>
+                <CardContent className={classes.content}>
+                  <Typography variant="caption">
+                    {getDate(reservation.from, reservation.to)}
+                  </Typography>
+                  <Typography variant="h6">
+                    {getTime(reservation.from, reservation.to)}
+                  </Typography>
 
-              <CardActions>
-                {active && <>
-                  {reservation.status === ReservationStatus.FUTURE && <Button color="primary" onClick={() => setDialog(() => ({action: "edit", reservation}))}>Edit</Button>}
-                  <Button color="primary" onClick={() => setDialog(() => ({action: "cancel", reservation}))}>Cancel</Button>
-                </>}
-              </CardActions>
-            </Card>
-          </Grid>
-        ))}
+                  {showServices && <ServiceRequestList requests={reservation.requests} editable={isEditable}/>}
+                </CardContent>
+
+                <CardActions>
+                  {isEditable && <Button color="primary" onClick={() => setDialog(() => ({action: "edit", reservation}))}>Edit</Button>}
+                  {active && <Button color="primary" onClick={() => setDialog(() => ({action: "cancel", reservation}))}>Cancel</Button>}
+                </CardActions>
+              </Card>
+            </Grid>
+          )
+        })}
       </Grid>
 
       {dialog.action === "edit" && <ReservationEdit reservation={dialog.reservation} submit={handleUpdate} close={closeDialog} />}

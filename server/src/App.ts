@@ -59,10 +59,10 @@ export default class App {
     this.app.use("/getUserReservations", Routes.getUserReservations);
     this.app.use("/deleteUserReservations", Routes.deleteUserReservations);
     this.app.use("/requestServices", Routes.requestServices);
-    this.app.use("/processService", Routes.processService);
-    this.app.use("/updateService", Routes.updateService);
-    this.app.use("/deleteServices", Routes.deleteServices);
+    this.app.use("/removeUserService", Routes.removeUserService);
     this.app.use("/getServices", Routes.getServices);
+    this.app.use("/processServices", Routes.processServices);
+    this.app.use("/deleteServices", Routes.deleteServices);
 
     this.app.use("/*", (req, res, next) => next(new ApiError(httpStatus.NOT_FOUND, "Not found")));
 
