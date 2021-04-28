@@ -84,7 +84,7 @@ const ServiceRequestList = ({requests, editable, handleDelete, handleCreate}: Pr
       {creation.isActive &&
         <ListItem>
           <TextField value={creation.value} onChange={handleInput} autoFocus
-            error={!!creation.error} helperText={creation.error} />
+            error={!!creation.error} helperText={!!creation.error && <>{creation.error}</>} />
           <ListItemSecondaryAction>
             {!creation.error &&
               <IconButton edge="end" aria-label="addLineItem" onClick={confirmCreation}>
