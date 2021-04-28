@@ -15,6 +15,9 @@ const useStyles = makeStyles(theme => ({
     },
     "& .MuiIconButton-root": {
       fontSize: "1.2rem"
+    },
+    "& .MuiInputBase-root": {
+      fontSize: "inherit"
     }
   }
 }));

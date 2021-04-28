@@ -4,9 +4,9 @@ import {Typography, Card, CardContent, Container, CardActions, Grid, CardHeader,
 import Spinner from "../../../../components/Spinner/Spinner";
 import WorkspaceTypeIcon from "../../../../components/Icons/WorkspaceTypeIcon/WorkspaceTypeIcon";
 import {MessageType, useMessage} from "../../../../components/Providers/MessageProvider";
-import {ReservationReq, ReservationRes} from "../../../../types";
+import {ReservationReq, ReservationRes, ServiceRes} from "../../../../types";
 import {useToasterCatcher, useUser} from "../../../../hooks";
-import {ReservationService} from "../../../../services";
+import {RequestService, ReservationService} from "../../../../services";
 import {getDate, getTime} from "../../../../utils";
 import PlaceIcon from "@material-ui/icons/Place";
 import {MAP_SEARCH_BASE_URL} from "../../../../config";
@@ -40,7 +40,7 @@ const ReservationsList = ({active}: {active: boolean}) => {
     setDialog(() => ({...dialog, action: "none"}));
   } 
 
-  const handleDeletion = async () => {
+  const handleReservationDeletion = async () => {
     const remaining: ReservationRes[] = await catchAndTossError(ReservationService.requestRemoval(user.email, dialog.reservation.id));
     if (!remaining) return;
     setReservations(() => remaining);
@@ -49,7 +49,7 @@ const ReservationsList = ({active}: {active: boolean}) => {
     closeDialog();
   }
 
-  const handleUpdate = async (formData: ReservationReq) => {
+  const handleReservationUpdate = async (formData: ReservationReq) => {
     const requester = user.email;
     const {id, location} = dialog.reservation;
     const requestData: ReservationReq = {...formData, id, location, requester};
@@ -60,6 +60,26 @@ const ReservationsList = ({active}: {active: boolean}) => {
 
     pushMessage({title: "Reservation is updated", type: MessageType.SUCCESS});
     closeDialog();
+  }
+
+  const handleServiceCreation = async (reservationId: string, description: string) => {
+    const addedServices: ServiceRes[] = await catchAndTossError(RequestService.add(reservationId, user.email, [description]));
+    if (!addedServices) return;
+
+    const reservations: ReservationRes[] = await catchAndTossError(ReservationService.requestList(user.email, active));
+    if (reservations) setReservations(() => reservations);
+
+    pushMessage({title: "Service is requested", type: MessageType.SUCCESS});
+  }
+
+  const handleServiceDeletion = async (id: string) => {
+    const deletedId = await catchAndTossError(RequestService.requestRemoval(id, user.email));
+    if (!deletedId) return;
+
+    const reservations: ReservationRes[] = await catchAndTossError(ReservationService.requestList(user.email, active));
+    if (reservations) setReservations(() => reservations);
+
+    pushMessage({title: "Service request is removed", type: MessageType.SUCCESS});
   }
 
   const openMap = (address: string) => {
@@ -132,7 +152,8 @@ const ReservationsList = ({active}: {active: boolean}) => {
                     {getTime(reservation.from, reservation.to)}
                   </Typography>
 
-                  {showServices && <ServiceRequestList requests={reservation.requests} editable={isEditable}/>}
+                  {showServices && <ServiceRequestList requests={reservation.requests} editable={isEditable}
+                    handleDelete={handleServiceDeletion} handleCreate={(description) => handleServiceCreation(reservation.id, description)} />}
                 </CardContent>
 
                 <CardActions>
@@ -145,8 +166,8 @@ const ReservationsList = ({active}: {active: boolean}) => {
         })}
       </Grid>
 
-      {dialog.action === "edit" && <ReservationEdit reservation={dialog.reservation} submit={handleUpdate} close={closeDialog} />}
-      <ConfirmationDialog open={dialog.action === "cancel"} onConfirm={handleDeletion} onClose={closeDialog} />
+      {dialog.action === "edit" && <ReservationEdit reservation={dialog.reservation} submit={handleReservationUpdate} close={closeDialog} />}
+      <ConfirmationDialog open={dialog.action === "cancel"} onConfirm={handleReservationDeletion} onClose={closeDialog} />
     </Container>
   );
 };

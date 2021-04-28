@@ -5,4 +5,4 @@ import {serviceDeleteSchema} from "../validation/service";
 import {UserRole} from "../types";
 
 export const router = Router();
-router.post("/", checkSession(true), checkRole(UserRole.ADMIN), validate(serviceDeleteSchema), serviceController.remove);
+router.delete("/", checkSession(true), checkRole(UserRole.ADMIN), validate(serviceDeleteSchema), serviceController.remove);
