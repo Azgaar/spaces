@@ -1,8 +1,8 @@
 import React from "react";
 import useFormStyles from "../../../styles/form";
-import {Avatar, TextField, Button, Checkbox, Typography, Grid, Link, FormHelperText, FormControlLabel, Container} from "@material-ui/core";
+import {Avatar, TextField, Button, Checkbox, Typography, Grid, FormHelperText, FormControlLabel, Container} from "@material-ui/core";
 import ListAltOutlinedIcon from "@material-ui/icons/ListAltOutlined";
-import {Link as RouterLink, Redirect, useHistory} from "react-router-dom";
+import {Redirect, useHistory} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {useForm, SubmitHandler} from "react-hook-form";
 import {SignUpForm} from "../../../types";
@@ -10,15 +10,7 @@ import {UserService} from "../../../services";
 import {actions} from "../../../store/actions";
 import {rules} from "../../../validation/user";
 import {useToasterCatcher, useUser} from "../../../hooks";
-
-const TermslLabel = () => {
-  return (
-    <>
-      {"I accept the "}
-      <Link component={RouterLink} to={"/terms"}>terms of use and privacy policy</Link>
-    </>
-  )
-}
+import Terms from "./Terms/Terms";
 
 function Signup() {
   const {isAuthenticated} = useUser();
@@ -68,10 +60,7 @@ function Signup() {
               error={Boolean(errors.passwordRepeat)} helperText={errors.passwordRepeat?.message} />
           </Grid>
           <Grid item xs={12}>
-            <FormControlLabel
-              control={<Checkbox name="acceptTerms" color="primary" inputRef={register(rules.terms)} />}
-              label={<TermslLabel />}
-            />
+            <FormControlLabel control={<Checkbox name="acceptTerms" color="primary" inputRef={register(rules.terms)} />} label={<Terms />} />
             {errors.acceptTerms && <FormHelperText error>{errors.acceptTerms.message}</FormHelperText>}
           </Grid>
         </Grid>
