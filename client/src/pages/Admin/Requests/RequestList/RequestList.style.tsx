@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
       color: theme.palette.primary.main
     },
     "& div.MuiDataGrid-colCellTitle": {
-      fontWeight: 900
+      fontWeight: 700
     }
   },
   controls: {
