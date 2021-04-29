@@ -3,12 +3,11 @@ import httpStatus from "http-status";
 import App from "../../src/App";
 import config from "../../src/config";
 import {MongoMemory, extractCookies} from "../utils";
-import {UserData, UserRole, WorkspaceData, WorkspaceStatus, WorkspaceType, LocationData, ReservationData, ReservationStatus, ServiceData, ServiceRequestStatus, ServiceDocument} from "../../src/types";
+import {UserData, UserRole, WorkspaceData, WorkspaceStatus, WorkspaceType, LocationData, ReservationData, ServiceData, ServiceRequestStatus, ServiceDocument} from "../../src/types";
 import {createUser} from "../../src/services/user";
 import locationService from "../../src/services/location";
 import workspaceService from "../../src/services/workspace";
 import reservationService from "../../src/services/reservation";
-import { ConsoleTransportOptions } from "winston/lib/winston/transports";
 
 const app = new App().getApp();
 let cookie = {admin: "", user: ""};
