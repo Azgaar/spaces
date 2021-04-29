@@ -132,3 +132,10 @@ export enum ReservationStatus {
   CURRENT = "Current",
   FUTURE = "Future",
 }
+
+export type ServiceData = {
+  location: string;
+  reservationId: string;
+  requester: string;
+  servicesList: string[]
+}

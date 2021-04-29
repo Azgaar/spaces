@@ -1,6 +1,6 @@
 import {Reservation} from "../models/reservation";
 import {Service} from "../models/service";
-import {ReservationDocument, ServiceDocument, ServiceRequestStatus} from "../types";
+import {ReservationDocument, ServiceData, ServiceDocument, ServiceRequestStatus} from "../types";
 
 const list = async (location: string, status: ServiceRequestStatus) => {
   const services: ServiceDocument[] = await Service.find({location, status})
@@ -8,7 +8,7 @@ const list = async (location: string, status: ServiceRequestStatus) => {
   return services;
 };
 
-const add = async ({location, reservationId, requester, servicesList}: RequestServicesReq) => {
+const add = async ({location, reservationId, requester, servicesList}: ServiceData) => {
   const servicesData = servicesList.map(description => ({location, reservation: reservationId, requester, description, status: ServiceRequestStatus.PENDING}));
   const services: ServiceDocument[] | null = await Service.insertMany(servicesData);
   const reservation: ReservationDocument | null = await Reservation.findOneAndUpdate({_id: reservationId}, {$push: {requests: {$each: services.map(s => s.id)}}}, {new: true, useFindAndModify: false});
@@ -26,12 +26,5 @@ const remove = async (serviceIds: string[]) => {
 const requestRemoval = async (id: string, requester: string) => {
   return await Service.deleteOne({_id: id, requester});
 };
-
-type RequestServicesReq = {
-  location: string;
-  reservationId: string;
-  requester: string;
-  servicesList: string[];
-}
 
 export default {list, add, process, remove, requestRemoval};

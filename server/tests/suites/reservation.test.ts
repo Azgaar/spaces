@@ -29,7 +29,7 @@ const workspace: WorkspaceData = {description: "WS_1", location: "", status: Wor
 const reservation: ReservationData = {location: "", workspace: "", requester: admin.email, from: IN_1_HOUR, to: IN_2_HOURS};
 let reservationId: null | string = null;
 
-describe("Reservation management service", () => {
+describe("Reservation service", () => {
   beforeAll(async () => {
     MongoMemory.connect();
 
