@@ -74,7 +74,7 @@ const ReservationsList = ({active}: {active: boolean}) => {
   }
 
   const handleServiceDeletion = async (id: string) => {
-    const deletedId = await catchAndTossError(RequestService.requestRemoval(id, user.email));
+    const {id: deletedId} = await catchAndTossError(RequestService.requestRemoval(id, user.email));
     if (!deletedId) return;
 
     const reservations: ReservationRes[] = await catchAndTossError(ReservationService.requestList(user.email, active));

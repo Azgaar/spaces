@@ -17,7 +17,7 @@ const requestRemoval = catchAsync(async (req, res, next) => {
   const result = await service.requestRemoval(id, requester);
   if (!result) return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Cannot remove service request"));
   logger.info(`[Service] Service request ${id} is removed`);
-  res.status(httpStatus.OK).send(id);
+  res.status(httpStatus.OK).send({id});
 });
 
 const list = catchAsync(async (req, res, next) => {

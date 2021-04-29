@@ -58,6 +58,7 @@ export interface ServiceDocument extends Document {
   location: string;
   requester: string;
   description: string;
+  reservation: string;
   status: ServiceRequestStatus;
 }
 
