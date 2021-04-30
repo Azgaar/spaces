@@ -11,6 +11,7 @@
 /client/build
 
 /server/dist
+/server/coverage
 server/combined.log
 server/error.log
 
