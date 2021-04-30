@@ -8,10 +8,17 @@ const useStyles = makeStyles(theme => ({
   logo: {
     height: "3em"
   },
-  buttons: {
-    marginLeft: "auto",
-    "& a": {
-      padding: theme.spacing(0, 0.8)
+  title: {
+    flexGrow: 1
+  },
+  drawer: {
+    fontSize: "bigger",
+    "& .MuiDrawer-paper": {
+      minWidth: "160px",
+      fontSize: "large"
+    },
+    "& .MuiMenuItem-root": {
+      fontWeight: 600
     }
   }
 }));
