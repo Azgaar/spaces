@@ -6,6 +6,7 @@ import {PrivateRoute} from "./PrivateRoute";
 import {UserRole} from "../types";
 
 const Home = React.lazy(() => import("../pages/Home/Home"));
+const Page404 = React.lazy(() => import("../pages/Page404/Page404"));
 
 const Signin = React.lazy(() => import("../pages/Auth/Signin/Signin"));
 const Signup = React.lazy(() => import("../pages/Auth/Signup/Signup"));
@@ -48,7 +49,7 @@ function App() {
           <PrivateRoute path="/admin/workspaces" requiredRole={UserRole.ADMIN} component={ManageWorkspaces} />
           <PrivateRoute path="/admin/users" requiredRole={UserRole.ADMIN} component={ManageUsers} />
 
-          <Route path="/*" component={Home} />
+          <Route path="/*" component={Page404} />
         </Switch>
       </Suspense>
     </Layout>

@@ -10,7 +10,8 @@ import CollectionsBookmarkIcon from "@material-ui/icons/CollectionsBookmark";
 import BookIcon from "@material-ui/icons/Book";
 import TodayIcon from "@material-ui/icons/Today";
 import DateRangeIcon from "@material-ui/icons/DateRange";
-import RoomServiceIcon from '@material-ui/icons/RoomService';
+import RoomServiceIcon from "@material-ui/icons/RoomService";
+import MoodBadIcon from "@material-ui/icons/MoodBad";
 
 const HeadlineIconDefault: ElementType = HelpOutlineIcon;
 const HeadlineIconMap: {[key: string]: ElementType} = {
@@ -25,7 +26,8 @@ const HeadlineIconMap: {[key: string]: ElementType} = {
   "Active Reservations": TodayIcon,
   "Reservations History": DateRangeIcon,
   "Request Services": RoomServiceIcon,
-  "Manage Service Requests": RoomServiceIcon
+  "Manage Service Requests": RoomServiceIcon,
+  "Error 404": MoodBadIcon
 }
 
 function Headline({pagename}: {pagename: string}): ReactElement {
