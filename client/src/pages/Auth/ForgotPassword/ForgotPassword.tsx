@@ -25,7 +25,7 @@ function ForgotPassword() {
     history.push("/signin");
   };
 
-  if (isAuthenticated) return <Redirect to="/home" />;
+  if (isAuthenticated) return <Redirect to="/" />;
   return (
     <Container maxWidth="xs" className={formStyles.paper}>
       <Avatar className={formStyles.avatar}>

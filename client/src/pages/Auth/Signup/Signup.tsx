@@ -26,10 +26,10 @@ function Signup() {
     const res = await catchAndTossError(UserService.signup(formData));
     if (!res) return
     dispatch(actions.login(res));
-    history.push("/home");
+    history.push("/");
   };
 
-  if (isAuthenticated) return <Redirect to="/home" />;
+  if (isAuthenticated) return <Redirect to="/" />;
   return (
     <Container maxWidth="xs" className={formStyles.paper}>
       <Avatar className={formStyles.avatar}>

@@ -13,7 +13,7 @@ const PrivateRoute = ({path, requiredRole, component}: RouteProps): React.ReactE
   const {isAuthenticated, user} = useUser();
 
   if (!isAuthenticated) return <Redirect to="/signin" />;
-  if (requiredRole && user.role !== requiredRole) return <Redirect to="/home" />;
+  if (requiredRole && user.role !== requiredRole) return <Redirect to="/" />;
   return <Route path={path} component={component} />;
 };
 

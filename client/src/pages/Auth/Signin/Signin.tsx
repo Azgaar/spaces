@@ -23,10 +23,10 @@ function Signin() {
     const userData: UserData = await catchAndTossError(AuthService.signin(formData));
     if (!userData) return;
     dispatch(actions.login(userData));
-    history.push("/home");
+    history.push("/");
   };
 
-  if (isAuthenticated) return <Redirect to="/home" />;
+  if (isAuthenticated) return <Redirect to="/" />;
   return (
     <Container maxWidth="xs" className={formStyles.paper}>
       <Avatar className={formStyles.avatar}>
