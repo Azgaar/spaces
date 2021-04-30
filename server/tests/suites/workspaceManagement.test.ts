@@ -55,7 +55,7 @@ describe("Workspace management service", () => {
     expect(response.body.type).toBe(workspace.type);
     expect(response.body.size).toBe(workspace.size);
     expect(Array.isArray(response.body.equipment)).toBe(true);
-    expect(response.body.equipment.length).toBe(0);
+    expect(response.body.equipment.length).toBe(workspace.equipment.length);
   });
 
   it("allows to get workspace list for admin", async () => {
