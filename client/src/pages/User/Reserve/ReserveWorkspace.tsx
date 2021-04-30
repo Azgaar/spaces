@@ -4,7 +4,7 @@ import {Button, Chip, Container, FilledInput, FormControl, Grid, InputLabel, Men
 import CircularProgress from "@material-ui/core/CircularProgress";
 import {Autocomplete} from "@material-ui/lab";
 import {Equipment, LocationOption, ReservationFilters, ReservationFilterErrors, WorkspaceType, ReservationReq, ReservationRes, ServiceRes, ServiceReq} from "../../../types";
-import {useLocations, useToasterCatcher, useUser} from "../../../hooks";
+import {useDebounce, useLocations, useToasterCatcher, useUser} from "../../../hooks";
 import AvailableWorkspaces from "./AvailableWorkspaces/AvailableWorkspaces";
 import {DateTimePicker} from "@material-ui/pickers";
 import dayjs, {Dayjs} from "dayjs";
@@ -32,6 +32,7 @@ function ReserveWorkspace() {
   const classes = useStyles();
   const {locations, locationsLoading, fetchLocations} = useLocations();
   const [filters, setFilters] = useState<ReservationFilters>(defaultFilters);
+  const debouncedFilters = useDebounce(filters, 500) as ReservationFilters;
   const [filterErrors, setfilterErrors] = useState<ReservationFilterErrors>(validateFilters());
   const [workspaceId, setWorkspaceId] = useState<string>("");
   const [services, setServices] = useState<Services>({isOpen: false, list: []});
@@ -46,9 +47,10 @@ function ReserveWorkspace() {
   useEffect(() => {
     const errors = validateFilters();
     setfilterErrors(() => errors);
-  }, [filters]);
+  }, [debouncedFilters]);
 
   function validateFilters(): ReservationFilterErrors {
+    const filters = debouncedFilters;
     const errors: ReservationFilterErrors = {
       location: locations.length > 0 && !filters.location.id,
       from: !filters.from || filters.from > filters.to,
@@ -204,7 +206,7 @@ function ReserveWorkspace() {
             </Grid>
           </Grid>
 
-          <AvailableWorkspaces filters={filters} errored={filterErrors.errored} selectedWS={workspaceId} selectWorkspace={selectWorkspace} />
+          <AvailableWorkspaces filters={debouncedFilters} errored={filterErrors.errored} selectedWS={workspaceId} selectWorkspace={selectWorkspace} />
 
           <Grid container spacing={2} className={classes.controls}>
             <Grid item lg={2} md={3} sm={4} xs={12}>

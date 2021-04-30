@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {AxiosPromise} from "axios";
 import {LocationOption, RootState, UserRole} from "../types";
@@ -74,3 +74,15 @@ export const useLocations = () => {
 
   return {locations, setLocations, locationsLoading: isLoading, location, setLocation, fetchLocations};
 };
+
+export const useDebounce = (value: unknown, delay: number) => {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+      const handler = setTimeout(() => setDebouncedValue(value), delay);
+      return () => clearTimeout(handler);
+    }, [value]
+  );
+
+  return debouncedValue;
+}
