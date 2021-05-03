@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, FC} from 'react';
 import {Typography, Container, Box} from '@material-ui/core';
 import Headline from '../../components/Layout/components/Main/Headline/Headline';
 import MoodBadIcon from '@material-ui/icons/MoodBad';
 import useFormStyles from '../../styles/form';
 
-function Page404() {
+const Page404: FC = () => {
   const formStyles = useFormStyles();
   const [faceCount, setFaceCount] = useState<number>(1);
 
@@ -26,6 +26,6 @@ function Page404() {
       </Box>
     </Container>
   );
-}
+};
 
 export default Page404;

@@ -17,7 +17,7 @@ export const gridColDateDiffFormat: GridColTypeDef = {
   valueFormatter: ({value}) => getDiff(value as string)
 };
 
-export const getDate = (from: string, to: string) => {
+export const getDate = (from: string, to: string): string => {
   const start = dayjs(from).format(DATE_FORMAT);
   const end = dayjs(to).format(DATE_FORMAT);
   const date = start === end ? start : `${dayjs(from).format('MMMM D')} — ${dayjs(to).format('MMMM D')}`;
@@ -25,7 +25,7 @@ export const getDate = (from: string, to: string) => {
   return `${readable} | ${date}`;
 };
 
-export const getTime = (from: string, to: string) => {
+export const getTime = (from: string, to: string): string => {
   const startA = dayjs(from).format('A');
   const endA = dayjs(to).format('A');
   const start = dayjs(from).format(startA === endA ? 'h:mm' : 'h:mm A');
@@ -33,16 +33,21 @@ export const getTime = (from: string, to: string) => {
   return `${start} — ${end}`;
 };
 
-export const getDiff = (date: string) => dayjs().to(dayjs(date));
+export const getDiff = (date: string): string => dayjs().to(dayjs(date));
 
 const getHumanReadDiff = (from: string, to: string) => {
   const now = dayjs().toISOString();
-  if (from > now) {return 'Begins ' + getDiff(from);}
-  if (from < now && to > now) {return 'Ends ' + getDiff(to);}
-  else {return getDiff(to);}
+  if (from > now) {
+    return 'Begins ' + getDiff(from);
+  }
+  if (from < now && to > now) {
+    return 'Ends ' + getDiff(to);
+  } else {
+    return getDiff(to);
+  }
 };
 
-export const getMaxDate = () => {
+export const getMaxDate = (): string => {
   const date = new Date();
   const month = date.getMonth();
   const year = date.getFullYear();

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, FC} from 'react';
 import useStyles from './UsersList.style';
 import {Container} from '@material-ui/core';
 import DeletionButton from '../../../../components/Controls/DeletionButton/DeletionButton';
@@ -17,7 +17,7 @@ const columns: GridColDef[] = [
   {field: 'updatedAt', headerName: 'Last updated', ...gridColDateDiffFormat}
 ];
 
-const UsersList = () => {
+const UsersList: FC = () => {
   const classes = useStyles();
   const {pushMessage} = useMessage();
   const [users, setUsers] = useState<UserData[]>([]);
@@ -26,8 +26,10 @@ const UsersList = () => {
 
   useEffect(() => {
     async function fetchUsers() {
-      const allUsers: UserData[] = await catchAndTossError(UserService.list());
-      if (allUsers) {setUsers(() => allUsers);}
+      const allUsers = await catchAndTossError(UserService.list());
+      if (allUsers) {
+        setUsers(() => allUsers as UserData[]);
+      }
     }
     fetchUsers();
   }, []);
@@ -38,8 +40,10 @@ const UsersList = () => {
   };
 
   const handleDeletion = async () => {
-    const remainingUsers: UserData[] = await catchAndTossError(UserService.remove(selection));
-    if (!remainingUsers) {return;}
+    const remainingUsers = (await catchAndTossError(UserService.remove(selection))) as UserData[] | undefined;
+    if (!remainingUsers) {
+      return;
+    }
     setUsers(() => remainingUsers);
     setSelection(() => [] as GridRowId[]);
     const title = selection.length > 1 ? `Users "${selection.join(', ')}" are removed` : `User "${selection[0]}" is removed`;

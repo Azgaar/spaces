@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {Redirect} from 'react-router-dom';
 import {useUser} from '../../hooks';
 
-function Home() {
+const Home: FC = () => {
   const {isAuthenticated, isAdmin} = useUser();
 
   if (!isAuthenticated) {
@@ -12,6 +12,6 @@ function Home() {
     return <Redirect to="/admin/reservations" />;
   }
   return <Redirect to="/reservations" />;
-}
+};
 
 export default Home;

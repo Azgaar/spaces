@@ -1,18 +1,18 @@
-import React from 'react';
+import React, {FC} from 'react';
 import useFormStyles from '../../../styles/form';
 import {Avatar, TextField, Button, Typography, Grid, Container} from '@material-ui/core';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import {Link as RouterLink, useHistory} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import {useForm, SubmitHandler} from 'react-hook-form';
-import {ProfileEditForm} from '../../../types';
+import {ProfileEditForm, UserData} from '../../../types';
 import {UserService} from '../../../services';
 import {actions} from '../../../store/actions';
 import {useToasterCatcher, useUser} from '../../../hooks';
 import {rules} from '../../../validation/user';
 import {MessageType, useMessage} from '../../../components/Providers/MessageProvider';
 
-function ProfileEdit() {
+const ProfileEdit: FC = () => {
   const formStyles = useFormStyles();
   const dispatch = useDispatch();
   const {user} = useUser();
@@ -23,11 +23,12 @@ function ProfileEdit() {
   const {register, errors, handleSubmit} = useForm<ProfileEditForm>();
 
   const onSubmit: SubmitHandler<ProfileEditForm> = async (formData: ProfileEditForm) => {
-    const res = await catchAndTossError(UserService.update(formData));
-    if (!res) {return;}
-    dispatch(actions.updateUserData(res));
-    pushMessage({title: 'Profile is changed', type: MessageType.SUCCESS});
-    history.push('/profile');
+    const userData = (await catchAndTossError(UserService.update(formData))) as UserData | undefined;
+    if (userData) {
+      dispatch(actions.updateUserData(userData));
+      pushMessage({title: 'Profile is changed', type: MessageType.SUCCESS});
+      history.push('/profile');
+    }
   };
 
   return (
@@ -113,6 +114,6 @@ function ProfileEdit() {
       </form>
     </Container>
   );
-}
+};
 
 export default ProfileEdit;

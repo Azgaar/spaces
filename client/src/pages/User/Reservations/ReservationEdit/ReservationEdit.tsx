@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, FC} from 'react';
 import useStyles from './ReservationEdit.style';
 import {TextField, Button, Grid, Container, Dialog, MenuItem, FormControl} from '@material-ui/core';
 import Headline from '../../../../components/Layout/components/Main/Headline/Headline';
@@ -17,7 +17,7 @@ type Props = {
   submit: (formData: ReservationReq) => void;
 };
 
-const ReservationEdit = ({reservation, close, submit}: Props) => {
+const ReservationEdit: FC<Props> = ({reservation, close, submit}) => {
   const {id, from, to, workspace, location} = reservation;
   const [slot, setSlot] = useState<{from: string; to: string}>({from, to});
   const classes = useStyles();
@@ -28,21 +28,31 @@ const ReservationEdit = ({reservation, close, submit}: Props) => {
   useEffect(() => {
     async function fetchWorkspaces() {
       const {from, to} = slot;
-      const freeWorkspaces: Workspace[] = await catchAndTossError(WorkspaceService.find({location, from, to, excludeReservation: id}));
-      if (freeWorkspaces) {setFreeWorkspaces(() => freeWorkspaces);}
-      if (!freeWorkspaces || !freeWorkspaces.length) {setValue('workspace', '');}
+      const freeWorkspaces = (await catchAndTossError(WorkspaceService.find({location, from, to, excludeReservation: id}))) as Workspace[] | undefined;
+      if (freeWorkspaces) {
+        setFreeWorkspaces(() => freeWorkspaces);
+      }
+      if (!freeWorkspaces || !freeWorkspaces.length) {
+        setValue('workspace', '');
+      }
     }
-    if (!errors.from && !errors.to) {fetchWorkspaces();}
+    if (!errors.from && !errors.to) {
+      fetchWorkspaces();
+    }
   }, [slot]);
 
   const getLabel = (ws: Workspace) => {
     let label = `${ws.description}: ${ws.type} [${ws.size}]`;
-    if (ws.equipment.length) {label += ' with ' + ws.equipment.join(', ');}
+    if (ws.equipment.length) {
+      label += ' with ' + ws.equipment.join(', ');
+    }
     return label;
   };
 
   const changeDate = (date: Dayjs | null, name: 'from' | 'to') => {
-    if (!date) {return;}
+    if (!date) {
+      return;
+    }
     const dateString = date.toISOString();
     const {from, to} = name === 'from' ? {to: slot.to, from: dateString} : {from: slot.from, to: dateString};
     setSlot(() => ({from, to}));

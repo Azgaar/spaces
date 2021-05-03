@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, FC} from 'react';
 import useStyles from './ReservationsList.style';
 import {Typography, Card, CardContent, Container, CardActions, Grid, CardHeader, Badge, Divider, IconButton, Button, Box} from '@material-ui/core';
 import Spinner from '../../../../components/Spinner/Spinner';
@@ -18,7 +18,7 @@ import ReservationEdit from '../ReservationEdit/ReservationEdit';
 import ConfirmationDialog from '../../../../components/Controls/ConfirmationDialog/ConfirmationDialog';
 import ServiceRequestList from './ServiceRequestList/ServiceRequestList';
 
-const ReservationsList = ({active}: {active: boolean}) => {
+const ReservationsList: FC<{active: boolean}> = ({active}) => {
   const classes = useStyles();
   const {pushMessage} = useMessage();
   const {user} = useUser();
@@ -29,8 +29,10 @@ const ReservationsList = ({active}: {active: boolean}) => {
 
   useEffect(() => {
     async function fetchUserReservations() {
-      const reservations: ReservationRes[] = await catchAndTossError(ReservationService.requestList(user.email, active));
-      if (reservations) {setReservations(() => reservations);}
+      const reservations = (await catchAndTossError(ReservationService.requestList(user.email, active))) as ReservationRes[] | undefined;
+      if (reservations) {
+        setReservations(() => reservations);
+      }
     }
 
     fetchUserReservations();
@@ -41,12 +43,12 @@ const ReservationsList = ({active}: {active: boolean}) => {
   };
 
   const handleReservationDeletion = async () => {
-    const remaining: ReservationRes[] = await catchAndTossError(ReservationService.requestRemoval(user.email, dialog.reservation.id));
-    if (!remaining) {return;}
-    setReservations(() => remaining);
-
-    pushMessage({title: 'Reservation is removed', type: MessageType.SUCCESS});
-    closeDialog();
+    const remaining = (await catchAndTossError(ReservationService.requestRemoval(user.email, dialog.reservation.id))) as ReservationRes[] | undefined;
+    if (remaining) {
+      setReservations(() => remaining);
+      pushMessage({title: 'Reservation is removed', type: MessageType.SUCCESS});
+      closeDialog();
+    }
   };
 
   const handleReservationUpdate = async (formData: ReservationReq) => {
@@ -54,8 +56,10 @@ const ReservationsList = ({active}: {active: boolean}) => {
     const requestData: ReservationReq = {...formData, id, location, requester: user.email};
     await catchAndTossError(ReservationService.update(requestData));
 
-    const reservations: ReservationRes[] = await catchAndTossError(ReservationService.requestList(user.email, active));
-    if (reservations) {setReservations(() => reservations);}
+    const reservations = (await catchAndTossError(ReservationService.requestList(user.email, active))) as ReservationRes[] | undefined;
+    if (reservations) {
+      setReservations(() => reservations);
+    }
 
     pushMessage({title: 'Reservation is updated', type: MessageType.SUCCESS});
     closeDialog();
@@ -64,21 +68,29 @@ const ReservationsList = ({active}: {active: boolean}) => {
   const handleServiceCreation = async (reservation: ReservationRes, description: string) => {
     const {id, location} = reservation;
     const requestData: ServiceReq = {location, reservationId: id, requester: user.email, servicesList: [description]};
-    const addedServices: ServiceRes[] = await catchAndTossError(RequestService.add(requestData));
-    if (!addedServices) {return;}
+    const addedServices = (await catchAndTossError(RequestService.add(requestData))) as ServiceRes[] | undefined;
+    if (!addedServices) {
+      return;
+    }
 
-    const reservations: ReservationRes[] = await catchAndTossError(ReservationService.requestList(user.email, active));
-    if (reservations) {setReservations(() => reservations);}
+    const reservations = (await catchAndTossError(ReservationService.requestList(user.email, active))) as ReservationRes[] | undefined;
+    if (reservations) {
+      setReservations(() => reservations);
+    }
 
     pushMessage({title: 'Service is requested', type: MessageType.SUCCESS});
   };
 
   const handleServiceDeletion = async (id: string) => {
-    const {id: deletedId} = await catchAndTossError(RequestService.requestRemoval(id, user.email));
-    if (!deletedId) {return;}
+    const {id: deletedId} = (await catchAndTossError(RequestService.requestRemoval(id, user.email))) as {id: string};
+    if (!deletedId) {
+      return;
+    }
 
-    const reservations: ReservationRes[] = await catchAndTossError(ReservationService.requestList(user.email, active));
-    if (reservations) {setReservations(() => reservations);}
+    const reservations = (await catchAndTossError(ReservationService.requestList(user.email, active))) as ReservationRes[] | undefined;
+    if (reservations) {
+      setReservations(() => reservations);
+    }
 
     pushMessage({title: 'Service request is removed', type: MessageType.SUCCESS});
   };
@@ -92,7 +104,9 @@ const ReservationsList = ({active}: {active: boolean}) => {
     history.push('/reserve');
   };
 
-  if (isLoading) {return <Spinner />;}
+  if (isLoading) {
+    return <Spinner />;
+  }
   return (
     <Container className={classes.container}>
       <Grid container spacing={2}>

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, FC} from 'react';
 import useStyles from './Workspaces.style';
 import {Button, Container, Grid, TextField} from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -11,7 +11,7 @@ import {LocationOption} from '../../../types';
 import {useLocations, useToasterCatcher} from '../../../hooks';
 import {LocationService} from '../../../services';
 
-function Workspaces() {
+const Workspaces: FC = () => {
   const classes = useStyles();
   const {pushMessage} = useMessage();
   const blankLocation: LocationOption = {id: '', description: ''};
@@ -24,15 +24,19 @@ function Workspaces() {
   }, []);
 
   const handleLocationChange = (value: LocationOption | string | null) => {
-    if (!value) {setLocation(() => blankLocation);}
-    if (!value || typeof value === 'string') {return;}
+    if (!value) {
+      setLocation(() => blankLocation);
+    }
+    if (!value || typeof value === 'string') {
+      return;
+    }
 
     setLocation(() => value);
     localStorage.setItem('location', JSON.stringify(value));
   };
 
   const addLocation = async () => {
-    const addedLocation: LocationOption = await catchAndTossError(LocationService.add(locationInput));
+    const addedLocation = (await catchAndTossError(LocationService.add(locationInput))) as LocationOption | undefined;
     if (addedLocation) {
       pushMessage({title: `Location "${locationInput}" is added`, type: MessageType.SUCCESS});
       setLocations((locations) => [...locations, addedLocation]);
@@ -41,19 +45,19 @@ function Workspaces() {
   };
 
   const renameLocation = async () => {
-    const allLocations: LocationOption[] = await catchAndTossError(LocationService.rename(location.id, locationInput));
+    const allLocations = await catchAndTossError(LocationService.rename(location.id, locationInput));
     if (allLocations) {
       pushMessage({title: `Location "${locationInput}" is renamed`, type: MessageType.SUCCESS});
-      setLocations(() => allLocations);
+      setLocations(() => allLocations as LocationOption[]);
       setLocation(() => ({id: location.id, description: locationInput}));
     }
   };
 
   const deleteLocation = async () => {
-    const remainingLocations: LocationOption[] = await catchAndTossError(LocationService.remove(location.id));
+    const remainingLocations = await catchAndTossError(LocationService.remove(location.id));
     if (remainingLocations) {
       pushMessage({title: `Location "${location.description}" is deleted`, type: MessageType.SUCCESS});
-      setLocations(() => remainingLocations);
+      setLocations(() => remainingLocations as LocationOption[]);
       setLocationInput(() => '');
       setLocation(() => blankLocation);
     }
@@ -111,6 +115,6 @@ function Workspaces() {
       <WorkspacesList loc={location} />
     </Container>
   );
-}
+};
 
 export default Workspaces;

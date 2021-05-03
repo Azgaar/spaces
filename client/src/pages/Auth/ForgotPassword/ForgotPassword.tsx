@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC} from 'react';
 import useFormStyles from '../../../styles/form';
 import {Avatar, TextField, Button, Typography, Grid, Container} from '@material-ui/core';
 import MailOutlineOutlinedIcon from '@material-ui/icons/MailOutlineOutlined';
@@ -10,7 +10,7 @@ import {rules} from '../../../validation/user';
 import {MessageType, useMessage} from '../../../components/Providers/MessageProvider';
 import {useToasterCatcher, useUser} from '../../../hooks';
 
-function ForgotPassword() {
+const ForgotPassword: FC = () => {
   const {isAuthenticated} = useUser();
   const formStyles = useFormStyles();
   const {pushMessage} = useMessage();
@@ -20,12 +20,16 @@ function ForgotPassword() {
 
   const onSubmit: SubmitHandler<ForgotPasswordForm> = async (formData: ForgotPasswordForm) => {
     const res = await catchAndTossError(UserService.resetPassword(formData));
-    if (!res) {return;}
+    if (!res) {
+      return;
+    }
     pushMessage({title: `Email is send to ${formData.email}`, type: MessageType.SUCCESS});
     history.push('/signin');
   };
 
-  if (isAuthenticated) {return <Redirect to="/" />;}
+  if (isAuthenticated) {
+    return <Redirect to="/" />;
+  }
   return (
     <Container maxWidth="xs" className={formStyles.paper}>
       <Avatar className={formStyles.avatar}>
@@ -71,6 +75,6 @@ function ForgotPassword() {
       </form>
     </Container>
   );
-}
+};
 
 export default ForgotPassword;

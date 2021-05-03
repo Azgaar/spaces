@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, FC} from 'react';
 import useStyles from './WorkspaceDialog.style';
 import {TextField, Button, Grid, Container, Dialog, MenuItem, Chip, InputLabel, Select} from '@material-ui/core';
 import {useForm} from 'react-hook-form';
@@ -14,10 +14,10 @@ type Props = {
   submit: (formData: Workspace) => void;
 };
 
-const WorkspaceDialog = ({mode, workspace, close, submit}: Props) => {
+const WorkspaceDialog: FC<Props> = ({mode, workspace, close, submit}) => {
   const classes = useStyles();
   const {register, errors, setValue, handleSubmit, reset} = useForm<Workspace>();
-  const pagename: string = `${mode} Workspace`;
+  const pagename = `${mode} Workspace`;
 
   useEffect(() => {
     reset({status: workspace.status, type: workspace.type, equipment: workspace.equipment});

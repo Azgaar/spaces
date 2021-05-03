@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState, FC} from 'react';
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Link} from '@material-ui/core';
 import {TERMS_OF_USE} from './Text/terms';
 import {PRIVACY_POLICY} from './Text/privacy';
 
-const Terms = () => {
+const Terms: FC = () => {
   const [dialog, setDialog] = useState('');
   const openTerms = () => setDialog(() => 'Terms of use');
   const openPrivacy = () => setDialog(() => 'Privacy policy');

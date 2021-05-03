@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, useState, FC} from 'react';
 import useStyles from './ServiceRequestList.style';
 import {List, ListItem, ListItemIcon, ListItemText, ListItemSecondaryAction, IconButton, TextField} from '@material-ui/core';
 import {ServiceRes} from '../../../../../types';
@@ -26,7 +26,7 @@ type DeletionRequest = {
   id: null | string;
 };
 
-const ServiceRequestList = ({requests, editable, handleDelete, handleCreate}: Props) => {
+const ServiceRequestList: FC<Props> = ({requests, editable, handleDelete, handleCreate}) => {
   const classes = useStyles();
   const [creation, setCreation] = useState<CreationRequest>({isActive: false, value: '', error: true});
   const [deletion, setDeletion] = useState<DeletionRequest>({isActive: false, id: null});
@@ -38,12 +38,18 @@ const ServiceRequestList = ({requests, editable, handleDelete, handleCreate}: Pr
     setCreation(() => ({isActive: true, value, error: validate(value)}));
   };
   const validate = (value: string) => {
-    if (!value || value.length < 3) {return 'Min request length is 3 characters';}
-    if (value.length > 512) {return 'Max request length is 512 characters';}
+    if (!value || value.length < 3) {
+      return 'Min request length is 3 characters';
+    }
+    if (value.length > 512) {
+      return 'Max request length is 512 characters';
+    }
     return false;
   };
   const confirmCreation = () => {
-    if (creation.error) {return;}
+    if (creation.error) {
+      return;
+    }
     handleCreate(creation.value);
     setCreation(() => ({isActive: false, value: '', error: true}));
   };

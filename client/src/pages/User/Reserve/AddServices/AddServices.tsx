@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, FC} from 'react';
 import useStyles from './AddServices.style';
 import {Container, FormControl, Dialog, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, TextField, Button} from '@material-ui/core';
 import Headline from '../../../../components/Layout/components/Main/Headline/Headline';
@@ -24,15 +24,19 @@ type Props = {
   onDelete: (value: string) => void;
 };
 
-const AddServices = ({open, services, onClose, onAdd, onDelete}: Props) => {
+const AddServices: FC<Props> = ({open, services, onClose, onAdd, onDelete}) => {
   const classes = useStyles();
   const blankService = {value: '', input: '', error: false};
   const [service, setService] = useState<Service>(blankService);
 
   const handleAdd = (value: string | null) => {
-    if (service.error) {return;}
+    if (service.error) {
+      return;
+    }
     setService(() => blankService);
-    if (!value) {return;}
+    if (!value) {
+      return;
+    }
     onAdd(value);
   };
 
@@ -41,8 +45,12 @@ const AddServices = ({open, services, onClose, onAdd, onDelete}: Props) => {
   };
 
   const validate = (value: string) => {
-    if (!value || value.length < 3) {return 'Min request length is 3 characters';}
-    if (value.length > 512) {return 'Max request length is 512 characters';}
+    if (!value || value.length < 3) {
+      return 'Min request length is 3 characters';
+    }
+    if (value.length > 512) {
+      return 'Max request length is 512 characters';
+    }
     return false;
   };
 

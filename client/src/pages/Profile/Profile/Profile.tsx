@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {FC} from 'react';
 import useFormStyles from '../../../styles/form';
 import {Avatar, TextField, Button, Typography, Grid, Container} from '@material-ui/core';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import {Link as RouterLink} from 'react-router-dom';
 import {useUser} from '../../../hooks';
 
-function Profile() {
+const Profile: FC = () => {
   const formStyles = useFormStyles();
   const {user} = useUser();
   const readOnly = {readOnly: true};
@@ -46,6 +46,6 @@ function Profile() {
       </form>
     </Container>
   );
-}
+};
 
 export default Profile;

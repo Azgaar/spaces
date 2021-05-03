@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, FC} from 'react';
 import useStyles from './AvailableWorkspaces.style';
 import {Badge, Card, CardActionArea, CardHeader, Grid, LinearProgress} from '@material-ui/core';
 import {useToasterCatcher} from '../../../../hooks';
@@ -15,7 +15,7 @@ type Props = {
   selectWorkspace: (workspaceId: string) => void;
 };
 
-const AvailableWorkspaces = ({filters, errored, selectedWS, selectWorkspace}: Props) => {
+const AvailableWorkspaces: FC<Props> = ({filters, errored, selectedWS, selectWorkspace}) => {
   const classes = useStyles();
   const {isLoading, setLoading, catchAndTossError} = useToasterCatcher();
   const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
@@ -27,7 +27,7 @@ const AvailableWorkspaces = ({filters, errored, selectedWS, selectWorkspace}: Pr
       const type = filters.type === 'Any' ? undefined : filters.type;
       const criteria: WorkspaceSearchCriteria = {...filters, location, type};
 
-      const freeWorkspaces: Workspace[] = await catchAndTossError(WorkspaceService.find(criteria));
+      const freeWorkspaces = (await catchAndTossError(WorkspaceService.find(criteria))) as Workspace[] | undefined;
       setWorkspaces(() => freeWorkspaces || []);
     }
 
@@ -37,15 +37,21 @@ const AvailableWorkspaces = ({filters, errored, selectedWS, selectWorkspace}: Pr
   useEffect(() => {
     if (selectedWS) {
       const availableSelectedElement = workspaces.find((ws) => ws.id === selectedWS);
-      if (!availableSelectedElement) {selectWorkspace('');}
+      if (!availableSelectedElement) {
+        selectWorkspace('');
+      }
     } else if (lastSelectedWS) {
       const availableLastSelectedElement = workspaces.find((ws) => ws.id === lastSelectedWS);
-      if (availableLastSelectedElement) {selectWorkspace(lastSelectedWS);}
+      if (availableLastSelectedElement) {
+        selectWorkspace(lastSelectedWS);
+      }
     }
   }, [workspaces]);
 
   const handleSelect = (workspaceId: string): void => {
-    if (workspaceId) {setLastSelectedWS(() => workspaceId);}
+    if (workspaceId) {
+      setLastSelectedWS(() => workspaceId);
+    }
     selectWorkspace(workspaceId);
   };
 

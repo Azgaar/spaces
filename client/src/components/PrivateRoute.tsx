@@ -1,19 +1,23 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {Route, Redirect} from 'react-router-dom';
 import {useUser} from '../hooks';
 import {UserRole} from '../types';
 
-type RouteProps = {
+type Props = {
   path: string;
   requiredRole?: UserRole;
-  component: React.FC;
+  component: FC;
 };
 
-const PrivateRoute = ({path, requiredRole, component}: RouteProps): React.ReactElement => {
+const PrivateRoute: FC<Props> = ({path, requiredRole, component}) => {
   const {isAuthenticated, user} = useUser();
 
-  if (!isAuthenticated) {return <Redirect to="/signin" />;}
-  if (requiredRole && user.role !== requiredRole) {return <Redirect to="/" />;}
+  if (!isAuthenticated) {
+    return <Redirect to="/signin" />;
+  }
+  if (requiredRole && user.role !== requiredRole) {
+    return <Redirect to="/" />;
+  }
   return <Route path={path} component={component} />;
 };
 

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, FC} from 'react';
 import useStyles from './WorkspacesList.style';
 import {Button, Container} from '@material-ui/core';
 import {DataGrid, GridColDef, GridColTypeDef, GridRowId, GridSelectionModelChangeParams} from '@material-ui/data-grid';
@@ -21,7 +21,7 @@ const columns: GridColDef[] = [
   {field: 'equipment', headerName: 'Equipment', flex: 1.5, ...equipmentColumn}
 ];
 
-const WorkspacesList = ({loc}: {loc: LocationOption}) => {
+const WorkspacesList: FC<{loc: LocationOption}> = ({loc}) => {
   const classes = useStyles();
   const {pushMessage} = useMessage();
   const [showEdit, setEdit] = useState<string | null>(null);
@@ -41,8 +41,10 @@ const WorkspacesList = ({loc}: {loc: LocationOption}) => {
 
   useEffect(() => {
     async function fetchWorkspaces() {
-      const workspaces: Workspace[] = await catchAndTossError(WorkspaceService.list(loc));
-      if (workspaces) {setWorkspaces(() => workspaces);}
+      const workspaces = await catchAndTossError(WorkspaceService.list(loc));
+      if (workspaces) {
+        setWorkspaces(() => workspaces as Workspace[]);
+      }
     }
 
     if (loc.id) {
@@ -72,8 +74,10 @@ const WorkspacesList = ({loc}: {loc: LocationOption}) => {
 
   const handleCreation = async (formData: Workspace) => {
     const requestData: Workspace = {...formData, location: loc.id};
-    const addedWorkspace: Workspace = await catchAndTossError(WorkspaceService.add(requestData));
-    if (!addedWorkspace) {return;}
+    const addedWorkspace = (await catchAndTossError(WorkspaceService.add(requestData))) as Workspace | undefined;
+    if (!addedWorkspace) {
+      return;
+    }
 
     dialog.close();
     setWorkspaces((workspaces) => [...workspaces, addedWorkspace]);
@@ -82,8 +86,10 @@ const WorkspacesList = ({loc}: {loc: LocationOption}) => {
 
   const handleUpdate = async (formData: Workspace) => {
     const requestData = {...workspace, ...formData};
-    const remaining: Workspace[] = await catchAndTossError(WorkspaceService.update(requestData));
-    if (!remaining) {return;}
+    const remaining = (await catchAndTossError(WorkspaceService.update(requestData))) as Workspace[] | undefined;
+    if (!remaining) {
+      return;
+    }
 
     dialog.close();
     setWorkspace(() => requestData);
@@ -92,8 +98,10 @@ const WorkspacesList = ({loc}: {loc: LocationOption}) => {
   };
 
   const handleDeletion = async () => {
-    const remaining: Workspace[] = await catchAndTossError(WorkspaceService.remove(loc, selection));
-    if (!remaining) {return;}
+    const remaining = (await catchAndTossError(WorkspaceService.remove(loc, selection))) as Workspace[] | undefined;
+    if (!remaining) {
+      return;
+    }
 
     setWorkspaces(() => remaining);
     setSelection(() => [] as GridRowId[]);

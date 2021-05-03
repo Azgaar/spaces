@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC} from 'react';
 import useFormStyles from '../../../styles/form';
 import {Avatar, TextField, Button, Typography, Grid, Container} from '@material-ui/core';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
@@ -10,7 +10,7 @@ import {rules} from '../../../validation/user';
 import {MessageType, useMessage} from '../../../components/Providers/MessageProvider';
 import {useToasterCatcher} from '../../../hooks';
 
-function PasswordChange() {
+const PasswordChange: FC = () => {
   const formStyles = useFormStyles();
   const {pushMessage} = useMessage();
   const history = useHistory();
@@ -21,7 +21,9 @@ function PasswordChange() {
 
   const onSubmit: SubmitHandler<PassportChangeForm> = async (formData: PassportChangeForm) => {
     const res = await catchAndTossError(UserService.changePassword(formData));
-    if (!res) {return;}
+    if (!res) {
+      return;
+    }
     pushMessage({title: 'Password is changed', type: MessageType.SUCCESS});
     history.push('/profile');
   };
@@ -98,6 +100,6 @@ function PasswordChange() {
       </form>
     </Container>
   );
-}
+};
 
 export default PasswordChange;

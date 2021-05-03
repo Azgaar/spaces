@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC} from 'react';
 import useFormStyles from '../../../styles/form';
 import {Avatar, TextField, Button, Typography, Grid, Link, Container} from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -11,7 +11,7 @@ import {rules} from '../../../validation/user';
 import {useToasterCatcher, useUser} from '../../../hooks';
 import {AuthService} from '../../../services';
 
-function Signin() {
+const Signin: FC = () => {
   const {isAuthenticated} = useUser();
   const formStyles = useFormStyles();
   const dispatch = useDispatch();
@@ -20,13 +20,17 @@ function Signin() {
   const {register, errors, handleSubmit} = useForm<SignInForm>();
 
   const onSubmit: SubmitHandler<SignInForm> = async (formData: SignInForm) => {
-    const userData: UserData = await catchAndTossError(AuthService.signin(formData));
-    if (!userData) {return;}
+    const userData = (await catchAndTossError(AuthService.signin(formData))) as UserData | undefined;
+    if (!userData) {
+      return;
+    }
     dispatch(actions.login(userData));
     history.push('/');
   };
 
-  if (isAuthenticated) {return <Redirect to="/" />;}
+  if (isAuthenticated) {
+    return <Redirect to="/" />;
+  }
   return (
     <Container maxWidth="xs" className={formStyles.paper}>
       <Avatar className={formStyles.avatar}>
@@ -84,6 +88,6 @@ function Signin() {
       </form>
     </Container>
   );
-}
+};
 
 export default Signin;

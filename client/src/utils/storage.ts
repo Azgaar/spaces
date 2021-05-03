@@ -1,4 +1,4 @@
-const parseJSON = (json: string): {} | null => {
+const parseJSON = (json: string): Record<string, unknown> | null => {
   try {
     const parsed = JSON.parse(json);
     return parsed;
@@ -10,7 +10,9 @@ const parseJSON = (json: string): {} | null => {
 
 export const getStored = (key: string): unknown => {
   const stored = localStorage.getItem(key);
-  if (!stored) {return;}
+  if (!stored) {
+    return;
+  }
 
   return parseJSON(stored);
 };

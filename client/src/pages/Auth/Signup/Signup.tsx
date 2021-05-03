@@ -1,18 +1,18 @@
-import React from 'react';
+import React, {FC} from 'react';
 import useFormStyles from '../../../styles/form';
 import {Avatar, TextField, Button, Checkbox, Typography, Grid, FormHelperText, FormControlLabel, Container} from '@material-ui/core';
 import ListAltOutlinedIcon from '@material-ui/icons/ListAltOutlined';
 import {Redirect, useHistory} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import {useForm, SubmitHandler} from 'react-hook-form';
-import {SignUpForm} from '../../../types';
+import {SignUpForm, UserData} from '../../../types';
 import {UserService} from '../../../services';
 import {actions} from '../../../store/actions';
 import {rules} from '../../../validation/user';
 import {useToasterCatcher, useUser} from '../../../hooks';
 import Terms from './Terms/Terms';
 
-function Signup() {
+const Signup: FC = () => {
   const {isAuthenticated} = useUser();
   const formStyles = useFormStyles();
   const dispatch = useDispatch();
@@ -23,13 +23,17 @@ function Signup() {
   const password = watch('password', '');
 
   const onSubmit: SubmitHandler<SignUpForm> = async (formData: SignUpForm) => {
-    const res = await catchAndTossError(UserService.signup(formData));
-    if (!res) {return;}
-    dispatch(actions.login(res));
+    const userData = (await catchAndTossError(UserService.signup(formData))) as UserData | undefined;
+    if (!userData) {
+      return;
+    }
+    dispatch(actions.login(userData));
     history.push('/');
   };
 
-  if (isAuthenticated) {return <Redirect to="/" />;}
+  if (isAuthenticated) {
+    return <Redirect to="/" />;
+  }
   return (
     <Container maxWidth="xs" className={formStyles.paper}>
       <Avatar className={formStyles.avatar}>
@@ -122,6 +126,6 @@ function Signup() {
       </form>
     </Container>
   );
-}
+};
 
 export default Signup;
