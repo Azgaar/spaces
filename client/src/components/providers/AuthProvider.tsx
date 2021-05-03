@@ -13,9 +13,10 @@ const AuthProvider: FC = ({children}) => {
 
   useEffect(() => {
     async function fetchUser() {
-      const user: UserData = await catchAndTossError(UserService.fetch());
-      if (!user) {return;} // user is not logged in
-      dispatch(actions.login(user));
+      const user = (await catchAndTossError(UserService.fetch())) as UserData | undefined;
+      if (user) {
+        dispatch(actions.login(user));
+      }
     }
     fetchUser().then(() => setLoading(false));
   }, []);
