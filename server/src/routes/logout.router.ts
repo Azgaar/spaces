@@ -1,6 +1,6 @@
-import {Router} from "express";
-import {checkSession} from "../middleware/validate";
-import {authController} from "../controllers";
+import {Router} from 'express';
+import {checkSession} from '../middleware/validate';
+import {authController} from '../controllers';
 
 export const router = Router();
-router.post("/", checkSession(true), authController.logout);
+router.post('/', checkSession(true), authController.logout);

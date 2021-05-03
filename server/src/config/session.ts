@@ -1,13 +1,26 @@
-export const getSessionConfig = () => {
-  const name: string = process.env.SESSION_NAME || "sid";
-  const resave: boolean = false;
-  const saveUninitialized: boolean = false;
-  const secret: string = process.env.SESSION_SECRET || "21F463B8C3489";
+type SessionConfig = {
+  name: string;
+  resave: boolean;
+  saveUninitialized: boolean;
+  secret: string;
+  cookie: {
+    maxAge: number;
+    sameSite: boolean;
+    httpOnly: boolean;
+    secure: boolean;
+  };
+};
 
-  const maxAge: number = Number(process.env.SESSION_LIFETIME) || 1000 * 60 * 60 * 2; // two hours
-  const sameSite: boolean = true;
-  const httpOnly: boolean = true;
-  const secure: boolean = process.env.NODE_ENV === "production";
+export const getSessionConfig = (): SessionConfig => {
+  const name = process.env.SESSION_NAME || 'sid';
+  const resave = false;
+  const saveUninitialized = false;
+  const secret = process.env.SESSION_SECRET || '21F463B8C3489';
+
+  const maxAge = Number(process.env.SESSION_LIFETIME) || 1000 * 60 * 60 * 2; // two hours
+  const sameSite = true;
+  const httpOnly = true;
+  const secure = process.env.NODE_ENV === 'production';
 
   return {name, resave, saveUninitialized, secret, cookie: {maxAge, sameSite, httpOnly, secure}};
-}
+};

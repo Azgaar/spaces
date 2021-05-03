@@ -1,17 +1,24 @@
-import {makeStyles} from "@material-ui/core/styles";
+import {makeStyles} from '@material-ui/core/styles';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   header: {
-    backgroundColor: "#000000b3",
-    color: "white"
+    backgroundColor: '#000000b3',
+    color: 'white'
   },
   logo: {
-    height: "3em"
+    height: '3em'
   },
-  buttons: {
-    marginLeft: "auto",
-    "& a": {
-      padding: theme.spacing(0, 0.8)
+  title: {
+    flexGrow: 1
+  },
+  drawer: {
+    fontSize: 'bigger',
+    '& .MuiDrawer-paper': {
+      minWidth: '160px',
+      fontSize: 'large'
+    },
+    '& .MuiMenuItem-root': {
+      fontWeight: 600
     }
   }
 }));

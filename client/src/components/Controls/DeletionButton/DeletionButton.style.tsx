@@ -1,20 +1,20 @@
-import {makeStyles} from "@material-ui/core/styles";
+import {makeStyles} from '@material-ui/core/styles';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   box: {
-    "& > *": {
+    '& > *': {
       margin: theme.spacing(0, 1, 0, 0)
     }
   },
   text: {
     [theme.breakpoints.down('sm')]: {
-      display: "none",
+      display: 'none'
     },
     [theme.breakpoints.up('md')]: {
-      display: "none",
+      display: 'none'
     },
     [theme.breakpoints.up('lg')]: {
-      display: "inline-block",
+      display: 'inline-block'
     }
   }
 }));

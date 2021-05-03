@@ -1,27 +1,24 @@
-import React from "react";
-import {Route, Redirect} from "react-router-dom";
-import {useUser} from "../hooks";
+import React, {FC} from 'react';
+import {Route, Redirect} from 'react-router-dom';
+import {useUser} from '../hooks';
+import {UserRole} from '../types';
 
-enum AccessRole {
-  UNLOGGED = "unlogged",
-  LOGGED = "logged",
-  ADMIN = "admin"
+type Props = {
+  path: string;
+  requiredRole?: UserRole;
+  component: FC;
 };
 
-type RouteProps = {
-  path: string,
-  access: AccessRole,
-  component: React.FC
-}
+const PrivateRoute: FC<Props> = ({path, requiredRole, component}) => {
+  const {isAuthenticated, user} = useUser();
 
-const PrivateRoute = ({path, access, component}: RouteProps) => {
-  const {isAuthenticated, isAdmin} = useUser();
-  console.log("PrivateRoute", {path, isAuthenticated, isAdmin});
-
-  if (access === AccessRole.UNLOGGED && isAuthenticated) return <Redirect to="/dashboard" />;
-  if (access === AccessRole.LOGGED && !isAuthenticated) return <Redirect to="/signin" />;
-  if (access === AccessRole.ADMIN && !isAdmin) return <Redirect to="/dashboard" />;
+  if (!isAuthenticated) {
+    return <Redirect to="/signin" />;
+  }
+  if (requiredRole && user.role !== requiredRole) {
+    return <Redirect to="/" />;
+  }
   return <Route path={path} component={component} />;
 };
 
-export {PrivateRoute, AccessRole};
+export {PrivateRoute};

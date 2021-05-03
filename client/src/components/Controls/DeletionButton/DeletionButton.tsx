@@ -1,15 +1,18 @@
-import React, {useState} from "react";
-import useStyles from "./DeletionButton.style";
-import {Box, Button, Typography} from "@material-ui/core";
+import React, {useState, FC} from 'react';
+import useStyles from './DeletionButton.style';
+import {Box, Button, Typography} from '@material-ui/core';
 
 type DeletionProps = {
-  object: string,
-  title?: string,
-  short?: boolean,
+  object?: string;
+  title?: string;
+  confirm?: string;
+  cancel?: string;
+  short?: boolean;
+  showText?: boolean;
   onDelete: () => void;
-}
+};
 
-const DeletionButton = ({object, onDelete, title, short}: DeletionProps) => {
+const DeletionButton: FC<DeletionProps> = ({object, onDelete, title, confirm = 'Delete', cancel = 'Cancel', short = false, showText = true}) => {
   const [confirmDelection, setConfirmDelection] = useState(false);
   const classes = useStyles();
 
@@ -17,23 +20,29 @@ const DeletionButton = ({object, onDelete, title, short}: DeletionProps) => {
   const handleCancel = () => setConfirmDelection(() => false);
   const handleConfirm = () => setConfirmDelection(() => true);
 
-  const text = short
-    ? `Are you sure you want to delete the ${object}?`
-    : `Are you sure you want to delete the ${object}? The deletion cannot be rolled back`;
+  const getText = () => (short ? `Are you sure you want to delete the ${object}?` : `Are you sure you want to delete the ${object}? The deletion cannot be rolled back`);
 
-  return (
-    confirmDelection ? (
-      <Box component="span" m={1} p={1} className={classes.box}>
-        <Typography component="span" className={classes.text} variant="body2" color="textPrimary">{text}</Typography>
-        <Button variant="contained" color="primary" onClick={handleCancel}>Cancel</Button>
-        <Button variant="contained" color="primary" onClick={handleDelete}>Delete</Button>
-      </Box>
-    ) : (
-      <Box component="span" m={1}>
-        <Button variant="contained" color="primary" onClick={handleConfirm}>{title || "Delete " + object}</Button>
-      </Box>
-    )
+  return confirmDelection ? (
+    <Box component="span" mx={1} px={1} className={classes.box}>
+      {showText && (
+        <Typography component="span" className={classes.text} variant="body2" color="textPrimary">
+          {getText()}
+        </Typography>
+      )}
+      <Button variant="contained" color="primary" onClick={handleCancel}>
+        {cancel}
+      </Button>
+      <Button variant="contained" color="primary" onClick={handleDelete}>
+        {confirm}
+      </Button>
+    </Box>
+  ) : (
+    <Box component="span" mx={1}>
+      <Button variant="contained" color="primary" onClick={handleConfirm}>
+        {title || 'Delete ' + object}
+      </Button>
+    </Box>
   );
-}
+};
 
 export default DeletionButton;

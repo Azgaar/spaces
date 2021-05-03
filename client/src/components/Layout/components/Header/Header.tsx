@@ -1,68 +1,45 @@
-import React from "react";
-import useStyles from "./Header.style";
-import {AppBar, Toolbar, Button, Typography} from "@material-ui/core";
-import {Link as RouterLink, useHistory} from "react-router-dom";
-import {useRequest, useUser} from "../../../../hooks";
-import {actions} from "../../../../store/actions";
-import {useDispatch} from "react-redux";
-import {AuthService} from "../../../../services";
+import React, {useState, FC} from 'react';
+import useStyles from './Header.style';
+import {AppBar, Toolbar, Box, Button, Drawer, List, Typography, useTheme, useMediaQuery} from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
+import MenuButtons from './MenuButtons/MenuButtons';
 
-const logoPath = process.env.PUBLIC_URL + "/logo.svg";
+const logoPath = process.env.PUBLIC_URL + '/logo.svg';
 
-const Admin = () => {
-  return (<>
-    <Button color="inherit" component={RouterLink} to="/workspaces">Workspaces</Button>
-    <Button color="inherit" component={RouterLink} to="/users">Users</Button>
-  </>
-  );
-}
-
-const Authorized = () => {
-  const dispatch = useDispatch();
-  const history = useHistory();
-  const {handleRequest} = useRequest();
-
-  const handleLogout = async () => {
-    const res = await handleRequest(AuthService.logout())
-    if (!res) return
-    dispatch(actions.logout());
-    history.push("/signin");
-  }
-
-  return (<>
-    <Button color="inherit" component={RouterLink} to="/profile">Profile</Button>
-    <Button color="inherit" onClick={handleLogout}>Log Out</Button>
-  </>
-  );
-}
-
-const Unauthorized = () => {
-  return (<>
-    <Button color="inherit" component={RouterLink} to="/signin">Sign In</Button>
-    <Button color="inherit" component={RouterLink} to="/signup">Sign Up</Button>
-  </>
-  );
-}
-
-function Header() {
+const Header: FC = () => {
   const classes = useStyles();
-  const {isAuthenticated, isAdmin} = useUser();
+  const wideScreen = useMediaQuery(useTheme().breakpoints.up('md'));
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const handleMenu = () => setMenuOpen(() => true);
+  const handleClose = () => setMenuOpen(() => false);
 
   return (
-    <AppBar position="static" className={classes.header}>
+    <AppBar position="sticky" className={classes.header}>
       <Toolbar>
         <img src={logoPath} className={classes.logo} alt="logo" />
-        <Typography variant="h6" component="h1">
+        <Typography variant="h6" component="h1" className={classes.title}>
           SPɅCES
         </Typography>
-        <div className={classes.buttons}>
-          {isAuthenticated && <Button color="inherit" component={RouterLink} to="/dashboard">Dashboard</Button>}
-          {isAdmin && <Admin />}
-          {isAuthenticated ? <Authorized /> : <Unauthorized />}
-        </div>
+
+        <Box display="flex">
+          {wideScreen ? (
+            <MenuButtons />
+          ) : (
+            <Button onClick={handleMenu} color="inherit" endIcon={<MenuIcon fontSize="large" />}>
+              Menu
+            </Button>
+          )}
+        </Box>
       </Toolbar>
+
+      <Drawer open={menuOpen} onClose={handleClose} anchor="right" className={classes.drawer}>
+        <List>
+          <MenuButtons />
+        </List>
+      </Drawer>
     </AppBar>
   );
-}
+};
 
 export default Header;
