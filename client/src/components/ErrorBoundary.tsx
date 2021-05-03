@@ -21,7 +21,7 @@ class ErrorBoundary extends Component<{children: ReactNode}, State> {
   public render(): ReactNode {
     if (this.state.hasError) {
       return (
-        <Container component="main" maxWidth="sm">
+        <Container maxWidth="sm">
           <h1>Sorry... there was an error</h1>
           <h2>Try to refresh the page</h2>
         </Container>
