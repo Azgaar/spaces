@@ -1,7 +1,6 @@
-import {SessionData} from "express-session";
-import {Document} from "mongoose";
+import {Document} from 'mongoose';
 
-declare module "express-session" {
+declare module 'express-session' {
   interface SessionData {
     userId: string;
     userEmail: string;
@@ -11,8 +10,8 @@ declare module "express-session" {
 }
 
 export enum UserRole {
-  USER = "user",
-  ADMIN = "admin"
+  USER = 'user',
+  ADMIN = 'admin'
 }
 
 export type UserData = {
@@ -23,7 +22,7 @@ export type UserData = {
   role: UserRole;
   createdAt?: Date;
   updatedAt?: Date;
-}
+};
 
 export interface UserDocument extends Document {
   email: string;
@@ -63,39 +62,39 @@ export interface ServiceDocument extends Document {
 }
 
 export enum ServiceRequestStatus {
-  PENDING = "Pending",
-  FULFILLED = "Fulfilled",
-  REJECTED = "Rejected"
+  PENDING = 'Pending',
+  FULFILLED = 'Fulfilled',
+  REJECTED = 'Rejected'
 }
 
 export type LocationData = {
   description: string;
   id?: string;
-}
+};
 
 export enum WorkspaceStatus {
-  AVAILABLE = "Available",
-  UNAVAILABLE = "Unavailable"
+  AVAILABLE = 'Available',
+  UNAVAILABLE = 'Unavailable'
 }
 
 export enum WorkspaceType {
-  DESK = "Desk",
-  CONFERENCE_ROOM = "Conference room",
-  MEETING_ROOM = "Meeting room",
-  COWORKING = "Coworking",
-  FOCUS_ROOM = "Focus room",
-  FUN_ZONE = "Fun zone",
-  NAP_POD = "Nap pod"
+  DESK = 'Desk',
+  CONFERENCE_ROOM = 'Conference room',
+  MEETING_ROOM = 'Meeting room',
+  COWORKING = 'Coworking',
+  FOCUS_ROOM = 'Focus room',
+  FUN_ZONE = 'Fun zone',
+  NAP_POD = 'Nap pod'
 }
 
 export enum Equipment {
-  PROJECTOR = "Projector",
-  MONITOR = "Monitor",
-  TELEPHONE = "Telephone",
-  SPEAKERPHONE = "Speakerphone",
-  HEADSET = "Headset",
-  STANDING_DESK = "Standing desk",
-  COUCH = "Couch"
+  PROJECTOR = 'Projector',
+  MONITOR = 'Monitor',
+  TELEPHONE = 'Telephone',
+  SPEAKERPHONE = 'Speakerphone',
+  HEADSET = 'Headset',
+  STANDING_DESK = 'Standing desk',
+  COUCH = 'Couch'
 }
 
 export type WorkspaceData = {
@@ -106,7 +105,7 @@ export type WorkspaceData = {
   type: WorkspaceType;
   size: number;
   equipment: Equipment[];
-}
+};
 
 export type WorkspaceSearchCriteria = {
   location: string;
@@ -116,8 +115,8 @@ export type WorkspaceSearchCriteria = {
   type?: WorkspaceType;
   equipment?: Equipment[];
   description?: string;
-  excludeReservation?: string
-}
+  excludeReservation?: string;
+};
 
 export type ReservationData = {
   id?: string;
@@ -129,14 +128,14 @@ export type ReservationData = {
 };
 
 export enum ReservationStatus {
-  PAST = "Past",
-  CURRENT = "Current",
-  FUTURE = "Future",
+  PAST = 'Past',
+  CURRENT = 'Current',
+  FUTURE = 'Future'
 }
 
 export type ServiceData = {
   location: string;
   reservationId: string;
   requester: string;
-  servicesList: string[]
-}
+  servicesList: string[];
+};

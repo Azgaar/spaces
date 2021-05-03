@@ -1,7 +1,7 @@
-import React, {FC, useContext, useState} from "react";
-import {Snackbar} from "@material-ui/core";
-import {Alert} from "@material-ui/lab";
-import {MESSAGE_HIDE_DURATION} from "../../config";
+import React, {FC, useContext, useState} from 'react';
+import {Snackbar} from '@material-ui/core';
+import {Alert} from '@material-ui/lab';
+import {MESSAGE_HIDE_DURATION} from '../../config';
 
 export const MessageContext = React.createContext<IMessageContext>({} as IMessageContext);
 
@@ -41,10 +41,10 @@ type MessageState = {
 };
 
 enum MessageType {
-  ERROR = "error",
-  SUCCESS = "success",
-  WARNING = "warning",
-  INFO = "info"
+  ERROR = 'error',
+  SUCCESS = 'success',
+  WARNING = 'warning',
+  INFO = 'info'
 }
 
 export {MessageProvider, useMessage, MessageType};

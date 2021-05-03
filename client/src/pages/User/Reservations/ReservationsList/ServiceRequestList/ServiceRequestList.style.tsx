@@ -1,23 +1,23 @@
-import {makeStyles} from "@material-ui/core/styles";
+import {makeStyles} from '@material-ui/core/styles';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   list: {
     padding: theme.spacing(1, 0, 0, 0),
-    fontSize: "smaller",
-    "& .MuiListItemIcon-root": {
+    fontSize: 'smaller',
+    '& .MuiListItemIcon-root': {
       minWidth: 0
     },
-    "& .MuiListItem-dense": {
+    '& .MuiListItem-dense': {
       padding: 0
     },
-    "& .MuiListItemSecondaryAction-root": {
-      right: theme.spacing(.5)
+    '& .MuiListItemSecondaryAction-root': {
+      right: theme.spacing(0.5)
     },
-    "& .MuiIconButton-root": {
-      fontSize: "1.2rem"
+    '& .MuiIconButton-root': {
+      fontSize: '1.2rem'
     },
-    "& .MuiInputBase-root": {
-      fontSize: "inherit"
+    '& .MuiInputBase-root': {
+      fontSize: 'inherit'
     }
   }
 }));

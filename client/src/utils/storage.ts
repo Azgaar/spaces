@@ -6,11 +6,11 @@ const parseJSON = (json: string): {} | null => {
     console.error(error);
     return null;
   }
-}
+};
 
 export const getStored = (key: string): unknown => {
   const stored = localStorage.getItem(key);
-  if (!stored) return;
+  if (!stored) {return;}
 
   return parseJSON(stored);
-}
+};

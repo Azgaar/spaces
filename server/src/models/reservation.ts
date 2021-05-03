@@ -1,37 +1,40 @@
-import {Schema, model} from "mongoose";
-import {ReservationDocument, ReservationStatus, WorkspaceStatus, WorkspaceType, Equipment} from "../types";
-import {Service} from "./service";
+import {Schema, model} from 'mongoose';
+import {ReservationDocument, ReservationStatus, WorkspaceStatus, WorkspaceType, Equipment} from '../types';
 
 const required = true;
 const reservationSchema = new Schema(
   {
-    location: {type: Schema.Types.ObjectId, ref: "Location", required},
-    workspace: {type: Schema.Types.ObjectId, ref: "Workspace", required},
+    location: {type: Schema.Types.ObjectId, ref: 'Location', required},
+    workspace: {type: Schema.Types.ObjectId, ref: 'Workspace', required},
     requester: {type: String, required},
     from: {type: Date, required},
     to: {type: Date, required},
-    requests: {type: [{type: Schema.Types.ObjectId, ref: "Service"}], required: false}
+    requests: {type: [{type: Schema.Types.ObjectId, ref: 'Service'}], required: false}
   },
   {timestamps: true, versionKey: false}
 );
 
-const getWorkspaceAttributes = (workspace: ReservationJSON["workspace"]) => {
+const getWorkspaceAttributes = (workspace: ReservationJSON['workspace']) => {
   const {id, description, type, size} = workspace;
   return {workspace: id, description, type, size};
-}
+};
 
-const getLocationAttributes = (location: ReservationJSON["location"]) => {
+const getLocationAttributes = (location: ReservationJSON['location']) => {
   return {locationDescription: location.description, location: location.id};
-}
+};
 
 const getStatus = (from: Date, to: Date): ReservationStatus => {
   const now = new Date();
-  if (to < now) return ReservationStatus.PAST;
-  if (from > now) return ReservationStatus.FUTURE;
+  if (to < now) {
+    return ReservationStatus.PAST;
+  }
+  if (from > now) {
+    return ReservationStatus.FUTURE;
+  }
   return ReservationStatus.CURRENT;
-}
+};
 
-reservationSchema.set("toJSON", {
+reservationSchema.set('toJSON', {
   transform: (doc: ReservationDocument, ret: ReservationJSON) => {
     const {_id, location, workspace, requester, from, to, requests} = ret;
     const workspaceAttributes = getWorkspaceAttributes(workspace);
@@ -63,4 +66,4 @@ interface ReservationJSON {
   requests: string[];
 }
 
-export const Reservation = model<ReservationDocument>("Reservation", reservationSchema);
+export const Reservation = model<ReservationDocument>('Reservation', reservationSchema);

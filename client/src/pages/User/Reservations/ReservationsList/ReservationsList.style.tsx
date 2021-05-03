@@ -1,8 +1,8 @@
-import {makeStyles} from "@material-ui/core/styles";
+import {makeStyles} from '@material-ui/core/styles';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   container: {
-    width: "100%",
+    width: '100%',
     margin: theme.spacing(3, 0, 1, 0)
   },
   title: {
@@ -12,11 +12,11 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(0, 0, 1, 0)
   },
   cardHeader: {
-    "& .MuiCardHeader-subheader": {
-      overflow: "hidden",
-      whiteSpace: "nowrap",
-      textOverflow: "ellipsis",
-      maxWidth: "12em"
+    '& .MuiCardHeader-subheader': {
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis',
+      maxWidth: '12em'
     }
   },
   content: {

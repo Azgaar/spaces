@@ -1,13 +1,13 @@
-import React, {ElementType, ReactElement} from "react";
-import PersonalVideoIcon from "@material-ui/icons/PersonalVideo";
-import RouterIcon from "@material-ui/icons/Router";
-import WeekendIcon from "@material-ui/icons/Weekend";
-import PhoneIcon from "@material-ui/icons/Phone";
-import HeadsetMicIcon from "@material-ui/icons/HeadsetMic";
-import SpeakerPhoneIcon from "@material-ui/icons/SpeakerPhone";
-import DirectionsWalkIcon from "@material-ui/icons/DirectionsWalk";
+import React, {ElementType, ReactElement} from 'react';
+import PersonalVideoIcon from '@material-ui/icons/PersonalVideo';
+import RouterIcon from '@material-ui/icons/Router';
+import WeekendIcon from '@material-ui/icons/Weekend';
+import PhoneIcon from '@material-ui/icons/Phone';
+import HeadsetMicIcon from '@material-ui/icons/HeadsetMic';
+import SpeakerPhoneIcon from '@material-ui/icons/SpeakerPhone';
+import DirectionsWalkIcon from '@material-ui/icons/DirectionsWalk';
 import PhonelinkSetupIcon from '@material-ui/icons/PhonelinkSetup';
-import {Equipment} from "../../../types";
+import {Equipment} from '../../../types';
 
 const EquipmentIconDefault: ElementType = PhonelinkSetupIcon;
 const EquipmentIconMap: {[key: string]: ElementType} = {
@@ -18,11 +18,11 @@ const EquipmentIconMap: {[key: string]: ElementType} = {
   [Equipment.STANDING_DESK]: DirectionsWalkIcon,
   [Equipment.HEADSET]: HeadsetMicIcon,
   [Equipment.COUCH]: WeekendIcon
-}
+};
 
 const EquipmentIcon = ({value}: {value: Equipment}): ReactElement => {
   const IconComponent = EquipmentIconMap[value] || EquipmentIconDefault;
-  return <IconComponent/>;
-}
+  return <IconComponent />;
+};
 
 export default EquipmentIcon;

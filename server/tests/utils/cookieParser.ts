@@ -7,9 +7,9 @@
  */
 const shapeFlags = (flags: Array<string>) =>
   flags.reduce((shapedFlags, flag) => {
-    const [flagName, rawValue] = flag.split("=");
+    const [flagName, rawValue] = flag.split('=');
     // edge case where a cookie has a single flag and "; " split results in trailing ";"
-    const value = rawValue ? rawValue.replace(";", "") : true;
+    const value = rawValue ? rawValue.replace(';', '') : true;
     return {...shapedFlags, [flagName]: value};
   }, {});
 
@@ -28,11 +28,11 @@ interface ExtractedCookie {
  * @reference https://gist.github.com/the-vampiire/a564af41ed0ce8eb7c30dbe6c0f627d8
  */
 export const extractCookies = (headers: Record<string, string | Array<string | number>>): Record<string, ExtractedCookie> => {
-  const cookies = headers["set-cookie"] as Array<string>;
+  const cookies = headers['set-cookie'] as Array<string>;
 
   return cookies.reduce((shapedCookies, cookieString) => {
-    const [rawCookie, ...flags] = cookieString.split("; ");
-    const [cookieName, value] = rawCookie.split("=");
+    const [rawCookie, ...flags] = cookieString.split('; ');
+    const [cookieName, value] = rawCookie.split('=');
     return {...shapedCookies, [cookieName]: {value, flags: shapeFlags(flags)}};
   }, {});
 };

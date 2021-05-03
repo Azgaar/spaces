@@ -1,11 +1,11 @@
-import {makeStyles} from "@material-ui/core/styles";
+import {makeStyles} from '@material-ui/core/styles';
 
-const useFormStyles = makeStyles(theme => ({
+const useFormStyles = makeStyles((theme) => ({
   paper: {
-    width: "340px",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    width: '340px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
     padding: theme.spacing(3)
   },
   form: {
@@ -13,8 +13,8 @@ const useFormStyles = makeStyles(theme => ({
   },
   list: {
     padding: theme.spacing(1, 0),
-    maxHeight: "50vh",
-    overflow: "auto"
+    maxHeight: '50vh',
+    overflow: 'auto'
   }
 }));
 

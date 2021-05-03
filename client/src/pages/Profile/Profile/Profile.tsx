@@ -1,9 +1,9 @@
-import React from "react";
-import useFormStyles from "../../../styles/form";
-import {Avatar, TextField, Button, Typography, Grid, Container} from "@material-ui/core";
-import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
-import {Link as RouterLink} from "react-router-dom";
-import {useUser} from "../../../hooks";
+import React from 'react';
+import useFormStyles from '../../../styles/form';
+import {Avatar, TextField, Button, Typography, Grid, Container} from '@material-ui/core';
+import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
+import {Link as RouterLink} from 'react-router-dom';
+import {useUser} from '../../../hooks';
 
 function Profile() {
   const formStyles = useFormStyles();
@@ -15,7 +15,9 @@ function Profile() {
       <Avatar className={formStyles.avatar}>
         <AccountCircleOutlinedIcon />
       </Avatar>
-      <Typography component="h1" variant="h5" className={formStyles.header}>Profile</Typography>
+      <Typography component="h1" variant="h5" className={formStyles.header}>
+        Profile
+      </Typography>
       <form className={formStyles.form}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
@@ -31,10 +33,14 @@ function Profile() {
 
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6} className={formStyles.buttons}>
-            <Button fullWidth variant="contained" color="primary" component={RouterLink} to="/editProfile">Edit Profile</Button>
+            <Button fullWidth variant="contained" color="primary" component={RouterLink} to="/editProfile">
+              Edit Profile
+            </Button>
           </Grid>
           <Grid item xs={12} sm={6} className={formStyles.buttons}>
-            <Button fullWidth variant="contained" color="primary" component={RouterLink} to="/changePassword">Change Password</Button>
+            <Button fullWidth variant="contained" color="primary" component={RouterLink} to="/changePassword">
+              Change Password
+            </Button>
           </Grid>
         </Grid>
       </form>

@@ -1,8 +1,8 @@
-import React, {FC} from "react";
-import useStyles from "./Layout.style";
-import {Container} from "@material-ui/core";
-import Header from "./components/Header/Header";
-import Footer from "./components/Footer/Footer";
+import React, {FC} from 'react';
+import useStyles from './Layout.style';
+import {Container} from '@material-ui/core';
+import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
 
 const Layout: FC = ({children}) => {
   const classes = useStyles();

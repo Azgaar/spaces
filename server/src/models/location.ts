@@ -1,5 +1,5 @@
-import {Schema, model} from "mongoose";
-import {LocationDocument} from "../types";
+import {Schema, model} from 'mongoose';
+import {LocationDocument} from '../types';
 
 const locationSchema = new Schema(
   {
@@ -8,11 +8,11 @@ const locationSchema = new Schema(
   {timestamps: true, versionKey: false}
 );
 
-locationSchema.set("toJSON", {
+locationSchema.set('toJSON', {
   transform: (doc: LocationDocument, ret: LocationDocument) => {
     const {_id, description} = ret;
     return {id: _id, description};
   }
 });
 
-export const Location = model<LocationDocument>("Location", locationSchema);
+export const Location = model<LocationDocument>('Location', locationSchema);

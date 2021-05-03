@@ -1,7 +1,7 @@
-import React from "react";
-import useStyles from "./Footer.style";
-import Container from "@material-ui/core/Container";
-import Copyright from "./Copyright/Copyright";
+import React from 'react';
+import useStyles from './Footer.style';
+import Container from '@material-ui/core/Container';
+import Copyright from './Copyright/Copyright';
 
 function Footer() {
   const classes = useStyles();

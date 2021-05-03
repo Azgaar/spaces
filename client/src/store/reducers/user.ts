@@ -1,5 +1,5 @@
-import {AUTH_USER, UNAUTH_USER, UPDATE_USER} from "../actions/types";
-import {UserData} from "../../types";
+import {AUTH_USER, UNAUTH_USER, UPDATE_USER} from '../actions/types';
+import {UserData} from '../../types';
 
 const initState = {
   isAuthenticated: false,
@@ -7,9 +7,9 @@ const initState = {
   email: null,
   firstName: null,
   lastName: null
-}
+};
 
-const userReducer = (state = initState, action: {type: string, payload: UserData}) => {
+const userReducer = (state = initState, action: {type: string; payload: UserData}) => {
   switch (action.type) {
     case AUTH_USER:
       return {

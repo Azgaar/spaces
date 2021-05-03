@@ -1,29 +1,29 @@
-import React, {Suspense} from "react";
-import {Switch, Route} from "react-router-dom";
-import Layout from "./Layout/Layout";
-import Spinner from "./Spinner/Spinner";
-import {PrivateRoute} from "./PrivateRoute";
-import {UserRole} from "../types";
+import React, {Suspense} from 'react';
+import {Switch, Route} from 'react-router-dom';
+import Layout from './Layout/Layout';
+import Spinner from './Spinner/Spinner';
+import {PrivateRoute} from './PrivateRoute';
+import {UserRole} from '../types';
 
-const Home = React.lazy(() => import("../pages/Home/Home"));
-const Page404 = React.lazy(() => import("../pages/Page404/Page404"));
+const Home = React.lazy(() => import('../pages/Home/Home'));
+const Page404 = React.lazy(() => import('../pages/Page404/Page404'));
 
-const Signin = React.lazy(() => import("../pages/Auth/Signin/Signin"));
-const Signup = React.lazy(() => import("../pages/Auth/Signup/Signup"));
-const ForgotPassword = React.lazy(() => import("../pages/Auth/ForgotPassword/ForgotPassword"));
+const Signin = React.lazy(() => import('../pages/Auth/Signin/Signin'));
+const Signup = React.lazy(() => import('../pages/Auth/Signup/Signup'));
+const ForgotPassword = React.lazy(() => import('../pages/Auth/ForgotPassword/ForgotPassword'));
 
-const Profile = React.lazy(() => import("../pages/Profile/Profile/Profile"));
-const ProfileEdit = React.lazy(() => import("../pages/Profile/ProfileEdit/ProfileEdit"));
-const PasswordChange = React.lazy(() => import("../pages/Profile/PasswordChange/PasswordChange"));
+const Profile = React.lazy(() => import('../pages/Profile/Profile/Profile'));
+const ProfileEdit = React.lazy(() => import('../pages/Profile/ProfileEdit/ProfileEdit'));
+const PasswordChange = React.lazy(() => import('../pages/Profile/PasswordChange/PasswordChange'));
 
-const ActiveReservations = React.lazy(() => import("../pages/User/Reservations/ActiveReservations"));
-const ReservationsHistory = React.lazy(() => import("../pages/User/Reservations/ReservationsHistory"));
-const ReserveWorkspace = React.lazy(() => import("../pages/User/Reserve/ReserveWorkspace"));
+const ActiveReservations = React.lazy(() => import('../pages/User/Reservations/ActiveReservations'));
+const ReservationsHistory = React.lazy(() => import('../pages/User/Reservations/ReservationsHistory'));
+const ReserveWorkspace = React.lazy(() => import('../pages/User/Reserve/ReserveWorkspace'));
 
-const ManageReservations = React.lazy(() => import("../pages/Admin/Reservations/Reservations"));
-const ManageRequests = React.lazy(() => import("../pages/Admin/Requests/Requests"));
-const ManageUsers = React.lazy(() => import("../pages/Admin/Users/Users"));
-const ManageWorkspaces = React.lazy(() => import("../pages/Admin/Workspaces/Workspaces"));
+const ManageReservations = React.lazy(() => import('../pages/Admin/Reservations/Reservations'));
+const ManageRequests = React.lazy(() => import('../pages/Admin/Requests/Requests'));
+const ManageUsers = React.lazy(() => import('../pages/Admin/Users/Users'));
+const ManageWorkspaces = React.lazy(() => import('../pages/Admin/Workspaces/Workspaces'));
 
 function App() {
   return (

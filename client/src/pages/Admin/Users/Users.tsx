@@ -1,8 +1,8 @@
-import React from "react";
-import useStyles from "./Users.style";
-import {Container} from "@material-ui/core";
-import Headline from "../../../components/Layout/components/Main/Headline/Headline";
-import UsersList from "./UsersList/UsersList";
+import React from 'react';
+import useStyles from './Users.style';
+import {Container} from '@material-ui/core';
+import Headline from '../../../components/Layout/components/Main/Headline/Headline';
+import UsersList from './UsersList/UsersList';
 
 function User() {
   const classes = useStyles();

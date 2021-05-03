@@ -1,6 +1,6 @@
 export enum UserRole {
-  USER = "user",
-  ADMIN = "admin"
+  USER = 'user',
+  ADMIN = 'admin'
 }
 
 export type UserData = {
@@ -57,18 +57,18 @@ export type LocationOption = {
 };
 
 export enum WorkspaceStatus {
-  AVAILABLE = "Available",
-  UNAVAILABLE = "Unavailable"
+  AVAILABLE = 'Available',
+  UNAVAILABLE = 'Unavailable'
 }
 
 export enum WorkspaceType {
-  DESK = "Desk",
-  CONFERENCE_ROOM = "Conference room",
-  MEETING_ROOM = "Meeting room",
-  COWORKING = "Coworking",
-  FOCUS_ROOM = "Focus room",
-  FUN_ZONE = "Fun zone",
-  NAP_POD = "Nap pod"
+  DESK = 'Desk',
+  CONFERENCE_ROOM = 'Conference room',
+  MEETING_ROOM = 'Meeting room',
+  COWORKING = 'Coworking',
+  FOCUS_ROOM = 'Focus room',
+  FUN_ZONE = 'Fun zone',
+  NAP_POD = 'Nap pod'
 }
 
 export type WorkspaceSearchCriteria = {
@@ -79,17 +79,17 @@ export type WorkspaceSearchCriteria = {
   type?: WorkspaceType;
   equipment?: Equipment[];
   description?: string;
-  excludeReservation?: string
-}
+  excludeReservation?: string;
+};
 
 export enum Equipment {
-  PROJECTOR = "Projector",
-  MONITOR = "Monitor",
-  TELEPHONE = "Telephone",
-  SPEAKERPHONE = "Speakerphone",
-  HEADSET = "Headset",
-  STANDING_DESK = "Standing desk",
-  COUCH = "Couch"
+  PROJECTOR = 'Projector',
+  MONITOR = 'Monitor',
+  TELEPHONE = 'Telephone',
+  SPEAKERPHONE = 'Speakerphone',
+  HEADSET = 'Headset',
+  STANDING_DESK = 'Standing desk',
+  COUCH = 'Couch'
 }
 
 export type Workspace = {
@@ -127,9 +127,9 @@ export type ReservationRes = {
 };
 
 export enum ReservationStatus {
-  PAST = "Past",
-  CURRENT = "Current",
-  FUTURE = "Future",
+  PAST = 'Past',
+  CURRENT = 'Current',
+  FUTURE = 'Future'
 }
 
 export type ReservationFilters = {
@@ -137,10 +137,10 @@ export type ReservationFilters = {
   from: string;
   to: string;
   size: number;
-  type: WorkspaceType | "Any";
+  type: WorkspaceType | 'Any';
   equipment: Equipment[];
   description: string;
-}
+};
 
 export type ReservationFilterErrors = {
   location: boolean;
@@ -148,14 +148,14 @@ export type ReservationFilterErrors = {
   to: boolean;
   size: boolean;
   errored?: boolean;
-}
+};
 
 export type ServiceReq = {
   location: string;
   reservationId: string;
   requester: string;
-  servicesList: string[]
-}
+  servicesList: string[];
+};
 
 export type ServiceRes = {
   id: string;
@@ -163,10 +163,10 @@ export type ServiceRes = {
   description: string;
   status: ServiceRequestStatus;
   requester: string;
-}
+};
 
 export enum ServiceRequestStatus {
-  PENDING = "Pending",
-  FULFILLED = "Fulfilled",
-  REJECTED = "Rejected"
+  PENDING = 'Pending',
+  FULFILLED = 'Fulfilled',
+  REJECTED = 'Rejected'
 }

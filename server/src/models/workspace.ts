@@ -1,5 +1,5 @@
-import {Schema, model} from "mongoose";
-import {WorkspaceDocument, WorkspaceStatus, WorkspaceType, Equipment, WorkspaceData} from "../types";
+import {Schema, model} from 'mongoose';
+import {WorkspaceDocument, WorkspaceStatus, WorkspaceType, Equipment, WorkspaceData} from '../types';
 
 const required = true;
 const workspaceSchema = new Schema(
@@ -14,7 +14,7 @@ const workspaceSchema = new Schema(
   {timestamps: true, versionKey: false}
 );
 
-workspaceSchema.set("toJSON", {
+workspaceSchema.set('toJSON', {
   transform: (doc: WorkspaceDocument, ret: WorkspaceDocument) => {
     const {_id, description, location, status, type, size, equipment} = ret;
     const workspaceData: WorkspaceData = {id: _id, description, location, status, type, size, equipment};
@@ -22,4 +22,4 @@ workspaceSchema.set("toJSON", {
   }
 });
 
-export const Workspace = model<WorkspaceDocument>("Workspace", workspaceSchema);
+export const Workspace = model<WorkspaceDocument>('Workspace', workspaceSchema);

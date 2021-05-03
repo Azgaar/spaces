@@ -1,42 +1,42 @@
-import {makeStyles} from "@material-ui/core/styles";
-import {green, red, yellow} from "@material-ui/core/colors";
+import {makeStyles} from '@material-ui/core/styles';
+import {green, red, yellow} from '@material-ui/core/colors';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   container: {
-    width: "100%",
+    width: '100%',
     marginTop: theme.spacing(1),
-    "& div.MuiDataGrid-root": {
-      border: "1px solid #aaaaaa",
-      color: "#000000",
-      backgroundColor: "#f2f2f2aa",
-      boxShadow: "0 0 20px 5px #f2f2f2aa"
+    '& div.MuiDataGrid-root': {
+      border: '1px solid #aaaaaa',
+      color: '#000000',
+      backgroundColor: '#f2f2f2aa',
+      boxShadow: '0 0 20px 5px #f2f2f2aa'
     },
-    "& div.MuiDataGrid-cell": {
-      borderBottom: "1px solid #aaaaaa"
+    '& div.MuiDataGrid-cell': {
+      borderBottom: '1px solid #aaaaaa'
     },
-    "& div.MuiDataGrid-columnsContainer": {
-      backgroundColor: "#8c93a94a",
+    '& div.MuiDataGrid-columnsContainer': {
+      backgroundColor: '#8c93a94a',
       borderBottom: `1px solid ${theme.palette.primary.main}`
     },
-    "& div.MuiDataGrid-columnSeparator": {
+    '& div.MuiDataGrid-columnSeparator': {
       color: theme.palette.primary.main
     },
-    "& div.MuiDataGrid-colCellTitle": {
+    '& div.MuiDataGrid-colCellTitle': {
       fontWeight: 700
     }
   },
   controls: {
     margin: theme.spacing(1, 0),
-    "& button": {
+    '& button': {
       marginRight: theme.spacing(1)
     }
   },
   green: {
     color: theme.palette.getContrastText(green[700]),
     backgroundColor: green[700],
-    "&:hover": {
+    '&:hover': {
       backgroundColor: green[900],
-      "@media (hover: none)": {
+      '@media (hover: none)': {
         backgroundColor: green[700]
       }
     }
@@ -44,9 +44,9 @@ const useStyles = makeStyles(theme => ({
   red: {
     color: theme.palette.getContrastText(red[700]),
     backgroundColor: red[700],
-    "&:hover": {
+    '&:hover': {
       backgroundColor: red[900],
-      "@media (hover: none)": {
+      '@media (hover: none)': {
         backgroundColor: red[700]
       }
     }
@@ -54,9 +54,9 @@ const useStyles = makeStyles(theme => ({
   yellow: {
     color: theme.palette.getContrastText(yellow[700]),
     backgroundColor: yellow[700],
-    "&:hover": {
+    '&:hover': {
       backgroundColor: yellow[900],
-      "@media (hover: none)": {
+      '@media (hover: none)': {
         backgroundColor: yellow[700]
       }
     }

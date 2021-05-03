@@ -1,17 +1,17 @@
-import {makeStyles} from "@material-ui/core/styles";
+import {makeStyles} from '@material-ui/core/styles';
 
-const useFormStyles = makeStyles(theme => ({
+const useFormStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(9),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
   },
   form: {
-    width: "100%",
+    width: '100%',
     marginTop: theme.spacing(3),
-    backgroundColor: "#d9d9d9ab",
-    boxShadow: "0 0 40px 50px #d9d9d9ab"
+    backgroundColor: '#d9d9d9ab',
+    boxShadow: '0 0 40px 50px #d9d9d9ab'
   },
   avatar: {
     margin: theme.spacing(1),
@@ -21,7 +21,7 @@ const useFormStyles = makeStyles(theme => ({
     zIndex: 1
   },
   buttons: {
-    margin: theme.spacing(2, 0, 2),
+    margin: theme.spacing(2, 0, 2)
   }
 }));
 

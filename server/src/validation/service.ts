@@ -1,4 +1,4 @@
-import Joi from "@hapi/joi";
+import Joi from '@hapi/joi';
 
 const id = Joi.string().min(2).max(128).required();
 const requester = Joi.string().email().min(6).max(128).lowercase().trim().required();
