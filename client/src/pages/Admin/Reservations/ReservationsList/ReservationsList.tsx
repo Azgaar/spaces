@@ -1,4 +1,4 @@
-import React, {ReactElement, useEffect, useState} from 'react';
+import React, {ReactElement, useEffect, useState, FC} from 'react';
 import useStyles from './ReservationsList.style';
 import {Button, Container} from '@material-ui/core';
 import {DataGrid, GridCellValue, GridColDef, GridRowId, GridSelectionModelChangeParams} from '@material-ui/data-grid';
@@ -14,7 +14,9 @@ import RequestStatusIcon from '../../../../components/Icons/RequestStatusIcon/Re
 
 const countRequests = {
   renderCell: ({value}: {value: GridCellValue}): ReactElement => {
-    if (!Array.isArray(value) || value.length === 0) {return <>no</>;}
+    if (!Array.isArray(value) || value.length === 0) {
+      return <>no</>;
+    }
 
     const {PENDING, FULFILLED, REJECTED} = ServiceRequestStatus;
     const pending = value.filter((request) => request.status === PENDING).length;
@@ -57,7 +59,7 @@ const columns: GridColDef[] = [
   {field: 'to', headerName: 'To', ...gridColDateFormat}
 ];
 
-const ReservationsList = ({loc}: {loc: LocationOption}) => {
+const ReservationsList: FC<{loc: LocationOption}> = ({loc}) => {
   const classes = useStyles();
   const {pushMessage} = useMessage();
   const [showEdit, setEdit] = useState<string | null>(null);
@@ -80,8 +82,10 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
 
   useEffect(() => {
     async function fetchReservations() {
-      const reservations: ReservationRes[] = await catchAndTossError(ReservationService.list(loc));
-      if (reservations) {setReservations(() => reservations);}
+      const reservations = (await catchAndTossError(ReservationService.list(loc))) as ReservationRes[] | undefined;
+      if (reservations) {
+        setReservations(() => reservations);
+      }
     }
 
     if (loc.id) {
@@ -100,13 +104,17 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
       const selected = reservations.find((rs) => rs.id === selection[0]);
       const currentTime = new Date().toISOString();
       setEditable(() => Boolean(selected && selected.from > currentTime));
-    } else {setEditable(() => false);}
+    } else {
+      setEditable(() => false);
+    }
   };
 
   const dialog = {
     edit: () => {
       const selected: ReservationRes | undefined = reservations.find((rs) => rs.id === selection[0]);
-      if (!selected) {return;}
+      if (!selected) {
+        return;
+      }
 
       const {id, workspace, requester, from, to} = selected;
       setReservation(() => ({id, workspace, requester, from, to, location: loc.id} as ReservationReq));
@@ -121,8 +129,10 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
 
   const handleCreation = async (formData: ReservationReq) => {
     const requestData: ReservationReq = {...formData, location: loc.id};
-    const addedReservation: ReservationRes = await catchAndTossError(ReservationService.add(requestData));
-    if (!addedReservation) {return;}
+    const addedReservation = (await catchAndTossError(ReservationService.add(requestData))) as ReservationRes | undefined;
+    if (!addedReservation) {
+      return;
+    }
 
     dialog.close();
     setReservations((reservations) => [addedReservation, ...reservations]);
@@ -131,8 +141,10 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
 
   const handleUpdate = async (formData: ReservationReq) => {
     const requestData: ReservationReq = {id: reservation.id, ...formData, location: loc.id};
-    const remaining: ReservationRes[] = await catchAndTossError(ReservationService.update(requestData));
-    if (!remaining) {return;}
+    const remaining = (await catchAndTossError(ReservationService.update(requestData))) as ReservationRes[] | undefined;
+    if (!remaining) {
+      return;
+    }
 
     dialog.close();
     setReservation(() => requestData);
@@ -141,8 +153,10 @@ const ReservationsList = ({loc}: {loc: LocationOption}) => {
   };
 
   const handleDeletion = async () => {
-    const remaining: ReservationRes[] = await catchAndTossError(ReservationService.remove(loc, selection));
-    if (!remaining) {return;}
+    const remaining = (await catchAndTossError(ReservationService.remove(loc, selection))) as ReservationRes[] | undefined;
+    if (!remaining) {
+      return;
+    }
 
     setReservations(() => remaining);
     setSelection(() => [] as GridRowId[]);

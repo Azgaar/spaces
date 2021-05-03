@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, FC} from 'react';
 import useStyles from './ReservationDialog.style';
 import {TextField, Button, Grid, Container, Dialog, MenuItem, FormControl} from '@material-ui/core';
 import {Controller, useForm} from 'react-hook-form';
@@ -18,7 +18,7 @@ type Props = {
   submit: (formData: ReservationReq) => void;
 };
 
-const ReservationDialog = ({mode, reservation, close, submit}: Props) => {
+const ReservationDialog: FC<Props> = ({mode, reservation, close, submit}) => {
   const {from, to, workspace, location, requester} = reservation;
   const [slot, setSlot] = useState<{from: string; to: string}>({from, to});
   const classes = useStyles();
@@ -27,35 +27,47 @@ const ReservationDialog = ({mode, reservation, close, submit}: Props) => {
   const {user} = useUser();
   const [users, setUsers] = useState<string[]>([requester]);
   const {isLoading, catchAndTossError} = useToasterCatcher();
-  const pagename: string = `${mode} Reservation`;
+  const pagename = `${mode} Reservation`;
 
   useEffect(() => {
     async function fetchWorkspaces() {
       const {from, to} = slot;
       const excludeReservation = reservation.id;
-      const freeWorkspaces: Workspace[] = await catchAndTossError(WorkspaceService.find({location, from, to, excludeReservation}));
-      if (freeWorkspaces) {setFreeWorkspaces(() => freeWorkspaces);}
-      if (!freeWorkspaces || !freeWorkspaces.length) {setValue('workspace', '');}
+      const freeWorkspaces = (await catchAndTossError(WorkspaceService.find({location, from, to, excludeReservation}))) as Workspace[] | undefined;
+      if (freeWorkspaces) {
+        setFreeWorkspaces(() => freeWorkspaces);
+      }
+      if (!freeWorkspaces || !freeWorkspaces.length) {
+        setValue('workspace', '');
+      }
     }
-    if (!errors.from && !errors.to) {fetchWorkspaces();}
+    if (!errors.from && !errors.to) {
+      fetchWorkspaces();
+    }
   }, [slot]);
 
   useEffect(() => {
     async function fetchUsers() {
-      const users: UserData[] = await catchAndTossError(UserService.list());
-      if (users) {setUsers(() => users.map((user) => user.email));}
+      const users = (await catchAndTossError(UserService.list())) as UserData[] | undefined;
+      if (users) {
+        setUsers(() => users.map((user: UserData) => user.email));
+      }
     }
     fetchUsers();
   }, []);
 
   const getLabel = (ws: Workspace) => {
     let label = `${ws.description}: ${ws.type} [${ws.size}]`;
-    if (ws.equipment.length) {label += ' with ' + ws.equipment.join(', ');}
+    if (ws.equipment.length) {
+      label += ' with ' + ws.equipment.join(', ');
+    }
     return label;
   };
 
   const changeDate = (date: Dayjs | null, name: 'from' | 'to') => {
-    if (!date) {return;}
+    if (!date) {
+      return;
+    }
     const dateString = date.toISOString();
     const {from, to} = name === 'from' ? {to: slot.to, from: dateString} : {from: slot.from, to: dateString};
     setSlot(() => ({from, to}));

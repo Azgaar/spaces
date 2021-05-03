@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, FC} from 'react';
 import useStyles from './Reservations.style';
 import {Container, Grid, TextField, ButtonGroup, Button, Box} from '@material-ui/core';
 import {Link} from 'react-router-dom';
@@ -9,7 +9,7 @@ import {LocationOption} from '../../../types';
 import {useLocations} from '../../../hooks';
 import Headline from '../../../components/Layout/components/Main/Headline/Headline';
 
-function Reservations() {
+const Reservations: FC = () => {
   const classes = useStyles();
   const blankLocation: LocationOption = {id: '', description: ''};
   const {locations, locationsLoading, location, setLocation, fetchLocations} = useLocations();
@@ -19,8 +19,12 @@ function Reservations() {
   }, []);
 
   const handleLocationChange = (value: LocationOption | string | null) => {
-    if (!value) {setLocation(() => blankLocation);}
-    if (!value || typeof value === 'string') {return;}
+    if (!value) {
+      setLocation(() => blankLocation);
+    }
+    if (!value || typeof value === 'string') {
+      return;
+    }
 
     setLocation(() => value);
     localStorage.setItem('location', JSON.stringify(value));
@@ -79,6 +83,6 @@ function Reservations() {
       <ReservationsList loc={location} />
     </Container>
   );
-}
+};
 
 export default Reservations;

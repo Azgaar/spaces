@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, FC} from 'react';
 import useStyles from './RequestList.style';
 import {Container, Button} from '@material-ui/core';
 import {DataGrid, GridColDef, GridRowId, GridSelectionModelChangeParams} from '@material-ui/data-grid';
@@ -19,7 +19,7 @@ const columns: GridColDef[] = [
   {field: 'from', headerName: 'Deadline', flex: 0.9, valueFormatter: (params) => getDiff(params.row?.reservation?.from)}
 ];
 
-const RequestList = ({status, location}: {status: ServiceRequestStatus; location: LocationOption}) => {
+const RequestList: FC<{status: ServiceRequestStatus; location: LocationOption}> = ({status, location}) => {
   const classes = useStyles();
   const {pushMessage} = useMessage();
   const [requests, setRequests] = useState<ServiceRes[]>([]);
@@ -29,10 +29,14 @@ const RequestList = ({status, location}: {status: ServiceRequestStatus; location
 
   useEffect(() => {
     async function fetchRequests() {
-      const fetchedRequests: ServiceRes[] = await catchAndTossError(RequestService.list(location, status));
-      if (fetchedRequests) {setRequests(() => fetchedRequests);}
+      const fetchedRequests = (await catchAndTossError(RequestService.list(location, status))) as ServiceRes[] | undefined;
+      if (fetchedRequests) {
+        setRequests(() => fetchedRequests);
+      }
     }
-    if (location.id && status) {fetchRequests();}
+    if (location.id && status) {
+      fetchRequests();
+    }
   }, [location, status]);
 
   const handleSelection = (selectionModel: GridSelectionModelChangeParams) => {
@@ -45,24 +49,32 @@ const RequestList = ({status, location}: {status: ServiceRequestStatus; location
   const handleDeletion = async () => {
     hideConfirmDeletion();
     const deletionResult = await catchAndTossError(RequestService.remove(selection));
-    if (!deletionResult) {return;}
+    if (!deletionResult) {
+      return;
+    }
 
     setSelection(() => [] as GridRowId[]);
     pushMessage({title: 'Service requests are removed', type: MessageType.SUCCESS});
 
-    const fetchedRequests: ServiceRes[] = await catchAndTossError(RequestService.list(location, status));
-    if (fetchedRequests) {setRequests(() => fetchedRequests);}
+    const fetchedRequests = (await catchAndTossError(RequestService.list(location, status))) as ServiceRes[] | undefined;
+    if (fetchedRequests) {
+      setRequests(() => fetchedRequests);
+    }
   };
 
   const handleProcessing = async (processToStatus: ServiceRequestStatus) => {
     const processingResult = await catchAndTossError(RequestService.process(selection, processToStatus));
-    if (!processingResult) {return;}
+    if (!processingResult) {
+      return;
+    }
 
     setSelection(() => [] as GridRowId[]);
     pushMessage({title: `Service requests are moved to ${status} status`, type: MessageType.SUCCESS});
 
-    const fetchedRequests: ServiceRes[] = await catchAndTossError(RequestService.list(location, status));
-    if (fetchedRequests) {setRequests(() => fetchedRequests);}
+    const fetchedRequests = (await catchAndTossError(RequestService.list(location, status))) as ServiceRes[] | undefined;
+    if (fetchedRequests) {
+      setRequests(() => fetchedRequests);
+    }
   };
 
   const Controls = () => {

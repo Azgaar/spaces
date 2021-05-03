@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, FC} from 'react';
 import useStyles from './Requests.style';
 import {Container, Box, ButtonGroup, Button, TextField, CircularProgress, Grid} from '@material-ui/core';
 import {Autocomplete} from '@material-ui/lab';
@@ -7,7 +7,7 @@ import RequestList from './RequestList/RequestList';
 import {LocationOption, ServiceRequestStatus} from '../../../types';
 import {useLocations} from '../../../hooks';
 
-function Requests() {
+const Requests: FC = () => {
   const classes = useStyles();
   const [statusFilter, setStatusFilter] = useState<ServiceRequestStatus>(ServiceRequestStatus.PENDING);
   const {locations, locationsLoading, location, setLocation, fetchLocations} = useLocations();
@@ -17,8 +17,12 @@ function Requests() {
   }, []);
 
   const handleLocationChange = (value: LocationOption | string | null) => {
-    if (!value) {setLocation(() => ({id: '', description: ''}));}
-    if (!value || typeof value === 'string') {return;}
+    if (!value) {
+      setLocation(() => ({id: '', description: ''}));
+    }
+    if (!value || typeof value === 'string') {
+      return;
+    }
 
     setLocation(() => value);
     localStorage.setItem('location', JSON.stringify(value));
@@ -73,6 +77,6 @@ function Requests() {
       <RequestList location={location} status={statusFilter} />
     </Container>
   );
-}
+};
 
 export default Requests;
