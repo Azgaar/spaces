@@ -65,6 +65,7 @@ function ReserveWorkspace() {
     if (!location) {
       setFilters((filters) => ({...filters, location: blankLocation}));
     }
+
     if (!location || typeof location === 'string') {
       return;
     }
