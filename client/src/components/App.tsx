@@ -1,4 +1,4 @@
-import React, {Suspense} from 'react';
+import React, {FC, Suspense} from 'react';
 import {Switch, Route} from 'react-router-dom';
 import Layout from './Layout/Layout';
 import Spinner from './Spinner/Spinner';
@@ -25,7 +25,7 @@ const ManageRequests = React.lazy(() => import('../pages/Admin/Requests/Requests
 const ManageUsers = React.lazy(() => import('../pages/Admin/Users/Users'));
 const ManageWorkspaces = React.lazy(() => import('../pages/Admin/Workspaces/Workspaces'));
 
-function App() {
+const App: FC = () => {
   return (
     <Layout>
       <Suspense fallback={<Spinner />}>
@@ -54,6 +54,6 @@ function App() {
       </Suspense>
     </Layout>
   );
-}
+};
 
 export default App;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {Dialog, DialogTitle, DialogActions, DialogContent, Button} from '@material-ui/core';
 
 type DialogProps = {
@@ -6,7 +6,8 @@ type DialogProps = {
   onClose: () => void;
   onConfirm: () => void;
 };
-const ConfirmationDialog = ({open, onClose, onConfirm}: DialogProps) => {
+
+const ConfirmationDialog: FC<DialogProps> = ({open, onClose, onConfirm}) => {
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Confirm action</DialogTitle>

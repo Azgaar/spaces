@@ -1,4 +1,4 @@
-import React, {ChangeEvent, ChangeEventHandler, FormEvent, FormEventHandler, useEffect, useState} from 'react';
+import React, {ChangeEvent, ChangeEventHandler, FC, FormEvent, FormEventHandler, useEffect, useState} from 'react';
 import useStyles from './ReserveWorkspace.style';
 import {Button, Chip, Container, FilledInput, FormControl, Grid, InputLabel, MenuItem, Select, TextField} from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -28,7 +28,7 @@ const defaultFilters: ReservationFilters = {
   description: ''
 };
 
-function ReserveWorkspace() {
+const ReserveWorkspace: FC = () => {
   const classes = useStyles();
   const {locations, locationsLoading, fetchLocations} = useLocations();
   const [filters, setFilters] = useState<ReservationFilters>(defaultFilters);
@@ -313,7 +313,7 @@ function ReserveWorkspace() {
       <AddServices open={services.isOpen} services={services.list} onClose={closeServices} onAdd={addService} onDelete={deleteService} />
     </Container>
   );
-}
+};
 
 type Services = {
   isOpen: boolean;
