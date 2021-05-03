@@ -33,5 +33,6 @@ ReactDOM.render(
 
 axios.defaults.baseURL = BASE_URL;
 axios.defaults.timeout = REQUEST_TIMEOUT;
+axios.defaults.withCredentials = true;
 
 // reportWebVitals(console.log);

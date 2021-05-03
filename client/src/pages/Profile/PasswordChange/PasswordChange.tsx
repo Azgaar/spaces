@@ -5,26 +5,23 @@ import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined"
 import {Link as RouterLink, useHistory} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
 import {PassportChangeForm} from "../../../types";
-import {changePassword} from "../../../services";
-import {rules} from "../../../validation";
+import {UserService} from "../../../services";
+import {rules} from "../../../validation/user";
 import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
+import {useRequest} from "../../../hooks";
 
 function PasswordChange() {
   const formStyles = useFormStyles();
   const {pushMessage} = useMessage();
   const history = useHistory();
+  const {handleRequest} = useRequest();
 
   const {register, errors, handleSubmit, watch} = useForm<PassportChangeForm>();
   const passwordNew = watch("passwordNew", "");
 
   const onSubmit: SubmitHandler<PassportChangeForm> = async (formData: PassportChangeForm) => {
-    const res = await changePassword(formData);
-
-    if (!res.ok) {
-      pushMessage({title: res.message, type: MessageType.ERROR});
-      return;
-    }
-
+    const res = await handleRequest(UserService.changePassword(formData));
+    if (!res) return;
     pushMessage({title: "Password is changed", type: MessageType.SUCCESS});
     history.push("/profile");
   };

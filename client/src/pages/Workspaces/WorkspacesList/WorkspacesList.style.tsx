@@ -26,6 +26,9 @@ const useStyles = makeStyles(theme => ({
   },
   controls: {
     margin: theme.spacing(1, 0)
+  },
+  button: {
+    marginLeft: theme.spacing(1)
   }
 }));
 

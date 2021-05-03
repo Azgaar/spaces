@@ -1,14 +1,14 @@
 export enum UserRole {
   USER = "user",
   ADMIN = "admin"
-};
+}
 
 export type UserData = {
   email: string;
-  firstName: string
+  firstName: string;
   lastName: string;
   role?: UserRole;
-}
+};
 
 export interface RootState {
   user: {
@@ -43,10 +43,50 @@ export type ProfileEditForm = {
   lastName: string;
   email: string;
   password: string;
-}
+};
 
 export type PassportChangeForm = {
   password: string;
   passwordNew: string;
   passwordNewRepeat: string;
+};
+
+export type LocationOption = {
+  id: string;
+  description: string;
+};
+
+export enum WorkspaceStatus {
+  AVAILABLE = "Available",
+  UNAVAILABLE = "Unavailable"
 }
+
+export enum WorkspaceType {
+  DESK = "Desk",
+  CONFERENCE_ROOM = "Conference room",
+  MEETING_ROOM = "Meeting room",
+  COWORKING = "Coworking",
+  FOCUS_ROOM = "Focus room",
+  FUN_ZONE = "Fun zone",
+  NAP_POD = "Nap pod"
+}
+
+export enum Equipment {
+  PROJECTOR = "Projector",
+  MONITOR = "Monitor",
+  TELEPHONE = "Telephone",
+  SPEAKERPHONE = "Speakerphone",
+  HEADSET = "Headset",
+  STANDING_DESK = "Standing desk",
+  COUCH = "Couch"
+}
+
+export type Workspace = {
+  id?: string;
+  description: string;
+  location: string;
+  status: WorkspaceStatus;
+  type: WorkspaceType;
+  size: number;
+  equipment: Equipment[];
+};

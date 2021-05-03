@@ -8,13 +8,20 @@ enum AccessRole {
   ADMIN = "admin"
 };
 
-const PrivateRoute = (props: {path: string; access: AccessRole, component: React.FC}) => {
-  const {isAuthenticated, isAdmin} = useUser();
+type RouteProps = {
+  path: string,
+  access: AccessRole,
+  component: React.FC
+}
 
-  if (props.access === AccessRole.UNLOGGED && isAuthenticated) return <Redirect to="/dashboard" />;
-  if (props.access === AccessRole.LOGGED && !isAuthenticated) return <Redirect to="/signin" />;
-  if (props.access === AccessRole.ADMIN && !isAdmin) return <Redirect to="/dashboard" />;
-  return <Route path={props.path} component={props.component} />;
+const PrivateRoute = ({path, access, component}: RouteProps) => {
+  const {isAuthenticated, isAdmin} = useUser();
+  console.log("PrivateRoute", {path, isAuthenticated, isAdmin});
+
+  if (access === AccessRole.UNLOGGED && isAuthenticated) return <Redirect to="/dashboard" />;
+  if (access === AccessRole.LOGGED && !isAuthenticated) return <Redirect to="/signin" />;
+  if (access === AccessRole.ADMIN && !isAdmin) return <Redirect to="/dashboard" />;
+  return <Route path={path} component={component} />;
 };
 
 export {PrivateRoute, AccessRole};

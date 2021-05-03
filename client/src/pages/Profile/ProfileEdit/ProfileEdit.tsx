@@ -6,10 +6,10 @@ import {Link as RouterLink, useHistory} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {useForm, SubmitHandler} from "react-hook-form";
 import {ProfileEditForm} from "../../../types";
-import {updateUserData} from "../../../services";
+import {UserService} from "../../../services";
 import {actions} from "../../../store/actions";
-import {useUser} from "../../../hooks";
-import {rules} from "../../../validation";
+import {useRequest, useUser} from "../../../hooks";
+import {rules} from "../../../validation/user";
 import {MessageType, useMessage} from "../../../components/providers/MessageProvider";
 
 function ProfileEdit() {
@@ -18,20 +18,14 @@ function ProfileEdit() {
   const {user} = useUser();
   const {pushMessage} = useMessage();
   const history = useHistory();
+  const {handleRequest} = useRequest();
 
   const {register, errors, handleSubmit} = useForm<ProfileEditForm>();
 
   const onSubmit: SubmitHandler<ProfileEditForm> = async (formData: ProfileEditForm) => {
-    const res = await updateUserData(formData);
-
-    if (!res.ok) {
-      pushMessage({title: res.message, type: MessageType.ERROR});
-      return;
-    }
-
-    const {email, firstName, lastName} = res;
-    dispatch(actions.updateUserData({email, firstName, lastName}));
-    
+    const res = await handleRequest(UserService.update(formData));
+    if (!res) return;
+    dispatch(actions.updateUserData(res));
     pushMessage({title: "Profile is changed", type: MessageType.SUCCESS});
     history.push("/profile");
   };

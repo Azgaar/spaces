@@ -49,6 +49,14 @@ export default class App {
     this.app.use("/forgotPassword", Routes.forgotPassword);
     this.app.use("/getUsers", Routes.getUsers);
     this.app.use("/deleteUsers", Routes.deleteUsers);
+    this.app.use("/getLocations", Routes.getLocations);
+    this.app.use("/addLocation", Routes.addLocation);
+    this.app.use("/renameLocation", Routes.renameLocation);
+    this.app.use("/deleteLocation", Routes.deleteLocation);
+    this.app.use("/getWorkspaces", Routes.getWorkspaces);
+    this.app.use("/addWorkspace", Routes.addWorkspace);
+    this.app.use("/updateWorkspace", Routes.updateWorkspace);
+    this.app.use("/deleteWorkspaces", Routes.deleteWorkspaces);
 
     this.app.use("/*", (req, res, next) => next(new ApiError(httpStatus.NOT_FOUND, "Not found")));
 

@@ -1,20 +1,24 @@
 import React, {FC, useEffect, useState} from "react";
 import Spinner from "../Spinner/Spinner";
-import {fetchUserData} from "../../services";
+import {UserService} from "../../services";
 import {useDispatch} from "react-redux";
 import {actions} from "../../store/actions";
+import {useRequest} from "../../hooks";
+import {UserData} from "../../types";
 
 const AuthProvider: FC = ({children}) => {
   const [isLoading, setLoading] = useState(true);
+  const {handleRequest} = useRequest();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchUserData().then(res => {
-        if (!res.email) return; // user is not logged in
-        const {email, firstName, lastName, role} = res;
-        dispatch(actions.login({email, firstName, lastName, role}));
-      })
-      .finally(() => setLoading(false));
+    async function fetchUser() {
+      const user: UserData = await handleRequest(UserService.fetch());
+      if (!user) return; // user is not logged in
+      console.log("AuthProvider", {user});
+      dispatch(actions.login(user));
+    };
+    fetchUser().then(() => setLoading(false));
   }, []);
 
   return isLoading ? <Spinner /> : <>{children}</>;

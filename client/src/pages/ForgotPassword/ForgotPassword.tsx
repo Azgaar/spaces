@@ -5,24 +5,21 @@ import MailOutlineOutlinedIcon from "@material-ui/icons/MailOutlineOutlined";
 import {Link as RouterLink, useHistory} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
 import {ForgotPasswordForm} from "../../types";
-import {forgotPassword} from "../../services";
-import {rules} from "../../validation";
+import {UserService} from "../../services";
+import {rules} from "../../validation/user";
 import {MessageType, useMessage} from "../../components/providers/MessageProvider";
+import {useRequest} from "../../hooks";
 
 function ForgotPassword() {
   const formStyles = useFormStyles();
   const {pushMessage} = useMessage();
   const history = useHistory();
   const {register, errors, handleSubmit} = useForm<ForgotPasswordForm>();
+  const {handleRequest} = useRequest();
 
   const onSubmit: SubmitHandler<ForgotPasswordForm> = async (formData: ForgotPasswordForm) => {
-    const res = await forgotPassword(formData);
-
-    if (!res.ok) {
-      pushMessage({title: res.message, type: MessageType.ERROR});
-      return;
-    }
-
+    const res = await handleRequest(UserService.resetPassword(formData));
+    if (!res) return;
     pushMessage({title: `Email is send to ${formData.email}`, type: MessageType.SUCCESS});
     history.push("/signin");
   };

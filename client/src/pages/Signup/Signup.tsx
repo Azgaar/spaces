@@ -6,10 +6,10 @@ import {Link as RouterLink, useHistory} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {useForm, SubmitHandler} from "react-hook-form";
 import {SignUpForm} from "../../types";
-import {signup} from "../../services";
+import {UserService} from "../../services";
 import {actions} from "../../store/actions";
-import {rules} from "../../validation";
-import {MessageType, useMessage} from "../../components/providers/MessageProvider";
+import {rules} from "../../validation/user";
+import {useRequest} from "../../hooks";
 
 const TermslLabel = () => {
   return (
@@ -23,22 +23,16 @@ const TermslLabel = () => {
 function Signup() {
   const formStyles = useFormStyles();
   const dispatch = useDispatch();
-  const {pushMessage} = useMessage();
   const history = useHistory();
+  const {handleRequest} = useRequest();
 
   const {register, errors, handleSubmit, watch} = useForm<SignUpForm>();
   const password = watch("password", "");
 
   const onSubmit: SubmitHandler<SignUpForm> = async (formData: SignUpForm) => {
-    const res = await signup(formData);
-
-    if (!res.ok) {
-      pushMessage({title: res.message, type: MessageType.ERROR});
-      return;
-    }
-
-    const {email, firstName, lastName, role} = res;
-    dispatch(actions.login({email, firstName, lastName, role}));
+    const res = await handleRequest(UserService.signup(formData));
+    if (!res) return
+    dispatch(actions.login(res));
     history.push("/dashboard");
   };
 

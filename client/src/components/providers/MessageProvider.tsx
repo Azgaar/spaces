@@ -7,7 +7,6 @@ export const MessageContext = React.createContext<IMessageContext>({} as IMessag
 
 const MessageProvider: FC = ({children}) => {
   const [{open, message}, setState] = useState<MessageState>({open: false, message: null});
-
   const pushMessage = (message: Message): void => setState(() => ({open: true, message}));
   const handleClose = (): void => setState(() => ({open: false, message: null}));
 

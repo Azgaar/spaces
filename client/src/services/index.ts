@@ -1,2 +1,4 @@
-export {signup, signin, logout, fetchUserData, updateUserData, changePassword, forgotPassword} from "./user";
-
+export {AuthService} from "./auth.service";
+export {UserService} from "./user.service";
+export {LocationService} from "./location.service";
+export {WorkspaceService} from "./workspace.service";
