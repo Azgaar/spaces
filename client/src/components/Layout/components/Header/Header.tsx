@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, FC} from 'react';
 import useStyles from './Header.style';
 import {AppBar, Toolbar, Box, Button, Drawer, List, Typography, useTheme, useMediaQuery} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -6,7 +6,7 @@ import MenuButtons from './MenuButtons/MenuButtons';
 
 const logoPath = process.env.PUBLIC_URL + '/logo.svg';
 
-function Header() {
+const Header: FC = () => {
   const classes = useStyles();
   const wideScreen = useMediaQuery(useTheme().breakpoints.up('md'));
   const [menuOpen, setMenuOpen] = useState(false);
@@ -40,6 +40,6 @@ function Header() {
       </Drawer>
     </AppBar>
   );
-}
+};
 
 export default Header;

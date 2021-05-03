@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, FC} from 'react';
 import useStyles from './DeletionButton.style';
 import {Box, Button, Typography} from '@material-ui/core';
 
@@ -12,7 +12,7 @@ type DeletionProps = {
   onDelete: () => void;
 };
 
-const DeletionButton = ({object, onDelete, title, confirm = 'Delete', cancel = 'Cancel', short = false, showText = true}: DeletionProps) => {
+const DeletionButton: FC<DeletionProps> = ({object, onDelete, title, confirm = 'Delete', cancel = 'Cancel', short = false, showText = true}) => {
   const [confirmDelection, setConfirmDelection] = useState(false);
   const classes = useStyles();
 

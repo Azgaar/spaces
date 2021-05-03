@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {MenuItem} from '@material-ui/core';
 import {Link as RouterLink, useHistory} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
@@ -6,7 +6,7 @@ import {AuthService} from '../../../../../services';
 import {actions} from '../../../../../store/actions';
 import {useToasterCatcher, useUser} from '../../../../../hooks';
 
-const UnauthorizedUserNavButtons = () => {
+const UnauthorizedUserNavButtons: FC = () => {
   return (
     <>
       <MenuItem color="inherit" component={RouterLink} to="/signin">
@@ -19,14 +19,16 @@ const UnauthorizedUserNavButtons = () => {
   );
 };
 
-const AuthorizedUserNavButtons = () => {
+const AuthorizedUserNavButtons: FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const {catchAndTossError} = useToasterCatcher();
 
   const handleLogout = async () => {
     const result = await catchAndTossError(AuthService.logout());
-    if (!result) {return;}
+    if (!result) {
+      return;
+    }
     dispatch(actions.logout());
     history.push('/signin');
   };
@@ -43,7 +45,7 @@ const AuthorizedUserNavButtons = () => {
   );
 };
 
-const AdminNavButtons = () => {
+const AdminNavButtons: FC = () => {
   return (
     <>
       <MenuItem color="inherit" component={RouterLink} to="/admin/reservations">
@@ -62,7 +64,7 @@ const AdminNavButtons = () => {
   );
 };
 
-const UserNavButtons = () => {
+const UserNavButtons: FC = () => {
   return (
     <>
       <MenuItem color="inherit" component={RouterLink} to="/reserve">
@@ -78,7 +80,7 @@ const UserNavButtons = () => {
   );
 };
 
-const MenuButtons = () => {
+const MenuButtons: FC = () => {
   const {isAuthenticated, isAdmin} = useUser();
   return (
     <>

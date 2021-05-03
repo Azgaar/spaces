@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {FC} from 'react';
 import useStyles from './Footer.style';
 import Container from '@material-ui/core/Container';
 import Copyright from './Copyright/Copyright';
 
-function Footer() {
+const Footer: FC = () => {
   const classes = useStyles();
 
   return (
@@ -13,6 +13,6 @@ function Footer() {
       </Container>
     </footer>
   );
-}
+};
 
 export default Footer;

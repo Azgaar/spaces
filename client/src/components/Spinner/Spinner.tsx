@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {FC} from 'react';
 import useStyles from './Spinner.style';
 
-function Spinner() {
+const Spinner: FC = () => {
   const classes = useStyles();
 
   return (
@@ -17,6 +17,6 @@ function Spinner() {
       <div></div>
     </div>
   );
-}
+};
 
 export default Spinner;

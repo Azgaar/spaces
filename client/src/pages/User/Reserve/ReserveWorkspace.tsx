@@ -116,7 +116,7 @@ const ReserveWorkspace: FC = () => {
       requester: user.email,
       workspace: workspaceId
     };
-    const addedReservation: ReservationRes = await catchAndTossError(ReservationService.add(reservationData));
+    const addedReservation = (await catchAndTossError(ReservationService.add(reservationData))) as ReservationRes;
     if (!addedReservation) {
       return;
     }
@@ -135,7 +135,7 @@ const ReserveWorkspace: FC = () => {
       requester: user.email,
       servicesList: services.list
     };
-    const addedServices: ServiceRes[] = await catchAndTossError(RequestService.add(requestData));
+    const addedServices = (await catchAndTossError(RequestService.add(requestData))) as ServiceRes[];
     if (addedServices) {
       pushMessage({title: 'Workspace is reserved, services are requested', type: MessageType.SUCCESS});
     } else {
