@@ -18,6 +18,7 @@ import {ReservationService, RequestService} from '../../../services';
 const blankLocation: LocationOption = {id: '', description: ''};
 const from = dayjs().set('minute', 0).set('second', 0).set('millisecond', 0).add(1, 'hour');
 const to = from.add(1, 'hour');
+
 const defaultFilters: ReservationFilters = {
   location: (getStored('location') as LocationOption) || blankLocation,
   type: 'Any',
@@ -75,7 +76,10 @@ const ReserveWorkspace: FC = () => {
   };
 
   const changeDate = (date: Dayjs | null, name: 'from' | 'to') => {
-    date && setFilters((filters) => ({...filters, [name]: date.toISOString()}));
+    console.log('changeDate', date);
+    if (date) {
+      setFilters((filters) => ({...filters, [name]: date.toISOString()}));
+    }
   };
 
   const changeType: ChangeEventHandler = (e: ChangeEvent<HTMLInputElement>) => {
