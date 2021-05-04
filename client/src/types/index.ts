@@ -142,14 +142,6 @@ export type ReservationFilters = {
   description: string;
 };
 
-export type ReservationFilterErrors = {
-  location: boolean;
-  from: boolean;
-  to: boolean;
-  size: boolean;
-  errored?: boolean;
-};
-
 export type ServiceReq = {
   location: string;
   reservationId: string;
