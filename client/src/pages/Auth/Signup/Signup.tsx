@@ -20,7 +20,6 @@ const Signup: FC = () => {
   const {catchAndTossError} = useToasterCatcher();
 
   const submitForm = async (values: SignUpForm) => {
-    alert(JSON.stringify(values, null, 2));
     const userData = (await catchAndTossError(UserService.signup(values))) as UserData | undefined;
     if (userData) {
       dispatch(actions.login(userData));
