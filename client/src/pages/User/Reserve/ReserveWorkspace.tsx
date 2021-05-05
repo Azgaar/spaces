@@ -52,6 +52,7 @@ const ReserveWorkspace: FC = () => {
 
   function validateFilters(): ReservationFilterErrors {
     const filters = debouncedFilters;
+
     const errors: ReservationFilterErrors = {
       location: locations.length > 0 && !filters.location.id,
       from: !filters.from || filters.from > filters.to,
