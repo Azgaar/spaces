@@ -1,20 +1,8 @@
-import React from 'react';
-import {cleanup, render, screen} from '@testing-library/react';
-import {MemoryRouter} from 'react-router-dom';
-import App from '../components/App';
-import {Provider} from 'react-redux';
-import {store} from '../store';
+import {cleanup, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import {renderApp} from './utils';
 
 afterEach(cleanup);
-
-const renderApp = () =>
-  render(
-    <Provider store={store}>
-      <App />
-    </Provider>,
-    {wrapper: MemoryRouter}
-  );
 
 describe('Sign in page', () => {
   test('has submit button', async () => {

@@ -1,21 +1,11 @@
-import React from 'react';
-import {cleanup, render, screen, waitFor, within} from '@testing-library/react';
-import {MemoryRouter} from 'react-router-dom';
-import App from '../components/App';
-import {Provider} from 'react-redux';
-import {store} from '../store';
+import {cleanup, screen, waitFor, within} from '@testing-library/react';
+import {renderApp} from './utils';
 
 afterEach(cleanup);
 
 describe('App', () => {
   test('renders Sign Up page be default', async () => {
-    render(
-      <Provider store={store}>
-        <App />
-      </Provider>,
-      {wrapper: MemoryRouter}
-    );
-
+    renderApp();
     await waitFor(() => {
       const main = screen.getByRole('main');
       const signIn = within(main).getByRole('button', {name: /sign in/i});
