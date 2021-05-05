@@ -8,7 +8,7 @@ import WorkspaceTypeIcon from '../../../../components/Icons/WorkspaceTypeIcon/Wo
 import SearchIcon from '@material-ui/icons/Search';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
-type Props = {
+type AvailableWorkspacesProps = {
   filters: ReservationFilters;
   valid: boolean;
   updateToggle: boolean;
@@ -16,7 +16,7 @@ type Props = {
   selectWorkspace: (workspaceId: string) => void;
 };
 
-const AvailableWorkspaces: FC<Props> = ({filters, valid, updateToggle, selectedWS, selectWorkspace}) => {
+const AvailableWorkspaces: FC<AvailableWorkspacesProps> = ({filters, valid, updateToggle, selectedWS, selectWorkspace}) => {
   const classes = useStyles();
   const {isLoading, setLoading, catchAndTossError} = useToasterCatcher();
   const [workspaces, setWorkspaces] = useState<Workspace[]>([]);

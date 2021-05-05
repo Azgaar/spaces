@@ -11,14 +11,14 @@ import {Dayjs} from 'dayjs';
 import {getMaxDate} from '../../../../../utils';
 import Headline from '../../../../../components/Layout/components/Main/Headline/Headline';
 
-type Props = {
+type ReservationDialogProps = {
   mode: 'Add' | 'Edit';
   reservation: ReservationReq;
   close: () => void;
   submit: (formData: ReservationReq) => void;
 };
 
-const ReservationDialog: FC<Props> = ({mode, reservation, close, submit}) => {
+const ReservationDialog: FC<ReservationDialogProps> = ({mode, reservation, close, submit}) => {
   const {from, to, workspace, location, requester} = reservation;
   const [slot, setSlot] = useState<{from: string; to: string}>({from, to});
   const classes = useStyles();

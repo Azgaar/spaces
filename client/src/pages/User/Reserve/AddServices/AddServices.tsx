@@ -16,7 +16,7 @@ const defaultServiceOptions: string[] = [
   'Orginize coffee break'
 ];
 
-type Props = {
+type AddServicesProps = {
   open: boolean;
   services: string[];
   onClose: () => void;
@@ -24,7 +24,7 @@ type Props = {
   onDelete: (value: string) => void;
 };
 
-const AddServices: FC<Props> = ({open, services, onClose, onAdd, onDelete}) => {
+const AddServices: FC<AddServicesProps> = ({open, services, onClose, onAdd, onDelete}) => {
   const classes = useStyles();
   const blankService = {value: '', input: '', error: false};
   const [service, setService] = useState<Service>(blankService);

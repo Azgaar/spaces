@@ -7,14 +7,14 @@ import {Workspace, WorkspaceStatus, WorkspaceType, Equipment} from '../../../../
 import EquipmentIcon from '../../../../../components/Icons/EquipmentIcon/EquipmentIcon';
 import Headline from '../../../../../components/Layout/components/Main/Headline/Headline';
 
-type Props = {
+type WorkspaceDialogProps = {
   mode: 'Edit' | 'Add';
   workspace: Workspace;
   close: () => void;
   submit: (formData: Workspace) => void;
 };
 
-const WorkspaceDialog: FC<Props> = ({mode, workspace, close, submit}) => {
+const WorkspaceDialog: FC<WorkspaceDialogProps> = ({mode, workspace, close, submit}) => {
   const classes = useStyles();
   const {register, errors, setValue, handleSubmit, reset} = useForm<Workspace>();
   const pagename = `${mode} Workspace`;

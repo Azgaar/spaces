@@ -3,13 +3,13 @@ import {Route, Redirect} from 'react-router-dom';
 import {useUser} from '../hooks';
 import {UserRole} from '../types';
 
-type Props = {
+type PrivateRouteProps = {
   path: string;
   requiredRole?: UserRole;
   component: FC;
 };
 
-const PrivateRoute: FC<Props> = ({path, requiredRole, component}) => {
+const PrivateRoute: FC<PrivateRouteProps> = ({path, requiredRole, component}) => {
   const {isAuthenticated, user} = useUser();
 
   if (!isAuthenticated) {
