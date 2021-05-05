@@ -12,10 +12,8 @@ const Layout: FC = ({children}) => {
     <div className={classes.app}>
       <div className={classes.background}></div>
       <Header />
-      <Container component="main" maxWidth="lg">
-        <ErrorBoundary>
-          <>{children}</>
-        </ErrorBoundary>
+      <Container component="main" role="main" maxWidth="lg">
+        <ErrorBoundary children={children} />
       </Container>
       <Footer />
     </div>
