@@ -7,8 +7,8 @@ import {store} from '../store';
 
 afterEach(cleanup);
 
-describe('Unauthorized user', () => {
-  test('sees Sign In form by default', async () => {
+describe('App', () => {
+  test('renders Sign Up page', async () => {
     render(
       <Provider store={store}>
         <App />
@@ -19,7 +19,6 @@ describe('Unauthorized user', () => {
     await waitFor(() => {
       const main = screen.getByRole('main');
       const signIn = within(main).getByRole('button', {name: /sign in/i});
-      screen.debug();
       expect(signIn).toBeInTheDocument();
     });
   });
