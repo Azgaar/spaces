@@ -8,14 +8,15 @@ import WorkspaceTypeIcon from '../../../../components/Icons/WorkspaceTypeIcon/Wo
 import SearchIcon from '@material-ui/icons/Search';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
-type Props = {
+type AvailableWorkspacesProps = {
   filters: ReservationFilters;
-  errored: boolean | undefined;
+  valid: boolean;
+  updateToggle: boolean;
   selectedWS: string;
   selectWorkspace: (workspaceId: string) => void;
 };
 
-const AvailableWorkspaces: FC<Props> = ({filters, errored, selectedWS, selectWorkspace}) => {
+const AvailableWorkspaces: FC<AvailableWorkspacesProps> = ({filters, valid, updateToggle, selectedWS, selectWorkspace}) => {
   const classes = useStyles();
   const {isLoading, setLoading, catchAndTossError} = useToasterCatcher();
   const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
@@ -31,8 +32,8 @@ const AvailableWorkspaces: FC<Props> = ({filters, errored, selectedWS, selectWor
       setWorkspaces(() => freeWorkspaces || []);
     }
 
-    errored || !filters.location.id ? setLoading(() => false) : fetchWorkspaces();
-  }, [filters]);
+    valid ? fetchWorkspaces() : setLoading(() => false);
+  }, [filters, updateToggle]);
 
   useEffect(() => {
     if (selectedWS) {
@@ -59,7 +60,7 @@ const AvailableWorkspaces: FC<Props> = ({filters, errored, selectedWS, selectWor
     <Grid container spacing={2} alignItems="center">
       <LinearProgress className={`${classes.progress} ${isLoading ? '' : classes.inactive}`} />
 
-      {errored && (
+      {!valid && (
         <Grid item lg={3} md={4} sm={6} xs={12}>
           <Card className={classes.card} variant="outlined">
             <CardHeader className={classes.cardHeader} avatar={<ErrorOutlineIcon />} title="Validation error" subheader="Fix the error in red" />
@@ -67,7 +68,7 @@ const AvailableWorkspaces: FC<Props> = ({filters, errored, selectedWS, selectWor
         </Grid>
       )}
 
-      {!errored && !workspaces.length && (
+      {valid && !workspaces.length && (
         <Grid item lg={3} md={4} sm={6} xs={12}>
           <Card className={classes.card} variant="outlined">
             <CardHeader className={classes.cardHeader} avatar={<SearchIcon />} title="No workspaces" subheader="Alter search criteria" />
@@ -75,7 +76,7 @@ const AvailableWorkspaces: FC<Props> = ({filters, errored, selectedWS, selectWor
         </Grid>
       )}
 
-      {!errored &&
+      {valid &&
         workspaces.map((workspace) => (
           <Grid key={workspace.id} item lg={2} md={3} sm={4} xs={6}>
             <Card className={workspace.id === selectedWS ? classes.selectedCard : classes.card} variant="outlined">

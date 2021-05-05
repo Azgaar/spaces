@@ -11,13 +11,13 @@ import {useToasterCatcher} from '../../../../hooks';
 import {getMaxDate} from '../../../../utils';
 import {rules} from '../../../../validation/reservation';
 
-type Props = {
+type ReservationEditProps = {
   reservation: ReservationReq;
   close: () => void;
   submit: (formData: ReservationReq) => void;
 };
 
-const ReservationEdit: FC<Props> = ({reservation, close, submit}) => {
+const ReservationEdit: FC<ReservationEditProps> = ({reservation, close, submit}) => {
   const {id, from, to, workspace, location} = reservation;
   const [slot, setSlot] = useState<{from: string; to: string}>({from, to});
   const classes = useStyles();

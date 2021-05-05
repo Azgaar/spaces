@@ -1,9 +1,9 @@
-import React, {ChangeEvent, ChangeEventHandler, FC, FormEvent, FormEventHandler, useEffect, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import useStyles from './ReserveWorkspace.style';
 import {Button, Chip, Container, FilledInput, FormControl, Grid, InputLabel, MenuItem, Select, TextField} from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {Autocomplete} from '@material-ui/lab';
-import {Equipment, LocationOption, ReservationFilters, ReservationFilterErrors, WorkspaceType, ReservationReq, ReservationRes, ServiceRes, ServiceReq} from '../../../types';
+import {Equipment, LocationOption, ReservationFilters, WorkspaceType, ReservationReq, ReservationRes, ServiceRes, ServiceReq} from '../../../types';
 import {useDebounce, useLocations, useToasterCatcher, useUser} from '../../../hooks';
 import AvailableWorkspaces from './AvailableWorkspaces/AvailableWorkspaces';
 import {DateTimePicker} from '@material-ui/pickers';
@@ -14,6 +14,8 @@ import AddServices from './AddServices/AddServices';
 import EquipmentIcon from '../../../components/Icons/EquipmentIcon/EquipmentIcon';
 import {MessageType, useMessage} from '../../../components/Providers/MessageProvider';
 import {ReservationService, RequestService} from '../../../services';
+import {useFormik} from 'formik';
+import {reserveValidationSchema} from '../../../validation/reserve';
 
 const blankLocation: LocationOption = {id: '', description: ''};
 const from = dayjs().set('minute', 0).set('second', 0).set('millisecond', 0).add(1, 'hour');
@@ -32,120 +34,78 @@ const defaultFilters: ReservationFilters = {
 const ReserveWorkspace: FC = () => {
   const classes = useStyles();
   const {locations, locationsLoading, fetchLocations} = useLocations();
-  const [filters, setFilters] = useState<ReservationFilters>(defaultFilters);
-  const debouncedFilters = useDebounce(filters, 500) as ReservationFilters;
-  const [filterErrors, setfilterErrors] = useState<ReservationFilterErrors>(validateFilters());
   const [workspaceId, setWorkspaceId] = useState<string>('');
   const [services, setServices] = useState<Services>({isOpen: false, list: []});
   const {pushMessage} = useMessage();
   const {user} = useUser();
   const {catchAndTossError} = useToasterCatcher();
+  const [updateToggle, setUpdateToggle] = useState(false);
 
   useEffect(() => {
     fetchLocations({onlyWithWorkspaces: true});
   }, []);
 
-  useEffect(() => {
-    const errors = validateFilters();
-    setfilterErrors(() => errors);
-  }, [debouncedFilters]);
-
-  function validateFilters(): ReservationFilterErrors {
-    const filters = debouncedFilters;
-
-    const errors: ReservationFilterErrors = {
-      location: locations.length > 0 && !filters.location.id,
-      from: !filters.from || filters.from > filters.to,
-      to: !filters.to || filters.to <= filters.from,
-      size: isNaN(filters.size) || filters.size < 1 || filters.size > 255
+  const submitForm = async (values: ReservationFilters) => {
+    const reservationData: ReservationReq = {
+      from: values.from,
+      to: values.to,
+      location: values.location.id,
+      requester: user.email,
+      workspace: workspaceId
     };
-    errors.errored = Object.values(errors).some((value) => value);
-    return errors;
-  }
+    const addedReservation = (await catchAndTossError(ReservationService.add(reservationData))) as ReservationRes;
+    if (addedReservation) {
+      setWorkspaceId(() => '');
+      setUpdateToggle((updateToggle) => !updateToggle); // trigger workspaces list update
 
-  const changeLocation = (location: LocationOption | string | null) => {
-    if (!location) {
-      setFilters((filters) => ({...filters, location: blankLocation}));
+      if (!services.list.length) {
+        pushMessage({title: 'Workspace is reserved', type: MessageType.SUCCESS});
+        return;
+      }
+
+      const requestData: ServiceReq = {
+        location: values.location.id,
+        reservationId: addedReservation.id,
+        requester: user.email,
+        servicesList: services.list
+      };
+      const addedServices = (await catchAndTossError(RequestService.add(requestData))) as ServiceRes[];
+      if (addedServices) {
+        pushMessage({title: 'Workspace is reserved, services are requested', type: MessageType.SUCCESS});
+      } else {
+        pushMessage({title: 'Workspace is reserved, but services request is failed', type: MessageType.ERROR});
+      }
     }
+  };
 
-    if (!location || typeof location === 'string') {
+  const formik = useFormik({
+    initialValues: defaultFilters,
+    validationSchema: reserveValidationSchema,
+    onSubmit: submitForm
+  });
+  const debouncedFilters = useDebounce(formik.values, 500) as ReservationFilters;
+
+  const handleLocationChange = (value: LocationOption | string | null) => {
+    if (!value) {
+      formik.setFieldValue('location', blankLocation);
+    }
+    if (!value || typeof value === 'string') {
       return;
     }
 
-    setFilters((filters) => ({...filters, location}));
-    localStorage.setItem('location', JSON.stringify(location));
+    formik.setFieldValue('location', value);
+    localStorage.setItem('location', JSON.stringify(value));
   };
 
   const changeDate = (date: Dayjs | null, name: 'from' | 'to') => {
-    console.log('changeDate', date);
     if (date) {
-      setFilters((filters) => ({...filters, [name]: date.toISOString()}));
+      formik.setFieldValue(name, date.toISOString());
     }
-  };
-
-  const changeType: ChangeEventHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const type = e.target.value as WorkspaceType | 'Any';
-    setFilters((filters) => ({...filters, type}));
-  };
-
-  const changeSize: ChangeEventHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const size = +e.target.value;
-    setFilters((filters) => ({...filters, size}));
-  };
-
-  const changeEquipment = (event: ChangeEvent<{value: unknown}>) => {
-    const equipment = event.target.value as Equipment[];
-    setFilters((filters) => ({...filters, equipment}));
-  };
-
-  const changeWorkspaceDescription: ChangeEventHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const description = e.target.value;
-    setFilters((filters) => ({...filters, description}));
   };
 
   const selectWorkspace = (selected: string) => {
     const newWorkspaceId = selected === workspaceId ? '' : selected;
     setWorkspaceId(() => newWorkspaceId);
-  };
-
-  const handleSubmit: FormEventHandler = async (e: FormEvent) => {
-    e.preventDefault();
-    if (filterErrors.errored || !workspaceId) {
-      return;
-    }
-
-    const reservationData: ReservationReq = {
-      from: filters.from,
-      to: filters.to,
-      location: filters.location.id,
-      requester: user.email,
-      workspace: workspaceId
-    };
-    const addedReservation = (await catchAndTossError(ReservationService.add(reservationData))) as ReservationRes;
-    if (!addedReservation) {
-      return;
-    }
-
-    setWorkspaceId(() => '');
-    setFilters(() => ({...filters})); // trigger workspaces list update
-
-    if (!services.list.length) {
-      pushMessage({title: 'Workspace is reserved', type: MessageType.SUCCESS});
-      return;
-    }
-
-    const requestData: ServiceReq = {
-      location: filters.location.id,
-      reservationId: addedReservation.id,
-      requester: user.email,
-      servicesList: services.list
-    };
-    const addedServices = (await catchAndTossError(RequestService.add(requestData))) as ServiceRes[];
-    if (addedServices) {
-      pushMessage({title: 'Workspace is reserved, services are requested', type: MessageType.SUCCESS});
-    } else {
-      pushMessage({title: 'Workspace is reserved, but services request is failed', type: MessageType.ERROR});
-    }
   };
 
   const showServices = () => setServices((services) => ({...services, isOpen: true}));
@@ -165,25 +125,28 @@ const ReserveWorkspace: FC = () => {
       <Headline pagename="Reserve Workspace" />
 
       <Container className={classes.form} maxWidth="lg">
-        <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+        <form noValidate autoComplete="off" onSubmit={formik.handleSubmit}>
           <Grid container spacing={2}>
             <Grid item lg={4} sm={6} xs={12}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <Autocomplete
-                    id="locations"
+                    id="location"
                     options={locations}
                     getOptionLabel={(option) => option.description}
-                    value={filters.location}
-                    onChange={(e, value) => changeLocation(value)}
+                    value={formik.values.location}
+                    onBlur={formik.handleBlur}
+                    onChange={(e, value) => handleLocationChange(value)}
                     handleHomeEndKeys
                     renderInput={(params) => (
                       <TextField
                         {...params}
                         variant="filled"
+                        name="location"
                         label="Location"
                         required
-                        error={filterErrors.location}
+                        error={formik.touched.location && Boolean(formik.errors.location)}
+                        helperText={formik.touched.location && formik.errors.location && formik.errors.location.id}
                         InputProps={{
                           ...params.InputProps,
                           endAdornment: (
@@ -199,7 +162,7 @@ const ReserveWorkspace: FC = () => {
                 </Grid>
 
                 <Grid item xs={8}>
-                  <TextField select variant="filled" fullWidth id="type" label="Type" value={filters.type} onChange={changeType}>
+                  <TextField select variant="filled" fullWidth id="type" name="type" label="Type" value={formik.values.type} onChange={formik.handleChange}>
                     <MenuItem value="Any" className={classes.typeAny}>
                       Any
                     </MenuItem>
@@ -218,11 +181,13 @@ const ReserveWorkspace: FC = () => {
                     required
                     fullWidth
                     id="size"
+                    name="size"
                     label="Min size"
-                    value={filters.size}
-                    error={filterErrors.size}
+                    value={formik.values.size}
+                    onChange={formik.handleChange}
+                    error={Boolean(formik.errors.size)}
+                    helperText={formik.errors.size}
                     InputProps={{inputProps: {max: 255, min: 1}}}
-                    onChange={changeSize}
                   />
                 </Grid>
               </Grid>
@@ -235,14 +200,16 @@ const ReserveWorkspace: FC = () => {
                     required
                     fullWidth
                     id="from"
+                    name="from"
                     label="From"
                     inputVariant="filled"
-                    error={filterErrors.from}
-                    value={filters.from}
+                    value={formik.values.from}
+                    onChange={(date) => changeDate(date, 'from')}
+                    error={Boolean(formik.errors.from)}
+                    helperText={formik.errors.from}
                     maxDate={getMaxDate()}
                     minutesStep={15}
                     disablePast={true}
-                    onChange={(date) => changeDate(date, 'from')}
                   />
                 </Grid>
 
@@ -251,14 +218,16 @@ const ReserveWorkspace: FC = () => {
                     required
                     fullWidth
                     id="to"
+                    name="to"
                     label="To"
                     inputVariant="filled"
-                    error={filterErrors.to}
-                    value={filters.to}
-                    minDate={filters.from}
+                    value={formik.values.to}
+                    onChange={(date) => changeDate(date, 'to')}
+                    error={Boolean(formik.errors.to)}
+                    helperText={formik.errors.to}
+                    minDate={formik.values.from}
                     minutesStep={15}
                     disablePast={true}
-                    onChange={(date) => changeDate(date, 'to')}
                   />
                 </Grid>
               </Grid>
@@ -267,7 +236,7 @@ const ReserveWorkspace: FC = () => {
             <Grid item lg={4} sm={12} xs={12}>
               <Grid container spacing={2}>
                 <Grid item lg={12} sm={6} xs={12}>
-                  <TextField variant="filled" fullWidth id="description" label="Label" value={filters.description} onChange={changeWorkspaceDescription} />
+                  <TextField variant="filled" fullWidth id="description" name="description" label="Label" value={formik.values.description} onChange={formik.handleChange} />
                 </Grid>
 
                 <Grid item lg={12} sm={6} xs={12}>
@@ -276,9 +245,10 @@ const ReserveWorkspace: FC = () => {
                     <Select
                       multiple
                       id="equipment"
-                      value={filters.equipment}
+                      name="equipment"
+                      value={formik.values.equipment}
+                      onChange={formik.handleChange}
                       input={<FilledInput fullWidth />}
-                      onChange={changeEquipment}
                       renderValue={(selected) => (
                         <div className={classes.chips}>
                           {(selected as string[]).map((value) => (
@@ -298,11 +268,11 @@ const ReserveWorkspace: FC = () => {
             </Grid>
           </Grid>
 
-          <AvailableWorkspaces filters={debouncedFilters} errored={filterErrors.errored} selectedWS={workspaceId} selectWorkspace={selectWorkspace} />
+          <AvailableWorkspaces filters={debouncedFilters} valid={formik.isValid} updateToggle={updateToggle} selectedWS={workspaceId} selectWorkspace={selectWorkspace} />
 
           <Grid container spacing={2} className={classes.controls}>
             <Grid item lg={2} md={3} sm={4} xs={12}>
-              <Button type="submit" fullWidth variant="contained" color="primary" disabled={!workspaceId || filterErrors.errored}>
+              <Button type="submit" fullWidth variant="contained" color="primary" disabled={!workspaceId || !formik.isValid}>
                 Reserve
               </Button>
             </Grid>

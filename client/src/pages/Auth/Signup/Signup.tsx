@@ -4,13 +4,13 @@ import {Avatar, TextField, Button, Checkbox, Typography, Grid, FormHelperText, F
 import ListAltOutlinedIcon from '@material-ui/icons/ListAltOutlined';
 import {Redirect, useHistory} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
-import {useForm, SubmitHandler} from 'react-hook-form';
 import {SignUpForm, UserData} from '../../../types';
 import {UserService} from '../../../services';
 import {actions} from '../../../store/actions';
-import {rules} from '../../../validation/user';
 import {useToasterCatcher, useUser} from '../../../hooks';
 import Terms from './Terms/Terms';
+import {useFormik} from 'formik';
+import {signUpValidationSchema} from '../../../validation/auth';
 
 const Signup: FC = () => {
   const {isAuthenticated} = useUser();
@@ -19,17 +19,19 @@ const Signup: FC = () => {
   const history = useHistory();
   const {catchAndTossError} = useToasterCatcher();
 
-  const {register, errors, handleSubmit, watch} = useForm<SignUpForm>();
-  const password = watch('password', '');
-
-  const onSubmit: SubmitHandler<SignUpForm> = async (formData: SignUpForm) => {
-    const userData = (await catchAndTossError(UserService.signup(formData))) as UserData | undefined;
-    if (!userData) {
-      return;
+  const submitForm = async (values: SignUpForm) => {
+    const userData = (await catchAndTossError(UserService.signup(values))) as UserData | undefined;
+    if (userData) {
+      dispatch(actions.login(userData));
+      history.push('/');
     }
-    dispatch(actions.login(userData));
-    history.push('/');
   };
+
+  const formik = useFormik({
+    initialValues: {firstName: '', lastName: '', email: '', password: '', passwordRepeat: '', acceptTerms: false},
+    validationSchema: signUpValidationSchema,
+    onSubmit: submitForm
+  });
 
   if (isAuthenticated) {
     return <Redirect to="/" />;
@@ -42,21 +44,22 @@ const Signup: FC = () => {
       <Typography component="h1" variant="h5" className={formStyles.header}>
         Sign up
       </Typography>
-      <form className={formStyles.form} noValidate onSubmit={handleSubmit(onSubmit)}>
+      <form className={formStyles.form} noValidate onSubmit={formik.handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <TextField
-              autoComplete="fname"
-              name="firstName"
               variant="outlined"
               required
               fullWidth
               id="firstName"
               label="First Name"
+              name="firstName"
+              autoComplete="fname"
               autoFocus
-              inputRef={register(rules.firstName)}
-              error={Boolean(errors.firstName)}
-              helperText={errors.firstName?.message}
+              value={formik.values.firstName}
+              onChange={formik.handleChange}
+              error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+              helperText={formik.touched.firstName && formik.errors.firstName}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -68,9 +71,10 @@ const Signup: FC = () => {
               label="Last Name"
               name="lastName"
               autoComplete="lname"
-              inputRef={register(rules.lastName)}
-              error={Boolean(errors.lastName)}
-              helperText={errors.lastName?.message}
+              value={formik.values.lastName}
+              onChange={formik.handleChange}
+              error={formik.touched.lastName && Boolean(formik.errors.lastName)}
+              helperText={formik.touched.lastName && formik.errors.lastName}
             />
           </Grid>
           <Grid item xs={12}>
@@ -82,9 +86,10 @@ const Signup: FC = () => {
               label="Email Address"
               name="email"
               autoComplete="email"
-              inputRef={register(rules.email)}
-              error={Boolean(errors.email)}
-              helperText={errors.email?.message}
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -92,13 +97,14 @@ const Signup: FC = () => {
               variant="outlined"
               required
               fullWidth
-              name="password"
-              label="Password"
               type="password"
               id="password"
-              inputRef={register(rules.password)}
-              error={Boolean(errors.password)}
-              helperText={errors.password?.message}
+              label="Password"
+              name="password"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -106,18 +112,19 @@ const Signup: FC = () => {
               variant="outlined"
               required
               fullWidth
-              name="passwordRepeat"
-              label="Repeat Password"
               type="password"
               id="passwordRepeat"
-              inputRef={register({validate: (value: string) => value === password || rules.repeat})}
-              error={Boolean(errors.passwordRepeat)}
-              helperText={errors.passwordRepeat?.message}
+              label="Repeat Password"
+              name="passwordRepeat"
+              value={formik.values.passwordRepeat}
+              onChange={formik.handleChange}
+              error={formik.touched.passwordRepeat && Boolean(formik.errors.passwordRepeat)}
+              helperText={formik.touched.passwordRepeat && formik.errors.passwordRepeat}
             />
           </Grid>
           <Grid item xs={12}>
-            <FormControlLabel control={<Checkbox name="acceptTerms" color="primary" inputRef={register(rules.terms)} />} label={<Terms />} />
-            {errors.acceptTerms && <FormHelperText error>{errors.acceptTerms.message}</FormHelperText>}
+            <FormControlLabel label={<Terms />} control={<Checkbox name="acceptTerms" color="primary" value={formik.values.acceptTerms} onChange={formik.handleChange} />} />
+            {formik.touched.acceptTerms && Boolean(formik.errors.acceptTerms) && <FormHelperText error>{formik.errors.acceptTerms}</FormHelperText>}
           </Grid>
         </Grid>
         <Button type="submit" fullWidth variant="contained" color="primary" className={formStyles.buttons}>

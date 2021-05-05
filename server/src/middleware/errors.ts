@@ -6,16 +6,17 @@ import ApiError from '../utils/apiError';
 import type {Request, Response, NextFunction} from 'express';
 
 const errorConverter = (err: Error | ApiError, req: Request, res: Response, next: NextFunction): void => {
-  let error = err;
-  if (!(error instanceof ApiError)) {
-    const statusCode = error instanceof mongoose.Error ? httpStatus.BAD_REQUEST : httpStatus.INTERNAL_SERVER_ERROR;
-    const message = String(error.message || httpStatus[statusCode]);
-    error = new ApiError(statusCode, message, false, err.stack);
+  if (err instanceof ApiError) {
+    return next(err);
   }
-  next(error);
+
+  const statusCode = err instanceof mongoose.Error ? httpStatus.BAD_REQUEST : httpStatus.INTERNAL_SERVER_ERROR;
+  const message = String(err.message || httpStatus[statusCode]);
+  next(new ApiError(statusCode, message, false, err.stack));
 };
 
-const errorHandler = (err: ApiError, req: Request, res: Response): void => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const errorHandler = (err: ApiError, req: Request, res: Response, next: NextFunction): void => {
   let {statusCode, message} = err;
   const DEV = config.env === 'development';
 

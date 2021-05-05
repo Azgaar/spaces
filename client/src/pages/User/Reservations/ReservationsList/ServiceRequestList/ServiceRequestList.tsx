@@ -8,7 +8,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import DoneIcon from '@material-ui/icons/Done';
 import ConfirmationDialog from '../../../../../components/Controls/ConfirmationDialog/ConfirmationDialog';
 
-type Props = {
+type ServiceRequestListProps = {
   requests: ServiceRes[];
   editable: boolean;
   handleDelete: (id: string) => void;
@@ -26,7 +26,7 @@ type DeletionRequest = {
   id: null | string;
 };
 
-const ServiceRequestList: FC<Props> = ({requests, editable, handleDelete, handleCreate}) => {
+const ServiceRequestList: FC<ServiceRequestListProps> = ({requests, editable, handleDelete, handleCreate}) => {
   const classes = useStyles();
   const [creation, setCreation] = useState<CreationRequest>({isActive: false, value: '', error: true});
   const [deletion, setDeletion] = useState<DeletionRequest>({isActive: false, id: null});
