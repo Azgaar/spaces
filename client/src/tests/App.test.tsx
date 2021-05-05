@@ -8,7 +8,7 @@ import {store} from '../store';
 afterEach(cleanup);
 
 describe('App', () => {
-  test('renders Sign Up page', async () => {
+  test('renders Sign Up page be default', async () => {
     render(
       <Provider store={store}>
         <App />
