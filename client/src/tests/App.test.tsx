@@ -1,16 +1,26 @@
 import React from 'react';
-import {render as rtlRender, screen, within} from '@testing-library/react';
-import {BrowserRouter as Router} from 'react-router-dom';
+import {cleanup, render, screen, waitFor, within} from '@testing-library/react';
+import {MemoryRouter} from 'react-router-dom';
 import App from '../components/App';
+import {Provider} from 'react-redux';
+import {store} from '../store';
 
-const render = (ui: JSX.Element, {route = '/'} = {}) => {
-  window.history.pushState({}, 'Test page', route);
-  return rtlRender(ui, {wrapper: Router});
-};
+afterEach(cleanup);
 
-test('renders app default page with sign in button', () => {
-  render(<App />, {route: '/'});
-  const main = screen.getByRole('main');
-  const signIn = within(main).getByRole('button', {name: /sign in/i});
-  expect(signIn).toBeInTheDocument();
+describe('Unauthorized user', () => {
+  test('sees Sign In form by default', async () => {
+    render(
+      <Provider store={store}>
+        <App />
+      </Provider>,
+      {wrapper: MemoryRouter}
+    );
+
+    await waitFor(() => {
+      const main = screen.getByRole('main');
+      const signIn = within(main).getByRole('button', {name: /sign in/i});
+      screen.debug();
+      expect(signIn).toBeInTheDocument();
+    });
+  });
 });
