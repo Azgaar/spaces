@@ -5,7 +5,7 @@ type SessionConfig = {
   secret: string;
   cookie: {
     maxAge: number;
-    sameSite: boolean | string;
+    sameSite: boolean | 'none' | 'lax' | 'strict' | undefined;
     httpOnly: boolean;
     secure: boolean;
   };
