@@ -10,7 +10,7 @@
   },
   "scripts": {
     "prebuild": "rm -rf dist",
-    "build": "tsc",
+    "build": "tsc && cd ../client && npm install && npm run build",
     "dev": "ts-node-dev --transpile-only src",
     "start": "node dist/src",
     "test": "jest"
