@@ -20,5 +20,7 @@ const workspaces = {
 };
 
 const config = {env, port, mongo, joi, session, cors, email, workspaces};
+console.log({config});
+console.log({env: process.env});
 
 export default config;
