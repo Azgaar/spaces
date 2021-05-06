@@ -1,0 +1,26 @@
+{
+  "name": "spaces",
+  "version": "1.0.0",
+  "description": "workspace reservation system",
+  "private": true,
+  "engines": {
+    "node": "10.x"
+  },
+  "scripts": {
+    "start": "node server/dist/src",
+    "build": "cd client && npm install && npm run build && cd ../server && npm install && npm run build"
+  },
+  "cacheDirectories": [
+    "client/node_modules",
+    "server/node_modules"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Azgaar/spaces.git"
+  },
+  "author": "Azgaar (Max Ganiev)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Azgaar/spaces/issues"
+  }
+}

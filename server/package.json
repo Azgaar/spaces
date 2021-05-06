@@ -1,14 +1,14 @@
 {
   "name": "spaces",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "workspace reservation system",
   "private": true,
   "main": "index.js",
   "scripts": {
-    "prebuild": "rn -rf dist",
+    "prebuild": "if exist dist rmdir dist /q /s",
     "build": "tsc",
     "dev": "ts-node-dev --transpile-only src",
-    "start": "node dist/index.ts",
+    "start": "node dist/src",
     "test": "jest"
   },
   "dependencies": {
