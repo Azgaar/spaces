@@ -9,10 +9,10 @@
     "npm": "6.x"
   },
   "scripts": {
-    "prebuild": "rm -rf dist",
-    "build": "tsc && cd ../client && npm install && npm run build",
+    "prebuild": "rm -rf server/dist",
+    "build": "cd server && npm install && tsc && cd ../client && npm install && npm run build",
     "dev": "ts-node-dev --transpile-only src",
-    "start": "node dist/src",
+    "start": "node server/dist/src",
     "test": "jest"
   },
   "dependencies": {
