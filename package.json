@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "node server/dist/src",
-    "build": "cd client && npm install && npm run build && cd ../server && npm install && npm run build"
+    "build": "cd server && npm install && npm run build"
   },
   "devDependencies": {
     "typescript": "^4.2.4"
