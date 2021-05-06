@@ -5,7 +5,7 @@ type SessionConfig = {
   secret: string;
   cookie: {
     maxAge: number;
-    sameSite: boolean;
+    sameSite: boolean | string;
     httpOnly: boolean;
     secure: boolean;
   };
@@ -18,7 +18,7 @@ export const getSessionConfig = (): SessionConfig => {
   const secret = process.env.SESSION_SECRET || '21F463B8C3489';
 
   const maxAge = Number(process.env.SESSION_LIFETIME) || 1000 * 60 * 60 * 2; // two hours
-  const sameSite = true;
+  const sameSite = 'none';
   const httpOnly = true;
   const secure = process.env.NODE_ENV === 'production';
 

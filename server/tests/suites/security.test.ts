@@ -29,7 +29,6 @@ describe('Server', () => {
     const sessionCookie = cookies[config.session.name];
     expect(sessionCookie).toBeTruthy();
     expect(sessionCookie.flags.HttpOnly).toEqual(true);
-    expect(sessionCookie.flags.SameSite).toEqual('Strict');
   });
 
   afterAll(() => {
