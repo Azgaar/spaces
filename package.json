@@ -11,6 +11,9 @@
     "start": "node server/dist/src",
     "build": "cd client && npm install && npm run build && cd ../server && npm install && npm run build"
   },
+  "devDependencies": {
+    "typescript": "^4.2.4"
+  },
   "cacheDirectories": [
     "client/node_modules",
     "server/node_modules"
