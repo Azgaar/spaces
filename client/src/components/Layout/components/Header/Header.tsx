@@ -34,7 +34,7 @@ const Header: FC = () => {
       </Toolbar>
 
       <Drawer open={menuOpen} onClose={handleClose} anchor="right" className={classes.drawer}>
-        <List>
+        <List onClick={handleClose}>
           <MenuButtons />
         </List>
       </Drawer>

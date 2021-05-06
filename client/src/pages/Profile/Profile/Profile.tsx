@@ -1,9 +1,9 @@
 import React, {FC} from 'react';
 import useFormStyles from '../../../styles/form';
-import {Avatar, TextField, Button, Typography, Grid, Container} from '@material-ui/core';
-import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
+import {TextField, Button, Grid, Container} from '@material-ui/core';
 import {Link as RouterLink} from 'react-router-dom';
 import {useUser} from '../../../hooks';
+import Headline from '../../../components/Layout/components/Main/Headline/Headline';
 
 const Profile: FC = () => {
   const formStyles = useFormStyles();
@@ -12,12 +12,7 @@ const Profile: FC = () => {
 
   return (
     <Container maxWidth="xs" className={formStyles.paper}>
-      <Avatar className={formStyles.avatar}>
-        <AccountCircleOutlinedIcon />
-      </Avatar>
-      <Typography component="h1" variant="h5" className={formStyles.header}>
-        Profile
-      </Typography>
+      <Headline pagename="Profile" />
       <form className={formStyles.form}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>

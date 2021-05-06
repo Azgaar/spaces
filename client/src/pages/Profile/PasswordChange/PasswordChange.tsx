@@ -1,7 +1,6 @@
 import React, {FC} from 'react';
 import useFormStyles from '../../../styles/form';
-import {Avatar, TextField, Button, Typography, Grid, Container} from '@material-ui/core';
-import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
+import {TextField, Button, Grid, Container} from '@material-ui/core';
 import {Link as RouterLink, useHistory} from 'react-router-dom';
 import {useForm, SubmitHandler} from 'react-hook-form';
 import {PassportChangeForm} from '../../../types';
@@ -9,6 +8,7 @@ import {UserService} from '../../../services';
 import {rules} from '../../../validation/user';
 import {MessageType, useMessage} from '../../../components/Providers/MessageProvider';
 import {useToasterCatcher} from '../../../hooks';
+import Headline from '../../../components/Layout/components/Main/Headline/Headline';
 
 const PasswordChange: FC = () => {
   const formStyles = useFormStyles();
@@ -30,13 +30,7 @@ const PasswordChange: FC = () => {
 
   return (
     <Container maxWidth="xs" className={formStyles.paper}>
-      <Avatar className={formStyles.avatar}>
-        <AccountCircleOutlinedIcon />
-      </Avatar>
-      <Typography component="h1" variant="h5" className={formStyles.header}>
-        Change Password
-      </Typography>
-
+      <Headline pagename="Change Password" />
       <form className={formStyles.form} noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={12}>

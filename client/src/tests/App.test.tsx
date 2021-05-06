@@ -1,16 +1,15 @@
-import React from 'react';
-import {render as rtlRender, screen, within} from '@testing-library/react';
-import {BrowserRouter as Router} from 'react-router-dom';
-import App from '../components/App';
+import {cleanup, screen, waitFor, within} from '@testing-library/react';
+import {renderApp} from './utils';
 
-const render = (ui: JSX.Element, {route = '/'} = {}) => {
-  window.history.pushState({}, 'Test page', route);
-  return rtlRender(ui, {wrapper: Router});
-};
+afterEach(cleanup);
 
-test('renders app default page with sign in button', () => {
-  render(<App />, {route: '/'});
-  const main = screen.getByRole('main');
-  const signIn = within(main).getByRole('button', {name: /sign in/i});
-  expect(signIn).toBeInTheDocument();
+describe('App', () => {
+  test('renders Sign Up page be default', async () => {
+    renderApp();
+    await waitFor(() => {
+      const main = screen.getByRole('main');
+      const signIn = within(main).getByRole('button', {name: /sign in/i});
+      expect(signIn).toBeInTheDocument();
+    });
+  });
 });

@@ -1,7 +1,6 @@
 import React, {FC} from 'react';
 import useFormStyles from '../../../styles/form';
-import {Avatar, TextField, Button, Checkbox, Typography, Grid, FormHelperText, FormControlLabel, Container} from '@material-ui/core';
-import ListAltOutlinedIcon from '@material-ui/icons/ListAltOutlined';
+import {TextField, Button, Checkbox, Grid, FormHelperText, FormControlLabel, Container} from '@material-ui/core';
 import {Redirect, useHistory} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import {SignUpForm, UserData} from '../../../types';
@@ -11,6 +10,7 @@ import {useToasterCatcher, useUser} from '../../../hooks';
 import Terms from './Terms/Terms';
 import {useFormik} from 'formik';
 import {signUpValidationSchema} from '../../../validation/auth';
+import Headline from '../../../components/Layout/components/Main/Headline/Headline';
 
 const Signup: FC = () => {
   const {isAuthenticated} = useUser();
@@ -38,12 +38,7 @@ const Signup: FC = () => {
   }
   return (
     <Container maxWidth="xs" className={formStyles.paper}>
-      <Avatar className={formStyles.avatar}>
-        <ListAltOutlinedIcon />
-      </Avatar>
-      <Typography component="h1" variant="h5" className={formStyles.header}>
-        Sign up
-      </Typography>
+      <Headline pagename="Sign up" />
       <form className={formStyles.form} noValidate onSubmit={formik.handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>

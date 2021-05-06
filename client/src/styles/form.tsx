@@ -13,13 +13,6 @@ const useFormStyles = makeStyles((theme) => ({
     backgroundColor: '#d9d9d9ab',
     boxShadow: '0 0 40px 50px #d9d9d9ab'
   },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.primary.main
-  },
-  header: {
-    zIndex: 1
-  },
   buttons: {
     margin: theme.spacing(2, 0, 2)
   }

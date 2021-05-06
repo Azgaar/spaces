@@ -1,6 +1,10 @@
 import React, {ElementType, ReactElement} from 'react';
 import useStyles from './Headline.style';
 import {Avatar, Typography} from '@material-ui/core';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import ListAltOutlinedIcon from '@material-ui/icons/ListAltOutlined';
+import MailOutlineOutlinedIcon from '@material-ui/icons/MailOutlineOutlined';
+import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import PeopleAltOutlinedIcon from '@material-ui/icons/PeopleAltOutlined';
 import DesktopWindowsIcon from '@material-ui/icons/DesktopWindows';
@@ -15,6 +19,12 @@ import MoodBadIcon from '@material-ui/icons/MoodBad';
 
 const HeadlineIconDefault: ElementType = HelpOutlineIcon;
 const HeadlineIconMap: {[key: string]: ElementType} = {
+  'Sign in': LockOutlinedIcon,
+  'Sign up': ListAltOutlinedIcon,
+  'Forgot Password': MailOutlineOutlinedIcon,
+  Profile: AccountCircleOutlinedIcon,
+  'Edit Profile': AccountCircleOutlinedIcon,
+  'Change Password': AccountCircleOutlinedIcon,
   'Manage Users': PeopleAltOutlinedIcon,
   'Manage Workspaces': DesktopWindowsIcon,
   'Add Workspace': AirplayIcon,
@@ -39,7 +49,7 @@ function Headline({pagename}: {pagename: string}): ReactElement {
       <Avatar className={classes.avatar}>
         <IconComponent />
       </Avatar>
-      <Typography component="h1" variant="h5" className={classes.header}>
+      <Typography component="h1" variant="h5" className={classes.header} role="heading">
         {pagename}
       </Typography>
     </>

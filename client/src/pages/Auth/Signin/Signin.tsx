@@ -1,7 +1,6 @@
 import React, {FC} from 'react';
 import useFormStyles from '../../../styles/form';
-import {Avatar, TextField, Button, Typography, Grid, Link, Container} from '@material-ui/core';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import {TextField, Button, Grid, Link, Container} from '@material-ui/core';
 import {Link as RouterLink, Redirect, useHistory} from 'react-router-dom';
 import {useForm, SubmitHandler} from 'react-hook-form';
 import {useDispatch} from 'react-redux';
@@ -10,6 +9,7 @@ import {actions} from '../../../store/actions';
 import {rules} from '../../../validation/user';
 import {useToasterCatcher, useUser} from '../../../hooks';
 import {AuthService} from '../../../services';
+import Headline from '../../../components/Layout/components/Main/Headline/Headline';
 
 const Signin: FC = () => {
   const {isAuthenticated} = useUser();
@@ -33,12 +33,7 @@ const Signin: FC = () => {
   }
   return (
     <Container maxWidth="xs" className={formStyles.paper}>
-      <Avatar className={formStyles.avatar}>
-        <LockOutlinedIcon />
-      </Avatar>
-      <Typography component="h1" variant="h5" className={formStyles.header}>
-        Sign in
-      </Typography>
+      <Headline pagename="Sign in" />
       <form className={formStyles.form} noValidate onSubmit={handleSubmit(onSubmit)}>
         <TextField
           variant="outlined"

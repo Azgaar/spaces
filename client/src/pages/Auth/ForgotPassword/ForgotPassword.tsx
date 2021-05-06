@@ -1,7 +1,6 @@
 import React, {FC} from 'react';
 import useFormStyles from '../../../styles/form';
-import {Avatar, TextField, Button, Typography, Grid, Container} from '@material-ui/core';
-import MailOutlineOutlinedIcon from '@material-ui/icons/MailOutlineOutlined';
+import {TextField, Button, Typography, Grid, Container} from '@material-ui/core';
 import {Link as RouterLink, Redirect, useHistory} from 'react-router-dom';
 import {useForm, SubmitHandler} from 'react-hook-form';
 import {ForgotPasswordForm} from '../../../types';
@@ -9,6 +8,7 @@ import {UserService} from '../../../services';
 import {rules} from '../../../validation/user';
 import {MessageType, useMessage} from '../../../components/Providers/MessageProvider';
 import {useToasterCatcher, useUser} from '../../../hooks';
+import Headline from '../../../components/Layout/components/Main/Headline/Headline';
 
 const ForgotPassword: FC = () => {
   const {isAuthenticated} = useUser();
@@ -32,12 +32,7 @@ const ForgotPassword: FC = () => {
   }
   return (
     <Container maxWidth="xs" className={formStyles.paper}>
-      <Avatar className={formStyles.avatar}>
-        <MailOutlineOutlinedIcon />
-      </Avatar>
-      <Typography component="h1" variant="h5" className={formStyles.header}>
-        Forgot Password
-      </Typography>
+      <Headline pagename="Forgot Password" />
       <form className={formStyles.form} noValidate onSubmit={handleSubmit(onSubmit)}>
         <Typography component="h2" variant="subtitle2" align="justify">
           {`Lost your password?
