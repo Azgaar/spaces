@@ -15,12 +15,12 @@ type SameSite = boolean | 'lax' | 'strict' | 'none' | undefined;
 
 export const getSessionConfig = (): SessionConfig => {
   const name = process.env.SESSION_NAME || 'sid';
-  const secret = process.env.SESSION_SECRET || 'ver#$ijnwtrwFEF5%$eRkmgd';
+  const secret = process.env.SESSION_SECRET || '21F463B8C3489';
   const resave = false;
   const saveUninitialized = false;
 
   const maxAge = Number(process.env.SESSION_LIFETIME) || 1000 * 60 * 60 * 8; // 8 hours;
-  const sameSite = (process.env.COOKIE_SAME_SITE as SameSite) || true;
+  const sameSite = Boolean(process.env.COOKIE_SAME_SITE) || true;
   const httpOnly = Boolean(process.env.COOKIE_HTTP_ONLY) || true;
   const secure = Boolean(process.env.COOKIE_SECURE) || false;
   const domain = String(process.env.CLIENT);
