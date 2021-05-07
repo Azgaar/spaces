@@ -8,6 +8,7 @@ type SessionConfig = {
     sameSite: boolean;
     httpOnly: boolean;
     secure: boolean;
+    domain: string;
   };
 };
 
@@ -21,6 +22,7 @@ export const getSessionConfig = (): SessionConfig => {
   const sameSite = true;
   const httpOnly = true;
   const secure = process.env.NODE_ENV === 'production';
+  const domain = String(process.env.CLIENT);
 
-  return {name, resave, saveUninitialized, secret, cookie: {maxAge, sameSite, httpOnly, secure}};
+  return {name, resave, saveUninitialized, secret, cookie: {maxAge, sameSite, httpOnly, secure, domain}};
 };
