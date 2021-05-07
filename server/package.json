@@ -10,7 +10,7 @@
   },
   "scripts": {
     "prebuild": "rm -rf server/dist",
-    "build": "npx tsc",
+    "build": "tsc",
     "dev": "ts-node-dev --transpile-only src",
     "start": "node dist/src",
     "test": "jest"
