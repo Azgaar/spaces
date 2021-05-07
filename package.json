@@ -8,7 +8,7 @@
     "npm": "6.x"
   },
   "scripts": {
-    "build": "NODE_ENV=build && npm install typescript && cd server && npm ci && npm run build && cd ../client && npm ci && npm run build && NODE_ENV=production",
+    "build": "cd server && npm install --production=false && npm run build && cd ../client && npm install --production=false && npm run build",
     "start": "node server/dist/src"
   },
   "repository": {
