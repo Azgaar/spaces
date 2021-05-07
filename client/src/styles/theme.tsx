@@ -15,6 +15,14 @@ const theme = createMuiTheme({
     background: {
       default: '#fff'
     }
+  },
+  overrides: {
+    MuiAvatar: {
+      colorDefault: {
+        backgroundColor: '#2f45ac',
+        color: '#fff'
+      }
+    }
   }
 });
 
