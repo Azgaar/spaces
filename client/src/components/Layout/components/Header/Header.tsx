@@ -15,7 +15,7 @@ const Header: FC = () => {
   const handleClose = () => setMenuOpen(() => false);
 
   return (
-    <AppBar position="sticky" color="inherit" className={classes.header}>
+    <AppBar position="sticky">
       <Toolbar>
         <img src={logoPath} className={classes.logo} alt="logo" />
         <Typography variant="h6" component="h1" className={classes.title}>
