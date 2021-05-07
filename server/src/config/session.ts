@@ -13,18 +13,16 @@ type SessionConfig = {
 };
 
 export const getSessionConfig = (): SessionConfig => {
-  const PROD = process.env.NODE_ENV === 'production';
-
   const name = process.env.SESSION_NAME || 'sid';
   const resave = false;
   const saveUninitialized = false;
   const secret = process.env.SESSION_SECRET || '21F463B8C3489';
 
   const maxAge = Number(process.env.SESSION_LIFETIME) || 1000 * 60 * 60 * 2; // two hours
-  const sameSite = PROD ? 'none' : true;
+  const sameSite = process.env.COOKIE_SAME_SITE !== 'false';
+  const httpOnly = process.env.COOKIE_HTTP_ONLY !== 'false';
   const domain = process.env.CLIENT ? new URL(process.env.CLIENT).hostname : '';
-  const httpOnly = true;
-  const secure = PROD;
+  const secure = process.env.COOKIE_SECURE === 'true';
 
   return {name, resave, saveUninitialized, secret, cookie: {maxAge, sameSite, httpOnly, secure, domain}};
 };

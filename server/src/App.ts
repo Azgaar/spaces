@@ -1,3 +1,4 @@
+import path from 'path';
 import express from 'express';
 import session from 'express-session';
 import cors from 'cors';
@@ -34,6 +35,8 @@ export default class App {
   }
 
   private initRoutes(): void {
+    this.app.use(express.static(path.resolve(__dirname, '../../../client/build')));
+
     this.app.use('/register', Routes.register);
     this.app.use('/login', Routes.login);
     this.app.use('/logout', Routes.logout);
@@ -64,7 +67,7 @@ export default class App {
     this.app.use('/processServices', Routes.processServices);
     this.app.use('/deleteServices', Routes.deleteServices);
 
-    this.app.use('/*', (req, res, next) => next(new ApiError(httpStatus.NOT_FOUND, 'Not found')));
+    this.app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, '../../../client/build', 'index.html')));
 
     this.app.use(errorConverter);
     this.app.use(errorHandler);

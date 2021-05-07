@@ -9,7 +9,7 @@
     "npm": "6.x"
   },
   "scripts": {
-    "prebuild": "rm -rf dist",
+    "prebuild": "rm -rf server/dist",
     "build": "tsc",
     "dev": "ts-node-dev --transpile-only src",
     "start": "node dist/src",
