@@ -2,7 +2,7 @@ import {Dispatch, SetStateAction, useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {AxiosPromise} from 'axios';
 import {LocationOption, RootState, UserRole} from '../types';
-import {MessageType, useMessage} from '../components/Providers/MessageProvider';
+import {MessageType, useMessage} from '../components/providers/MessageProvider';
 import {LocationService} from '../services';
 import {getStored} from '../utils';
 

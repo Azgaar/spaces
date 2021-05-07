@@ -4,7 +4,7 @@ import {Button, Container} from '@material-ui/core';
 import {DataGrid, GridColDef, GridColTypeDef, GridRowId, GridSelectionModelChangeParams} from '@material-ui/data-grid';
 import DeletionButton from '../../../../components/Controls/DeletionButton/DeletionButton';
 import WorkspaceDialog from './WorkspaceEdit/WorkspaceDialog';
-import {MessageType, useMessage} from '../../../../components/Providers/MessageProvider';
+import {MessageType, useMessage} from '../../../../components/providers/MessageProvider';
 import {LocationOption, Workspace, WorkspaceStatus, WorkspaceType} from '../../../../types';
 import {WorkspaceService} from '../../../../services';
 import {useToasterCatcher} from '../../../../hooks';

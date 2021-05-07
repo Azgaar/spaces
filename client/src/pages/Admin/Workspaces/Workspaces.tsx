@@ -6,7 +6,7 @@ import Headline from '../../../components/Layout/components/Main/Headline/Headli
 import WorkspacesList from './WorkspacesList/WorkspacesList';
 import {Autocomplete} from '@material-ui/lab';
 import DeletionButton from '../../../components/Controls/DeletionButton/DeletionButton';
-import {MessageType, useMessage} from '../../../components/Providers/MessageProvider';
+import {MessageType, useMessage} from '../../../components/providers/MessageProvider';
 import {LocationOption} from '../../../types';
 import {useLocations, useToasterCatcher} from '../../../hooks';
 import {LocationService} from '../../../services';

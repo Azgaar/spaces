@@ -2,7 +2,7 @@ import React, {useEffect, useState, FC} from 'react';
 import useStyles from './RequestList.style';
 import {Container, Button} from '@material-ui/core';
 import {DataGrid, GridColDef, GridRowId, GridSelectionModelChangeParams} from '@material-ui/data-grid';
-import {MessageType, useMessage} from '../../../../components/Providers/MessageProvider';
+import {MessageType, useMessage} from '../../../../components/providers/MessageProvider';
 import {useToasterCatcher} from '../../../../hooks';
 import {RequestService} from '../../../../services';
 import {LocationOption, ReservationRes, ServiceRequestStatus, ServiceRes} from '../../../../types';

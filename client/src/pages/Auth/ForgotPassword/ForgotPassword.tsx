@@ -6,7 +6,7 @@ import {useForm, SubmitHandler} from 'react-hook-form';
 import {ForgotPasswordForm} from '../../../types';
 import {UserService} from '../../../services';
 import {rules} from '../../../validation/user';
-import {MessageType, useMessage} from '../../../components/Providers/MessageProvider';
+import {MessageType, useMessage} from '../../../components/providers/MessageProvider';
 import {useToasterCatcher, useUser} from '../../../hooks';
 import Headline from '../../../components/Layout/components/Main/Headline/Headline';
 

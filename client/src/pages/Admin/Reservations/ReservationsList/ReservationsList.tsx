@@ -3,7 +3,7 @@ import useStyles from './ReservationsList.style';
 import {Button, Container} from '@material-ui/core';
 import {DataGrid, GridCellValue, GridColDef, GridRowId, GridSelectionModelChangeParams} from '@material-ui/data-grid';
 import DeletionButton from '../../../../components/Controls/DeletionButton/DeletionButton';
-import {MessageType, useMessage} from '../../../../components/Providers/MessageProvider';
+import {MessageType, useMessage} from '../../../../components/providers/MessageProvider';
 import {LocationOption, ReservationReq, ReservationRes, ServiceRequestStatus} from '../../../../types';
 import {ReservationService} from '../../../../services';
 import {useToasterCatcher, useUser} from '../../../../hooks';

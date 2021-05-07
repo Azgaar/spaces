@@ -12,7 +12,7 @@ import {getMaxDate, getStored} from '../../../utils';
 import Headline from '../../../components/Layout/components/Main/Headline/Headline';
 import AddServices from './AddServices/AddServices';
 import EquipmentIcon from '../../../components/Icons/EquipmentIcon/EquipmentIcon';
-import {MessageType, useMessage} from '../../../components/Providers/MessageProvider';
+import {MessageType, useMessage} from '../../../components/providers/MessageProvider';
 import {ReservationService, RequestService} from '../../../services';
 import {useFormik} from 'formik';
 import {reserveValidationSchema} from '../../../validation/reserve';

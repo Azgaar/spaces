@@ -9,7 +9,7 @@ import {UserService} from '../../../services';
 import {actions} from '../../../store/actions';
 import {useToasterCatcher, useUser} from '../../../hooks';
 import {rules} from '../../../validation/user';
-import {MessageType, useMessage} from '../../../components/Providers/MessageProvider';
+import {MessageType, useMessage} from '../../../components/providers/MessageProvider';
 import Headline from '../../../components/Layout/components/Main/Headline/Headline';
 
 const ProfileEdit: FC = () => {

@@ -3,7 +3,7 @@ import useStyles from './ReservationsList.style';
 import {Typography, Card, CardContent, Container, CardActions, Grid, CardHeader, Badge, Divider, IconButton, Button, Box} from '@material-ui/core';
 import Spinner from '../../../../components/Spinner/Spinner';
 import WorkspaceTypeIcon from '../../../../components/Icons/WorkspaceTypeIcon/WorkspaceTypeIcon';
-import {MessageType, useMessage} from '../../../../components/Providers/MessageProvider';
+import {MessageType, useMessage} from '../../../../components/providers/MessageProvider';
 import {ReservationReq, ReservationRes, ServiceReq, ServiceRes} from '../../../../types';
 import {useToasterCatcher, useUser} from '../../../../hooks';
 import {RequestService, ReservationService} from '../../../../services';
