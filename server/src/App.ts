@@ -33,7 +33,7 @@ export default class App {
   }
 
   private initRoutes(): void {
-    this.app.use(express.static(path.resolve(__dirname, '../../client/build')));
+    this.app.use(express.static(path.resolve(__dirname, '../../../client/build')));
 
     this.app.use('/register', Routes.register);
     this.app.use('/login', Routes.login);
@@ -65,7 +65,7 @@ export default class App {
     this.app.use('/processServices', Routes.processServices);
     this.app.use('/deleteServices', Routes.deleteServices);
 
-    this.app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, '../../client/build', 'index.html')));
+    this.app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, '../../../client/build', 'index.html')));
 
     this.app.use(errorConverter);
     this.app.use(errorHandler);
