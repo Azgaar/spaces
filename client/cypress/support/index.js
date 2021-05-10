@@ -13,8 +13,12 @@
 // https://on.cypress.io/configuration
 // ***********************************************************
 
-// Import commands.js using ES2015 syntax:
-import './commands'
+import './commands';
 
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
+export const BASE_URL = 'http://localhost:3001';
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const getId = () => {
+  const date = new Date();
+  return date.getTime();
+};

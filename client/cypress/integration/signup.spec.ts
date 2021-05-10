@@ -1,9 +1,10 @@
-const ms = new Date().getMilliseconds();
-const user = {email: 'user_' + ms + '@reg.com', firstName: 'Jane', lastName: 'Dowson', password: 'Secret1234'};
+import {getId} from '../support';
+
+const user = {email: 'user_' + getId() + '@reg.com', firstName: 'Jane', lastName: 'Dowson', password: 'Secret1234'};
 
 describe('Sign up service', () => {
   it('allows to create new user', () => {
-    cy.visit('http://localhost:3000/signup');
+    cy.visit('/signup');
     cy.contains('[role="heading"]', 'Sign up');
     cy.get('#firstName').type(user.firstName).should('have.value', user.firstName);
     cy.get('#lastName').type(user.lastName).should('have.value', user.lastName);
