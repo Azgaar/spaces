@@ -1,10 +1,12 @@
 import {BASE_URL, getId} from '../support';
 
 describe('Sign in service', () => {
-  const user = {email: 'user' + getId() + '@reg.com', firstName: 'Jane', lastName: 'Dowson', password: 'Secret1234', passwordRepeat: 'Secret1234', acceptTerms: true};
+  const user = {email: '', firstName: 'Jane', lastName: 'Dowson', password: 'Secret1234', passwordRepeat: 'Secret1234', acceptTerms: true};
 
-  beforeEach(() => {
+  before(() => {
+    user.email = 'user' + getId() + '@reg.com';
     cy.request('POST', BASE_URL + '/register', user);
+    cy.request('POST', BASE_URL + '/logout');
   });
 
   it('redirects unauthenticated user to signin page', () => {
@@ -12,7 +14,7 @@ describe('Sign in service', () => {
     cy.location('pathname').should('equal', '/signin');
   });
 
-  it('allows to sign in with valid creadentials', () => {
+  it('allows to sign in with valid credentials', () => {
     cy.visit('/signin');
     cy.contains('[role="heading"]', 'Sign in');
 
