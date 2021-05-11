@@ -2,13 +2,11 @@ import path from 'path';
 import express from 'express';
 import session from 'express-session';
 import cors from 'cors';
-import httpStatus from 'http-status';
 import config from './config';
 import * as Routes from './routes';
 import {mongoConnecter, mongoStore} from './connections';
 import {errorConverter, errorHandler} from './middleware/errors';
 import logger from './utils/logger';
-import ApiError from './utils/apiError';
 
 export default class App {
   private readonly app: express.Application;
