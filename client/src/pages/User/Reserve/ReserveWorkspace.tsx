@@ -121,7 +121,7 @@ const ReserveWorkspace: FC = () => {
   };
 
   return (
-    <Content maxWidth="md" pagename="Reserve Workspace">
+    <Content maxWidth="md" marginTop={5} pagename="Reserve Workspace">
       <form noValidate autoComplete="off" onSubmit={formik.handleSubmit}>
         <Grid container spacing={2}>
           <Grid item lg={4} sm={6} xs={12}>
@@ -190,7 +190,7 @@ const ReserveWorkspace: FC = () => {
 
           <Grid item lg={4} sm={6} xs={12}>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
+              <Grid item sm={12} xs={6}>
                 <DateTimePicker
                   required
                   fullWidth
@@ -207,7 +207,7 @@ const ReserveWorkspace: FC = () => {
                 />
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid item sm={12} xs={6}>
                 <DateTimePicker
                   required
                   fullWidth
@@ -228,11 +228,11 @@ const ReserveWorkspace: FC = () => {
 
           <Grid item lg={4} sm={12} xs={12}>
             <Grid container spacing={2}>
-              <Grid item lg={12} sm={6} xs={12}>
+              <Grid item lg={12} sm={6} xs={6}>
                 <TextField fullWidth id="description" name="description" label="Label" value={formik.values.description} onChange={formik.handleChange} />
               </Grid>
 
-              <Grid item lg={12} sm={6} xs={12}>
+              <Grid item lg={12} sm={6} xs={6}>
                 <FormControl className={classes.multiSelect}>
                   <InputLabel htmlFor="equipment">Equipment</InputLabel>
                   <Select

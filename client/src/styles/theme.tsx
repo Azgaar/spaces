@@ -39,6 +39,9 @@ const theme = createMuiTheme({
         '.MuiButton-root.Mui-disabled': {
           backgroundColor: '#ccc',
           color: '#888'
+        },
+        '.MuiPaper-rounded': {
+          borderRadius: '8px'
         }
       }
     }
