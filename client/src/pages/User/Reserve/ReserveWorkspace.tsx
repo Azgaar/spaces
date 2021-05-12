@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from 'react';
 import useStyles from './ReserveWorkspace.style';
-import {Box, Button, Chip, FilledInput, FormControl, Grid, InputLabel, MenuItem, Select, TextField} from '@material-ui/core';
+import {Box, Button, Chip, Input, FormControl, Grid, InputLabel, MenuItem, Select, TextField} from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {Autocomplete} from '@material-ui/lab';
 import {Equipment, LocationOption, ReservationFilters, WorkspaceType, ReservationReq, ReservationRes, ServiceRes, ServiceReq} from '../../../types';
@@ -138,7 +138,6 @@ const ReserveWorkspace: FC = () => {
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      variant="filled"
                       name="location"
                       label="Location"
                       required
@@ -159,7 +158,7 @@ const ReserveWorkspace: FC = () => {
               </Grid>
 
               <Grid item xs={8}>
-                <TextField select variant="filled" fullWidth id="type" name="type" label="Type" value={formik.values.type} onChange={formik.handleChange}>
+                <TextField select fullWidth id="type" name="type" label="Type" value={formik.values.type} onChange={formik.handleChange}>
                   <MenuItem value="Any" className={classes.typeAny}>
                     Any
                   </MenuItem>
@@ -174,7 +173,6 @@ const ReserveWorkspace: FC = () => {
               <Grid item xs={4}>
                 <TextField
                   type="number"
-                  variant="filled"
                   required
                   fullWidth
                   id="size"
@@ -199,7 +197,6 @@ const ReserveWorkspace: FC = () => {
                   id="from"
                   name="from"
                   label="From"
-                  inputVariant="filled"
                   value={formik.values.from}
                   onChange={(date) => changeDate(date, 'from')}
                   error={Boolean(formik.errors.from)}
@@ -217,7 +214,6 @@ const ReserveWorkspace: FC = () => {
                   id="to"
                   name="to"
                   label="To"
-                  inputVariant="filled"
                   value={formik.values.to}
                   onChange={(date) => changeDate(date, 'to')}
                   error={Boolean(formik.errors.to)}
@@ -233,11 +229,11 @@ const ReserveWorkspace: FC = () => {
           <Grid item lg={4} sm={12} xs={12}>
             <Grid container spacing={2}>
               <Grid item lg={12} sm={6} xs={12}>
-                <TextField variant="filled" fullWidth id="description" name="description" label="Label" value={formik.values.description} onChange={formik.handleChange} />
+                <TextField fullWidth id="description" name="description" label="Label" value={formik.values.description} onChange={formik.handleChange} />
               </Grid>
 
               <Grid item lg={12} sm={6} xs={12}>
-                <FormControl variant="filled" className={classes.multiSelect}>
+                <FormControl className={classes.multiSelect}>
                   <InputLabel htmlFor="equipment">Equipment</InputLabel>
                   <Select
                     multiple
@@ -245,7 +241,7 @@ const ReserveWorkspace: FC = () => {
                     name="equipment"
                     value={formik.values.equipment}
                     onChange={formik.handleChange}
-                    input={<FilledInput fullWidth />}
+                    input={<Input fullWidth />}
                     renderValue={(selected) => (
                       <div className={classes.chips}>
                         {(selected as string[]).map((value) => (

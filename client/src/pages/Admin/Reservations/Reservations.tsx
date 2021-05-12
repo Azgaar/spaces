@@ -61,7 +61,7 @@ const Reservations: FC = () => {
 
           <Grid item lg={8} md={6} xs={12}>
             <Box display="flex" justifyContent="flex-end">
-              <ButtonGroup variant="contained" color="secondary">
+              <ButtonGroup variant="contained" color="primary">
                 <Button component={Link} to="/reserve">
                   Reserve
                 </Button>
