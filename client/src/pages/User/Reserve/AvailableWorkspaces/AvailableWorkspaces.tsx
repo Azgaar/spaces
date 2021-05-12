@@ -78,7 +78,7 @@ const AvailableWorkspaces: FC<AvailableWorkspacesProps> = ({filters, valid, upda
 
       {valid &&
         workspaces.map((workspace) => (
-          <Grid key={workspace.id} item lg={2} md={3} sm={4} xs={6}>
+          <Grid key={workspace.id} item md={3} sm={4} xs={12}>
             <Card className={workspace.id === selectedWS ? classes.selectedCard : classes.card} variant="outlined">
               <CardActionArea onClick={() => handleSelect(workspace.id as string)}>
                 <CardHeader
