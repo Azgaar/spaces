@@ -22,14 +22,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#e8eaf1',
     border: '2px solid ' + theme.palette.primary.main,
     padding: 0
-  },
-  cardHeader: {
-    '& .MuiCardHeader-subheader': {
-      overflow: 'hidden',
-      whiteSpace: 'nowrap',
-      textOverflow: 'ellipsis',
-      maxWidth: '12em'
-    }
   }
 }));
 

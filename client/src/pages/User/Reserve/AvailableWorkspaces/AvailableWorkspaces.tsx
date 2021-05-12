@@ -61,17 +61,17 @@ const AvailableWorkspaces: FC<AvailableWorkspacesProps> = ({filters, valid, upda
       <LinearProgress className={`${classes.progress} ${isLoading ? '' : classes.inactive}`} />
 
       {!valid && (
-        <Grid item lg={3} md={4} sm={6} xs={12}>
+        <Grid item md={4} sm={6} xs={12}>
           <Card className={classes.card} variant="outlined">
-            <CardHeader className={classes.cardHeader} avatar={<ErrorOutlineIcon />} title="Validation error" subheader="Fix the error in red" />
+            <CardHeader avatar={<ErrorOutlineIcon />} title="Validation error" subheader="Fix the error in red" />
           </Card>
         </Grid>
       )}
 
       {valid && !workspaces.length && (
-        <Grid item lg={3} md={4} sm={6} xs={12}>
+        <Grid item md={4} sm={6} xs={12}>
           <Card className={classes.card} variant="outlined">
-            <CardHeader className={classes.cardHeader} avatar={<SearchIcon />} title="No workspaces" subheader="Alter search criteria" />
+            <CardHeader avatar={<SearchIcon />} title="No workspaces" subheader="Alter search criteria" />
           </Card>
         </Grid>
       )}
@@ -82,7 +82,6 @@ const AvailableWorkspaces: FC<AvailableWorkspacesProps> = ({filters, valid, upda
             <Card className={workspace.id === selectedWS ? classes.selectedCard : classes.card} variant="outlined">
               <CardActionArea onClick={() => handleSelect(workspace.id as string)}>
                 <CardHeader
-                  className={classes.cardHeader}
                   avatar={
                     <Badge badgeContent={workspace.size > 1 && workspace.size}>
                       <WorkspaceTypeIcon value={workspace.type} />
