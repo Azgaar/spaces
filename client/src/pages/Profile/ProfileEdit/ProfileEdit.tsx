@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import useFormStyles from '../../../styles/form';
-import {TextField, Button, Grid, Container} from '@material-ui/core';
+import {TextField, Button, Grid} from '@material-ui/core';
 import {Link as RouterLink, useHistory} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import {useForm, SubmitHandler} from 'react-hook-form';
@@ -10,7 +10,7 @@ import {actions} from '../../../store/actions';
 import {useToasterCatcher, useUser} from '../../../hooks';
 import {rules} from '../../../validation/user';
 import {MessageType, useMessage} from '../../../components/Providers/MessageProvider';
-import Headline from '../../../components/Layout/components/Main/Headline/Headline';
+import Content from '../../../components/Layout/components/Main/Content';
 
 const ProfileEdit: FC = () => {
   const formStyles = useFormStyles();
@@ -32,8 +32,7 @@ const ProfileEdit: FC = () => {
   };
 
   return (
-    <Container maxWidth="xs" className={formStyles.paper}>
-      <Headline pagename="Edit Profile" />
+    <Content maxWidth="xs" pagename="Edit Profile">
       <form className={formStyles.form} noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
@@ -106,7 +105,7 @@ const ProfileEdit: FC = () => {
           </Grid>
         </Grid>
       </form>
-    </Container>
+    </Content>
   );
 };
 
