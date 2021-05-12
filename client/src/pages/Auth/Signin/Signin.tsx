@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import useFormStyles from '../../../styles/form';
-import {TextField, Button, Grid, Link, Container} from '@material-ui/core';
+import {TextField, Button, Grid, Link} from '@material-ui/core';
 import {Link as RouterLink, Redirect, useHistory} from 'react-router-dom';
 import {useForm, SubmitHandler} from 'react-hook-form';
 import {useDispatch} from 'react-redux';
@@ -10,6 +10,7 @@ import {rules} from '../../../validation/user';
 import {useToasterCatcher, useUser} from '../../../hooks';
 import {AuthService} from '../../../services';
 import Headline from '../../../components/Layout/components/Main/Headline/Headline';
+import Content from '../../../components/Layout/components/Main/Content';
 
 const Signin: FC = () => {
   const {isAuthenticated} = useUser();
@@ -32,8 +33,7 @@ const Signin: FC = () => {
     return <Redirect to="/" />;
   }
   return (
-    <Container maxWidth="xs" className={formStyles.paper}>
-      <Headline pagename="Sign in" />
+    <Content maxWidth="xs" pagename="Sign in">
       <form className={formStyles.form} noValidate onSubmit={handleSubmit(onSubmit)}>
         <TextField
           variant="outlined"
@@ -81,7 +81,7 @@ const Signin: FC = () => {
           Sign In
         </Button>
       </form>
-    </Container>
+    </Content>
   );
 };
 

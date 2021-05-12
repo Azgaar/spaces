@@ -2,10 +2,8 @@ import {makeStyles} from '@material-ui/core/styles';
 
 const useFormStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(9),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
+    padding: theme.spacing(1, 3),
+    marginTop: theme.spacing(9)
   },
   form: {
     width: '100%',
