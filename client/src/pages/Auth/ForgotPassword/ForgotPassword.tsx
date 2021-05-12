@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import useFormStyles from '../../../styles/form';
-import {TextField, Button, Typography, Grid, Container} from '@material-ui/core';
+import {TextField, Button, Typography, Grid} from '@material-ui/core';
 import {Link as RouterLink, Redirect, useHistory} from 'react-router-dom';
 import {useForm, SubmitHandler} from 'react-hook-form';
 import {ForgotPasswordForm} from '../../../types';
@@ -8,7 +8,7 @@ import {UserService} from '../../../services';
 import {rules} from '../../../validation/user';
 import {MessageType, useMessage} from '../../../components/Providers/MessageProvider';
 import {useToasterCatcher, useUser} from '../../../hooks';
-import Headline from '../../../components/Layout/components/Main/Headline/Headline';
+import Content from '../../../components/Layout/components/Main/Content';
 
 const ForgotPassword: FC = () => {
   const {isAuthenticated} = useUser();
@@ -31,8 +31,7 @@ const ForgotPassword: FC = () => {
     return <Redirect to="/" />;
   }
   return (
-    <Container maxWidth="xs" className={formStyles.paper}>
-      <Headline pagename="Forgot Password" />
+    <Content maxWidth="xs" pagename="Forgot Password">
       <form className={formStyles.form} noValidate onSubmit={handleSubmit(onSubmit)}>
         <Typography component="h2" variant="subtitle2" align="justify">
           {`Lost your password?
@@ -68,7 +67,7 @@ const ForgotPassword: FC = () => {
           </Grid>
         </Grid>
       </form>
-    </Container>
+    </Content>
   );
 };
 
