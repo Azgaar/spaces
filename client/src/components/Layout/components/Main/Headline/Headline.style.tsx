@@ -5,13 +5,10 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    marginTop: theme.spacing(2)
+    margin: theme.spacing(2)
   },
   avatar: {
-    marginBottom: theme.spacing(1)
-  },
-  header: {
-    zIndex: 1
+    marginBottom: theme.spacing(0.6)
   }
 }));
 

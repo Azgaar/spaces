@@ -1,6 +1,5 @@
 import React, {FC} from 'react';
-import useFormStyles from '../../../styles/form';
-import {TextField, Button, Checkbox, Grid, FormHelperText, FormControlLabel} from '@material-ui/core';
+import {TextField, Button, Checkbox, Grid, FormHelperText, FormControlLabel, Box} from '@material-ui/core';
 import {Redirect, useHistory} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import {SignUpForm, UserData} from '../../../types';
@@ -14,7 +13,6 @@ import Content from '../../../components/Layout/components/Main/Content';
 
 const Signup: FC = () => {
   const {isAuthenticated} = useUser();
-  const formStyles = useFormStyles();
   const dispatch = useDispatch();
   const history = useHistory();
   const {catchAndTossError} = useToasterCatcher();
@@ -38,7 +36,7 @@ const Signup: FC = () => {
   }
   return (
     <Content maxWidth="xs" pagename="Sign up">
-      <form className={formStyles.form} noValidate onSubmit={formik.handleSubmit}>
+      <form noValidate onSubmit={formik.handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <TextField
@@ -116,14 +114,18 @@ const Signup: FC = () => {
               helperText={formik.touched.passwordRepeat && formik.errors.passwordRepeat}
             />
           </Grid>
-          <Grid item xs={12}>
-            <FormControlLabel label={<Terms />} control={<Checkbox name="acceptTerms" color="primary" value={formik.values.acceptTerms} onChange={formik.handleChange} />} />
-            {formik.touched.acceptTerms && Boolean(formik.errors.acceptTerms) && <FormHelperText error>{formik.errors.acceptTerms}</FormHelperText>}
-          </Grid>
         </Grid>
-        <Button type="submit" fullWidth variant="contained" color="primary" className={formStyles.buttons}>
-          Sign Up
-        </Button>
+
+        <Box mx={1}>
+          <FormControlLabel label={<Terms />} control={<Checkbox name="acceptTerms" color="primary" value={formik.values.acceptTerms} onChange={formik.handleChange} />} />
+          {formik.touched.acceptTerms && Boolean(formik.errors.acceptTerms) && <FormHelperText error>{formik.errors.acceptTerms}</FormHelperText>}
+        </Box>
+
+        <Box mt={1} mb={2}>
+          <Button type="submit" fullWidth variant="contained" color="primary">
+            Sign Up
+          </Button>
+        </Box>
       </form>
     </Content>
   );

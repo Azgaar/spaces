@@ -1,6 +1,5 @@
 import React, {FC} from 'react';
-import useFormStyles from '../../../styles/form';
-import {TextField, Button, Grid, Link} from '@material-ui/core';
+import {TextField, Button, Grid, Link, Box} from '@material-ui/core';
 import {Link as RouterLink, Redirect, useHistory} from 'react-router-dom';
 import {useForm, SubmitHandler} from 'react-hook-form';
 import {useDispatch} from 'react-redux';
@@ -13,7 +12,6 @@ import Content from '../../../components/Layout/components/Main/Content';
 
 const Signin: FC = () => {
   const {isAuthenticated} = useUser();
-  const formStyles = useFormStyles();
   const dispatch = useDispatch();
   const history = useHistory();
   const {catchAndTossError} = useToasterCatcher();
@@ -33,7 +31,7 @@ const Signin: FC = () => {
   }
   return (
     <Content maxWidth="xs" pagename="Sign in">
-      <form className={formStyles.form} noValidate onSubmit={handleSubmit(onSubmit)}>
+      <form noValidate onSubmit={handleSubmit(onSubmit)}>
         <TextField
           variant="outlined"
           margin="normal"
@@ -76,9 +74,11 @@ const Signin: FC = () => {
           </Grid>
         </Grid>
 
-        <Button type="submit" fullWidth variant="contained" color="primary" className={formStyles.buttons}>
-          Sign In
-        </Button>
+        <Box my={2}>
+          <Button type="submit" fullWidth variant="contained" color="primary">
+            Sign In
+          </Button>
+        </Box>
       </form>
     </Content>
   );

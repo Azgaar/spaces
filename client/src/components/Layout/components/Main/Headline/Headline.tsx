@@ -49,7 +49,7 @@ function Headline({pagename}: {pagename: string}): ReactElement {
       <Avatar className={classes.avatar}>
         <IconComponent />
       </Avatar>
-      <Typography component="h1" variant="h5" className={classes.header} role="heading">
+      <Typography component="h1" variant="h5" role="heading">
         {pagename}
       </Typography>
     </Box>
