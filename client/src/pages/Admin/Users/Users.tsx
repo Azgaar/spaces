@@ -1,17 +1,12 @@
 import React, {FC} from 'react';
-import useStyles from './Users.style';
-import {Container} from '@material-ui/core';
-import Headline from '../../../components/Layout/components/Main/Headline/Headline';
 import UsersList from './UsersList/UsersList';
+import Content from '../../../components/Layout/components/Main/Content';
 
 const User: FC = () => {
-  const classes = useStyles();
-
   return (
-    <Container maxWidth="lg" className={classes.container}>
-      <Headline pagename="Manage Users" />
+    <Content maxWidth="lg" marginTop={5} pagename="Manage Users">
       <UsersList />
-    </Container>
+    </Content>
   );
 };
 

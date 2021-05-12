@@ -1,5 +1,4 @@
 import React, {useEffect, FC} from 'react';
-import useStyles from './Reservations.style';
 import {Container, Grid, TextField, ButtonGroup, Button, Box} from '@material-ui/core';
 import {Link} from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -7,10 +6,9 @@ import ReservationsList from './ReservationsList/ReservationsList';
 import {Autocomplete} from '@material-ui/lab';
 import {LocationOption} from '../../../types';
 import {useLocations} from '../../../hooks';
-import Headline from '../../../components/Layout/components/Main/Headline/Headline';
+import Content from '../../../components/Layout/components/Main/Content';
 
 const Reservations: FC = () => {
-  const classes = useStyles();
   const blankLocation: LocationOption = {id: '', description: ''};
   const {locations, locationsLoading, location, setLocation, fetchLocations} = useLocations();
 
@@ -31,9 +29,7 @@ const Reservations: FC = () => {
   };
 
   return (
-    <Container maxWidth="lg" className={classes.container}>
-      <Headline pagename="Manage Reservations" />
-
+    <Content maxWidth="lg" marginTop={5} pagename="Manage Reservations">
       <Container>
         <Grid container alignItems="center">
           <Grid item lg={4} md={6} xs={12}>
@@ -80,8 +76,9 @@ const Reservations: FC = () => {
           </Grid>
         </Grid>
       </Container>
+
       <ReservationsList loc={location} />
-    </Container>
+    </Content>
   );
 };
 

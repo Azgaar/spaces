@@ -114,8 +114,8 @@ const WorkspacesList: FC<{loc: LocationOption}> = ({loc}) => {
       <DataGrid
         rows={workspaces}
         columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5, 10, 20, 40]}
+        pageSize={4}
+        rowsPerPageOptions={[4, 8, 32, 64]}
         autoHeight
         checkboxSelection
         loading={isLoading}

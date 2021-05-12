@@ -77,25 +77,26 @@ const RequestList: FC<{status: ServiceRequestStatus; location: LocationOption}> 
     }
   };
 
-  const Controls = () => {
+  const Controls: FC = () => {
     const {PENDING, FULFILLED, REJECTED} = ServiceRequestStatus;
+    const selected = selection.length > 0;
 
     return (
       <Container className={classes.controls}>
-        <Button variant="contained" color="primary" onClick={showConfirmDeletion}>
+        <Button variant="contained" color="primary" onClick={showConfirmDeletion} disabled={!selected}>
           Delete
         </Button>
-        {status !== PENDING && (
+        {selected && status !== PENDING && (
           <Button variant="contained" className={classes.yellow} color="primary" onClick={() => handleProcessing(PENDING)}>
             Delay
           </Button>
         )}
-        {status !== FULFILLED && (
+        {selected && status !== FULFILLED && (
           <Button variant="contained" className={classes.green} color="primary" onClick={() => handleProcessing(FULFILLED)}>
             Fulfill
           </Button>
         )}
-        {status !== REJECTED && (
+        {selected && status !== REJECTED && (
           <Button variant="contained" className={classes.red} color="primary" onClick={() => handleProcessing(REJECTED)}>
             Reject
           </Button>
@@ -115,9 +116,8 @@ const RequestList: FC<{status: ServiceRequestStatus; location: LocationOption}> 
         checkboxSelection
         loading={isLoading}
         onSelectionModelChange={handleSelection}
-        density="compact"
       />
-      {selection.length > 0 && <Controls />}
+      <Controls />
       <ConfirmationDialog open={confirmDeletion} onConfirm={handleDeletion} onClose={hideConfirmDeletion} />
     </Container>
   );

@@ -10,9 +10,10 @@ type DeletionProps = {
   short?: boolean;
   showText?: boolean;
   onDelete: () => void;
+  disabled?: boolean;
 };
 
-const DeletionButton: FC<DeletionProps> = ({object, onDelete, title, confirm = 'Delete', cancel = 'Cancel', short = false, showText = true}) => {
+const DeletionButton: FC<DeletionProps> = ({object, onDelete, title, confirm = 'Delete', cancel = 'Cancel', short = false, showText = true, disabled = false}) => {
   const [confirmDelection, setConfirmDelection] = useState(false);
   const classes = useStyles();
 
@@ -38,7 +39,7 @@ const DeletionButton: FC<DeletionProps> = ({object, onDelete, title, confirm = '
     </Box>
   ) : (
     <Box component="span" mx={1}>
-      <Button variant="contained" color="primary" onClick={handleConfirm}>
+      <Button variant="contained" color="primary" onClick={handleConfirm} disabled={disabled}>
         {title || 'Delete ' + object}
       </Button>
     </Box>

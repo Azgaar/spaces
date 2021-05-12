@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
     '& div.MuiDataGrid-root': {
       border: '1px solid #aaaaaa',
       color: '#000000',
-      backgroundColor: '#f2f2f2aa',
+      backgroundColor: '#fff',
       boxShadow: '0 0 20px 5px #f2f2f2aa'
     },
     '& div.MuiDataGrid-cell': {

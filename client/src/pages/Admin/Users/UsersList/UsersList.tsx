@@ -55,8 +55,8 @@ const UsersList: FC = () => {
       <DataGrid
         rows={users}
         columns={columns}
-        pageSize={6}
-        rowsPerPageOptions={[6, 12, 24, 48]}
+        pageSize={5}
+        rowsPerPageOptions={[5, 10, 25, 50]}
         getRowId={(row) => row.email}
         autoHeight
         checkboxSelection
@@ -64,7 +64,7 @@ const UsersList: FC = () => {
         onSelectionModelChange={handleSelection}
       />
       <Container className={classes.controls}>
-        {Boolean(selection.length) && <DeletionButton onDelete={handleDeletion} object={selection.length > 1 ? 'users' : 'user'} />}
+        <DeletionButton onDelete={handleDeletion} object={selection.length > 1 ? 'users' : 'user'} disabled={selection.length < 1} />
       </Container>
     </Container>
   );

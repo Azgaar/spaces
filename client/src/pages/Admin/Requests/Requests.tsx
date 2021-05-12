@@ -2,10 +2,10 @@ import React, {useEffect, useState, FC} from 'react';
 import useStyles from './Requests.style';
 import {Container, Box, ButtonGroup, Button, TextField, CircularProgress, Grid} from '@material-ui/core';
 import {Autocomplete} from '@material-ui/lab';
-import Headline from '../../../components/Layout/components/Main/Headline/Headline';
 import RequestList from './RequestList/RequestList';
 import {LocationOption, ServiceRequestStatus} from '../../../types';
 import {useLocations} from '../../../hooks';
+import Content from '../../../components/Layout/components/Main/Content';
 
 const Requests: FC = () => {
   const classes = useStyles();
@@ -29,8 +29,7 @@ const Requests: FC = () => {
   };
 
   return (
-    <Container maxWidth="lg" className={classes.container}>
-      <Headline pagename="Manage Service Requests" />
+    <Content maxWidth="lg" marginTop={5} pagename="Manage Service Requests">
       <Container>
         <Grid container alignItems="center">
           <Grid item lg={4} md={6} xs={12}>
@@ -75,7 +74,7 @@ const Requests: FC = () => {
       </Container>
 
       <RequestList location={location} status={statusFilter} />
-    </Container>
+    </Content>
   );
 };
 
