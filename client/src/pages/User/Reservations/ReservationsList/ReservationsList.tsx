@@ -111,7 +111,7 @@ const ReservationsList: FC<{active: boolean}> = ({active}) => {
     <Container className={classes.container}>
       <Grid container spacing={2}>
         {!reservations.length && (
-          <Grid item lg={3} md={4} sm={6} xs={12}>
+          <Grid item md={4} sm={6} xs={12}>
             <Card variant="outlined">
               <CardHeader
                 className={classes.cardHeader}
@@ -155,7 +155,7 @@ const ReservationsList: FC<{active: boolean}> = ({active}) => {
           const showServices = reservation.requests.length || isEditable;
 
           return (
-            <Grid key={reservation.id} item lg={3} md={4} sm={6} xs={12}>
+            <Grid key={reservation.id} item md={4} sm={6} xs={12}>
               <Card variant="outlined" className={classes.card}>
                 <CardHeader
                   className={classes.cardHeader}

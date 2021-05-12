@@ -9,7 +9,8 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.spacing(0.8)
   },
   card: {
-    padding: theme.spacing(0, 0, 1, 0)
+    padding: theme.spacing(0, 0, 1, 0),
+    border: '1px solid #ccc'
   },
   cardHeader: {
     '& .MuiCardHeader-subheader': {
