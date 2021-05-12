@@ -21,16 +21,6 @@ const blankLocation: LocationOption = {id: '', description: ''};
 const from = dayjs().set('minute', 0).set('second', 0).set('millisecond', 0).add(1, 'hour');
 const to = from.add(1, 'hour');
 
-const defaultFilters: ReservationFilters = {
-  location: (getStored('location') as LocationOption) || blankLocation,
-  type: 'Any',
-  from: from.toISOString(),
-  to: to.toISOString(),
-  size: 1,
-  equipment: [],
-  description: ''
-};
-
 const ReserveWorkspace: FC = () => {
   const classes = useStyles();
   const {locations, locationsLoading, fetchLocations} = useLocations();
@@ -76,6 +66,16 @@ const ReserveWorkspace: FC = () => {
         pushMessage({title: 'Workspace is reserved, but services request is failed', type: MessageType.ERROR});
       }
     }
+  };
+
+  const defaultFilters: ReservationFilters = {
+    location: (getStored('location') as LocationOption) || blankLocation,
+    type: 'Any',
+    from: from.toISOString(),
+    to: to.toISOString(),
+    size: 1,
+    equipment: [],
+    description: ''
   };
 
   const formik = useFormik({
