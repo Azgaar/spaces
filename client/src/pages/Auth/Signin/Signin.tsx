@@ -9,7 +9,6 @@ import {actions} from '../../../store/actions';
 import {rules} from '../../../validation/user';
 import {useToasterCatcher, useUser} from '../../../hooks';
 import {AuthService} from '../../../services';
-import Headline from '../../../components/Layout/components/Main/Headline/Headline';
 import Content from '../../../components/Layout/components/Main/Content';
 
 const Signin: FC = () => {

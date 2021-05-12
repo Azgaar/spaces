@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import useFormStyles from '../../../styles/form';
-import {TextField, Button, Checkbox, Grid, FormHelperText, FormControlLabel, Container} from '@material-ui/core';
+import {TextField, Button, Checkbox, Grid, FormHelperText, FormControlLabel} from '@material-ui/core';
 import {Redirect, useHistory} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import {SignUpForm, UserData} from '../../../types';
@@ -10,7 +10,7 @@ import {useToasterCatcher, useUser} from '../../../hooks';
 import Terms from './Terms/Terms';
 import {useFormik} from 'formik';
 import {signUpValidationSchema} from '../../../validation/auth';
-import Headline from '../../../components/Layout/components/Main/Headline/Headline';
+import Content from '../../../components/Layout/components/Main/Content';
 
 const Signup: FC = () => {
   const {isAuthenticated} = useUser();
@@ -37,8 +37,7 @@ const Signup: FC = () => {
     return <Redirect to="/" />;
   }
   return (
-    <Container maxWidth="xs" className={formStyles.paper}>
-      <Headline pagename="Sign up" />
+    <Content maxWidth="xs" pagename="Sign up">
       <form className={formStyles.form} noValidate onSubmit={formik.handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
@@ -126,7 +125,7 @@ const Signup: FC = () => {
           Sign Up
         </Button>
       </form>
-    </Container>
+    </Content>
   );
 };
 
