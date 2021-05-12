@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {Container, Paper} from '@material-ui/core';
-import useFormStyles from '../../../../styles/form';
 import Headline from './Headline/Headline';
+import useStyles from './Content.style';
 
 type ContentProps = {
   maxWidth: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
@@ -9,11 +9,11 @@ type ContentProps = {
 };
 
 const Content: FC<ContentProps> = ({children, maxWidth, pagename}) => {
-  const formStyles = useFormStyles();
+  const classes = useStyles();
 
   return (
     <Container maxWidth={maxWidth}>
-      <Paper elevation={4} className={formStyles.paper}>
+      <Paper elevation={4} className={classes.paper}>
         <Headline pagename={pagename} />
         {children}
       </Paper>
