@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from 'react';
 import useStyles from './ReserveWorkspace.style';
-import {Box, Button, Chip, Input, FormControl, Grid, InputLabel, MenuItem, Select, TextField} from '@material-ui/core';
+import {Box, Button, Chip, Input, FormControl, Grid, InputLabel, MenuItem, Select, TextField, useMediaQuery, useTheme} from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {Autocomplete} from '@material-ui/lab';
 import {Equipment, LocationOption, ReservationFilters, WorkspaceType, ReservationReq, ReservationRes, ServiceRes, ServiceReq} from '../../../types';
@@ -30,6 +30,7 @@ const ReserveWorkspace: FC = () => {
   const {user} = useUser();
   const {catchAndTossError} = useToasterCatcher();
   const [updateToggle, setUpdateToggle] = useState(false);
+  const smallScreen = useMediaQuery(useTheme().breakpoints.down('xs'));
 
   useEffect(() => {
     fetchLocations({onlyWithWorkspaces: true});
@@ -121,7 +122,7 @@ const ReserveWorkspace: FC = () => {
   };
 
   return (
-    <Content maxWidth="md" marginTop={5} pagename="Reserve Workspace">
+    <Content maxWidth="md" marginTop={smallScreen ? 0 : 10} pagename="Reserve Workspace">
       <form noValidate autoComplete="off" onSubmit={formik.handleSubmit}>
         <Grid container spacing={2}>
           <Grid item lg={4} sm={6} xs={12}>
