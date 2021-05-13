@@ -1,8 +1,8 @@
 import axios, {AxiosPromise} from 'axios';
-import {ForgotPasswordForm, PassportChangeForm, ProfileEditForm, SignInForm} from '../types';
+import {ForgotPasswordForm, PassportChangeForm, ProfileEditForm, SignUpForm} from '../types';
 import {GridRowId} from '@material-ui/data-grid';
 
-const signup = (formData: SignInForm): AxiosPromise => axios.post('/register', formData);
+const signup = (formData: SignUpForm): AxiosPromise => axios.post('/register', formData);
 const fetch = (): AxiosPromise => axios.post('/checkin');
 const update = (formData: ProfileEditForm): AxiosPromise => axios.post('/updateUser', formData);
 const changePassword = (formData: PassportChangeForm): AxiosPromise => axios.post('/changePassword', formData);
