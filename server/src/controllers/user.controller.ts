@@ -100,4 +100,20 @@ const list = catchAsync(async (req, res, next) => {
   res.status(httpStatus.OK).send(userDocuments);
 });
 
-export const userController = {register, update, changePassword, resetPassword, remove, list};
+const changeRole = catchAsync(async (req, res, next) => {
+  const {email, role} = req.body;
+  const user = await User.findOne({email});
+  if (!user) {
+    return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, `Cannot find user ${email}`));
+  }
+  await updateUser(user, {role});
+
+  const users = await User.find();
+  if (!users) {
+    return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Users cannot be fetched'));
+  }
+
+  res.status(httpStatus.OK).send(users);
+});
+
+export const userController = {register, update, changePassword, resetPassword, remove, list, changeRole};

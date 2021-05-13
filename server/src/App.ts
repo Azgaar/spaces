@@ -44,6 +44,7 @@ export default class App {
     this.app.use('/forgotPassword', Routes.forgotPassword);
     this.app.use('/getUsers', Routes.getUsers);
     this.app.use('/deleteUsers', Routes.deleteUsers);
+    this.app.use('/changeRole', Routes.changeRole);
     this.app.use('/getLocations', Routes.getLocations);
     this.app.use('/addLocation', Routes.addLocation);
     this.app.use('/renameLocation', Routes.renameLocation);
