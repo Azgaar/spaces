@@ -53,11 +53,11 @@ const countRequests = {
 };
 
 const columns: GridColDef[] = [
-  {field: 'status', headerName: 'Status', flex: 0.6},
-  {field: 'description', headerName: 'Workspace', flex: 0.8},
-  {field: 'type', headerName: 'Type', flex: 0.6},
-  {field: 'requester', headerName: 'Requester', flex: 1.1},
-  {field: 'size', headerName: 'Size', flex: 0.5},
+  {field: 'status', headerName: 'Status', flex: 0.55},
+  {field: 'description', headerName: 'Workspace', flex: 0.75},
+  {field: 'type', headerName: 'Type', flex: 0.8},
+  {field: 'requester', headerName: 'Requester', flex: 0.75},
+  {field: 'size', headerName: 'Size', flex: 0.45},
   {field: 'requests', headerName: 'Requests', flex: 0.7, ...countRequests},
   {field: 'from', headerName: 'From', ...gridColDateFormat},
   {field: 'to', headerName: 'To', ...gridColDateFormat}
