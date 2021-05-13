@@ -23,24 +23,25 @@ const countRequests = {
     const fullfilled = value.filter((request) => request.status === FULFILLED).length;
     const rejected = value.filter((request) => request.status === REJECTED).length;
 
+    const buttonPending = <RequestStatusIcon value={PENDING} />;
+    const buttonFulfilled = <RequestStatusIcon value={FULFILLED} />;
+    const buttonRejected = <RequestStatusIcon value={REJECTED} />;
+
     return (
       <>
         {!!pending && (
           <>
-            {pending}
-            <RequestStatusIcon value={PENDING} />
+            {pending} {buttonPending}
           </>
         )}
         {!!fullfilled && (
           <>
-            {fullfilled}
-            <RequestStatusIcon value={FULFILLED} />
+            {fullfilled} {buttonFulfilled}
           </>
         )}
         {!!rejected && (
           <>
-            {rejected}
-            <RequestStatusIcon value={REJECTED} />
+            {rejected} {buttonRejected}
           </>
         )}
       </>
