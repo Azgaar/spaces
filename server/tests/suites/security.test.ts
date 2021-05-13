@@ -19,7 +19,7 @@ describe('Server', () => {
   });
 
   it('hides error stack', async () => {
-    const response = await request(app).post('/');
+    const response = await request(app).post('/getUsers');
     expect(response.body.stack).toBe(false);
   });
 
