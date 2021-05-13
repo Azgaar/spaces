@@ -54,7 +54,6 @@ const UsersList: FC = () => {
     const users = (await catchAndTossError(UserService.changeRole(email, role))) as UserData[] | undefined;
     if (users) {
       setUsers(() => users);
-      setSelection(() => [] as GridRowId[]);
       pushMessage({title: `Role is changed to ${role}`, type: MessageType.SUCCESS});
     }
   };
@@ -70,8 +69,7 @@ const UsersList: FC = () => {
     return (
       <>
         {roles.map((role) => (
-          <Button variant="contained" color="primary" onClick={() => handleRoleChange(email, role as UserRole)}>
-            {console.log(role, userRole)}
+          <Button key={role} variant="contained" color="primary" onClick={() => handleRoleChange(email, role as UserRole)}>
             Make {role}
           </Button>
         ))}
