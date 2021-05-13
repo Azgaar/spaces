@@ -1,5 +1,5 @@
 import React, {useEffect, useState, FC} from 'react';
-import useStyles from './UsersList.style';
+import useStyles from './../../../../styles/table';
 import {Container} from '@material-ui/core';
 import DeletionButton from '../../../../components/Controls/DeletionButton/DeletionButton';
 import {DataGrid, GridColDef, GridRowId, GridSelectionModelChangeParams} from '@material-ui/data-grid';
@@ -62,6 +62,7 @@ const UsersList: FC = () => {
         checkboxSelection
         loading={isLoading}
         onSelectionModelChange={handleSelection}
+        className={classes.table}
       />
       <Container className={classes.controls}>
         <DeletionButton onDelete={handleDeletion} object={selection.length > 1 ? 'users' : 'user'} disabled={selection.length < 1} />

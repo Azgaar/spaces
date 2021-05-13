@@ -1,5 +1,5 @@
 import React, {ReactElement, useEffect, useState, FC} from 'react';
-import useStyles from './ReservationsList.style';
+import useStyles from './../../../../styles/table';
 import {Button, Container} from '@material-ui/core';
 import {DataGrid, GridCellValue, GridColDef, GridRowId, GridSelectionModelChangeParams} from '@material-ui/data-grid';
 import DeletionButton from '../../../../components/Controls/DeletionButton/DeletionButton';
@@ -175,6 +175,7 @@ const ReservationsList: FC<{loc: LocationOption}> = ({loc}) => {
         checkboxSelection
         loading={isLoading}
         onSelectionModelChange={handleSelection}
+        className={classes.table}
       />
       <Container className={classes.controls}>
         {Boolean(loc.id) && (

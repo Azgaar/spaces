@@ -1,5 +1,5 @@
 import React, {useEffect, useState, FC} from 'react';
-import useStyles from './RequestList.style';
+import useStyles from './../../../../styles/table';
 import {Container, Button} from '@material-ui/core';
 import {DataGrid, GridColDef, GridRowId, GridSelectionModelChangeParams} from '@material-ui/data-grid';
 import {MessageType, useMessage} from '../../../../components/Providers/MessageProvider';
@@ -116,6 +116,7 @@ const RequestList: FC<{status: ServiceRequestStatus; location: LocationOption}> 
         checkboxSelection
         loading={isLoading}
         onSelectionModelChange={handleSelection}
+        className={classes.table}
       />
       <Controls />
       <ConfirmationDialog open={confirmDeletion} onConfirm={handleDeletion} onClose={hideConfirmDeletion} />
