@@ -173,8 +173,8 @@ const ReservationsList: FC<{loc: LocationOption}> = ({loc}) => {
       <DataGrid
         rows={reservations}
         columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5, 10, 20, 40]}
+        pageSize={4}
+        rowsPerPageOptions={[4, 10, 20, 50]}
         autoHeight
         checkboxSelection
         loading={isLoading}

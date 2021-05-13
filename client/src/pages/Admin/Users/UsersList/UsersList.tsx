@@ -56,7 +56,7 @@ const UsersList: FC = () => {
         rows={users}
         columns={columns}
         pageSize={5}
-        rowsPerPageOptions={[5, 10, 25, 50]}
+        rowsPerPageOptions={[5, 10, 20, 50]}
         getRowId={(row) => row.email}
         autoHeight
         checkboxSelection

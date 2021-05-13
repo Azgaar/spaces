@@ -115,7 +115,7 @@ const WorkspacesList: FC<{loc: LocationOption}> = ({loc}) => {
         rows={workspaces}
         columns={columns}
         pageSize={4}
-        rowsPerPageOptions={[4, 8, 32, 64]}
+        rowsPerPageOptions={[4, 10, 20, 50]}
         autoHeight
         checkboxSelection
         loading={isLoading}

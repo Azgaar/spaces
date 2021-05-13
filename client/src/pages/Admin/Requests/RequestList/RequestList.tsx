@@ -110,8 +110,8 @@ const RequestList: FC<{status: ServiceRequestStatus; location: LocationOption}> 
       <DataGrid
         rows={requests}
         columns={columns}
-        pageSize={8}
-        rowsPerPageOptions={[8, 16, 32, 64, 128]}
+        pageSize={4}
+        rowsPerPageOptions={[4, 10, 20, 50]}
         autoHeight
         checkboxSelection
         loading={isLoading}
