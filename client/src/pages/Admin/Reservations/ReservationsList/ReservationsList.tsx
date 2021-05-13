@@ -1,5 +1,5 @@
 import React, {ReactElement, useEffect, useState, FC} from 'react';
-import useStyles from './ReservationsList.style';
+import useStyles from './../../../../styles/table';
 import {Button, Container} from '@material-ui/core';
 import {DataGrid, GridCellValue, GridColDef, GridRowId, GridSelectionModelChangeParams} from '@material-ui/data-grid';
 import DeletionButton from '../../../../components/Controls/DeletionButton/DeletionButton';
@@ -23,37 +23,41 @@ const countRequests = {
     const fullfilled = value.filter((request) => request.status === FULFILLED).length;
     const rejected = value.filter((request) => request.status === REJECTED).length;
 
+    const buttonPending = (
+      <>
+        {pending}
+        <RequestStatusIcon value={PENDING} />
+      </>
+    );
+    const buttonFulfilled = (
+      <>
+        {fullfilled}
+        <RequestStatusIcon value={FULFILLED} />
+      </>
+    );
+    const buttonRejected = (
+      <>
+        {rejected}
+        <RequestStatusIcon value={REJECTED} />
+      </>
+    );
+
     return (
       <>
-        {!!pending && (
-          <>
-            {pending}
-            <RequestStatusIcon value={PENDING} />
-          </>
-        )}
-        {!!fullfilled && (
-          <>
-            {fullfilled}
-            <RequestStatusIcon value={FULFILLED} />
-          </>
-        )}
-        {!!rejected && (
-          <>
-            {rejected}
-            <RequestStatusIcon value={REJECTED} />
-          </>
-        )}
+        {!!pending && buttonPending}
+        {!!fullfilled && buttonFulfilled}
+        {!!rejected && buttonRejected}
       </>
     );
   }
 };
 
 const columns: GridColDef[] = [
-  {field: 'status', headerName: 'Status', flex: 0.6},
-  {field: 'description', headerName: 'Workspace', flex: 0.8},
-  {field: 'type', headerName: 'Type', flex: 0.6},
-  {field: 'requester', headerName: 'Requester', flex: 1.1},
-  {field: 'size', headerName: 'Size', flex: 0.5},
+  {field: 'status', headerName: 'Status', flex: 0.55},
+  {field: 'description', headerName: 'Workspace', flex: 0.75},
+  {field: 'type', headerName: 'Type', flex: 0.8},
+  {field: 'requester', headerName: 'Requester', flex: 0.75},
+  {field: 'size', headerName: 'Size', flex: 0.45},
   {field: 'requests', headerName: 'Requests', flex: 0.7, ...countRequests},
   {field: 'from', headerName: 'From', ...gridColDateFormat},
   {field: 'to', headerName: 'To', ...gridColDateFormat}
@@ -175,6 +179,7 @@ const ReservationsList: FC<{loc: LocationOption}> = ({loc}) => {
         checkboxSelection
         loading={isLoading}
         onSelectionModelChange={handleSelection}
+        className={classes.table}
       />
       <Container className={classes.controls}>
         {Boolean(loc.id) && (

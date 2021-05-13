@@ -1,6 +1,5 @@
 import React, {FC} from 'react';
-import useFormStyles from '../../../styles/form';
-import {TextField, Button, Grid, Container} from '@material-ui/core';
+import {TextField, Button, Grid, Box} from '@material-ui/core';
 import {Link as RouterLink, useHistory} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import {useForm, SubmitHandler} from 'react-hook-form';
@@ -10,10 +9,9 @@ import {actions} from '../../../store/actions';
 import {useToasterCatcher, useUser} from '../../../hooks';
 import {rules} from '../../../validation/user';
 import {MessageType, useMessage} from '../../../components/Providers/MessageProvider';
-import Headline from '../../../components/Layout/components/Main/Headline/Headline';
+import Content from '../../../components/Layout/components/Main/Content';
 
 const ProfileEdit: FC = () => {
-  const formStyles = useFormStyles();
   const dispatch = useDispatch();
   const {user} = useUser();
   const {pushMessage} = useMessage();
@@ -32,9 +30,8 @@ const ProfileEdit: FC = () => {
   };
 
   return (
-    <Container maxWidth="xs" className={formStyles.paper}>
-      <Headline pagename="Edit Profile" />
-      <form className={formStyles.form} noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+    <Content maxWidth="xs" pagename="Edit Profile">
+      <form noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <TextField
@@ -93,20 +90,22 @@ const ProfileEdit: FC = () => {
           </Grid>
         </Grid>
 
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6} className={formStyles.buttons}>
-            <Button type="submit" fullWidth variant="contained" color="primary">
-              Save
-            </Button>
+        <Box mt={1} mb={2}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <Button type="submit" fullWidth variant="contained" color="primary">
+                Save
+              </Button>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Button fullWidth variant="contained" color="primary" component={RouterLink} to="/profile">
+                Cancel
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={6} className={formStyles.buttons}>
-            <Button fullWidth variant="contained" color="primary" component={RouterLink} to="/profile">
-              Cancel
-            </Button>
-          </Grid>
-        </Grid>
+        </Box>
       </form>
-    </Container>
+    </Content>
   );
 };
 

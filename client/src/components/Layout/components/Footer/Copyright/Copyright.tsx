@@ -4,10 +4,10 @@ import {CLIENT_URL} from '../../../../../config';
 
 const Copyright: FC = () => {
   return (
-    <Typography variant="body2" color="textSecondary" align="center">
+    <Typography variant="body2" align="center">
       {'Copyright © '}
       <Link color="inherit" href={CLIENT_URL}>
-        SPɅCES: Workspace Reservation System
+        SPɅCES: Workspace&nbsp;Reservation&nbsp;System
       </Link>
       {', '}
       {new Date().getFullYear()}

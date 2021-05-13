@@ -2,7 +2,6 @@ import React, {useEffect, useState, FC} from 'react';
 import useStyles from './Workspaces.style';
 import {Button, Container, Grid, TextField} from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Headline from '../../../components/Layout/components/Main/Headline/Headline';
 import WorkspacesList from './WorkspacesList/WorkspacesList';
 import {Autocomplete} from '@material-ui/lab';
 import DeletionButton from '../../../components/Controls/DeletionButton/DeletionButton';
@@ -10,6 +9,7 @@ import {MessageType, useMessage} from '../../../components/Providers/MessageProv
 import {LocationOption} from '../../../types';
 import {useLocations, useToasterCatcher} from '../../../hooks';
 import {LocationService} from '../../../services';
+import Content from '../../../components/Layout/components/Main/Content';
 
 const Workspaces: FC = () => {
   const classes = useStyles();
@@ -64,9 +64,7 @@ const Workspaces: FC = () => {
   };
 
   return (
-    <Container maxWidth="lg" className={classes.container}>
-      <Headline pagename="Manage Workspaces" />
-
+    <Content maxWidth="lg" marginTop={5} pagename="Manage Workspaces">
       <Container>
         <Grid container alignItems="center">
           <Grid item lg={4} md={6} xs={12}>
@@ -112,8 +110,9 @@ const Workspaces: FC = () => {
           </Grid>
         </Grid>
       </Container>
+
       <WorkspacesList loc={location} />
-    </Container>
+    </Content>
   );
 };
 

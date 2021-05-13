@@ -28,6 +28,22 @@ const theme = createMuiTheme({
         color: '#fff',
         backgroundColor: '#000000b3'
       }
+    },
+    MuiTablePagination: {
+      toolbar: {
+        minHeight: '24px'
+      }
+    },
+    MuiCssBaseline: {
+      '@global': {
+        '.MuiButton-root.Mui-disabled': {
+          backgroundColor: '#ccc',
+          color: '#888'
+        },
+        '.MuiPaper-rounded': {
+          borderRadius: '8px'
+        }
+      }
     }
   }
 });

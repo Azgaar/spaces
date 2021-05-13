@@ -1,6 +1,6 @@
 import React, {ElementType, ReactElement} from 'react';
 import useStyles from './Headline.style';
-import {Avatar, Typography} from '@material-ui/core';
+import {Box, Avatar, Typography} from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import ListAltOutlinedIcon from '@material-ui/icons/ListAltOutlined';
 import MailOutlineOutlinedIcon from '@material-ui/icons/MailOutlineOutlined';
@@ -45,14 +45,14 @@ function Headline({pagename}: {pagename: string}): ReactElement {
   const IconComponent = HeadlineIconMap[pagename] || HeadlineIconDefault;
 
   return (
-    <>
+    <Box className={classes.box}>
       <Avatar className={classes.avatar}>
         <IconComponent />
       </Avatar>
-      <Typography component="h1" variant="h5" className={classes.header} role="heading">
+      <Typography component="h1" variant="h5" role="heading">
         {pagename}
       </Typography>
-    </>
+    </Box>
   );
 }
 

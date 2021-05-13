@@ -1,5 +1,5 @@
 import React, {useEffect, useState, FC} from 'react';
-import useStyles from './WorkspacesList.style';
+import useStyles from './../../../../styles/table';
 import {Button, Container} from '@material-ui/core';
 import {DataGrid, GridColDef, GridColTypeDef, GridRowId, GridSelectionModelChangeParams} from '@material-ui/data-grid';
 import DeletionButton from '../../../../components/Controls/DeletionButton/DeletionButton';
@@ -114,12 +114,13 @@ const WorkspacesList: FC<{loc: LocationOption}> = ({loc}) => {
       <DataGrid
         rows={workspaces}
         columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5, 10, 20, 40]}
+        pageSize={4}
+        rowsPerPageOptions={[4, 8, 32, 64]}
         autoHeight
         checkboxSelection
         loading={isLoading}
         onSelectionModelChange={handleSelection}
+        className={classes.table}
       />
       <Container className={classes.controls}>
         {Boolean(loc.id) && (

@@ -1,5 +1,5 @@
 import React, {useState, FC} from 'react';
-import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Link} from '@material-ui/core';
+import {Typography, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Link} from '@material-ui/core';
 import {TERMS_OF_USE} from './Text/terms';
 import {PRIVACY_POLICY} from './Text/privacy';
 
@@ -12,10 +12,12 @@ const Terms: FC = () => {
   const text = dialog === 'Terms of use' ? TERMS_OF_USE : PRIVACY_POLICY;
   return (
     <>
-      {'I accept the '}
-      <Link onClick={openTerms}>terms of use</Link>
-      {' and '}
-      <Link onClick={openPrivacy}>privacy policy</Link>
+      <Typography variant="body2">
+        {'I accept the '}
+        <Link onClick={openTerms}>terms of use</Link>
+        {' and '}
+        <Link onClick={openPrivacy}>privacy policy</Link>
+      </Typography>
 
       <Dialog open={Boolean(dialog)} onClose={closeDialog} scroll="paper">
         <DialogTitle>SPɅCES: {dialog}</DialogTitle>

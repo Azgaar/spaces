@@ -8,7 +8,10 @@ const logoPath = process.env.PUBLIC_URL + '/logo.svg';
 
 const Header: FC = () => {
   const classes = useStyles();
-  const wideScreen = useMediaQuery(useTheme().breakpoints.up('md'));
+  const breakpoints = useTheme().breakpoints;
+  const wideScreen = useMediaQuery(breakpoints.up('md'));
+  const smallScreen = useMediaQuery(breakpoints.down('xs'));
+  const anchor = smallScreen ? 'top' : 'right';
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleMenu = () => setMenuOpen(() => true);
@@ -33,7 +36,7 @@ const Header: FC = () => {
         </Box>
       </Toolbar>
 
-      <Drawer open={menuOpen} onClose={handleClose} anchor="right" className={classes.drawer}>
+      <Drawer open={menuOpen} onClose={handleClose} anchor={anchor} className={classes.drawer}>
         <List onClick={handleClose}>
           <MenuButtons />
         </List>

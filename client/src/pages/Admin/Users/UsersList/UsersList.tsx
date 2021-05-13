@@ -1,5 +1,5 @@
 import React, {useEffect, useState, FC} from 'react';
-import useStyles from './UsersList.style';
+import useStyles from './../../../../styles/table';
 import {Container} from '@material-ui/core';
 import DeletionButton from '../../../../components/Controls/DeletionButton/DeletionButton';
 import {DataGrid, GridColDef, GridRowId, GridSelectionModelChangeParams} from '@material-ui/data-grid';
@@ -55,16 +55,17 @@ const UsersList: FC = () => {
       <DataGrid
         rows={users}
         columns={columns}
-        pageSize={6}
-        rowsPerPageOptions={[6, 12, 24, 48]}
+        pageSize={5}
+        rowsPerPageOptions={[5, 10, 25, 50]}
         getRowId={(row) => row.email}
         autoHeight
         checkboxSelection
         loading={isLoading}
         onSelectionModelChange={handleSelection}
+        className={classes.table}
       />
       <Container className={classes.controls}>
-        {Boolean(selection.length) && <DeletionButton onDelete={handleDeletion} object={selection.length > 1 ? 'users' : 'user'} />}
+        <DeletionButton onDelete={handleDeletion} object={selection.length > 1 ? 'users' : 'user'} disabled={selection.length < 1} />
       </Container>
     </Container>
   );

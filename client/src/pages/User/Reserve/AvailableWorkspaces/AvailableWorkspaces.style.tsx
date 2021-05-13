@@ -14,22 +14,14 @@ const useStyles = makeStyles((theme) => ({
     visibility: 'hidden'
   },
   card: {
-    backgroundColor: '#ffffffdd',
+    backgroundColor: '#ffffff',
     border: '1px solid #00000050',
     padding: '1px'
   },
   selectedCard: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#e8eaf1',
     border: '2px solid ' + theme.palette.primary.main,
     padding: 0
-  },
-  cardHeader: {
-    '& .MuiCardHeader-subheader': {
-      overflow: 'hidden',
-      whiteSpace: 'nowrap',
-      textOverflow: 'ellipsis',
-      maxWidth: '12em'
-    }
   }
 }));
 
