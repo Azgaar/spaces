@@ -51,9 +51,15 @@ const UsersList: FC = () => {
   };
 
   const handleRoleChange = async (email: string, role: UserRole) => {
-    const users = (await catchAndTossError(UserService.changeRole(email, role))) as UserData[] | undefined;
-    if (users) {
-      setUsers(() => users);
+    const user = (await catchAndTossError(UserService.changeRole(email, role))) as UserData | undefined;
+    if (user) {
+      setUsers((users) => {
+        const updatedUser = users.find((oldUser) => oldUser.email === user.email);
+        if (updatedUser) {
+          updatedUser.role = role;
+        }
+        return users;
+      });
       pushMessage({title: `Role is changed to ${role}`, type: MessageType.SUCCESS});
     }
   };
