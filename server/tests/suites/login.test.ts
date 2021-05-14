@@ -40,10 +40,6 @@ describe('Login service', () => {
     cookie = `${config.session.name}=${sessionCookie?.value}`;
   });
 
-  it('fails to login user that is already logged in', async () => {
-    await request(app).post('/login').set('Cookie', cookie).send(users.correctCredentials).expect('Content-Type', /json/).expect(httpStatus.BAD_REQUEST);
-  });
-
   it('allows to logout if user is logged in', async () => {
     const response = await request(app).post('/logout').set('Cookie', cookie).expect('Content-Type', /json/).expect(httpStatus.OK);
     expect(response.body.message).toBe('OK');
