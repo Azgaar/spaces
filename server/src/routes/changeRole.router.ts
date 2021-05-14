@@ -5,4 +5,4 @@ import {userController} from '../controllers';
 import {roleChangeSchema} from '../validation/user';
 
 export const router = Router();
-router.post('/', checkSession(true), checkRole(UserRole.ADMIN), validate(roleChangeSchema), userController.changeRole);
+router.post('/', checkSession, checkRole(UserRole.ADMIN), validate(roleChangeSchema), userController.changeRole);

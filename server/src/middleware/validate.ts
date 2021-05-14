@@ -22,15 +22,13 @@ const validate =
     return next();
   };
 
-const checkSession =
-  (sessionExpected: boolean) =>
-  (req: Request, res: Response, next: NextFunction): void => {
-    if (sessionExpected !== isLoggedIn(req)) {
-      return next(new ApiError(httpStatus.BAD_REQUEST, `User is ${sessionExpected ? 'not' : 'already'} logged in`, DISCLOSE_MESSAGE));
-    }
+const checkSession = (req: Request, res: Response, next: NextFunction): void => {
+  if (!isLoggedIn(req)) {
+    return next(new ApiError(httpStatus.BAD_REQUEST, `User must be logged in`, DISCLOSE_MESSAGE));
+  }
 
-    return next();
-  };
+  return next();
+};
 
 const checkRole =
   (roleExpected: UserRole) =>

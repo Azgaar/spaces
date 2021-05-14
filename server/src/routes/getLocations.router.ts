@@ -3,4 +3,4 @@ import {locationController} from '../controllers';
 import {checkSession} from '../middleware/validate';
 
 export const router = Router();
-router.post('/', checkSession(true), locationController.list);
+router.post('/', checkSession, locationController.list);

@@ -6,8 +6,8 @@ import {UserRole} from '../types';
 
 export const users = Router();
 
-users.get('/', checkSession(true), checkRole(UserRole.ADMIN), userController.getUsers);
+users.get('/', checkSession, checkRole(UserRole.ADMIN), userController.getUsers);
 users.post('/', validate(registerSchema), userController.registerUser);
 // see https://stackoverflow.com/questions/28459418/use-of-put-vs-patch-methods-in-rest-api-real-life-scenarios for PATCH vs PUT
-users.patch('/:id', checkSession(true), checkBodyForRole(UserRole.ADMIN), validate(updateSchema), userController.modifyUser);
-users.delete('/:id', checkSession(true), checkRole(UserRole.ADMIN), userController.deleteUser);
+users.patch('/:id', checkSession, checkBodyForRole(UserRole.ADMIN), validate(updateSchema), userController.modifyUser);
+users.delete('/:id', checkSession, checkRole(UserRole.ADMIN), userController.deleteUser);

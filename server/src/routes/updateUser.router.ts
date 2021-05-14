@@ -4,4 +4,4 @@ import {userUpdateSchema} from '../validation/user';
 import {userController} from '../controllers';
 
 export const router = Router();
-router.post('/', checkSession(true), validate(userUpdateSchema), userController.update);
+router.post('/', checkSession, validate(userUpdateSchema), userController.update);

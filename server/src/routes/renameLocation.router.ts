@@ -5,4 +5,4 @@ import {locationRenamingSchema} from '../validation/location';
 import {UserRole} from '../types';
 
 export const router = Router();
-router.post('/', checkSession(true), checkRole(UserRole.ADMIN), validate(locationRenamingSchema), locationController.rename);
+router.post('/', checkSession, checkRole(UserRole.ADMIN), validate(locationRenamingSchema), locationController.rename);
