@@ -1,16 +1,22 @@
 import httpStatus from 'http-status';
-import {getUserId, logIn, logOut} from '../services/auth';
-import {createUser, deleteUsers, updateUser} from '../services/user';
+import {isLoggedIn, logIn} from '../services/auth';
+import {createUser, removeUser, updateUser} from '../services/user';
 import {User} from '../models/user';
 import {compare} from 'bcryptjs';
 import catchAsync from '../utils/catchAsync';
 import ApiError from '../utils/apiError';
 import {UserRole} from '../types';
-import {randomBytes} from 'crypto';
-import {sendMail} from '../services/mail';
-import config from '../config';
 
-const register = catchAsync(async (req, res, next) => {
+const getUsers = catchAsync(async (req, res, next) => {
+  const users = await User.find({});
+  if (!users) {
+    return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Failed to fetch users'));
+  }
+
+  res.status(httpStatus.OK).send(users);
+});
+
+const registerUser = catchAsync(async (req, res, next) => {
   const {email, firstName, lastName, password} = req.body;
 
   const userExists = await User.exists({email});
@@ -20,97 +26,62 @@ const register = catchAsync(async (req, res, next) => {
 
   const userData = {email, firstName, lastName, password, role: UserRole.USER};
   const user = await createUser(userData);
-  logIn(req, user.id, user.email, user.role);
 
-  res.status(httpStatus.CREATED).send({email, firstName, lastName});
+  if (!user) {
+    return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Failed to create user'));
+  }
+
+  if (!isLoggedIn(req)) {
+    logIn(req, user.id, user.email, user.role);
+  }
+
+  res.status(httpStatus.CREATED).send(user);
 });
 
-const update = catchAsync(async (req, res, next) => {
-  const userId = getUserId(req);
+const modifyUser = catchAsync(async (req, res, next) => {
+  const userId = req.params.id;
   const user = await User.findById(userId);
   if (!user) {
-    await logOut(req, res);
-    return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'User is not found. Removing the session'));
+    return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, `Cannot find user ${userId}`));
   }
 
-  const {email, firstName, lastName, password} = req.body;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const {password, passwordNew, passwordNewRepeat, ...rest} = req.body;
 
-  const correctPassword = await compare(password, user.password);
-  if (!correctPassword) {
-    return next(new ApiError(httpStatus.UNAUTHORIZED, `Password ${password} is not correct for user ${email}`));
+  if (password || passwordNew) {
+    const correctPassword = await compare(password, user.password);
+    if (!correctPassword) {
+      return next(new ApiError(httpStatus.UNAUTHORIZED, `Password ${password} is not correct for user ${user.email}`));
+    }
   }
 
-  await updateUser(user, {email, firstName, lastName});
-  res.status(httpStatus.OK).send({email, firstName, lastName});
-});
+  // password change
+  if (passwordNew) {
+    const updatedUser = await updateUser(user, {password: passwordNew});
+    if (!updatedUser) {
+      return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, `Cannot update user ${user.email}`));
+    }
 
-const changePassword = catchAsync(async (req, res, next) => {
-  const userId = getUserId(req);
-  const user = await User.findById(userId);
-  if (!user) {
-    await logOut(req, res);
-    return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'User is not found. Removing the session'));
+    res.status(httpStatus.OK).send(updatedUser);
   }
 
-  const {password, passwordNew} = req.body;
-
-  const correctPassword = await compare(password, user.password);
-  if (!correctPassword) {
-    return next(new ApiError(httpStatus.UNAUTHORIZED, `Password ${password} is not correct for user ${user.email}`));
-  }
-
-  await updateUser(user, {password: passwordNew});
-  res.status(httpStatus.OK).send({message: 'OK'});
-});
-
-const resetPassword = catchAsync(async (req, res) => {
-  const {email} = req.body;
-
-  const user = await User.findOne({email});
-  if (user) {
-    const password = randomBytes(config.email.FORGOT_PASSWORD_BYTES).toString('hex');
-    await updateUser(user, {password});
-    const from = config.email.MAIL_FROM;
-    const subject = config.email.FORGOT_PASSWORD_SUBJECT;
-    const text = config.email.FORGOT_PASSWORD_BODY + password;
-    sendMail({to: email, subject, text, from});
-  }
-
-  res.status(httpStatus.OK).send({message: 'OK'});
-});
-
-const remove = catchAsync(async (req, res, next) => {
-  const emailsToDelete: Array<string> = req.body;
-  await deleteUsers(emailsToDelete);
-
-  const remainingUsers = await User.find();
-  if (!remainingUsers) {
-    return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Users cannot be fetched'));
-  }
-
-  res.status(httpStatus.OK).send(remainingUsers);
-});
-
-const list = catchAsync(async (req, res, next) => {
-  const userDocuments = await User.find({});
-  if (!userDocuments) {
-    return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Users cannot be fetched'));
-  }
-
-  res.status(httpStatus.OK).send(userDocuments);
-});
-
-const changeRole = catchAsync(async (req, res, next) => {
-  const {email, role} = req.body;
-  const user = await User.findOne({email});
-  if (!user) {
-    return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, `Cannot find user ${email}`));
-  }
-  const updatedUser = await updateUser(user, {role});
+  const updatedUser = await updateUser(user, rest);
   if (!updatedUser) {
-    return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, `Cannot update user ${email}`));
+    return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, `Cannot update user ${user.email}`));
   }
+
   res.status(httpStatus.OK).send(updatedUser);
 });
 
-export const userController = {register, update, changePassword, resetPassword, remove, list, changeRole};
+const deleteUser = catchAsync(async (req, res, next) => {
+  const userId = req.params.id;
+  const user = await User.findById(userId);
+  if (!user) {
+    return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, `Cannot find user ${userId}`));
+  }
+
+  const deletionResult = await removeUser(userId);
+  res.status(httpStatus.OK).send(deletionResult);
+});
+
+export const userController = {getUsers, registerUser, modifyUser, deleteUser};

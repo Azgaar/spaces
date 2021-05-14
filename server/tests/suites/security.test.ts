@@ -24,11 +24,12 @@ describe('Server', () => {
   });
 
   it('secures session cookie', async () => {
-    const response = await request(app).post('/register').send(validUserData);
+    const response = await request(app).post('/users').send(validUserData);
     const cookies = extractCookies(response.headers);
     const sessionCookie = cookies[config.session.name];
     expect(sessionCookie).toBeTruthy();
     expect(sessionCookie.flags.HttpOnly).toEqual(true);
+    expect(sessionCookie.flags.SameSite).toEqual(true);
   });
 
   afterAll(() => {

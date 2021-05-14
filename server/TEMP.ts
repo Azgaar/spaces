@@ -1,8 +1,38 @@
-export {users} from './users.router';
+/* eslint-disable */
 export {router as login} from './login.router';
 export {router as logout} from './logout.router';
-export {router as forgotPassword} from './forgotPassword.router';
 export {router as checkin} from './checkin.router';
+export {router as forgotPassword} from './forgotPassword.router';
+
+
+
+router.get('/', checkSession(true), checkRole(UserRole.ADMIN), userController.getUsers) => Users[]
+router.post('/', userController.createUser) => User
+router.patch('/:id', checkSession(true), checkUserUpdate(), userController.updateUser) => UpdatedUser // change details (user), password (user) or role (admin); findOneAndUpdate
+router.delete('/:id', checkSession(true), checkRole(UserRole.ADMIN), userController.deleteUser) => User
+
+const checkUserUpdate = (req: Request, res: Response, next: NextFunction) => {
+  if (req.body.role) return checkRole(UserRole.ADMIN);
+  return next();
+}
+
+
+
+
+const filter = { name: 'Jean-Luc Picard' };
+const update = { age: 59 };
+// bcrypt password
+const doc = await User.findOneAndUpdate(filter, update, {new: true});
+
+const params = req.params;
+
+export {router as register} from './register.router';
+export {router as updateUser} from './updateUser.router';
+export {router as changePassword} from './changePassword.router';
+export {router as changeRole} from './changeRole.router';
+export {router as getUsers} from './getUsers.router';
+export {router as deleteUsers} from './deleteUsers.router';
+
 export {router as getLocations} from './getLocations.router';
 export {router as addLocation} from './addLocation.router';
 export {router as renameLocation} from './renameLocation.router';

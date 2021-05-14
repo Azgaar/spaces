@@ -19,7 +19,7 @@ describe('Login service', () => {
     MongoMemory.connect();
 
     // register new user
-    await request(app).post('/register').send(users.register);
+    await request(app).post('/users').send(users.register);
   });
 
   it('fails to login with incorrect email', async () => {
