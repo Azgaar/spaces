@@ -1,15 +1,16 @@
 import React, {useEffect, useState, FC} from 'react';
 import useStyles from './../../../../styles/table';
-import {Container} from '@material-ui/core';
+import {Button, Container} from '@material-ui/core';
 import DeletionButton from '../../../../components/Controls/DeletionButton/DeletionButton';
 import {DataGrid, GridColDef, GridRowId, GridSelectionModelChangeParams} from '@material-ui/data-grid';
 import {MessageType, useMessage} from '../../../../components/Providers/MessageProvider';
 import {useToasterCatcher} from '../../../../hooks';
 import {UserService} from '../../../../services';
-import {UserData} from '../../../../types';
-import {gridColDateFormat, gridColDateDiffFormat} from '../../../../utils';
+import {UserData, UserRole} from '../../../../types';
+import {gridColDateFormat, gridColDateDiffFormat, capitalize} from '../../../../utils';
 
 const columns: GridColDef[] = [
+  {field: 'role', headerName: 'Role', flex: 0.7, valueFormatter: ({value}) => capitalize(value as string)},
   {field: 'firstName', headerName: 'First name', flex: 0.7},
   {field: 'lastName', headerName: 'Last name', flex: 0.8},
   {field: 'email', headerName: 'Email', flex: 1.4},
@@ -41,13 +42,45 @@ const UsersList: FC = () => {
 
   const handleDeletion = async () => {
     const remainingUsers = (await catchAndTossError(UserService.remove(selection))) as UserData[] | undefined;
-    if (!remainingUsers) {
-      return;
+    if (remainingUsers) {
+      setUsers(() => remainingUsers);
+      setSelection(() => [] as GridRowId[]);
+      const title = selection.length > 1 ? `Users "${selection.join(', ')}" are removed` : `User "${selection[0]}" is removed`;
+      pushMessage({title, type: MessageType.SUCCESS});
     }
-    setUsers(() => remainingUsers);
-    setSelection(() => [] as GridRowId[]);
-    const title = selection.length > 1 ? `Users "${selection.join(', ')}" are removed` : `User "${selection[0]}" is removed`;
-    pushMessage({title, type: MessageType.SUCCESS});
+  };
+
+  const handleRoleChange = async (email: string, role: UserRole) => {
+    const user = (await catchAndTossError(UserService.changeRole(email, role))) as UserData | undefined;
+    if (user) {
+      setUsers((users) => {
+        const updatedUser = users.find((oldUser) => oldUser.email === user.email);
+        if (updatedUser) {
+          updatedUser.role = role;
+        }
+        return users;
+      });
+      pushMessage({title: `Role is changed to ${role}`, type: MessageType.SUCCESS});
+    }
+  };
+
+  const RoleChangeButton = () => {
+    const email = selection[0] as string;
+    const userRole = users.find((user) => user.email === email)?.role;
+    if (!userRole) {
+      return null;
+    }
+
+    const roles = Object.values(UserRole).filter((role) => role !== userRole);
+    return (
+      <>
+        {roles.map((role) => (
+          <Button key={role} variant="contained" color="primary" onClick={() => handleRoleChange(email, role as UserRole)}>
+            Make {role}
+          </Button>
+        ))}
+      </>
+    );
   };
 
   return (
@@ -66,6 +99,7 @@ const UsersList: FC = () => {
       />
       <Container className={classes.controls}>
         <DeletionButton onDelete={handleDeletion} object={selection.length > 1 ? 'users' : 'user'} disabled={selection.length < 1} />
+        {selection.length === 1 && <RoleChangeButton />}
       </Container>
     </Container>
   );

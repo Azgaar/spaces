@@ -43,13 +43,38 @@ describe('Users management service', () => {
     }
   });
 
-  it('returns all non-admin users for admin', async () => {
+  it('allows admin to get list of users', async () => {
     const response = await request(app).post('/getUsers').set('Cookie', cookie.admin).expect(httpStatus.OK);
     expect(Array.isArray(response.body)).toBe(true);
-    expect(response.body.length).toBe(3);
-    expect(response.body[0].email).toBe(user.email);
-    expect(response.body[0].firstName).toBe(user.firstName);
-    expect(response.body[0].lastName).toBe(user.lastName);
+    expect(response.body.length).toBe(4);
+  });
+
+  it('allows to change role to admin', async () => {
+    const email = user.email;
+    const role = UserRole.ADMIN;
+    const response = await request(app).post('/changeRole').set('Cookie', cookie.admin).send({email, role}).expect(httpStatus.OK);
+    expect(Array.isArray(response.body)).toBe(true);
+    expect(response.body.length).toBe(4);
+    const changedUser = response.body.find((user: UserData) => user.email === email);
+    expect(changedUser.role).toBe(role);
+  });
+
+  it('allows to change role to user', async () => {
+    const email = user.email;
+    const role = UserRole.USER;
+    const response = await request(app).post('/changeRole').set('Cookie', cookie.admin).send({email, role}).expect(httpStatus.OK);
+    expect(Array.isArray(response.body)).toBe(true);
+    expect(response.body.length).toBe(4);
+    const changedUser = response.body.find((user: UserData) => user.email === email);
+    expect(changedUser.role).toBe(role);
+  });
+
+  it('fails if role is not correct', async () => {
+    await request(app).post('/changeRole').set('Cookie', cookie.admin).send({email: user.email, role: 'Test'}).expect(httpStatus.BAD_REQUEST);
+  });
+
+  it('fails if email is not correct', async () => {
+    await request(app).post('/changeRole').set('Cookie', cookie.admin).send({email: 'invalid@email', role: UserRole.ADMIN}).expect(httpStatus.BAD_REQUEST);
   });
 
   it('allows to delete single user', async () => {

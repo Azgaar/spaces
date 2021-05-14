@@ -92,7 +92,7 @@ const remove = catchAsync(async (req, res, next) => {
 });
 
 const list = catchAsync(async (req, res, next) => {
-  const userDocuments = await User.find({role: {$ne: UserRole.ADMIN}});
+  const userDocuments = await User.find({});
   if (!userDocuments) {
     return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Users cannot be fetched'));
   }
@@ -100,4 +100,17 @@ const list = catchAsync(async (req, res, next) => {
   res.status(httpStatus.OK).send(userDocuments);
 });
 
-export const userController = {register, update, changePassword, resetPassword, remove, list};
+const changeRole = catchAsync(async (req, res, next) => {
+  const {email, role} = req.body;
+  const user = await User.findOne({email});
+  if (!user) {
+    return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, `Cannot find user ${email}`));
+  }
+  const updatedUser = await updateUser(user, {role});
+  if (!updatedUser) {
+    return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, `Cannot update user ${email}`));
+  }
+  res.status(httpStatus.OK).send(updatedUser);
+});
+
+export const userController = {register, update, changePassword, resetPassword, remove, list, changeRole};
