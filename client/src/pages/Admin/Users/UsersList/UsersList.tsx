@@ -58,8 +58,8 @@ const UsersList: FC = () => {
   };
 
   // TODO
-  const handleRoleChange = async (email: string, role: UserRole) => {
-    const user = (await catchAndTossError(UserService.updateUser(selection[0], {role}))) as UserData | undefined;
+  const handleRoleChange = async (id: string, role: UserRole) => {
+    const user = (await catchAndTossError(UserService.updateUser(id, {role}))) as UserData | undefined;
     if (user) {
       setUsers((users) => {
         const updatedUser = users.find((oldUser) => oldUser.id === user.id);
@@ -74,17 +74,16 @@ const UsersList: FC = () => {
   };
 
   const RoleChangeButton = () => {
-    const email = selection[0] as string;
-    const userRole = users.find((user) => user.email === email)?.role;
-    if (!userRole) {
+    const user = users.find((user) => user.id === selection[0]);
+    if (!user) {
       return null;
     }
 
-    const roles = Object.values(UserRole).filter((role) => role !== userRole);
+    const availableRoles = Object.values(UserRole).filter((role) => role !== user.role);
     return (
       <>
-        {roles.map((role) => (
-          <Button key={role} variant="contained" color="primary" onClick={() => handleRoleChange(email, role as UserRole)}>
+        {availableRoles.map((role) => (
+          <Button key={role} variant="contained" color="primary" onClick={() => handleRoleChange(user.id, role as UserRole)}>
             Make {role}
           </Button>
         ))}
