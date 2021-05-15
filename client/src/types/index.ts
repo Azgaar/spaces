@@ -38,14 +38,11 @@ export type ForgotPasswordForm = {
   email: string;
 };
 
-export type ProfileEditForm = {
+export type UserUpdateForm = {
+  role: UserRole;
   firstName: string;
   lastName: string;
   email: string;
-  password: string;
-};
-
-export type PassportChangeForm = {
   password: string;
   passwordNew: string;
   passwordNewRepeat: string;

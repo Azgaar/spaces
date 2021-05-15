@@ -27,7 +27,7 @@ const UsersList: FC = () => {
 
   useEffect(() => {
     async function fetchUsers() {
-      const allUsers = await catchAndTossError(UserService.list());
+      const allUsers = await catchAndTossError(UserService.getUsers());
       if (allUsers) {
         setUsers(() => allUsers as UserData[]);
       }

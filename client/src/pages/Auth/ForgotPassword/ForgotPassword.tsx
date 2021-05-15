@@ -3,7 +3,7 @@ import {TextField, Button, Typography, Grid, Box} from '@material-ui/core';
 import {Link as RouterLink, Redirect, useHistory} from 'react-router-dom';
 import {useForm, SubmitHandler} from 'react-hook-form';
 import {ForgotPasswordForm} from '../../../types';
-import {UserService} from '../../../services';
+import {AuthService} from '../../../services';
 import {rules} from '../../../validation/user';
 import {MessageType, useMessage} from '../../../components/Providers/MessageProvider';
 import {useToasterCatcher, useUser} from '../../../hooks';
@@ -17,7 +17,7 @@ const ForgotPassword: FC = () => {
   const {catchAndTossError} = useToasterCatcher();
 
   const onSubmit: SubmitHandler<ForgotPasswordForm> = async (formData: ForgotPasswordForm) => {
-    const res = await catchAndTossError(UserService.resetPassword(formData));
+    const res = await catchAndTossError(AuthService.resetPassword(formData));
     if (!res) {
       return;
     }
