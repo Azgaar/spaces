@@ -57,7 +57,6 @@ const UsersList: FC = () => {
     }
   };
 
-  // TODO
   const handleRoleChange = async (id: string, role: UserRole) => {
     const user = (await catchAndTossError(UserService.updateUser(id, {role}))) as UserData | undefined;
     if (user) {

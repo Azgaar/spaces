@@ -13,7 +13,6 @@ import App from './components/App';
 import {BASE_URL, REQUEST_TIMEOUT} from './config';
 import DayJSUtils from '@date-io/dayjs';
 import {MuiPickersUtilsProvider} from '@material-ui/pickers';
-// import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -38,5 +37,3 @@ ReactDOM.render(
 axios.defaults.baseURL = BASE_URL;
 axios.defaults.timeout = REQUEST_TIMEOUT;
 axios.defaults.withCredentials = true;
-
-// reportWebVitals(console.log);
