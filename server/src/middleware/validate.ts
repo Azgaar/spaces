@@ -6,9 +6,6 @@ import config from '../config';
 import type {Request, Response, NextFunction} from 'express';
 import {UserRole} from '../types';
 
-const DISCLOSE_MESSAGE = true;
-const OBFUSCATE_MESSAGE = false;
-
 const validate =
   (schema: AnySchema) =>
   (req: Request, res: Response, next: NextFunction): void => {
@@ -16,7 +13,7 @@ const validate =
 
     if (error) {
       const errorMessage = error.details.map((details) => details.message).join(', ');
-      return next(new ApiError(httpStatus.BAD_REQUEST, errorMessage, DISCLOSE_MESSAGE));
+      return next(new ApiError(httpStatus.BAD_REQUEST, errorMessage));
     }
 
     return next();
@@ -24,7 +21,7 @@ const validate =
 
 const checkSession = (req: Request, res: Response, next: NextFunction): void => {
   if (!isLoggedIn(req)) {
-    return next(new ApiError(httpStatus.BAD_REQUEST, `User must be logged in`, DISCLOSE_MESSAGE));
+    return next(new ApiError(httpStatus.BAD_REQUEST, `User must be logged in`));
   }
 
   return next();
@@ -34,7 +31,7 @@ const checkRole =
   (roleExpected: UserRole) =>
   (req: Request, res: Response, next: NextFunction): void => {
     if (roleExpected !== getUserRole(req)) {
-      return next(new ApiError(httpStatus.FORBIDDEN, `Operation is only allowed for ${roleExpected} users`, OBFUSCATE_MESSAGE));
+      return next(new ApiError(httpStatus.FORBIDDEN, `Operation is only allowed for ${roleExpected} users`));
     }
 
     return next();
@@ -44,7 +41,7 @@ const checkBodyForRole =
   (roleExpected: UserRole) =>
   (req: Request, res: Response, next: NextFunction): void => {
     if (req.body.role && roleExpected !== getUserRole(req)) {
-      return next(new ApiError(httpStatus.FORBIDDEN, `Operation is only allowed for ${roleExpected} users`, OBFUSCATE_MESSAGE));
+      return next(new ApiError(httpStatus.FORBIDDEN, `Operation is only allowed for ${roleExpected} users`));
     }
 
     return next();
@@ -55,7 +52,7 @@ const checkEmail = (req: Request, res: Response, next: NextFunction): void => {
   const emailOfLoggedUser = getUserEmail(req);
   if (!emailAddedToRequest || emailAddedToRequest !== emailOfLoggedUser) {
     const mess = `User ${emailOfLoggedUser} is not authorized to perform the operation for user ${emailAddedToRequest}`;
-    return next(new ApiError(httpStatus.FORBIDDEN, mess, OBFUSCATE_MESSAGE));
+    return next(new ApiError(httpStatus.FORBIDDEN, mess, {obfuscate: true}));
   }
 
   return next();
