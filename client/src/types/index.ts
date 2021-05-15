@@ -4,15 +4,17 @@ export enum UserRole {
 }
 
 export type UserData = {
+  id: string;
   email: string;
   firstName: string;
   lastName: string;
-  role?: UserRole;
+  role: UserRole;
 };
 
 export interface RootState {
   user: {
     isAuthenticated: boolean;
+    id: string;
     role: UserRole;
     email: string;
     firstName: string;
