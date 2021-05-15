@@ -2,7 +2,7 @@ import React, {useEffect, useState, FC} from 'react';
 import useStyles from './../../../../styles/table';
 import {Button, Container} from '@material-ui/core';
 import DeletionButton from '../../../../components/Controls/DeletionButton/DeletionButton';
-import {DataGrid, GridColDef, GridRowId, GridSelectionModelChangeParams} from '@material-ui/data-grid';
+import {DataGrid, GridColDef, GridSelectionModelChangeParams} from '@material-ui/data-grid';
 import {MessageType, useMessage} from '../../../../components/Providers/MessageProvider';
 import {useToasterCatcher} from '../../../../hooks';
 import {UserService} from '../../../../services';
@@ -22,7 +22,7 @@ const UsersList: FC = () => {
   const classes = useStyles();
   const {pushMessage} = useMessage();
   const [users, setUsers] = useState<UserData[]>([]);
-  const [selection, setSelection] = useState<GridRowId[]>([]);
+  const [selection, setSelection] = useState<string[]>([]);
   const {isLoading, catchAndTossError} = useToasterCatcher();
 
   useEffect(() => {
@@ -35,34 +35,40 @@ const UsersList: FC = () => {
     fetchUsers();
   }, []);
 
-  const handleSelection = (selectionModel: GridSelectionModelChangeParams) => {
-    const selection = selectionModel.selectionModel;
+  const handleSelection = (gridSelection: GridSelectionModelChangeParams) => {
+    const selection = gridSelection.selectionModel as string[];
     setSelection(() => selection);
-    console.log(selection);
   };
 
   const handleDeletion = async () => {
-    const userId = selection[0] as string;
-    const remainingUsers = (await catchAndTossError(UserService.deleteUser(userId))) as UserData[] | undefined;
-    if (remainingUsers) {
-      setUsers(() => remainingUsers);
-      setSelection(() => [] as GridRowId[]);
-      const title = selection.length > 1 ? `Users "${selection.join(', ')}" are removed` : `User "${selection[0]}" is removed`;
-      pushMessage({title, type: MessageType.SUCCESS});
+    const requests = selection.map((userId) => catchAndTossError(UserService.deleteUser(userId)));
+    const results = await Promise.all(requests);
+    const deletedUsers = results.filter((res) => res !== undefined) as UserData[];
+
+    if (deletedUsers.length) {
+      const deletedIds = deletedUsers.map((user) => user.id);
+      setUsers((users) => users.filter((user) => !deletedIds.includes(user.id)));
+      setSelection(() => []);
+
+      if (deletedIds.length === selection.length) {
+        const title = deletedIds.length > 1 ? `Users are removed` : `User is removed`;
+        pushMessage({title, type: MessageType.SUCCESS});
+      }
     }
   };
 
+  // TODO
   const handleRoleChange = async (email: string, role: UserRole) => {
-    const userId = selection[0] as string;
-    const user = (await catchAndTossError(UserService.updateUser(userId, {role}))) as UserData | undefined;
+    const user = (await catchAndTossError(UserService.updateUser(selection[0], {role}))) as UserData | undefined;
     if (user) {
       setUsers((users) => {
-        const updatedUser = users.find((oldUser) => oldUser.email === user.email);
+        const updatedUser = users.find((oldUser) => oldUser.id === user.id);
         if (updatedUser) {
           updatedUser.role = role;
         }
         return users;
       });
+
       pushMessage({title: `Role is changed to ${role}`, type: MessageType.SUCCESS});
     }
   };
@@ -93,12 +99,10 @@ const UsersList: FC = () => {
         columns={columns}
         pageSize={5}
         rowsPerPageOptions={[5, 10, 20, 50]}
-        getRowId={(row) => row.email}
         autoHeight
         checkboxSelection
         loading={isLoading}
         onSelectionModelChange={handleSelection}
-        disableMultipleSelection={true}
         className={classes.table}
       />
       <Container className={classes.controls}>
