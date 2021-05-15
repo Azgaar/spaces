@@ -48,7 +48,7 @@ const ReservationDialog: FC<ReservationDialogProps> = ({mode, reservation, close
 
   useEffect(() => {
     async function fetchUsers() {
-      const users = (await catchAndTossError(UserService.list())) as UserData[] | undefined;
+      const users = (await catchAndTossError(UserService.getUsers())) as UserData[] | undefined;
       if (users) {
         setUsers(() => users.map((user: UserData) => user.email));
       }

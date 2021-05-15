@@ -38,10 +38,12 @@ const UsersList: FC = () => {
   const handleSelection = (selectionModel: GridSelectionModelChangeParams) => {
     const selection = selectionModel.selectionModel;
     setSelection(() => selection);
+    console.log(selection);
   };
 
   const handleDeletion = async () => {
-    const remainingUsers = (await catchAndTossError(UserService.remove(selection))) as UserData[] | undefined;
+    const userId = selection[0] as string;
+    const remainingUsers = (await catchAndTossError(UserService.deleteUser(userId))) as UserData[] | undefined;
     if (remainingUsers) {
       setUsers(() => remainingUsers);
       setSelection(() => [] as GridRowId[]);
@@ -51,7 +53,8 @@ const UsersList: FC = () => {
   };
 
   const handleRoleChange = async (email: string, role: UserRole) => {
-    const user = (await catchAndTossError(UserService.changeRole(email, role))) as UserData | undefined;
+    const userId = selection[0] as string;
+    const user = (await catchAndTossError(UserService.updateUser(userId, {role}))) as UserData | undefined;
     if (user) {
       setUsers((users) => {
         const updatedUser = users.find((oldUser) => oldUser.email === user.email);
@@ -95,6 +98,7 @@ const UsersList: FC = () => {
         checkboxSelection
         loading={isLoading}
         onSelectionModelChange={handleSelection}
+        disableMultipleSelection={true}
         className={classes.table}
       />
       <Container className={classes.controls}>

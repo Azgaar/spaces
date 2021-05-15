@@ -18,9 +18,9 @@ const Signup: FC = () => {
   const {catchAndTossError} = useToasterCatcher();
 
   const submitForm = async (values: SignUpForm) => {
-    const userData = (await catchAndTossError(UserService.signup(values))) as UserData | undefined;
-    if (userData) {
-      dispatch(actions.login(userData));
+    const user = (await catchAndTossError(UserService.registerUser(values))) as UserData | undefined;
+    if (user) {
+      dispatch(actions.login(user));
       history.push('/');
     }
   };
