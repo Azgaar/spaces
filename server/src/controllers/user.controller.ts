@@ -51,7 +51,7 @@ const modifyUser = catchAsync(async (req, res, next) => {
   if (password || passwordNew) {
     const correctPassword = await compare(password, user.password);
     if (!correctPassword) {
-      return next(new ApiError(httpStatus.UNAUTHORIZED, `Password ${password} is not correct for user ${user.email}`));
+      return next(new ApiError(httpStatus.UNAUTHORIZED, `Password ${password} is not correct`));
     }
   }
 
