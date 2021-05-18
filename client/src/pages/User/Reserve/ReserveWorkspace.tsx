@@ -1,7 +1,6 @@
 import React, {FC, useEffect, useState} from 'react';
 import useStyles from './ReserveWorkspace.style';
-import {Box, Button, Chip, Input, FormControl, Grid, InputLabel, MenuItem, Select, TextField, useMediaQuery, useTheme} from '@material-ui/core';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import {Box, Button, Chip, Input, FormControl, Grid, InputLabel, MenuItem, Select, TextField, CircularProgress, useMediaQuery, useTheme} from '@material-ui/core';
 import {Autocomplete} from '@material-ui/lab';
 import {Equipment, LocationOption, ReservationFilters, WorkspaceType, ReservationReq, ReservationRes, ServiceRes, ServiceReq} from '../../../types';
 import {useDebounce, useLocations, useToasterCatcher, useUser} from '../../../hooks';
@@ -28,12 +27,13 @@ const ReserveWorkspace: FC = () => {
   const [services, setServices] = useState<Services>({isOpen: false, list: []});
   const {pushMessage} = useMessage();
   const {user} = useUser();
-  const {catchAndTossError} = useToasterCatcher();
+  const {isLoading, setLoading, catchAndTossError} = useToasterCatcher();
   const [updateToggle, setUpdateToggle] = useState(false);
   const smallScreen = useMediaQuery(useTheme().breakpoints.down('xs'));
 
   useEffect(() => {
     fetchLocations({onlyWithWorkspaces: true});
+    setLoading(() => false);
   }, []);
 
   const submitForm = async (values: ReservationFilters) => {
@@ -267,7 +267,13 @@ const ReserveWorkspace: FC = () => {
         <Box my={2}>
           <Grid container spacing={2}>
             <Grid item md={3} sm={6} xs={12}>
-              <Button type="submit" fullWidth variant="contained" color="primary" disabled={!workspaceId || !formik.isValid}>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                disabled={isLoading || !workspaceId || !formik.isValid}
+                endIcon={isLoading && <CircularProgress size={20} />}>
                 Reserve
               </Button>
             </Grid>
