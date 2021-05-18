@@ -19,7 +19,7 @@ describe('Login service', () => {
     MongoMemory.connect();
 
     // register new user
-    await request(app).post('/register').send(users.register);
+    await request(app).post('/users').send(users.register);
   });
 
   it('fails to login with incorrect email', async () => {
@@ -38,10 +38,6 @@ describe('Login service', () => {
     const sessionCookie = cookies[config.session.name];
     expect(sessionCookie).toBeTruthy();
     cookie = `${config.session.name}=${sessionCookie?.value}`;
-  });
-
-  it('fails to login user that is already logged in', async () => {
-    await request(app).post('/login').set('Cookie', cookie).send(users.correctCredentials).expect('Content-Type', /json/).expect(httpStatus.BAD_REQUEST);
   });
 
   it('allows to logout if user is logged in', async () => {

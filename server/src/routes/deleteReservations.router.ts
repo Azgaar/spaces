@@ -4,4 +4,4 @@ import {UserRole} from '../types';
 import {reservationController} from '../controllers';
 
 export const router = Router();
-router.delete('/', checkSession(true), checkRole(UserRole.ADMIN), reservationController.remove);
+router.delete('/', checkSession, checkRole(UserRole.ADMIN), reservationController.remove);

@@ -21,9 +21,9 @@ userSchema.pre<UserDocument>('save', async function () {
 });
 
 userSchema.set('toJSON', {
-  transform: (doc: UserDocument, ret: UserData) => {
-    const {email, firstName, lastName, role, createdAt, updatedAt} = ret;
-    return {email, firstName, lastName, role, createdAt, updatedAt};
+  transform: (doc: UserDocument, ret: UserDocument) => {
+    const {_id, email, firstName, lastName, role, createdAt, updatedAt} = ret;
+    return {id: _id, email, firstName, lastName, role, createdAt, updatedAt};
   }
 });
 

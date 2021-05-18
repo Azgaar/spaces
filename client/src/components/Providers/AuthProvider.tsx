@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from 'react';
 import Spinner from '../Spinner/Spinner';
-import {UserService} from '../../services';
+import {AuthService} from '../../services';
 import {useDispatch} from 'react-redux';
 import {actions} from '../../store/actions';
 import {useToasterCatcher} from '../../hooks';
@@ -13,7 +13,7 @@ const AuthProvider: FC = ({children}) => {
 
   useEffect(() => {
     async function fetchUser() {
-      const user = (await catchAndTossError(UserService.fetch())) as UserData | undefined;
+      const user = (await catchAndTossError(AuthService.checkin())) as UserData | undefined;
       if (user) {
         dispatch(actions.login(user));
       }

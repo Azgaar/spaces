@@ -2,28 +2,28 @@ import React, {FC} from 'react';
 import {TextField, Button, Grid, Box} from '@material-ui/core';
 import {Link as RouterLink, useHistory} from 'react-router-dom';
 import {useForm, SubmitHandler} from 'react-hook-form';
-import {PassportChangeForm} from '../../../types';
+import {UserUpdateForm} from '../../../types';
 import {UserService} from '../../../services';
 import {rules} from '../../../validation/user';
 import {MessageType, useMessage} from '../../../components/Providers/MessageProvider';
-import {useToasterCatcher} from '../../../hooks';
+import {useToasterCatcher, useUser} from '../../../hooks';
 import Content from '../../../components/Layout/components/Main/Content';
 
 const PasswordChange: FC = () => {
+  const {user} = useUser();
   const {pushMessage} = useMessage();
   const history = useHistory();
   const {catchAndTossError} = useToasterCatcher();
 
-  const {register, errors, handleSubmit, watch} = useForm<PassportChangeForm>();
+  const {register, errors, handleSubmit, watch} = useForm<Partial<UserUpdateForm>>();
   const passwordNew = watch('passwordNew', '');
 
-  const onSubmit: SubmitHandler<PassportChangeForm> = async (formData: PassportChangeForm) => {
-    const res = await catchAndTossError(UserService.changePassword(formData));
-    if (!res) {
-      return;
+  const onSubmit: SubmitHandler<Partial<UserUpdateForm>> = async (formData: Partial<UserUpdateForm>) => {
+    const updatedUser = await catchAndTossError(UserService.updateUser(user.id, formData));
+    if (updatedUser) {
+      pushMessage({title: 'Password is changed', type: MessageType.SUCCESS});
+      history.push('/profile');
     }
-    pushMessage({title: 'Password is changed', type: MessageType.SUCCESS});
-    history.push('/profile');
   };
 
   return (

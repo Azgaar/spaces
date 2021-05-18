@@ -3,37 +3,57 @@ import httpStatus from 'http-status';
 import App from '../../src/App';
 import config from '../../src/config';
 import {MongoMemory, extractCookies} from '../utils';
+import {createUser} from '../../src/services/user';
+import {UserData, UserRole} from '../../src/types';
 
 const app = new App().getApp();
 let cookie = '';
 
-const user = {
-  register: {email: 'test@reg.com', firstName: 'John', lastName: 'Doe', password: 'Secret123', passwordRepeat: 'Secret123'},
-  valid: {email: 'test@reg.com', firstName: 'Johnny', lastName: 'Dowson', password: 'Secret123'},
-  wrongPasword: {email: 'test@reg.com', firstName: 'Johnny', lastName: 'Dowson', password: 'Secret1234'}
-};
+const user: UserData = {email: 'user@reg.com', firstName: 'Jane', lastName: 'Dowson', password: 'Secret123', role: UserRole.USER};
+const validUpdate = {email: 'updated_user@reg.com', firstName: 'Johnny', lastName: 'Low', password: 'Secret123'};
+const wrongPasword = {email: 'user@reg.com', firstName: 'Jane', lastName: 'Dowson', password: 'SecretWrong'};
+const noPasword = {email: 'user@reg.com', firstName: 'Jane', lastName: 'Dowson'};
 
 describe('User update service', () => {
   beforeAll(async () => {
     MongoMemory.connect();
 
-    // register new user
-    const response = await request(app).post('/register').send(user.register).expect('Content-Type', /json/).expect(httpStatus.CREATED);
+    // create non-admin user and log in
+    const createdUser = await createUser(user);
+    user.id = createdUser.id;
+    const response = await request(app).post('/login').send({email: user.email, password: user.password}).expect('Content-Type', /json/).expect(httpStatus.OK);
     const cookies = extractCookies(response.headers);
     const sessionCookie = cookies[config.session.name];
     expect(sessionCookie).toBeTruthy();
     cookie = `${config.session.name}=${sessionCookie?.value}`;
   });
 
-  it('is able to update user if data is valid', async () => {
-    const response = await request(app).post('/updateUser').set('Cookie', cookie).send(user.valid).expect(httpStatus.OK);
-    expect(response.body.email).toBe(user.valid.email);
-    expect(response.body.firstName).toBe(user.valid.firstName);
-    expect(response.body.lastName).toBe(user.valid.lastName);
+  it('is able to update user with valid data', async () => {
+    const response = await request(app)
+      .patch('/users/' + user.id)
+      .set('Cookie', cookie)
+      .send(validUpdate)
+      .expect(httpStatus.OK);
+    expect(response.body.id).toBe(user.id);
+    expect(response.body.email).toBe(validUpdate.email);
+    expect(response.body.firstName).toBe(validUpdate.firstName);
+    expect(response.body.lastName).toBe(validUpdate.lastName);
   });
 
   it('fails if password is not correct', async () => {
-    await request(app).post('/updateUser').set('Cookie', cookie).send(user.wrongPasword).expect(httpStatus.UNAUTHORIZED);
+    await request(app)
+      .patch('/users/' + user.id)
+      .set('Cookie', cookie)
+      .send(wrongPasword)
+      .expect(httpStatus.UNAUTHORIZED);
+  });
+
+  it('fails if password is not provided', async () => {
+    await request(app)
+      .patch('/users/' + user.id)
+      .set('Cookie', cookie)
+      .send(noPasword)
+      .expect(httpStatus.BAD_REQUEST);
   });
 
   afterAll(() => {

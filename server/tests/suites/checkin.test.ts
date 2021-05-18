@@ -15,7 +15,7 @@ describe('Check-in service', () => {
     MongoMemory.connect();
 
     // register new user
-    const response = await request(app).post('/register').send(user).expect('Content-Type', /json/).expect(httpStatus.CREATED);
+    const response = await request(app).post('/users').send(user).expect('Content-Type', /json/).expect(httpStatus.CREATED);
     const cookies = extractCookies(response.headers);
     const sessionCookie = cookies[config.session.name];
     expect(sessionCookie).toBeTruthy();

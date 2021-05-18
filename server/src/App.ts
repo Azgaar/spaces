@@ -35,15 +35,11 @@ export default class App {
   private initRoutes(): void {
     this.app.use(express.static(path.resolve(__dirname, '../../../client/build')));
 
-    this.app.use('/register', Routes.register);
+    this.app.use('/users', Routes.users);
     this.app.use('/login', Routes.login);
     this.app.use('/logout', Routes.logout);
     this.app.use('/checkin', Routes.checkin);
-    this.app.use('/updateUser', Routes.updateUser);
-    this.app.use('/changePassword', Routes.changePassword);
     this.app.use('/forgotPassword', Routes.forgotPassword);
-    this.app.use('/getUsers', Routes.getUsers);
-    this.app.use('/deleteUsers', Routes.deleteUsers);
     this.app.use('/getLocations', Routes.getLocations);
     this.app.use('/addLocation', Routes.addLocation);
     this.app.use('/renameLocation', Routes.renameLocation);

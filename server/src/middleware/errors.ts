@@ -12,7 +12,7 @@ const errorConverter = (err: Error | ApiError, req: Request, res: Response, next
 
   const statusCode = err instanceof mongoose.Error ? httpStatus.BAD_REQUEST : httpStatus.INTERNAL_SERVER_ERROR;
   const message = String(err.message || httpStatus[statusCode]);
-  next(new ApiError(statusCode, message, false, err.stack));
+  next(new ApiError(statusCode, message, {obfuscate: true, stack: err.stack}));
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -20,7 +20,7 @@ const errorHandler = (err: ApiError, req: Request, res: Response, next: NextFunc
   let {statusCode, message} = err;
   const DEV = config.env === 'development';
 
-  if (!DEV && !err.isOperational) {
+  if (!DEV && err.obfuscate) {
     if (statusCode !== httpStatus.UNAUTHORIZED) {
       statusCode = httpStatus.INTERNAL_SERVER_ERROR;
     }

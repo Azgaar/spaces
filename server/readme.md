@@ -20,7 +20,7 @@ If you are using PowerShell, install `curl` and type `remove-item alias:\curl` t
 ### Register:
 
 ```sh
-curl -v -X POST http://localhost:3001/register -H "Content-Type: application/json" -d '{\"email\":\"test@gmail.com\",\"firstName\":\"John\",\"lastName\":\"Doe\",\"password\":\"Secret123\",\"passwordRepeat\":\"Secret123\"}' | ConvertFrom-Json | ConvertTo-Json
+curl -v -X POST http://localhost:3001/users -H "Content-Type: application/json" -d '{\"email\":\"test@gmail.com\",\"firstName\":\"John\",\"lastName\":\"Doe\",\"password\":\"Secret123\",\"passwordRepeat\":\"Secret123\"}' | ConvertFrom-Json | ConvertTo-Json
 
 ```
 

@@ -5,4 +5,4 @@ import {UserRole} from '../types';
 import {workspaceCreationSchema} from '../validation/workspace';
 
 export const router = Router();
-router.post('/', checkSession(true), checkRole(UserRole.ADMIN), validate(workspaceCreationSchema), workspaceController.add);
+router.post('/', checkSession, checkRole(UserRole.ADMIN), validate(workspaceCreationSchema), workspaceController.add);

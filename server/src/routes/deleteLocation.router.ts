@@ -5,4 +5,4 @@ import {UserRole} from '../types';
 import {locationDeletionSchema} from '../validation/location';
 
 export const router = Router();
-router.delete('/', checkSession(true), checkRole(UserRole.ADMIN), validate(locationDeletionSchema), locationController.remove);
+router.delete('/', checkSession, checkRole(UserRole.ADMIN), validate(locationDeletionSchema), locationController.remove);

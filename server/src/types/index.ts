@@ -15,6 +15,7 @@ export enum UserRole {
 }
 
 export type UserData = {
+  id?: string;
   email: string;
   firstName: string;
   lastName: string;
@@ -30,6 +31,8 @@ export interface UserDocument extends Document {
   lastName: string;
   password: string;
   role: UserRole;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface LocationDocument extends Document {
