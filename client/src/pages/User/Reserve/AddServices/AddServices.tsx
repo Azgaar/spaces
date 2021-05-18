@@ -34,10 +34,9 @@ const AddServices: FC<AddServicesProps> = ({open, services, onClose, onAdd, onDe
       return;
     }
     setService(() => blankService);
-    if (!value) {
-      return;
+    if (value) {
+      onAdd(value);
     }
-    onAdd(value);
   };
 
   const handleInputChange = (inputValue: string) => {
@@ -72,6 +71,12 @@ const AddServices: FC<AddServicesProps> = ({open, services, onClose, onAdd, onDe
             onInputChange={(e, value) => handleInputChange(value)}
             renderInput={(params) => <TextField {...params} label="Service" variant="outlined" autoFocus error={!!service.error} helperText={service.error} />}
           />
+
+          {!!service.input && !service.error && (
+            <Button color="primary" onClick={() => handleAdd(service.input)}>
+              Add
+            </Button>
+          )}
 
           <List dense className={classes.list}>
             {!services.length && <ListItem>Select a service from the list above or type a free text request and press Enter</ListItem>}
