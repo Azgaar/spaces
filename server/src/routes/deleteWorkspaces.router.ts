@@ -4,4 +4,4 @@ import {UserRole} from '../types';
 import {workspaceController} from '../controllers';
 
 export const router = Router();
-router.delete('/', checkSession(true), checkRole(UserRole.ADMIN), workspaceController.remove);
+router.delete('/', checkSession, checkRole(UserRole.ADMIN), workspaceController.remove);

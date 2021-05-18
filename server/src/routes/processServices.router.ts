@@ -5,4 +5,4 @@ import {UserRole} from '../types';
 import {serviceProcessSchema} from '../validation/service';
 
 export const router = Router();
-router.post('/', checkSession(true), checkRole(UserRole.ADMIN), validate(serviceProcessSchema), serviceController.process);
+router.post('/', checkSession, checkRole(UserRole.ADMIN), validate(serviceProcessSchema), serviceController.process);

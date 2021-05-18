@@ -1,13 +1,8 @@
-export {router as register} from './register.router';
+export {users} from './users.router';
 export {router as login} from './login.router';
 export {router as logout} from './logout.router';
-export {router as checkin} from './checkin.router';
-export {router as updateUser} from './updateUser.router';
-export {router as changePassword} from './changePassword.router';
 export {router as forgotPassword} from './forgotPassword.router';
-export {router as getUsers} from './getUsers.router';
-export {router as deleteUsers} from './deleteUsers.router';
-export {router as changeRole} from './changeRole.router';
+export {router as checkin} from './checkin.router';
 export {router as getLocations} from './getLocations.router';
 export {router as addLocation} from './addLocation.router';
 export {router as renameLocation} from './renameLocation.router';

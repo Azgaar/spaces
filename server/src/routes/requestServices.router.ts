@@ -4,4 +4,4 @@ import {checkSession, validate} from '../middleware/validate';
 import {serviceRequestSchema} from '../validation/service';
 
 export const router = Router();
-router.post('/', checkSession(true), validate(serviceRequestSchema), serviceController.add);
+router.post('/', checkSession, validate(serviceRequestSchema), serviceController.add);

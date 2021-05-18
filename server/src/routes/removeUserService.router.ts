@@ -4,4 +4,4 @@ import {serviceRemovalRequestSchema} from '../validation/service';
 import {serviceController} from '../controllers';
 
 export const router = Router();
-router.delete('/', checkSession(true), checkEmail, validate(serviceRemovalRequestSchema), serviceController.requestRemoval);
+router.delete('/', checkSession, checkEmail, validate(serviceRemovalRequestSchema), serviceController.requestRemoval);

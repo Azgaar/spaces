@@ -5,4 +5,4 @@ import {UserRole} from '../types';
 import {workspaceUpdateSchema} from '../validation/workspace';
 
 export const router = Router();
-router.post('/', checkSession(true), checkRole(UserRole.ADMIN), validate(workspaceUpdateSchema), workspaceController.update);
+router.post('/', checkSession, checkRole(UserRole.ADMIN), validate(workspaceUpdateSchema), workspaceController.update);

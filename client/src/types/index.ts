@@ -4,15 +4,17 @@ export enum UserRole {
 }
 
 export type UserData = {
+  id: string;
   email: string;
   firstName: string;
   lastName: string;
-  role?: UserRole;
+  role: UserRole;
 };
 
 export interface RootState {
   user: {
     isAuthenticated: boolean;
+    id: string;
     role: UserRole;
     email: string;
     firstName: string;
@@ -38,14 +40,11 @@ export type ForgotPasswordForm = {
   email: string;
 };
 
-export type ProfileEditForm = {
+export type UserUpdateForm = {
+  role: UserRole;
   firstName: string;
   lastName: string;
   email: string;
-  password: string;
-};
-
-export type PassportChangeForm = {
   password: string;
   passwordNew: string;
   passwordNewRepeat: string;

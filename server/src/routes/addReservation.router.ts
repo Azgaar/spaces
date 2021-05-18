@@ -4,4 +4,4 @@ import {checkSession, validate} from '../middleware/validate';
 import {reservationCreationSchema} from '../validation/reservation';
 
 export const router = Router();
-router.post('/', checkSession(true), validate(reservationCreationSchema), reservationController.add);
+router.post('/', checkSession, validate(reservationCreationSchema), reservationController.add);

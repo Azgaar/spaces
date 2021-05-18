@@ -1,4 +1,3 @@
-import {DeleteWriteOpResultObject} from 'mongodb';
 import {User} from '../models/user';
 import {UserDocument, UserData} from '../types';
 import logger from '../utils/logger';
@@ -16,8 +15,8 @@ export const updateUser = async (user: UserDocument, userData: Partial<UserData>
   return updatedUser;
 };
 
-export const deleteUsers = async (emails: Array<string>): Promise<DeleteWriteOpResultObject['result']> => {
-  const deletedUsers = await User.deleteMany({email: {$in: emails}});
-  logger.info(`[User] User deletion request: ${emails.join(', ')}`);
-  return deletedUsers;
+export const removeUser = async (id: string): Promise<UserDocument | null> => {
+  const deletionResult = await User.findByIdAndDelete(id);
+  logger.info(`[User] User deletion request: ${id}`);
+  return deletionResult;
 };

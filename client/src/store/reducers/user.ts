@@ -3,6 +3,7 @@ import {UserData, UserRole} from '../../types';
 
 type UserState = {
   isAuthenticated: boolean;
+  id: string | null;
   role: UserRole | null;
   email: string | null;
   firstName: string | null;
@@ -11,6 +12,7 @@ type UserState = {
 
 const initState: UserState = {
   isAuthenticated: false,
+  id: null,
   role: null,
   email: null,
   firstName: null,
@@ -22,20 +24,12 @@ const userReducer = (state = initState, action: {type: string; payload: UserData
     case AUTH_USER:
       return {
         isAuthenticated: true,
-        role: action.payload.role || null,
-        email: action.payload.email,
-        firstName: action.payload.firstName,
-        lastName: action.payload.lastName
+        ...action.payload
       };
     case UNAUTH_USER:
       return initState;
     case UPDATE_USER:
-      return {
-        ...state,
-        email: action.payload.email,
-        firstName: action.payload.firstName,
-        lastName: action.payload.lastName
-      };
+      return {...state, ...action.payload};
     default:
       return state;
   }

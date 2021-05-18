@@ -3,7 +3,7 @@ import {TextField, Button, Grid, Box} from '@material-ui/core';
 import {Link as RouterLink, useHistory} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import {useForm, SubmitHandler} from 'react-hook-form';
-import {ProfileEditForm, UserData} from '../../../types';
+import {UserUpdateForm, UserData} from '../../../types';
 import {UserService} from '../../../services';
 import {actions} from '../../../store/actions';
 import {useToasterCatcher, useUser} from '../../../hooks';
@@ -18,12 +18,12 @@ const ProfileEdit: FC = () => {
   const history = useHistory();
   const {catchAndTossError} = useToasterCatcher();
 
-  const {register, errors, handleSubmit} = useForm<ProfileEditForm>();
+  const {register, errors, handleSubmit} = useForm<Partial<UserUpdateForm>>();
 
-  const onSubmit: SubmitHandler<ProfileEditForm> = async (formData: ProfileEditForm) => {
-    const userData = (await catchAndTossError(UserService.update(formData))) as UserData | undefined;
-    if (userData) {
-      dispatch(actions.updateUserData(userData));
+  const onSubmit: SubmitHandler<Partial<UserUpdateForm>> = async (formData: Partial<UserUpdateForm>) => {
+    const updatedUser = (await catchAndTossError(UserService.updateUser(user.id, formData))) as UserData | undefined;
+    if (updatedUser) {
+      dispatch(actions.updateUserData(updatedUser));
       pushMessage({title: 'Profile is changed', type: MessageType.SUCCESS});
       history.push('/profile');
     }
