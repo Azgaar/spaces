@@ -21,7 +21,7 @@ const registerUser = catchAsync(async (req, res, next) => {
 
   const userExists = await User.exists({email});
   if (userExists) {
-    return next(new ApiError(httpStatus.BAD_REQUEST, `User ${email} already exists`));
+    return next(new ApiError(httpStatus.BAD_REQUEST, `User ${email} already exists`, {obfuscate: true}));
   }
 
   const userData = {email, firstName, lastName, password, role: UserRole.USER};
