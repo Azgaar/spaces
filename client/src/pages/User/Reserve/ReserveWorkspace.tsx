@@ -264,7 +264,7 @@ const ReserveWorkspace: FC = () => {
 
         <AvailableWorkspaces filters={debouncedFilters} valid={formik.isValid} updateToggle={updateToggle} selectedWS={workspaceId} selectWorkspace={selectWorkspace} />
 
-        <Box my={2}>
+        <Box mt={2} mb={1}>
           <Grid container spacing={2}>
             <Grid item md={3} sm={6} xs={12}>
               <Button
