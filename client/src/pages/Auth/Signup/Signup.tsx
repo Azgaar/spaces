@@ -38,7 +38,7 @@ const Signup: FC = () => {
     <Content maxWidth="xs" pagename="Sign up">
       <form noValidate onSubmit={formik.handleSubmit}>
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={6}>
             <TextField
               variant="outlined"
               required
@@ -54,7 +54,7 @@ const Signup: FC = () => {
               helperText={formik.touched.firstName && formik.errors.firstName}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={6}>
             <TextField
               variant="outlined"
               required
