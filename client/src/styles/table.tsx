@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(1)
   },
   green: {
+    marginLeft: theme.spacing(1),
     color: theme.palette.getContrastText(green[700]),
     backgroundColor: green[700],
     '&:hover': {
@@ -46,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   red: {
+    marginLeft: theme.spacing(1),
     color: theme.palette.getContrastText(red[700]),
     backgroundColor: red[700],
     '&:hover': {
@@ -56,6 +58,7 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   yellow: {
+    marginLeft: theme.spacing(1),
     color: theme.palette.getContrastText(yellow[700]),
     backgroundColor: yellow[700],
     '&:hover': {
