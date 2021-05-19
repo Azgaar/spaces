@@ -116,7 +116,7 @@ const Signup: FC = () => {
           </Grid>
         </Grid>
 
-        <Box mx={1}>
+        <Box m={1}>
           <FormControlLabel label={<Terms />} control={<Checkbox name="acceptTerms" color="primary" value={formik.values.acceptTerms} onChange={formik.handleChange} />} />
           {formik.touched.acceptTerms && Boolean(formik.errors.acceptTerms) && <FormHelperText error>{formik.errors.acceptTerms}</FormHelperText>}
         </Box>
