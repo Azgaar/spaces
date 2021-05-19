@@ -193,13 +193,13 @@ const ReservationDialog: FC<ReservationDialogProps> = ({mode, reservation, close
               </Grid>
             </Grid>
 
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6} className={classes.buttons}>
+            <Grid container spacing={2} className={classes.buttons}>
+              <Grid item xs={12} sm={6}>
                 <Button type="submit" fullWidth variant="contained" color="primary">
                   Save
                 </Button>
               </Grid>
-              <Grid item xs={12} sm={6} className={classes.buttons}>
+              <Grid item xs={12} sm={6}>
                 <Button fullWidth variant="contained" color="primary" onClick={close}>
                   Close
                 </Button>

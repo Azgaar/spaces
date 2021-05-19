@@ -23,7 +23,7 @@ const useFormStyles = makeStyles((theme) => ({
     margin: theme.spacing(0.4)
   },
   buttons: {
-    margin: theme.spacing(2, 0, 1)
+    marginTop: theme.spacing(1)
   }
 }));
 

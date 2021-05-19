@@ -79,6 +79,7 @@ const AddServices: FC<AddServicesProps> = ({open, services, onClose, onAdd, onDe
           )}
 
           <List dense className={classes.list}>
+            <ListItem>Select a service from the list or type a free text request and click on Add</ListItem>
             {services.map((value) => (
               <ListItem key={value}>
                 <ListItemText>{value}</ListItemText>
@@ -91,7 +92,7 @@ const AddServices: FC<AddServicesProps> = ({open, services, onClose, onAdd, onDe
             ))}
           </List>
 
-          <Button fullWidth variant="contained" color="primary" onClick={onClose}>
+          <Button variant="contained" color="primary" onClick={onClose}>
             Close
           </Button>
         </FormControl>
