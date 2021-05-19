@@ -5,14 +5,14 @@ const useFormStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    padding: theme.spacing(3)
+    padding: theme.spacing(2, 3, 3)
   },
   form: {
     width: '100%',
     marginTop: theme.spacing(3)
   },
   buttons: {
-    margin: theme.spacing(2, 0, 1)
+    marginTop: theme.spacing(1)
   }
 }));
 

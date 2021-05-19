@@ -2,7 +2,7 @@ import {makeStyles} from '@material-ui/core/styles';
 
 const useFormStyles = makeStyles((theme) => ({
   paper: {
-    width: '340px',
+    maxWidth: '340px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',

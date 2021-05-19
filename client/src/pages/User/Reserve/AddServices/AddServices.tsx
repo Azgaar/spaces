@@ -55,7 +55,7 @@ const AddServices: FC<AddServicesProps> = ({open, services, onClose, onAdd, onDe
 
   return (
     <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title">
-      <Container className={classes.paper}>
+      <Container maxWidth="xs" className={classes.paper}>
         <Headline pagename="Request Services" />
 
         <FormControl fullWidth className={classes.form}>
@@ -79,7 +79,6 @@ const AddServices: FC<AddServicesProps> = ({open, services, onClose, onAdd, onDe
           )}
 
           <List dense className={classes.list}>
-            {!services.length && <ListItem>Select a service from the list above or type a free text request and press Enter</ListItem>}
             {services.map((value) => (
               <ListItem key={value}>
                 <ListItemText>{value}</ListItemText>
@@ -92,7 +91,7 @@ const AddServices: FC<AddServicesProps> = ({open, services, onClose, onAdd, onDe
             ))}
           </List>
 
-          <Button variant="contained" color="primary" onClick={onClose}>
+          <Button fullWidth variant="contained" color="primary" onClick={onClose}>
             Close
           </Button>
         </FormControl>
