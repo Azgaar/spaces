@@ -1,27 +1,108 @@
-import React, {FC} from 'react';
-import {Workspace} from '../../../../../types';
+import React, {FC, useEffect, useState} from 'react';
+import {useToasterCatcher} from '../../../../../hooks';
+import {WorkspaceService} from '../../../../../services';
+import {LocationOption, Workspace} from '../../../../../types';
 import useStyles from './LocationScheme.style';
 
 type SchemeProps = {
-  scheme: {
-    width: number;
-    height: number;
-    space: number[][];
-    walls: number[][][];
-    obstacles: number[][][];
-    entrances: number[][][];
-    fireExits: number[][][];
-  };
-  workspaces: Workspace[];
+  location: LocationOption;
 };
 
 const arrayToPath = (array: number[][]): string => 'M' + array.join(' L');
 
-const LocationScheme: FC<SchemeProps> = ({scheme, workspaces}) => {
+const LocationScheme: FC<SchemeProps> = ({location}) => {
   const classes = useStyles();
+  const {isLoading, setLoading, catchAndTossError} = useToasterCatcher();
+
+  const [workspaces, setWorkspaces] = useState([] as Workspace[]);
+  useEffect(() => {
+    async function fetchWorkspaces() {
+      const workspaces = await catchAndTossError(WorkspaceService.list(location));
+      if (workspaces) {
+        setWorkspaces(() => workspaces as Workspace[]);
+      }
+    }
+
+    if (location.id) {
+      fetchWorkspaces();
+    } else {
+      setLoading(() => false);
+      setWorkspaces(() => []);
+    }
+  }, [location]);
+
+  const scheme = {
+    width: 25,
+    height: 15,
+    space: [
+      [0, 0],
+      [25, 0],
+      [25, 15],
+      [5, 15],
+      [5, 14],
+      [0, 14]
+    ],
+    walls: [
+      [
+        [10, 0],
+        [10, 7]
+      ],
+      [
+        [10, 10],
+        [14, 10]
+      ],
+      [
+        [15, 10],
+        [22, 10]
+      ],
+      [
+        [23, 10],
+        [25, 10]
+      ],
+      [
+        [20, 0],
+        [20, 10]
+      ]
+    ],
+    obstacles: [
+      [
+        [7, 7],
+        [10, 7],
+        [10, 10],
+        [7, 10],
+        [7, 7]
+      ],
+      [
+        [17, 5],
+        [18, 5],
+        [18, 7],
+        [17, 7],
+        [17, 5]
+      ]
+    ],
+    entrances: [
+      [
+        [25, 12.1],
+        [25, 12.9]
+      ]
+    ],
+    fireExits: [
+      [
+        [11.15, 0],
+        [11.85, 0]
+      ],
+      [
+        [1.15, 14],
+        [1.85, 14]
+      ]
+    ]
+  };
   const {width, height, space, walls, obstacles, entrances, fireExits} = scheme;
   const viewBox = `-${width * 0.1} -${height * 0.1} ${width * 1.2} ${height * 1.2}`;
-  console.log(workspaces);
+
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox={viewBox} className={classes.scheme}>

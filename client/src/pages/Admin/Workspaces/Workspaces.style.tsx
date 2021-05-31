@@ -9,6 +9,9 @@ const useStyles = makeStyles((theme) => ({
   },
   control: {
     margin: theme.spacing(0, 0, 0, 1)
+  },
+  selectedButton: {
+    backgroundColor: theme.palette.primary.main
   }
 }));
 

@@ -1,6 +1,6 @@
 import React, {useEffect, useState, FC} from 'react';
 import useStyles from './Workspaces.style';
-import {Button, Container, Grid, TextField} from '@material-ui/core';
+import {Box, Button, ButtonGroup, Container, Grid, TextField} from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import WorkspacesList from './WorkspacesList/WorkspacesList';
 import {Autocomplete} from '@material-ui/lab';
@@ -10,6 +10,7 @@ import {LocationOption} from '../../../types';
 import {useLocations, useToasterCatcher} from '../../../hooks';
 import {LocationService} from '../../../services';
 import Content from '../../../components/Layout/components/Main/Content';
+import LocationScheme from '../../../components/Layout/components/Main/LocationScheme/LocationScheme';
 
 const Workspaces: FC = () => {
   const classes = useStyles();
@@ -18,6 +19,7 @@ const Workspaces: FC = () => {
   const {locations, setLocations, locationsLoading, location, setLocation, fetchLocations} = useLocations();
   const [locationInput, setLocationInput] = useState<string>('');
   const {catchAndTossError} = useToasterCatcher();
+  const [displayMode, setDisplayMode] = useState<'scheme' | 'table'>('scheme');
 
   useEffect(() => {
     fetchLocations({onlyWithWorkspaces: false});
@@ -95,7 +97,8 @@ const Workspaces: FC = () => {
               )}
             />
           </Grid>
-          <Grid item xs={8}>
+
+          <Grid item lg={4} md={6} xs={12}>
             {locationInput && !location.id && (
               <Button variant="contained" color="primary" className={classes.control} onClick={addLocation}>
                 Add
@@ -108,10 +111,24 @@ const Workspaces: FC = () => {
             )}
             {location.id && <DeletionButton onDelete={deleteLocation} object="location" title="Delete" short />}
           </Grid>
+
+          <Grid item lg={4} md={6} xs={12}>
+            <Box display="flex" justifyContent="flex-end">
+              <ButtonGroup variant="contained" color="secondary">
+                <Button className={displayMode === 'scheme' ? classes.selectedButton : ''} onClick={() => setDisplayMode(() => 'scheme')}>
+                  Scheme
+                </Button>
+                <Button className={displayMode === 'table' ? classes.selectedButton : ''} onClick={() => setDisplayMode(() => 'table')}>
+                  Table
+                </Button>
+              </ButtonGroup>
+            </Box>
+          </Grid>
         </Grid>
       </Container>
 
-      <WorkspacesList loc={location} />
+      {displayMode === 'scheme' && <LocationScheme location={location} />}
+      {displayMode === 'table' && <WorkspacesList loc={location} />}
     </Content>
   );
 };
