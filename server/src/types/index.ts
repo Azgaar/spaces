@@ -46,6 +46,9 @@ export interface WorkspaceDocument extends Document {
   type: WorkspaceType;
   size: number;
   equipment: Equipment[];
+  x: number;
+  y: number;
+  angle: number;
 }
 
 export interface ReservationDocument extends Document {
@@ -108,6 +111,8 @@ export type WorkspaceData = {
   type: WorkspaceType;
   size: number;
   equipment: Equipment[];
+  x: number;
+  y: number;
 };
 
 export type WorkspaceSearchCriteria = {

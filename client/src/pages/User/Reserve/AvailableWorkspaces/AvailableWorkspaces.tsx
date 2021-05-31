@@ -7,6 +7,7 @@ import {ReservationFilters, Workspace, WorkspaceSearchCriteria} from '../../../.
 import WorkspaceTypeIcon from '../../../../components/Icons/WorkspaceTypeIcon/WorkspaceTypeIcon';
 import SearchIcon from '@material-ui/icons/Search';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+import LocationScheme from '../../../../components/Layout/components/Main/LocationScheme/LocationScheme';
 
 type AvailableWorkspacesProps = {
   filters: ReservationFilters;
@@ -21,6 +22,73 @@ const AvailableWorkspaces: FC<AvailableWorkspacesProps> = ({filters, valid, upda
   const {isLoading, setLoading, catchAndTossError} = useToasterCatcher();
   const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
   const [lastSelectedWS, setLastSelectedWS] = useState<string>(selectedWS);
+
+  const [scheme, setScheme] = useState({
+    width: 25,
+    height: 15,
+    space: [
+      [0, 0],
+      [25, 0],
+      [25, 15],
+      [5, 15],
+      [5, 14],
+      [0, 14]
+    ],
+    walls: [
+      [
+        [10, 0],
+        [10, 7]
+      ],
+      [
+        [10, 10],
+        [14, 10]
+      ],
+      [
+        [15, 10],
+        [22, 10]
+      ],
+      [
+        [23, 10],
+        [25, 10]
+      ],
+      [
+        [20, 0],
+        [20, 10]
+      ]
+    ],
+    obstacles: [
+      [
+        [7, 7],
+        [10, 7],
+        [10, 10],
+        [7, 10],
+        [7, 7]
+      ],
+      [
+        [17, 5],
+        [18, 5],
+        [18, 7],
+        [17, 7],
+        [17, 5]
+      ]
+    ],
+    entrances: [
+      [
+        [25, 12.1],
+        [25, 12.9]
+      ]
+    ],
+    fireExits: [
+      [
+        [11.15, 0],
+        [11.85, 0]
+      ],
+      [
+        [1.15, 14],
+        [1.85, 14]
+      ]
+    ]
+  });
 
   useEffect(() => {
     async function fetchWorkspaces() {
@@ -59,6 +127,8 @@ const AvailableWorkspaces: FC<AvailableWorkspacesProps> = ({filters, valid, upda
   return (
     <Grid container spacing={2} alignItems="center">
       <LinearProgress className={`${classes.progress} ${isLoading ? '' : classes.inactive}`} />
+
+      <LocationScheme scheme={scheme} workspaces={workspaces} />
 
       {!valid && (
         <Grid item md={4} sm={6} xs={12}>

@@ -99,6 +99,9 @@ export type Workspace = {
   type: WorkspaceType;
   size: number;
   equipment: Equipment[];
+  x?: number;
+  y?: number;
+  angle?: number;
 };
 
 export type ReservationReq = {

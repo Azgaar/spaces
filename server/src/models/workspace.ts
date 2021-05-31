@@ -16,8 +16,8 @@ const workspaceSchema = new Schema(
 
 workspaceSchema.set('toJSON', {
   transform: (doc: WorkspaceDocument, ret: WorkspaceDocument) => {
-    const {_id, description, location, status, type, size, equipment} = ret;
-    const workspaceData: WorkspaceData = {id: _id, description, location, status, type, size, equipment};
+    const {_id, description, location, status, type, size, equipment, x, y, angle} = ret;
+    const workspaceData: WorkspaceData = {id: _id, description, location, status, type, size, equipment, x, y, angle};
     return workspaceData;
   }
 });
