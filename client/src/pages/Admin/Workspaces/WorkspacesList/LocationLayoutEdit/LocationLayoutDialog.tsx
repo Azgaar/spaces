@@ -33,10 +33,32 @@ const LocationLayoutDialog: FC<{location: LocationOption; onClose: () => void}> 
         <form className={classes.form} noValidate autoComplete="off" onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={6}>
-              <TextField variant="outlined" required fullWidth id="width" label="Width" name="width" autoFocus defaultValue={layout.width} />
+              <TextField
+                type="number"
+                variant="outlined"
+                required
+                fullWidth
+                id="width"
+                label="Width"
+                name="width"
+                autoFocus
+                InputProps={{inputProps: {min: 1, max: 1024}}}
+                defaultValue={layout.width}
+              />
             </Grid>
             <Grid item xs={6}>
-              <TextField variant="outlined" required fullWidth id="height" label="Height" name="height" autoFocus defaultValue={layout.height} />
+              <TextField
+                type="number"
+                variant="outlined"
+                required
+                fullWidth
+                id="height"
+                label="Height"
+                name="height"
+                autoFocus
+                InputProps={{inputProps: {min: 1, max: 1024}}}
+                defaultValue={layout.height}
+              />
             </Grid>
           </Grid>
 
