@@ -16,6 +16,7 @@ import TodayIcon from '@material-ui/icons/Today';
 import DateRangeIcon from '@material-ui/icons/DateRange';
 import RoomServiceIcon from '@material-ui/icons/RoomService';
 import MoodBadIcon from '@material-ui/icons/MoodBad';
+import AccountTreeIcon from '@material-ui/icons/AccountTree';
 
 const HeadlineIconDefault: ElementType = HelpOutlineIcon;
 const HeadlineIconMap: {[key: string]: ElementType} = {
@@ -26,6 +27,7 @@ const HeadlineIconMap: {[key: string]: ElementType} = {
   'Edit Profile': AccountCircleOutlinedIcon,
   'Change Password': AccountCircleOutlinedIcon,
   'Manage Users': PeopleAltOutlinedIcon,
+  'Edit Layout': AccountTreeIcon,
   'Manage Workspaces': DesktopWindowsIcon,
   'Add Workspace': AirplayIcon,
   'Edit Workspace': AirplayIcon,

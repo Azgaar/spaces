@@ -10,16 +10,15 @@ import {LocationOption} from '../../../types';
 import {useLocations, useToasterCatcher} from '../../../hooks';
 import {LocationService} from '../../../services';
 import Content from '../../../components/Layout/components/Main/Content';
-import LocationScheme from '../../../components/Layout/components/Main/LocationScheme/LocationScheme';
 
 const Workspaces: FC = () => {
   const classes = useStyles();
   const {pushMessage} = useMessage();
   const blankLocation: LocationOption = {id: '', description: ''};
   const {locations, setLocations, locationsLoading, location, setLocation, fetchLocations} = useLocations();
-  const [locationInput, setLocationInput] = useState<string>('');
-  const {catchAndTossError} = useToasterCatcher();
+  const [locationInput, setLocationInput] = useState('');
   const [displayMode, setDisplayMode] = useState<'scheme' | 'table'>('scheme');
+  const {catchAndTossError} = useToasterCatcher();
 
   useEffect(() => {
     fetchLocations({onlyWithWorkspaces: false});
@@ -127,8 +126,7 @@ const Workspaces: FC = () => {
         </Grid>
       </Container>
 
-      {displayMode === 'scheme' && <LocationScheme location={location} />}
-      {displayMode === 'table' && <WorkspacesList loc={location} />}
+      <WorkspacesList location={location} displayMode={displayMode} />
     </Content>
   );
 };

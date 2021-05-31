@@ -53,6 +53,17 @@ export type UserUpdateForm = {
 export type LocationOption = {
   id: string;
   description: string;
+  layout?: LocationLayout;
+};
+
+export type LocationLayout = {
+  width: number;
+  height: number;
+  space: number[][];
+  walls: number[][][];
+  obstacles: number[][][];
+  entrances: number[][][];
+  fireExits: number[][][];
 };
 
 export enum WorkspaceStatus {

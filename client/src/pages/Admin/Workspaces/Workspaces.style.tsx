@@ -12,6 +12,9 @@ const useStyles = makeStyles((theme) => ({
   },
   selectedButton: {
     backgroundColor: theme.palette.primary.main
+  },
+  button: {
+    marginLeft: theme.spacing(1)
   }
 }));
 

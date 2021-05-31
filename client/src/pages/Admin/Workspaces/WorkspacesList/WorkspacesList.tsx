@@ -1,37 +1,26 @@
 import React, {useEffect, useState, FC} from 'react';
-import useStyles from './../../../../styles/table';
-import {Button, Container} from '@material-ui/core';
-import {DataGrid, GridColDef, GridColTypeDef, GridRowId, GridSelectionModelChangeParams} from '@material-ui/data-grid';
-import DeletionButton from '../../../../components/Controls/DeletionButton/DeletionButton';
-import WorkspaceDialog from './WorkspaceEdit/WorkspaceDialog';
 import {MessageType, useMessage} from '../../../../components/Providers/MessageProvider';
 import {LocationOption, Workspace, WorkspaceStatus, WorkspaceType} from '../../../../types';
 import {WorkspaceService} from '../../../../services';
 import {useToasterCatcher} from '../../../../hooks';
+import WorkspacesScheme from './WorkspacesScheme/WorkspacesScheme';
+import WorkspacesTable from './WorkspacesTable/WorkspacesTable';
+import Spinner from '../../../../components/Spinner/Spinner';
+import WorkspaceDialog from './WorkspaceEdit/WorkspaceDialog';
 
-const equipmentColumn: GridColTypeDef = {
-  valueFormatter: ({value}) => (Array.isArray(value) ? value.join(', ') : '')
+type WorkspacesListProps = {
+  location: LocationOption;
+  displayMode: 'scheme' | 'table';
 };
-
-const columns: GridColDef[] = [
-  {field: 'status', headerName: 'Status', flex: 1},
-  {field: 'description', headerName: 'Description', flex: 1},
-  {field: 'type', headerName: 'Type', flex: 1},
-  {field: 'size', headerName: 'Size', type: 'number', flex: 0.5},
-  {field: 'equipment', headerName: 'Equipment', flex: 1.5, ...equipmentColumn}
-];
-
-const WorkspacesList: FC<{loc: LocationOption}> = ({loc}) => {
-  const classes = useStyles();
+const WorkspacesList: FC<WorkspacesListProps> = ({location, displayMode}) => {
   const {pushMessage} = useMessage();
-  const [showEdit, setEdit] = useState<string | null>(null);
-  const [workspaces, setWorkspaces] = useState([] as Workspace[]);
-  const [selection, setSelection] = useState([] as GridRowId[]);
+  const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
   const {isLoading, setLoading, catchAndTossError} = useToasterCatcher();
+  const [dialog, setDialog] = useState<string | null>(null);
 
   const defaultWorkspace: Workspace = {
     description: 'WS',
-    location: loc.id,
+    location: location.id,
     status: WorkspaceStatus.AVAILABLE,
     type: WorkspaceType.DESK,
     size: 1,
@@ -41,45 +30,38 @@ const WorkspacesList: FC<{loc: LocationOption}> = ({loc}) => {
 
   useEffect(() => {
     async function fetchWorkspaces() {
-      const workspaces = await catchAndTossError(WorkspaceService.list(loc));
+      const workspaces = await catchAndTossError(WorkspaceService.list(location));
       if (workspaces) {
         setWorkspaces(() => workspaces as Workspace[]);
       }
     }
 
-    if (loc.id) {
+    if (location.id) {
       fetchWorkspaces();
     } else {
       setLoading(() => false);
       setWorkspaces(() => []);
     }
-  }, [loc]);
+  }, [location]);
 
-  const handleSelection = (selectionModel: GridSelectionModelChangeParams) => {
-    const selection = selectionModel.selectionModel;
-    setSelection(() => selection);
+  const showEditDialog = (workspaceId: string) => {
+    setWorkspace(() => workspaces.find((ws) => ws.id === workspaceId) as Workspace);
+    setDialog(() => 'edit');
   };
-
-  const dialog = {
-    edit: () => {
-      setWorkspace(() => workspaces.find((ws) => ws.id === selection[0]) as Workspace);
-      setEdit(() => 'edit');
-    },
-    add: () => {
-      setWorkspace((workspace) => ({...workspace, description: 'WS_' + workspaces.length}));
-      setEdit(() => 'add');
-    },
-    close: () => setEdit(() => null)
+  const showAddDialog = () => {
+    setWorkspace((workspace) => ({...workspace, description: 'WS_' + workspaces.length}));
+    setDialog(() => 'add');
   };
+  const closeEditDialog = () => setDialog(() => null);
 
   const handleCreation = async (formData: Workspace) => {
-    const requestData: Workspace = {...formData, location: loc.id};
+    const requestData: Workspace = {...formData, location: location.id};
     const addedWorkspace = (await catchAndTossError(WorkspaceService.add(requestData))) as Workspace | undefined;
     if (!addedWorkspace) {
       return;
     }
 
-    dialog.close();
+    closeEditDialog();
     setWorkspaces((workspaces) => [...workspaces, addedWorkspace]);
     pushMessage({title: `Workspace "${addedWorkspace.description}" is added`, type: MessageType.SUCCESS});
   };
@@ -91,53 +73,31 @@ const WorkspacesList: FC<{loc: LocationOption}> = ({loc}) => {
       return;
     }
 
-    dialog.close();
+    closeEditDialog();
     setWorkspace(() => requestData);
     setWorkspaces(() => remaining);
     pushMessage({title: `Workspace "${requestData.description}" is updated`, type: MessageType.SUCCESS});
   };
 
-  const handleDeletion = async () => {
-    const remaining = (await catchAndTossError(WorkspaceService.remove(loc, selection))) as Workspace[] | undefined;
-    if (!remaining) {
-      return;
+  const handleDeletion = async (workspaceIds: string[]) => {
+    const remaining = (await catchAndTossError(WorkspaceService.remove(location, workspaceIds))) as Workspace[] | undefined;
+    if (remaining) {
+      setWorkspaces(() => remaining);
+      pushMessage({title: 'Workspaces are deleted', type: MessageType.SUCCESS});
     }
-
-    setWorkspaces(() => remaining);
-    setSelection(() => [] as GridRowId[]);
-    const title = selection.length > 1 ? 'Workspaces are deleted' : 'Workspace is deleted';
-    pushMessage({title, type: MessageType.SUCCESS});
   };
 
+  if (isLoading) {
+    return <Spinner />;
+  }
+
   return (
-    <Container className={classes.container}>
-      <DataGrid
-        rows={workspaces}
-        columns={columns}
-        pageSize={4}
-        rowsPerPageOptions={[4, 10, 20, 50]}
-        autoHeight
-        checkboxSelection
-        loading={isLoading}
-        onSelectionModelChange={handleSelection}
-        className={classes.table}
-      />
-      <Container className={classes.controls}>
-        {Boolean(loc.id) && (
-          <Button variant="contained" color="primary" onClick={dialog.add}>
-            Add
-          </Button>
-        )}
-        {selection.length === 1 && (
-          <Button variant="contained" color="primary" className={classes.button} onClick={dialog.edit}>
-            Edit
-          </Button>
-        )}
-        {selection.length > 0 && <DeletionButton onDelete={handleDeletion} title="Delete" object={selection.length > 1 ? 'workspaces' : 'workspace'} />}
-      </Container>
-      {showEdit === 'add' && <WorkspaceDialog mode="Add" workspace={workspace} submit={handleCreation} close={dialog.close} />}
-      {showEdit === 'edit' && <WorkspaceDialog mode="Edit" workspace={workspace} submit={handleUpdate} close={dialog.close} />}
-    </Container>
+    <>
+      {displayMode === 'scheme' && <WorkspacesScheme workspaces={workspaces} location={location} onAdd={showAddDialog} />}
+      {displayMode === 'table' && <WorkspacesTable workspaces={workspaces} onAdd={showAddDialog} onEdit={showEditDialog} onDelete={handleDeletion} />}
+      {dialog === 'add' && <WorkspaceDialog mode="Add" workspace={workspace} submit={handleCreation} close={closeEditDialog} />}
+      {dialog === 'edit' && <WorkspaceDialog mode="Edit" workspace={workspace} submit={handleUpdate} close={closeEditDialog} />}
+    </>
   );
 };
 

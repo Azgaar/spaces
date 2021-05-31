@@ -1,37 +1,17 @@
-import React, {FC, useEffect, useState} from 'react';
-import {useToasterCatcher} from '../../../../../hooks';
-import {WorkspaceService} from '../../../../../services';
-import {LocationOption, Workspace} from '../../../../../types';
+import React, {FC} from 'react';
+import {LocationLayout, LocationOption, Workspace} from '../../../../../types';
 import useStyles from './LocationScheme.style';
+
+const coordsToPath = (array: number[][]): string => 'M' + array.join(' L');
 
 type SchemeProps = {
   location: LocationOption;
+  workspaces: Workspace[];
 };
-
-const arrayToPath = (array: number[][]): string => 'M' + array.join(' L');
-
-const LocationScheme: FC<SchemeProps> = ({location}) => {
+const LocationScheme: FC<SchemeProps> = ({location, workspaces}) => {
   const classes = useStyles();
-  const {isLoading, setLoading, catchAndTossError} = useToasterCatcher();
 
-  const [workspaces, setWorkspaces] = useState([] as Workspace[]);
-  useEffect(() => {
-    async function fetchWorkspaces() {
-      const workspaces = await catchAndTossError(WorkspaceService.list(location));
-      if (workspaces) {
-        setWorkspaces(() => workspaces as Workspace[]);
-      }
-    }
-
-    if (location.id) {
-      fetchWorkspaces();
-    } else {
-      setLoading(() => false);
-      setWorkspaces(() => []);
-    }
-  }, [location]);
-
-  const scheme = {
+  const layout: LocationLayout = location.layout || {
     width: 25,
     height: 15,
     space: [
@@ -97,12 +77,8 @@ const LocationScheme: FC<SchemeProps> = ({location}) => {
       ]
     ]
   };
-  const {width, height, space, walls, obstacles, entrances, fireExits} = scheme;
+  const {width, height, space, walls, obstacles, entrances, fireExits} = layout;
   const viewBox = `-${width * 0.1} -${height * 0.1} ${width * 1.2} ${height * 1.2}`;
-
-  if (isLoading) {
-    return null;
-  }
 
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox={viewBox} className={classes.scheme}>
@@ -113,27 +89,27 @@ const LocationScheme: FC<SchemeProps> = ({location}) => {
       </defs>
       <g>
         <g className={classes.walls}>
-          <path d={arrayToPath(space) + 'Z'} className={classes.space} />
+          <path d={coordsToPath(space) + 'Z'} className={classes.space} />
           {walls.map((wall) => {
-            const path = arrayToPath(wall);
+            const path = coordsToPath(wall);
             return <path key={path} d={path} />;
           })}
         </g>
         <g className={classes.obstacles}>
           {obstacles.map((obstacle) => {
-            const path = arrayToPath(obstacle);
+            const path = coordsToPath(obstacle);
             return <path key={path} d={path} />;
           })}
         </g>
         <g className={classes.entrances}>
           {entrances.map((entrance) => {
-            const path = arrayToPath(entrance);
+            const path = coordsToPath(entrance);
             return <path key={path} d={path} />;
           })}
         </g>
         <g className={classes.fireExits}>
           {fireExits.map((fireExit) => {
-            const path = arrayToPath(fireExit);
+            const path = coordsToPath(fireExit);
             return <path key={path} d={path} />;
           })}
         </g>

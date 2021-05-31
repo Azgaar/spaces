@@ -7,7 +7,7 @@ import {ReservationFilters, Workspace, WorkspaceSearchCriteria} from '../../../.
 import WorkspaceTypeIcon from '../../../../components/Icons/WorkspaceTypeIcon/WorkspaceTypeIcon';
 import SearchIcon from '@material-ui/icons/Search';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
-import LocationScheme from '../../../../components/Layout/components/Main/LocationScheme/LocationScheme';
+// import LocationScheme from '../../../../components/Layout/components/Main/LocationScheme/LocationScheme';
 
 type AvailableWorkspacesProps = {
   filters: ReservationFilters;
@@ -61,7 +61,7 @@ const AvailableWorkspaces: FC<AvailableWorkspacesProps> = ({filters, valid, upda
     <Grid container spacing={2} alignItems="center">
       <LinearProgress className={`${classes.progress} ${isLoading ? '' : classes.inactive}`} />
 
-      <LocationScheme location={filters.location} />
+      {/* <LocationScheme location={filters.location} /> */}
 
       {!valid && (
         <Grid item md={4} sm={6} xs={12}>
