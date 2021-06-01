@@ -33,7 +33,7 @@ const LocationScheme: FC<SchemeProps> = ({layout, workspaces}) => {
         </g>
         <g className={classes.obstacles}>
           {obstacles.map((obstacle) => {
-            const path = coordsToPath(obstacle);
+            const path = coordsToPath(obstacle) + 'Z';
             return <path key={path} d={path} />;
           })}
         </g>

@@ -22,17 +22,7 @@ const WorkspacesScheme: FC<WorkspacesSchemeProps> = ({workspaces, location, onAd
       [25, 15],
       [0, 15]
     ],
-    walls: [
-      [
-        [0, 7],
-        [4, 7]
-      ],
-      [
-        [10, 0],
-        [10, 7],
-        [5, 7]
-      ]
-    ],
+    walls: [],
     obstacles: [],
     entrances: [],
     fireExits: []
