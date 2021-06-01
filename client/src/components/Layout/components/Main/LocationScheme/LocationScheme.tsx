@@ -11,7 +11,9 @@ type SchemeProps = {
 const LocationScheme: FC<SchemeProps> = ({layout, workspaces}) => {
   const classes = useStyles();
 
-  const {width, height, space, walls, obstacles, entrances, fireExits} = layout;
+  const {space, walls, obstacles, entrances, fireExits} = layout;
+  const width = Math.max(...space.map((point) => point[0]));
+  const height = Math.max(...space.map((point) => point[1]));
   const viewBox = `-0.1 -0.1 ${width + 0.2} ${height + 0.2}`;
 
   return (

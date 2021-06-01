@@ -57,8 +57,6 @@ export type LocationOption = {
 };
 
 export type LocationLayout = {
-  width: number;
-  height: number;
   space: number[][];
   walls: number[][][];
   obstacles: number[][][];
