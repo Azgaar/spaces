@@ -1,9 +1,8 @@
 import React, {FC, useState} from 'react';
-import useStyles from './WorkspaceScheme.style';
 import {Box, Button, Grid} from '@material-ui/core';
 import {LocationLayout, LocationOption, Workspace} from '../../../../../types';
 import LocationScheme from '../../../../../components/Layout/components/Main/LocationScheme/LocationScheme';
-import PointsList from './WorkspaceSchemeEdit/PointsList';
+import LayoutEditor from './LayoutEditor/LayoutEditor';
 
 type WorkspacesSchemeProps = {
   workspaces: Workspace[];
@@ -11,7 +10,6 @@ type WorkspacesSchemeProps = {
   onAdd: () => void;
 };
 const WorkspacesScheme: FC<WorkspacesSchemeProps> = ({workspaces, location, onAdd}) => {
-  const classes = useStyles();
   const defaultLayout: LocationLayout = {
     space: [
       [0, 0],
@@ -19,7 +17,17 @@ const WorkspacesScheme: FC<WorkspacesSchemeProps> = ({workspaces, location, onAd
       [25, 15],
       [0, 15]
     ],
-    walls: [],
+    walls: [
+      [
+        [0, 7],
+        [4, 7]
+      ],
+      [
+        [10, 0],
+        [10, 7],
+        [5, 7]
+      ]
+    ],
     obstacles: [],
     entrances: [],
     fireExits: []
@@ -96,23 +104,13 @@ const WorkspacesScheme: FC<WorkspacesSchemeProps> = ({workspaces, location, onAd
   return (
     <Box p={2}>
       <Grid container spacing={1}>
-        <Grid item lg={3} xs={12}>
-          <Grid container spacing={1}>
-            <Grid item xs={12}>
-              <Button variant="contained" color="primary">
-                Edit layout
-              </Button>
-
-              <PointsList points={layout.space} onChange={(newPoints: number[][]) => setLayout((layout) => ({...layout, space: newPoints}))} />
-            </Grid>
-            <Grid item xs={12}>
-              <Button variant="contained" color="primary" onClick={onAdd}>
-                Add workspace
-              </Button>
-            </Grid>
-          </Grid>
+        <Grid item lg={4} xs={12}>
+          <LayoutEditor layout={layout} onChange={(newLayout: LocationLayout) => setLayout(() => newLayout)} />
+          <Button variant="contained" color="primary" onClick={onAdd}>
+            Add workspace
+          </Button>
         </Grid>
-        <Grid item lg={9} xs={12}>
+        <Grid item lg={8} xs={12}>
           <LocationScheme layout={layout} workspaces={workspaces} />
         </Grid>
       </Grid>

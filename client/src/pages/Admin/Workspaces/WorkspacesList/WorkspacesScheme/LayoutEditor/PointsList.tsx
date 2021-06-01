@@ -17,11 +17,10 @@ const PointsList: FC<PointsListProps> = ({points, onChange}) => {
     onChange(newPoints);
   };
 
-  const getMidPoint = (p1: number[], p2: number[]): number[] => [Math.round((p1[0] + p2[0]) / 2), Math.round((p1[1] + p2[1]) / 2)];
   const addPoint = (index: number): void => {
     const thisPoint = points[index];
     const nextPoint = points[index + 1];
-    const newPoint = nextPoint ? getMidPoint(thisPoint, nextPoint) : thisPoint;
+    const newPoint = nextPoint ? [Math.round((thisPoint[0] + nextPoint[0]) / 2), thisPoint[1]] : thisPoint;
     const newPoints = points.slice();
     newPoints.splice(index + 1, 0, newPoint);
     onChange(newPoints);
