@@ -16,7 +16,7 @@ const LayoutEditor: FC<LayoutEditorProps> = ({layout, onChange}) => {
   const classes = useStyles();
   console.log(layout);
 
-  const collapsed = {layout: false, walls: false, obstacles: false};
+  const collapsed = {layout: false, walls: false, obstacles: false, entrances: false, fireExits: false};
   const [open, setOpen] = React.useState(collapsed);
 
   const addWall: MouseEventHandler = (e) => {
@@ -45,6 +45,29 @@ const LayoutEditor: FC<LayoutEditorProps> = ({layout, onChange}) => {
       [x, y + ly]
     ]);
     onChange({...layout, obstacles: newObstacles});
+  };
+
+  const addEntrance: MouseEventHandler = (e) => {
+    e.stopPropagation();
+    const newEntrances = layout.entrances.slice();
+    const x = Math.ceil(Math.random() * 10);
+    const l = Math.ceil(Math.random() * 2);
+    newEntrances.push([
+      [x, 0],
+      [x + l, 0]
+    ]);
+    onChange({...layout, entrances: newEntrances});
+  };
+
+  const addFireExit: MouseEventHandler = (e) => {
+    e.stopPropagation();
+    const newFireExits = layout.fireExits.slice();
+    const x = 10 + Math.ceil(Math.random() * 10);
+    newFireExits.push([
+      [x, 0],
+      [x + 1, 0]
+    ]);
+    onChange({...layout, fireExits: newFireExits});
   };
 
   return (
@@ -124,6 +147,80 @@ const LayoutEditor: FC<LayoutEditorProps> = ({layout, onChange}) => {
                   const newObstacles = layout.obstacles.slice();
                   newObstacles[i] = newPoints;
                   onChange({...layout, obstacles: newObstacles});
+                }}
+              />
+            </Box>
+          ))}
+        </List>
+      </Collapse>
+
+      <ListItem button onClick={() => setOpen(() => ({...collapsed, entrances: !open.entrances}))}>
+        <ListItemText primary="Entrances" />
+        <IconButton disabled={layout.entrances.length > 20} onClick={addEntrance}>
+          <AddIcon />
+        </IconButton>
+        {open.entrances ? <ExpandLess /> : <ExpandMore />}
+      </ListItem>
+      <Collapse in={open.entrances} timeout="auto" unmountOnExit>
+        <List>
+          {layout.entrances.map((entrance: number[][], i: number) => (
+            <Box key={`entrance${i}of${layout.entrances.length}`} pl={2}>
+              <ListItem>
+                <ListItemText primary={`Entrance ${i + 1}`} />
+                <IconButton
+                  edge="end"
+                  onClick={() => {
+                    const newEntrances = layout.entrances.slice();
+                    newEntrances.splice(i, 1);
+                    onChange({...layout, entrances: newEntrances});
+                  }}>
+                  <ClearIcon />
+                </IconButton>
+              </ListItem>
+
+              <PointsList
+                points={entrance}
+                onChange={(newPoints: number[][]) => {
+                  const newEntrances = layout.entrances.slice();
+                  newEntrances[i] = newPoints;
+                  onChange({...layout, entrances: newEntrances});
+                }}
+              />
+            </Box>
+          ))}
+        </List>
+      </Collapse>
+
+      <ListItem button onClick={() => setOpen(() => ({...collapsed, fireExits: !open.fireExits}))}>
+        <ListItemText primary="Fire exits" />
+        <IconButton disabled={layout.fireExits.length > 20} onClick={addFireExit}>
+          <AddIcon />
+        </IconButton>
+        {open.fireExits ? <ExpandLess /> : <ExpandMore />}
+      </ListItem>
+      <Collapse in={open.fireExits} timeout="auto" unmountOnExit>
+        <List>
+          {layout.fireExits.map((fireExit: number[][], i: number) => (
+            <Box key={`fireExit${i}of${layout.fireExits.length}`} pl={2}>
+              <ListItem>
+                <ListItemText primary={`Fire exit ${i + 1}`} />
+                <IconButton
+                  edge="end"
+                  onClick={() => {
+                    const newFireExits = layout.fireExits.slice();
+                    newFireExits.splice(i, 1);
+                    onChange({...layout, fireExits: newFireExits});
+                  }}>
+                  <ClearIcon />
+                </IconButton>
+              </ListItem>
+
+              <PointsList
+                points={fireExit}
+                onChange={(newPoints: number[][]) => {
+                  const newFireExits = layout.fireExits.slice();
+                  newFireExits[i] = newPoints;
+                  onChange({...layout, fireExits: newFireExits});
                 }}
               />
             </Box>
