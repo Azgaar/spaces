@@ -1,6 +1,6 @@
 import React, {FC, ChangeEvent} from 'react';
 import useStyles from './PointsList.style';
-import {IconButton, InputAdornment, List, ListItem, ListItemSecondaryAction, TextField, Typography} from '@material-ui/core';
+import {IconButton, InputAdornment, List, ListItem, ListItemSecondaryAction, TextField, Typography, useMediaQuery, useTheme} from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
 import AddIcon from '@material-ui/icons/Add';
 
@@ -10,6 +10,7 @@ type PointsListProps = {
 };
 const PointsList: FC<PointsListProps> = ({points, onChange}) => {
   const classes = useStyles();
+  const smallScreen = useMediaQuery(useTheme().breakpoints.down('xs'));
 
   const changePoint = (index: number, axis: number, value: number): void => {
     const newPoints = points.slice();
@@ -20,7 +21,7 @@ const PointsList: FC<PointsListProps> = ({points, onChange}) => {
   const addPoint = (index: number): void => {
     const thisPoint = points[index];
     const nextPoint = points[index + 1];
-    const newPoint = nextPoint ? [Math.round((thisPoint[0] + nextPoint[0]) / 2), thisPoint[1]] : thisPoint;
+    const newPoint = nextPoint ? [Math.round((thisPoint[0] + nextPoint[0]) / 2), thisPoint[1]] : thisPoint.slice();
     const newPoints = points.slice();
     newPoints.splice(index + 1, 0, newPoint);
     onChange(newPoints);
@@ -33,18 +34,19 @@ const PointsList: FC<PointsListProps> = ({points, onChange}) => {
   };
 
   return (
-    <List dense={true}>
+    <List dense disablePadding>
       {points.map((coords: number[], i: number) => (
-        <ListItem key={`point${i}of${points.length}`}>
-          <Typography variant="body1" color="textSecondary" className={classes.pointLabel}>
-            Point {i + 1}
-          </Typography>
+        <ListItem key={`point${i}of${points.length}`} className={classes.listItem}>
+          {!smallScreen && (
+            <Typography variant="body1" color="textSecondary">
+              Point {i + 1}
+            </Typography>
+          )}
           <TextField
             type="number"
             id="x"
             name="x"
             required
-            className={classes.pointInput}
             InputProps={{inputProps: {min: 0, max: 999, autoComplete: 'off'}, startAdornment: <InputAdornment position="start">x</InputAdornment>}}
             defaultValue={coords[0]}
             onChange={(e: ChangeEvent<HTMLInputElement>) => changePoint(i, 0, parseInt(e.target.value))}
@@ -54,17 +56,16 @@ const PointsList: FC<PointsListProps> = ({points, onChange}) => {
             id="y"
             name="y"
             required
-            className={classes.pointInput}
             InputProps={{inputProps: {min: 0, max: 999, autoComplete: 'off'}, startAdornment: <InputAdornment position="start">y</InputAdornment>}}
             defaultValue={coords[1]}
             onChange={(e: ChangeEvent<HTMLInputElement>) => changePoint(i, 1, parseInt(e.target.value))}
           />
           <ListItemSecondaryAction>
             <IconButton edge="end" onClick={() => addPoint(i)} disabled={points.length > 1000}>
-              <AddIcon fontSize="inherit" />
+              <AddIcon fontSize="small" />
             </IconButton>
             <IconButton edge="end" onClick={() => deletePoint(i)} disabled={points.length < 3}>
-              <ClearIcon fontSize="inherit" />
+              <ClearIcon fontSize="small" />
             </IconButton>
           </ListItemSecondaryAction>
         </ListItem>

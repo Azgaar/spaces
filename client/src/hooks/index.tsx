@@ -78,7 +78,9 @@ export const useLocations = (): {
     }
 
     const storedFetchedLocation = fetchedLocations.find((loc) => loc.id === storedLocation.id);
-    storedFetchedLocation && setLocation(() => storedLocation);
+    if (storedFetchedLocation) {
+      setLocation(() => storedFetchedLocation);
+    }
   };
 
   return {locations, setLocations, locationsLoading: isLoading, location, setLocation, fetchLocations};

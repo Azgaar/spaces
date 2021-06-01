@@ -46,11 +46,17 @@ const Workspaces: FC = () => {
   };
 
   const renameLocation = async () => {
-    const allLocations = await catchAndTossError(LocationService.rename(location.id, locationInput));
-    if (allLocations) {
+    const updatedLocation = (await catchAndTossError(LocationService.update({...location, description: locationInput}))) as LocationOption | undefined;
+    if (updatedLocation) {
       pushMessage({title: `Location "${locationInput}" is renamed`, type: MessageType.SUCCESS});
-      setLocations(() => allLocations as LocationOption[]);
-      setLocation(() => ({id: location.id, description: locationInput}));
+      setLocation(() => ({...location, description: locationInput}));
+      setLocations((locations) => {
+        const updated = locations.find((loc) => loc.id === location.id);
+        if (updated) {
+          updated.description = locationInput;
+        }
+        return locations;
+      });
     }
   };
 

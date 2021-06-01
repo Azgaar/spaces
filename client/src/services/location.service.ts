@@ -1,8 +1,9 @@
 import axios, {AxiosPromise} from 'axios';
+import {LocationOption} from '../types';
 
 const list = (options: {onlyWithWorkspaces: boolean}): AxiosPromise => axios.post('/getLocations', options);
 const add = (description: string): AxiosPromise => axios.post('/addLocation', {description});
-const rename = (id: string, description: string): AxiosPromise => axios.post('/renameLocation', {id, description});
+const update = (location: LocationOption): AxiosPromise => axios.patch('/locations/' + location.id, location);
 const remove = (id: string): AxiosPromise => axios.delete('/deleteLocation', {data: {id}});
 
-export const LocationService = {list, add, rename, remove};
+export const LocationService = {list, add, update, remove};

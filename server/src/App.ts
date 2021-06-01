@@ -42,7 +42,7 @@ export default class App {
     this.app.use('/forgotPassword', Routes.forgotPassword);
     this.app.use('/getLocations', Routes.getLocations);
     this.app.use('/addLocation', Routes.addLocation);
-    this.app.use('/renameLocation', Routes.renameLocation);
+    this.app.use('/locations', Routes.locations);
     this.app.use('/deleteLocation', Routes.deleteLocation);
     this.app.use('/getWorkspaces', Routes.getWorkspaces);
     this.app.use('/addWorkspace', Routes.addWorkspace);

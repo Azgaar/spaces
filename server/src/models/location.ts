@@ -3,15 +3,16 @@ import {LocationDocument} from '../types';
 
 const locationSchema = new Schema(
   {
-    description: {type: String, required: true}
+    description: {type: String, required: true},
+    layout: {type: Object}
   },
   {timestamps: true, versionKey: false}
 );
 
 locationSchema.set('toJSON', {
   transform: (doc: LocationDocument, ret: LocationDocument) => {
-    const {_id, description} = ret;
-    return {id: _id, description};
+    const {_id, layout, description} = ret;
+    return {id: _id, layout, description};
   }
 });
 

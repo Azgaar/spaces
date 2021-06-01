@@ -23,19 +23,13 @@ const add = catchAsync(async (req, res, next) => {
   res.status(httpStatus.CREATED).send(location);
 });
 
-const rename = catchAsync(async (req, res, next) => {
-  const {id, description} = req.body;
-  const location = await locationService.rename({id, description});
+const update = catchAsync(async (req, res, next) => {
+  const location = await locationService.update(req.body);
   if (!location) {
-    return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Cannot rename location'));
+    return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Cannot update location'));
   }
 
-  const locations = await locationService.list({onlyWithWorkspaces: false});
-  if (!locations) {
-    return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Cannot fetch locations'));
-  }
-
-  res.status(httpStatus.OK).send(locations);
+  res.status(httpStatus.OK).send(location);
 });
 
 const remove = catchAsync(async (req, res, next) => {
@@ -53,4 +47,4 @@ const remove = catchAsync(async (req, res, next) => {
   res.status(httpStatus.OK).send(locations);
 });
 
-export const locationController = {list, add, rename, remove};
+export const locationController = {list, add, update, remove};

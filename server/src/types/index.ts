@@ -37,6 +37,7 @@ export interface UserDocument extends Document {
 
 export interface LocationDocument extends Document {
   description: string;
+  layout: LocationLayout;
 }
 
 export interface WorkspaceDocument extends Document {
@@ -74,8 +75,17 @@ export enum ServiceRequestStatus {
 }
 
 export type LocationData = {
-  description: string;
+  description?: string;
   id?: string;
+  layout?: LocationLayout;
+};
+
+export type LocationLayout = {
+  space: number[][];
+  walls: number[][][];
+  obstacles: number[][][];
+  entrances: number[][][];
+  fireExits: number[][][];
 };
 
 export enum WorkspaceStatus {

@@ -22,10 +22,10 @@ const add = async (locationData: LocationData): Promise<LocationDocument> => {
   return location;
 };
 
-const rename = async (locationData: LocationData): Promise<UpdateWriteOpResult> => {
-  const renamedLocation = await Location.updateOne({_id: locationData.id}, {description: locationData.description});
-  logger.info(`[Location] Location renaming request: ${locationData.id}`);
-  return renamedLocation;
+const update = async (locationData: LocationData): Promise<UpdateWriteOpResult> => {
+  const updatedLocation = await Location.updateOne({_id: locationData.id}, {...locationData});
+  logger.info(`[Location] Location update request: ${locationData.id}`);
+  return updatedLocation;
 };
 
 const remove = async (locationData: Partial<LocationData>): Promise<DeleteWriteOpResultObject['result']> => {
@@ -34,4 +34,4 @@ const remove = async (locationData: Partial<LocationData>): Promise<DeleteWriteO
   return deletedlocation;
 };
 
-export default {list, add, rename, remove};
+export default {list, add, update, remove};
