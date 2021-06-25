@@ -1,10 +1,10 @@
 # SPɅCES: Workspace Reservation System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The demo is avaiable at [spaces-wrs.herokuapp.com](http://spaces-wrs.herokuapp.com/).
 
 ## Available Scripts
 
-In the project directory, you can run:
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). In the project directory, you can run:
 
 ### `yarn start`
 
